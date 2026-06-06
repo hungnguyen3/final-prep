@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chương — Ôn tập cuối kỳ</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1><a href="index.html">Ôn tập cuối kỳ</a></h1>
+    </div>
+  </header>
+  <main class="container">
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <h2 class="page-title" id="chapter-title">Đang tải...</h2>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="tab-theory">Lý thuyết</button>
+      <button class="tab-btn" data-tab="tab-quiz">Trắc nghiệm</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-theory">
+      <div id="theory-content"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-quiz">
+      <div class="quiz-controls" id="quiz-controls">
+        <select id="level-filter">
+          <option value="all">Tất cả cấp độ</option>
+          <option value="basic">Cơ bản</option>
+          <option value="intermediate">Trung bình</option>
+          <option value="advanced">Nâng cao</option>
+        </select>
+        <button class="btn primary" id="btn-practice">▶ Luyện tập</button>
+        <button class="btn" id="btn-exam">📝 Thi thử</button>
+      </div>
+      <div id="quiz-area"></div>
+    </div>
+  </main>
+  <script type="module" src="js/quiz.js"></script>
+</body>
+</html>

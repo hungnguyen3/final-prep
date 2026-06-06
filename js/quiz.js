@@ -18,6 +18,8 @@ function shuffle(arr) {
   return a;
 }
 
+// ─── Init ───────────────────────────────────────────────────────────────────
+
 async function init() {
   const { subject, chapter } = getParams();
   if (!subject || !chapter) return;
@@ -86,43 +88,60 @@ function setupModeButtons() {
   document.getElementById('btn-exam')?.addEventListener('click', () => startExam());
 }
 
-function resetToControls() {
-  const area = document.getElementById('quiz-area');
-  area.innerHTML = '';
+// ─── Shared helpers ──────────────────────────────────────────────────────────
+
+function showControls() {
   document.getElementById('quiz-controls').style.display = 'flex';
+  document.getElementById('quiz-area').innerHTML = '';
 }
 
-function makeReloadBar() {
+function hideControls() {
+  document.getElementById('quiz-controls').style.display = 'none';
+}
+
+// "Thoát" button shown while doing a quiz — top of quiz-area
+function makeExitBtn() {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn';
+  btn.style.cssText = 'margin-bottom:1rem; font-size:0.85rem;';
+  btn.textContent = '✕ Thoát';
+  btn.addEventListener('click', showControls);
+  return btn;
+}
+
+// Bottom bar shown after finishing
+function makeResultBar() {
   const bar = document.createElement('div');
-  bar.style.cssText = 'display:flex; gap:0.75rem; justify-content:center; margin: 1rem 0 2rem';
+  bar.style.cssText = 'display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; margin: 1rem 0 2rem';
 
-  const againBtn = document.createElement('button');
-  againBtn.type = 'button';
-  againBtn.className = 'btn';
-  againBtn.textContent = '↩ Chọn chế độ khác';
-  againBtn.addEventListener('click', resetToControls);
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'btn';
+  backBtn.textContent = '↩ Chọn chế độ khác';
+  backBtn.addEventListener('click', showControls);
 
-  const reloadBtn = document.createElement('button');
-  reloadBtn.type = 'button';
-  reloadBtn.className = 'btn primary';
-  reloadBtn.textContent = '🔀 Làm lại (shuffle)';
-  reloadBtn.addEventListener('click', () => {
+  const shuffleBtn = document.createElement('button');
+  shuffleBtn.type = 'button';
+  shuffleBtn.className = 'btn primary';
+  shuffleBtn.textContent = '🔀 Làm lại (shuffle)';
+  shuffleBtn.addEventListener('click', () => {
     filtered = shuffle(filtered);
     if (mode === 'practice') {
       currentIndex = 0;
-      document.getElementById('quiz-controls').style.display = 'none';
       renderPracticeQuestion();
     } else {
       examIndex = 0;
       examAnswers = new Array(filtered.length).fill(null);
-      document.getElementById('quiz-controls').style.display = 'none';
       renderExamQuestion();
     }
   });
 
-  bar.append(againBtn, reloadBtn);
+  bar.append(backBtn, shuffleBtn);
   return bar;
 }
+
+// ─── Practice mode ───────────────────────────────────────────────────────────
 
 function startPractice() {
   mode = 'practice';
@@ -132,60 +151,88 @@ function startPractice() {
     document.getElementById('quiz-area').innerHTML = '<p class="empty">Không có câu hỏi nào.</p>';
     return;
   }
-  document.getElementById('quiz-controls').style.display = 'none';
+  hideControls();
   renderPracticeQuestion();
 }
 
 function renderPracticeQuestion() {
   const area = document.getElementById('quiz-area');
+  area.innerHTML = '';
+
+  // Exit button
+  area.appendChild(makeExitBtn());
+
   if (currentIndex >= filtered.length) {
-    area.innerHTML = '';
     const box = document.createElement('div');
     box.className = 'result-box';
     box.innerHTML = `<div class="score">Hoàn thành!</div><p class="score-label">Bạn đã làm xong ${filtered.length} câu.</p>`;
     area.appendChild(box);
-    area.appendChild(makeReloadBar());
+    area.appendChild(makeResultBar());
     return;
   }
 
   const q = filtered[currentIndex];
-  area.innerHTML = `
-    <div class="question-card">
-      <div class="q-meta">Câu ${currentIndex + 1}/${filtered.length} · ${LEVEL_LABEL[q.level] || q.level}</div>
-      <div class="q-text">${q.question}</div>
-      <div class="options">
-        ${q.options.map((opt, i) => `
-          <button type="button" class="option-btn" data-index="${i}">${opt}</button>
-        `).join('')}
-      </div>
-      <div class="explanation" id="explanation">${q.explanation}</div>
-    </div>
-    <div class="quiz-nav">
-      <span class="q-counter"></span>
-      <button type="button" class="btn primary" id="btn-next" style="display:none">Câu tiếp theo →</button>
-    </div>
-  `;
 
-  area.querySelectorAll('.option-btn').forEach(btn => {
+  // Question card
+  const card = document.createElement('div');
+  card.className = 'question-card';
+
+  const qmeta = document.createElement('div');
+  qmeta.className = 'q-meta';
+  qmeta.textContent = `Câu ${currentIndex + 1}/${filtered.length} · ${LEVEL_LABEL[q.level] || q.level}`;
+
+  const qtext = document.createElement('div');
+  qtext.className = 'q-text';
+  qtext.textContent = q.question;
+
+  const opts = document.createElement('div');
+  opts.className = 'options';
+
+  const exp = document.createElement('div');
+  exp.className = 'explanation';
+  exp.textContent = q.explanation;
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'option-btn';
+    btn.textContent = opt;
     btn.addEventListener('click', () => {
-      const chosen = parseInt(btn.dataset.index, 10);
       const correctIdx = parseInt(q.answer, 10);
-      area.querySelectorAll('.option-btn').forEach(b => {
+      opts.querySelectorAll('.option-btn').forEach((b, idx) => {
         b.disabled = true;
-        const idx = parseInt(b.dataset.index, 10);
         if (idx === correctIdx) b.classList.add('correct');
-        else if (idx === chosen && chosen !== correctIdx) b.classList.add('wrong');
+        else if (idx === i && i !== correctIdx) b.classList.add('wrong');
       });
-      document.getElementById('explanation').classList.add('show');
-      document.getElementById('btn-next').style.display = 'inline-block';
+      exp.classList.add('show');
+      nextBtn.style.display = 'inline-block';
     });
+    opts.appendChild(btn);
   });
 
-  document.getElementById('btn-next').addEventListener('click', () => {
+  card.append(qmeta, qtext, opts, exp);
+  area.appendChild(card);
+
+  // Nav
+  const nav = document.createElement('div');
+  nav.className = 'quiz-nav';
+  nav.style.marginTop = '1rem';
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.className = 'btn primary';
+  nextBtn.textContent = currentIndex === filtered.length - 1 ? 'Kết thúc ✓' : 'Câu tiếp theo →';
+  nextBtn.style.display = 'none';
+  nextBtn.addEventListener('click', () => {
     currentIndex++;
     renderPracticeQuestion();
   });
+
+  nav.appendChild(nextBtn);
+  area.appendChild(nav);
 }
+
+// ─── Exam mode ───────────────────────────────────────────────────────────────
 
 function startExam() {
   mode = 'exam';
@@ -196,17 +243,21 @@ function startExam() {
     document.getElementById('quiz-area').innerHTML = '<p class="empty">Không có câu hỏi nào.</p>';
     return;
   }
-  document.getElementById('quiz-controls').style.display = 'none';
+  hideControls();
   renderExamQuestion();
 }
 
 function renderExamQuestion() {
   const area = document.getElementById('quiz-area');
+  area.innerHTML = '';
+
+  // Exit button
+  area.appendChild(makeExitBtn());
+
   const q = filtered[examIndex];
   const isLast = examIndex === filtered.length - 1;
 
-  area.innerHTML = '';
-
+  // Question card
   const card = document.createElement('div');
   card.className = 'question-card';
 
@@ -238,7 +289,7 @@ function renderExamQuestion() {
   card.append(qmeta, qtext, opts);
   area.appendChild(card);
 
-  // Navigation bar
+  // Nav
   const nav = document.createElement('div');
   nav.className = 'quiz-nav';
   nav.style.marginTop = '1rem';
@@ -257,14 +308,10 @@ function renderExamQuestion() {
   const nextBtn = document.createElement('button');
   nextBtn.type = 'button';
   nextBtn.className = isLast ? 'btn primary' : 'btn';
-  nextBtn.textContent = isLast ? 'Nộp bài' : 'Câu tiếp →';
+  nextBtn.textContent = isLast ? '✓ Nộp bài' : 'Câu tiếp →';
   nextBtn.addEventListener('click', () => {
-    if (isLast) {
-      submitExam();
-    } else {
-      examIndex++;
-      renderExamQuestion();
-    }
+    if (isLast) submitExam();
+    else { examIndex++; renderExamQuestion(); }
   });
 
   nav.append(prevBtn, counter, nextBtn);
@@ -274,13 +321,21 @@ function renderExamQuestion() {
 function submitExam() {
   const area = document.getElementById('quiz-area');
   area.innerHTML = '';
-  document.getElementById('quiz-controls').style.display = 'none';
 
   let correct = 0;
 
+  // Score box first
+  const box = document.createElement('div');
+  box.className = 'result-box';
+  area.appendChild(box);
+
+  area.appendChild(makeResultBar());
+
+  // All questions review
   filtered.forEach((q, qi) => {
     const chosen = examAnswers[qi];
     const correctIdx = parseInt(q.answer, 10);
+    if (chosen === correctIdx) correct++;
 
     const card = document.createElement('div');
     card.className = 'question-card';
@@ -313,17 +368,10 @@ function submitExam() {
 
     card.append(qmeta, qtext, opts, exp);
     area.appendChild(card);
-
-    if (chosen === correctIdx) correct++;
   });
 
-  // Score box
-  const box = document.createElement('div');
-  box.className = 'result-box';
+  // Fill score now that correct is calculated
   box.innerHTML = `<div class="score">${correct}/${filtered.length}</div><p class="score-label">Điểm của bạn · ${Math.round(correct / filtered.length * 100)}%</p>`;
-
-  area.insertBefore(box, area.firstChild);
-  area.insertBefore(makeReloadBar(), area.children[1]);
 }
 
 init();

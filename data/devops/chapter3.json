@@ -1,25 +1,29 @@
 {
-  "title": "Chương 3: Branch, Merge & Lệnh nâng cao",
+  "title": "Chương 3: Branch, Merge & Workflow nâng cao",
   "theory": [
     {
       "heading": "Làm việc với Branch",
-      "content": "git branch: Liệt kê branch, branch hiện tại có dấu *. git branch [name]: Tạo branch mới. git checkout [branch]: Chuyển sang branch khác — cập nhật working directory. git checkout -b [branch]: Tạo và chuyển sang branch mới cùng lúc. git branch -d [branch]: Xóa branch đã merge."
+      "content": "git branch: liệt kê tất cả local branches, branch hiện tại có dấu *. git branch [name]: tạo branch mới. git branch -d [name]: xóa branch đã merge (safe). git branch -D [name]: force delete branch chưa merge. git branch -r: xem remote branches. git branch -a: xem cả local và remote. git checkout [branch]: chuyển sang branch. git checkout -b [branch]: tạo và chuyển sang branch mới. git switch [branch]: lệnh mới (Git 2.23+) thay cho checkout. git switch -c [branch]: tạo và switch. git push origin --delete [branch]: xóa branch trên remote."
     },
     {
-      "heading": "Merge và Conflict",
-      "content": "git merge [branch]: Merge branch được chỉ định vào branch hiện tại — tạo merge commit. Merge conflict xảy ra khi cùng một dòng bị sửa ở cả hai branch. Git đánh dấu conflict bằng <<<<<<< HEAD, =======, >>>>>>> branch. Phải giải quyết thủ công rồi 'git add' và 'git commit'."
+      "heading": "Merge — Các loại và Conflict",
+      "content": "git merge [branch]: merge branch đó vào branch hiện tại — tạo merge commit. Fast-forward merge: khi branch hiện tại không có commit mới → chỉ di chuyển pointer, không tạo merge commit. 3-way merge: khi cả hai branches có commits mới → tạo merge commit kết hợp. git merge --no-ff: luôn tạo merge commit (ngay cả khi có thể fast-forward) — giúp thấy rõ feature boundaries. Merge conflict: xảy ra khi cùng dòng bị sửa ở cả hai branches. Git đánh dấu: <<<<<<< HEAD (thay đổi của branch hiện tại), ======= (ranh giới), >>>>>>> branch. Giải quyết: sửa thủ công → git add → git commit."
     },
     {
-      "heading": "Stash — Lưu tạm thời",
-      "content": "git stash: Lưu tạm thời các thay đổi chưa commit vào một stack, working directory trở về trạng thái clean. Hữu ích khi cần chuyển branch gấp. git stash pop: Lấy lại thay đổi đã stash gần nhất. git stash list: Xem danh sách các stash."
+      "heading": "Rebase — Linear History",
+      "content": "git rebase [branch]: áp dụng commits của branch hiện tại lên đầu branch đích — tạo linear history. Interactive rebase (git rebase -i): pick, squash/fixup (gộp), reword, edit, drop. Rebase vs Merge: Merge giữ nguyên history (thấy rõ branch structure), Rebase tạo linear history (cleaner). Golden rule: KHÔNG rebase public branches đã push — rewrite commit hashes. git rebase --continue: tiếp tục sau khi resolve conflict. git rebase --abort: hủy rebase. git rebase --skip: skip commit gây conflict."
     },
     {
-      "heading": "Rebase vs Merge",
-      "content": "git rebase [branch]: Áp dụng lại các commit của branch hiện tại lên đầu branch đích — tạo history tuyến tính, sạch hơn. git rebase -i: Interactive rebase — cho phép reorder, edit, squash, xóa commit. Khác với merge: rebase viết lại history nên không dùng cho branch đã push."
+      "heading": "Git Workflows phổ biến",
+      "content": "Git Flow: main (production) + develop (integration) + feature branches + release branches + hotfix branches. Phức tạp, phù hợp release-based. GitHub Flow: đơn giản hơn — main + feature branches, merge qua Pull Request, deploy ngay sau merge. Phù hợp continuous deployment. GitLab Flow: kết hợp — main + environment branches (staging, production) + feature branches. Trunk-based Development: tất cả commit thẳng vào main (trunk) với feature flags — phù hợp CI/CD tốc độ cao. Conventional Commits: format commit message chuẩn: type(scope): description — ví dụ: feat(auth): add OAuth login, fix(api): correct status code."
     },
     {
-      "heading": "Các lệnh nâng cao khác",
-      "content": "git cherry-pick [commit]: Áp dụng một commit cụ thể vào branch hiện tại — không merge toàn bộ branch. git bisect: Tìm commit gây ra bug bằng binary search. git blame [file]: Xem ai đã sửa từng dòng của file và khi nào. git reflog: Xem log của tất cả thay đổi HEAD — dùng để phục hồi commit bị mất. git stash: Lưu thay đổi tạm thời. git merge --squash: Merge tất cả commit thành một commit duy nhất."
+      "heading": "Advanced Git Commands",
+      "content": "git stash: lưu tạm thời thay đổi. git stash pop: lấy lại stash mới nhất. git stash list / drop / clear. git cherry-pick [hash]: apply một commit cụ thể. git bisect: binary search tìm bug. git blame [file]: xem ai sửa từng dòng. git reflog: xem lịch sử HEAD (dùng để recover lost commits). git worktree: làm việc nhiều branches song song. git filter-branch: rewrite history. git submodule: include repo khác vào repo. git tag -a v1.0 -m 'message': tạo annotated tag. git push origin --tags: push tất cả tags."
+    },
+    {
+      "heading": "GitHub Features — Issues, PRs, Actions",
+      "content": "Pull Requests: propose thay đổi + request review. Có thể: link với Issues, request reviewers, add labels, assign to milestone. Code Review trong PR: inline comments, suggest changes, approve/request changes. Branch protection rules: require PR review trước khi merge, require status checks (CI pass), protect main branch. GitHub Actions: CI/CD tích hợp, trigger theo events (push, PR, schedule). Issues: track bugs, features, tasks. Projects: Kanban board. GitHub Packages: host packages (npm, Docker images). Dependabot: tự động tạo PRs để update dependencies."
     }
   ],
   "questions": [
@@ -27,183 +31,246 @@
       "id": 1,
       "level": "basic",
       "question": "Lệnh nào tạo và chuyển sang branch mới cùng một lúc?",
-      "options": [
-        "git branch [branch] && git checkout",
-        "git checkout -b [branch]",
-        "git switch --create [branch]",
-        "git branch -new [branch]"
-      ],
+      "options": ["git branch -new [name]", "git checkout -b [name]", "git switch --new [name]", "git create [name]"],
       "answer": 1,
-      "explanation": "'git checkout -b [name]' vừa tạo branch mới vừa chuyển sang branch đó trong một lệnh. (git switch -c cũng làm tương tự trong Git mới hơn)"
+      "explanation": "'git checkout -b [name]' vừa tạo branch mới vừa chuyển sang nó. Git 2.23+ có lệnh tương đương: 'git switch -c [name]'."
     },
     {
       "id": 2,
       "level": "basic",
       "question": "Lệnh 'git merge [branch]' làm gì?",
-      "options": [
-        "Chuyển sang branch được chỉ định",
-        "Merge branch được chỉ định vào branch hiện tại",
-        "Tạo branch mới từ branch được chỉ định",
-        "Xóa branch được chỉ định"
-      ],
+      "options": ["Xóa branch được chỉ định", "Merge branch đó vào branch HIỆN TẠI", "Tạo branch mới từ branch đó", "Chuyển sang branch đó"],
       "answer": 1,
-      "explanation": "'git merge [branch]' kết hợp thay đổi từ branch đó vào branch bạn đang đứng — tạo một merge commit."
+      "explanation": "'git merge [branch]' kết hợp thay đổi từ branch được chỉ định vào branch bạn đang đứng. Lưu ý: bạn phải đang ở branch TARGET (branch muốn nhận thay đổi)."
     },
     {
       "id": 3,
       "level": "basic",
-      "question": "git stash có tác dụng gì?",
-      "options": [
-        "Tạo branch mới từ thay đổi hiện tại",
-        "Tạo commit tạm thời",
-        "Lưu tạm thời các thay đổi chưa commit, làm sạch working directory",
-        "Xóa các thay đổi chưa commit vĩnh viễn"
-      ],
-      "answer": 2,
-      "explanation": "'git stash' đẩy thay đổi hiện tại vào một stack tạm thời, working directory trở về trạng thái clean — hữu ích khi cần switch branch gấp."
+      "question": "Khi xảy ra merge conflict, Git đánh dấu vùng conflict bằng gì?",
+      "options": ["*** CONFLICT ***, ### END ***", "<<<<<<< HEAD, =======, >>>>>>> branch", "[START CONFLICT], [END CONFLICT]", "// conflict-begin, // conflict-end"],
+      "answer": 1,
+      "explanation": "Git dùng markers: '<<<<<<< HEAD' (code của branch hiện tại), '=======' (ranh giới), '>>>>>>> branch-name' (code của branch đang merge). Phải sửa thủ công, xóa markers, rồi git add + git commit."
     },
     {
       "id": 4,
       "level": "basic",
-      "question": "Lệnh 'git cherry-pick [commit]' làm gì?",
-      "options": [
-        "Áp dụng một commit cụ thể vào branch hiện tại mà không merge toàn bộ branch",
-        "Xóa commit được chỉ định",
-        "Di chuyển commit sang branch khác",
-        "Chọn branch để merge"
-      ],
-      "answer": 0,
-      "explanation": "'git cherry-pick' cho phép lấy đúng một commit từ branch khác áp dụng vào branch hiện tại — hữu ích khi chỉ cần một fix cụ thể."
+      "question": "Fast-forward merge xảy ra khi nào?",
+      "options": ["Khi có conflict", "Khi branch hiện tại không có commit mới sau điểm tách — chỉ di chuyển pointer, không tạo merge commit", "Khi merge với --force", "Khi merge trên GitHub"],
+      "answer": 1,
+      "explanation": "Fast-forward: khi main không có commit mới kể từ khi tạo feature branch — Git chỉ di chuyển main pointer lên. Không tạo merge commit. Dùng --no-ff để buộc tạo merge commit dù có thể fast-forward."
     },
     {
       "id": 5,
       "level": "basic",
-      "question": "Lệnh 'git blame [file]' cho biết gì?",
-      "options": [
-        "Danh sách bug trong file",
-        "File nào đang bị conflict",
-        "Ai đã sửa từng dòng của file và khi nào",
-        "Ai đã xóa file đó"
-      ],
-      "answer": 2,
-      "explanation": "'git blame' hiển thị mỗi dòng trong file kèm tác giả và commit đã sửa dòng đó — hữu ích để truy tìm ai thêm một đoạn code cụ thể."
+      "question": "Lệnh nào xóa branch đã merge một cách an toàn?",
+      "options": ["git branch -D [name]", "git branch -d [name]", "git remove [name]", "git delete [name]"],
+      "answer": 1,
+      "explanation": "'git branch -d [name]' xóa branch đã được merge (safe delete — sẽ báo lỗi nếu branch chưa merge). 'git branch -D' là force delete — xóa dù chưa merge (có thể mất commits)."
     },
     {
       "id": 6,
-      "level": "intermediate",
-      "question": "Khi xảy ra merge conflict, Git đánh dấu vùng conflict bằng gì?",
-      "options": [
-        "<<<<<<< HEAD, =======, >>>>>>> branch-name",
-        "// conflict-start, // conflict-end",
-        "[START], [END]",
-        "*** CONFLICT ***, END CONFLICT ***"
-      ],
-      "answer": 0,
-      "explanation": "Git dùng marker: '<<<<<<< HEAD' (thay đổi của branch hiện tại), '=======' (ranh giới), '>>>>>>> branch' (thay đổi của branch đang merge). Phải sửa thủ công rồi commit."
+      "level": "basic",
+      "question": "Lệnh nào xem tất cả branches (cả local và remote)?",
+      "options": ["git branch --all", "git branch -a", "git branch -r -l", "git show branches"],
+      "answer": 1,
+      "explanation": "'git branch -a' (all) hiển thị cả local branches và remote tracking branches (remote/origin/...). 'git branch -r' chỉ remote. 'git branch' chỉ local."
     },
     {
       "id": 7,
-      "level": "intermediate",
-      "question": "Sự khác biệt giữa 'git merge' và 'git rebase' là gì?",
-      "options": [
-        "Merge chỉ dùng được với remote branch",
-        "Merge tạo merge commit giữ nguyên history; Rebase viết lại history thành tuyến tính",
-        "Không có sự khác biệt thực tế",
-        "Rebase chậm hơn merge"
-      ],
+      "level": "basic",
+      "question": "Lệnh nào xóa remote branch?",
+      "options": ["git branch -r delete [name]", "git push origin --delete [name]", "git remove origin/[name]", "git branch -dr [name]"],
       "answer": 1,
-      "explanation": "Merge: tạo merge commit, history giữ nguyên (thấy rõ nhánh). Rebase: di chuyển commit lên đầu branch đích, history tuyến tính sạch hơn nhưng viết lại commit hash — không dùng cho branch đã push."
+      "explanation": "'git push origin --delete [branch-name]' xóa branch trên remote repository. Sau đó cần 'git remote prune origin' để dọn local tracking references."
     },
     {
       "id": 8,
-      "level": "intermediate",
-      "question": "Lệnh 'git bisect' dùng để làm gì?",
-      "options": [
-        "Tìm commit gây ra bug bằng binary search trên commit history",
-        "So sánh hai commit",
-        "Merge hai branch theo kiểu binary",
-        "Chia đôi branch hiện tại"
-      ],
-      "answer": 0,
-      "explanation": "'git bisect' dùng thuật toán binary search trên lịch sử commit để tìm chính xác commit đầu tiên gây ra bug — rất hiệu quả với history dài."
+      "level": "basic",
+      "question": "git merge --no-ff có tác dụng gì?",
+      "options": ["Merge không kiểm tra conflict", "Luôn tạo merge commit dù có thể fast-forward — rõ ràng hóa feature boundaries trong history", "Merge nhanh hơn", "No force-fetch khi merge"],
+      "answer": 1,
+      "explanation": "'git merge --no-ff' (no fast-forward) buộc tạo merge commit dù có thể fast-forward. Giúp history rõ ràng: thấy được khi nào feature branch được merge, các commits thuộc feature đó là gì."
     },
     {
       "id": 9,
-      "level": "intermediate",
-      "question": "git reflog khác git log ở điểm nào?",
-      "options": [
-        "Chúng giống nhau",
-        "reflog ghi lại mọi thay đổi của HEAD kể cả reset/rebase; log chỉ hiển thị commit history hiện tại",
-        "log xem được remote history; reflog chỉ local",
-        "reflog nhanh hơn log"
-      ],
+      "level": "basic",
+      "question": "GitHub Flow khác Git Flow ở điểm chính nào?",
+      "options": ["GitHub Flow phức tạp hơn", "GitHub Flow đơn giản hơn: chỉ main + feature branches, phù hợp continuous deployment", "Git Flow không dùng branches", "GitHub Flow không dùng Pull Requests"],
       "answer": 1,
-      "explanation": "'git reflog' ghi lại mọi thay đổi của HEAD — kể cả sau khi reset hay rebase làm mất commit. Đây là 'lưới an toàn' để phục hồi commit tưởng đã mất."
+      "explanation": "GitHub Flow: đơn giản — main + feature branches, merge qua PR. Phù hợp team deploy liên tục. Git Flow: phức tạp hơn với nhiều loại branches (main, develop, feature, release, hotfix). Phù hợp scheduled releases."
     },
     {
       "id": 10,
-      "level": "intermediate",
-      "question": "Lệnh 'git merge --squash [branch]' có tác dụng gì?",
-      "options": [
-        "Squash các merge conflict",
-        "Merge mà không tạo merge commit",
-        "Gộp tất cả commit của branch thành một commit duy nhất trước khi merge",
-        "Merge và xóa branch ngay lập tức"
-      ],
-      "answer": 2,
-      "explanation": "'git merge --squash' gộp (squash) toàn bộ commit của branch đang merge thành một commit duy nhất — giúp giữ history clean, thường dùng trong Pull Request workflow."
+      "level": "basic",
+      "question": "Conventional Commits format là gì?",
+      "options": ["[type] description", "type(scope): description — ví dụ: feat(auth): add login", "COMMIT: description", "type: scope: description"],
+      "answer": 1,
+      "explanation": "Conventional Commits format: type(scope): description. Types: feat (feature mới), fix (bug fix), docs, style, refactor, test, chore... Scope optional. Giúp generate CHANGELOG tự động và semantic versioning."
     },
     {
       "id": 11,
-      "level": "advanced",
-      "question": "Khi nào KHÔNG nên dùng 'git rebase'?",
+      "level": "intermediate",
+      "question": "Sự khác biệt giữa Rebase và Merge khi tích hợp thay đổi là gì?",
       "options": [
-        "Khi muốn clean up commit history trước khi merge",
-        "Khi cần tạo linear history",
-        "Khi branch đã được push lên remote và người khác đang dựa vào nó",
-        "Khi làm việc một mình trên feature branch local"
+        "Không có sự khác biệt",
+        "Merge: giữ nguyên history, tạo merge commit; Rebase: viết lại history thành linear, không có merge commit",
+        "Rebase an toàn hơn Merge",
+        "Merge xóa branch; Rebase giữ branch"
       ],
-      "answer": 2,
-      "explanation": "Rebase viết lại commit hash — nếu branch đã push và người khác đã clone/pull, rebase sẽ gây ra diverged history và buộc họ phải force pull. Golden rule: không rebase public branch."
+      "answer": 1,
+      "explanation": "Merge: kết hợp hai branches bằng merge commit — history phản ánh đúng những gì xảy ra. Rebase: di chuyển commits của branch lên đầu target — history tuyến tính, dễ đọc hơn nhưng rewrite commits."
     },
     {
       "id": 12,
-      "level": "advanced",
-      "question": "Interactive rebase 'git rebase -i HEAD~3' cho phép làm gì?",
-      "options": [
-        "Chỉnh sửa, gộp, xóa hoặc đổi thứ tự 3 commit gần nhất",
-        "Merge 3 branch cùng lúc",
-        "Tạo 3 branch mới từ HEAD",
-        "Xem 3 commit gần nhất"
-      ],
-      "answer": 0,
-      "explanation": "'git rebase -i HEAD~3' mở interactive editor cho 3 commit gần nhất — có thể: pick (giữ), squash (gộp), edit (sửa), drop (xóa), reword (đổi message)."
+      "level": "intermediate",
+      "question": "Trunk-based Development là gì?",
+      "options": ["Development trên tree trunk/cây", "Tất cả developers commit thẳng vào main (trunk) với short-lived branches — yêu cầu CI/CD tốt và feature flags", "Chỉ một developer làm việc tại một thời điểm", "Branches dùng trunk làm base"],
+      "answer": 1,
+      "explanation": "Trunk-based: tất cả commit thẳng vào main, branches sống rất ngắn (< 1-2 ngày). Yêu cầu: CI/CD mạnh, automated tests, feature flags để ẩn incomplete features. Phổ biến ở Google, Facebook vì enable CI tốc độ cao."
     },
     {
       "id": 13,
-      "level": "advanced",
-      "question": "Sau khi 'git reset --hard HEAD~1' vô tình xóa commit quan trọng, bạn dùng lệnh nào để phục hồi?",
-      "options": [
-        "git reflog, sau đó git checkout [hash] hoặc git reset --hard [hash]",
-        "git recover [commit]",
-        "git undo",
-        "git log --deleted"
-      ],
-      "answer": 0,
-      "explanation": "'git reflog' ghi lại mọi thay đổi HEAD — tìm hash của commit bị mất trong reflog, sau đó dùng 'git reset --hard [hash]' hoặc 'git cherry-pick [hash]' để phục hồi."
+      "level": "intermediate",
+      "question": "Branch protection rules trên GitHub dùng để làm gì?",
+      "options": ["Mã hóa branch", "Enforce policies: require PR review, require CI checks pass trước khi merge vào main", "Backup branch tự động", "Chặn force push chỉ cho một số users"],
+      "answer": 1,
+      "explanation": "Branch protection rules: require N approving reviews, require status checks (CI) to pass, prevent force push, require linear history, dismiss stale reviews... Bảo vệ main branch khỏi accidental direct pushes hay unreviewed code."
     },
     {
       "id": 14,
+      "level": "intermediate",
+      "question": "Sau khi resolve merge conflict, phải làm gì để hoàn thành merge?",
+      "options": ["git merge --continue", "Sửa conflict → git add [conflicted files] → git commit", "git resolve && git merge", "git push (tự động commit)"],
+      "answer": 1,
+      "explanation": "Sau khi sửa conflict thủ công (xóa conflict markers, giữ nội dung đúng): 1) git add [file] để mark resolved, 2) git commit để tạo merge commit. Git đã chuẩn bị commit message mặc định 'Merge branch...'."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "git rebase --abort dùng để làm gì?",
+      "options": ["Abort toàn bộ project", "Hủy rebase đang dở và trở về trạng thái trước khi bắt đầu rebase", "Xóa branch đang rebase", "Revert commit cuối"],
+      "answer": 1,
+      "explanation": "'git rebase --abort' hủy toàn bộ rebase operation đang dở và trả về branch về trạng thái ban đầu trước khi chạy git rebase. Dùng khi conflict quá phức tạp và muốn dùng merge thay thế."
+    },
+    {
+      "id": 16,
+      "level": "intermediate",
+      "question": "GitHub Dependabot làm gì?",
+      "options": ["Bot trả lời Issues tự động", "Tự động tạo PRs để update outdated dependencies lên version mới nhất", "Monitor server health", "Auto-deploy khi PR merge"],
+      "answer": 1,
+      "explanation": "Dependabot quét dependencies (package.json, requirements.txt...) để tìm versions cũ và security vulnerabilities. Tự động tạo PRs đề nghị update. Giúp giữ dependencies up-to-date với ít effort."
+    },
+    {
+      "id": 17,
+      "level": "intermediate",
+      "question": "git annotated tag (git tag -a) khác lightweight tag như thế nào?",
+      "options": ["Không có sự khác biệt", "Annotated (-a): chứa tagger, date, message, có thể sign; Lightweight: chỉ là pointer đến commit, không có metadata thêm", "Lightweight tag có message; Annotated thì không", "Annotated tag dùng cho dev; Lightweight cho production"],
+      "answer": 1,
+      "explanation": "Annotated tag (git tag -a v1.0 -m 'Release'): chứa tagger name, email, date, message — stored as full object trong Git. Lightweight tag: đơn giản là pointer đến commit. Khuyến nghị dùng annotated cho public releases."
+    },
+    {
+      "id": 18,
+      "level": "intermediate",
+      "question": "Interactive rebase có thể thực hiện những actions nào trên commits?",
+      "options": ["Chỉ xem commits", "pick, reword, edit, squash, fixup, drop, exec — reorder, edit, gộp hoặc xóa commits", "Chỉ delete commits", "Chỉ merge commits"],
+      "answer": 1,
+      "explanation": "Interactive rebase (git rebase -i) cho phép: pick (giữ nguyên), reword (đổi message), edit (sửa nội dung), squash (gộp vào commit trước + kết hợp messages), fixup (gộp + bỏ message), drop (xóa commit)."
+    },
+    {
+      "id": 19,
       "level": "advanced",
-      "question": "Git Hooks là gì và dùng để làm gì?",
-      "options": [
-        "Lệnh để tạo webhook trên GitHub",
-        "Cơ chế bảo mật của Git server",
-        "Scripts tự động chạy trước/sau các Git event như commit, push — dùng để chạy test, lint, enforce code style",
-        "Plugin để tích hợp GitHub với IDE"
-      ],
-      "answer": 2,
-      "explanation": "Git Hooks là các script trong .git/hooks/ tự động chạy tại các thời điểm cụ thể: pre-commit (chạy test trước khi commit), pre-push (kiểm tra trước khi push), commit-msg (validate message format)..."
+      "question": "3-way merge trong Git sử dụng những gì để tạo merge commit?",
+      "options": ["2 branches", "3 đầu vào: commit chung cuối cùng (common ancestor) + tip của branch A + tip của branch B", "3 branches", "Current HEAD + 2 remote branches"],
+      "answer": 1,
+      "explanation": "3-way merge dùng: 1) Common ancestor commit (điểm hai branches tách ra), 2) Tip của branch hiện tại (HEAD), 3) Tip của branch đang merge. Git so sánh diff từ ancestor → mỗi branch để tạo merged result."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "Git Flow sử dụng những loại branches nào?",
+      "options": ["main và feature", "main, develop, feature, release, hotfix", "trunk, branch, tag", "master, slave, worker"],
+      "answer": 1,
+      "explanation": "Git Flow: main (code production-ready), develop (integration branch cho features), feature branches (tách từ develop), release branches (freeze code trước release), hotfix branches (fix khẩn cấp từ main). Phức tạp nhưng có cấu trúc rõ ràng."
+    },
+    {
+      "id": 21,
+      "level": "advanced",
+      "question": "Ý nghĩa của 'squash and merge' trong GitHub Pull Request là gì?",
+      "options": ["Merge không review", "Gộp tất cả commits của PR thành 1 commit duy nhất trên main — clean history", "Squash conflict markers", "Merge và delete PR"],
+      "answer": 1,
+      "explanation": "'Squash and merge' gộp tất cả commits trong PR (dù có bao nhiêu) thành một commit duy nhất trên main. Main branch giữ history clean: mỗi feature = 1 commit rõ ràng. Còn 'Rebase and merge' giữ individual commits nhưng không có merge commit."
+    },
+    {
+      "id": 22,
+      "level": "advanced",
+      "question": "git remote prune origin dùng để làm gì?",
+      "options": ["Prune (cắt tỉa) origin size", "Xóa stale remote tracking branches — branches đã bị xóa trên remote nhưng vẫn còn local tracking reference", "Delete origin remote", "Compress remote repository"],
+      "answer": 1,
+      "explanation": "'git remote prune origin' dọn dẹp local tracking references cho branches đã bị xóa trên remote. Sau khi ai đó xóa branch trên GitHub, local vẫn còn origin/that-branch → prune sẽ xóa nó. 'git fetch --prune' tự động prune khi fetch."
+    },
+    {
+      "id": 23,
+      "level": "advanced",
+      "question": "Khi resolve conflict trong rebase, các lệnh nào available?",
+      "options": ["git merge --continue", "git rebase --continue (tiếp tục), --abort (hủy), --skip (bỏ qua commit gây conflict)", "git resolve && git continue", "git rebase --next"],
+      "answer": 1,
+      "explanation": "Trong quá trình rebase khi có conflict: sửa conflict → git add → git rebase --continue để tiếp tục với commit tiếp theo. git rebase --abort để hủy hoàn toàn. git rebase --skip để bỏ qua commit hiện tại (dùng khi conflict commit đã được covered bởi commit khác)."
+    },
+    {
+      "id": 24,
+      "level": "advanced",
+      "question": "Feature flags trong Trunk-based Development được dùng để làm gì?",
+      "options": ["Flags để mark features là completed", "Ẩn/hiện features chưa hoàn thiện trong production — cho phép merge code incomplete mà không ảnh hưởng users", "Git flags cho feature branches", "Flag để trigger CI cho features"],
+      "answer": 1,
+      "explanation": "Feature flags (feature toggles): config-based switches để enable/disable features. Trong Trunk-based development, developer merge code incomplete nhưng wrap trong feature flag (disabled by default) → code trong production nhưng users không thấy cho đến khi flag được bật."
+    },
+    {
+      "id": 25,
+      "level": "advanced",
+      "question": "git bisect good/bad hoạt động như thế nào để tìm bug commit?",
+      "options": ["Mark tất cả commits là good hoặc bad", "Binary search: mark known good commit và bad commit → Git checkout middle commit → test → mark good/bad → lặp lại cho đến khi tìm exact commit gây bug", "Tự động test tất cả commits", "Compare good và bad branches"],
+      "answer": 1,
+      "explanation": "git bisect start → git bisect bad (current commit có bug) → git bisect good [hash] (commit cũ không có bug) → Git checkout middle → bạn test → git bisect good/bad → Git tiếp tục binary search → tìm được commit đầu tiên có bug. O(log n) thay vì O(n)."
+    },
+    {
+      "id": 26,
+      "level": "advanced",
+      "question": "git stash drop vs git stash clear — khác nhau như thế nào?",
+      "options": ["Chúng giống nhau", "git stash drop: xóa một stash cụ thể; git stash clear: xóa TẤT CẢ stashes", "git stash clear xóa từng stash; drop xóa tất cả", "drop = pop nhưng không apply"],
+      "answer": 1,
+      "explanation": "'git stash drop [stash@{n}]': xóa một stash cụ thể (default: stash@{0} = newest). 'git stash clear': xóa toàn bộ stash list. 'git stash pop': apply stash mới nhất VÀ xóa nó. 'git stash apply': apply nhưng KHÔNG xóa."
+    },
+    {
+      "id": 27,
+      "level": "advanced",
+      "question": "Tại sao 'git merge --no-ff' được ưa chuộng trong Git Flow?",
+      "options": ["Nhanh hơn fast-forward merge", "Tạo explicit merge commit giúp nhận biết khi nào feature/release được merge — dễ rollback và audit history", "Bắt buộc phải dùng trong Git Flow", "Giảm conflicts"],
+      "answer": 1,
+      "explanation": "Trong Git Flow, --no-ff quan trọng vì: 1) History rõ ràng — thấy từng feature như một đơn vị riêng, 2) Dễ rollback — có thể revert toàn bộ feature với một lệnh, 3) Audit trail — biết chính xác khi nào features được tích hợp."
+    },
+    {
+      "id": 28,
+      "level": "advanced",
+      "question": "git cherry-pick [A..B] làm gì?",
+      "options": ["Cherry-pick commit A và B", "Cherry-pick tất cả commits từ A (exclusive) đến B (inclusive) — một range của commits", "Pick cherry từ 2 branches", "Cherry-pick A hoặc B"],
+      "answer": 1,
+      "explanation": "'git cherry-pick A..B' áp dụng tất cả commits từ sau A đến B (không bao gồm A, bao gồm B). 'git cherry-pick A^..B' để bao gồm cả A. Hữu ích khi cần port một series of commits sang branch khác."
+    },
+    {
+      "id": 29,
+      "level": "advanced",
+      "question": "Lệnh 'git push --force-with-lease' khác 'git push --force' như thế nào?",
+      "options": ["Chúng giống nhau", "--force-with-lease an toàn hơn: chỉ force push nếu remote không có commits mới từ người khác — tránh overwrite người khác", "--force-with-lease yêu cầu lease agreement", "--force nhanh hơn --force-with-lease"],
+      "answer": 1,
+      "explanation": "'--force' luôn overwrite remote dù có ai đó đã push sau bạn. '--force-with-lease' kiểm tra xem remote có thay đổi nào bạn chưa biết không — nếu có, refuse push và báo lỗi. An toàn hơn khi cần force push sau rebase."
+    },
+    {
+      "id": 30,
+      "level": "advanced",
+      "question": "Code Review trong Pull Request giúp đạt được mục tiêu nào?",
+      "options": ["Chỉ để tìm syntax errors", "Knowledge sharing, catch bugs sớm, enforce code standards, document intent, improve code quality — trước khi merge vào main", "Chỉ để approve nhanh", "Chứng minh code hoạt động"],
+      "answer": 1,
+      "explanation": "Code review mục tiêu: 1) Catch bugs/logic errors sớm (rẻ hơn fix sau production), 2) Knowledge sharing (team hiểu codebase), 3) Enforce standards (consistent code style), 4) Document decisions (comments = documentation), 5) Improve overall quality."
     }
   ]
 }

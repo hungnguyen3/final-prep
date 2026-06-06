@@ -3,237 +3,189 @@
   "theory": [
     {
       "heading": "Prometheus là gì?",
-      "content": "Prometheus là một hệ thống giám sát và cảnh báo mã nguồn mở (open-source) với hệ sinh thái năng động. Về bản chất, Prometheus là một hệ thống monitoring tập trung, có trạng thái (stateful), dùng cơ chế pull-based (chủ động kéo metrics từ các target), hoạt động theo mô hình module với nhiều dự án hỗ trợ trưởng thành. Prometheus thu thập dữ liệu số (numerical data) được xuất qua HTTP, lưu trữ dưới dạng time-series, và có ngôn ngữ truy vấn riêng là PromQL."
+      "content": "Chính thức: 'Prometheus is an open-source systems monitoring and alerting toolkit with an active ecosystem.' Thực tế: 'Prometheus is an easy to use, centralised, stateful, pull-based modular monitoring system with several mature supporting projects.' Điểm khác biệt: Pull-based (Prometheus chủ động pull metrics từ targets, khác với push-based). Stateful (lưu data local). Centralised (tập trung vào Prometheus server). Ecosystem mạnh: Grafana (visualization), Alertmanager, nhiều exporters. Prometheus viết bằng Go — statically compiled, no 3rd party libraries."
     },
     {
-      "heading": "Các thành phần cài đặt Prometheus",
-      "content": "Để monitor một hệ thống với Prometheus cần 3 thành phần chính: (1) node_exporter — chạy trên các máy cần giám sát, thu thập dữ liệu hệ thống như CPU/Memory, traffic mạng, storage, số file/socket đang mở, login session, context switching, NUMA statistics; (2) Prometheus server — công cụ chính thu thập, lưu trữ và xử lý dữ liệu monitoring, hỗ trợ service discovery (Kubernetes, file_sd), có Alertmanager tích hợp để gửi cảnh báo (email, PagerDuty...); (3) Grafana — công cụ vẽ dashboard và trực quan hóa dữ liệu, được dùng nhiều nhất khi vận hành hàng ngày."
+      "heading": "3 Components cần thiết để monitoring với Prometheus",
+      "content": "1) node_exporter: chạy trên các máy được monitor, thu thập system data. Monitor được: Traffic IPv4/IPv6, CPU/Memory usage, open files/sockets, Storage usage, system entropy, Active login sessions, Context switching, Numa statistics. 2) Prometheus Server: main tool thu thập, lưu trữ và xử lý monitoring data. Pull metrics từ node_exporter. 3) Grafana: plotting/dashboard tool — 'gets all of the focus when being run day to day'. Cài đặt: grab binaries và run. Config qua .yml files hoặc web interface. node_exporter có thể run như unprivileged user."
     },
     {
-      "heading": "PromQL — Ngôn ngữ truy vấn của Prometheus",
-      "content": "Dữ liệu trong Prometheus được truy cập qua ngôn ngữ truy vấn riêng là PromQL. PromQL hỗ trợ: phép toán toán học (BODMAS, quantile, logic cơ bản), pattern matching để chọn tập con của các metric theo label, và có thể trả về vector hoặc scalar. Prometheus có sẵn web UI để kiểm thử truy vấn PromQL, nhưng Grafana được ưa dùng hơn vì trình bày đẹp hơn, hỗ trợ xây dựng và lưu dashboard phức tạp."
+      "heading": "PromQL — Query Language của Prometheus",
+      "content": "Data được access từ Prometheus qua PromQL (Prometheus Query Language). Hỗ trợ: Maths operations (BODMAS, quantiles, basic logic), Pattern matching để select sub-sets, return vectors hoặc scalars. Prometheus có own web UI để test queries. Tại sao dùng Grafana? Grafana 'does a better job of presenting multiple queries và building/saving dashboards'. Grafana có nhiều community dashboards để download. Lưu ý: node_exporter v0.16.0 đã rename/standardize metrics — nhiều dashboard cũ không forward compatible."
     },
     {
-      "heading": "Giám sát với Grafana — Loại dữ liệu",
-      "content": "Có 3 loại dữ liệu chính khi giám sát hệ thống: (1) Metrics — dữ liệu số, dễ tổng hợp, ưu điểm: thấy được xu hướng và mẫu, ít dữ liệu, query nhanh; nhược điểm: cần cấu hình trước; (2) Logs — dữ liệu văn bản, ưu điểm: thấy chính xác hệ thống đang làm gì tại thời điểm cụ thể; nhược điểm: tốn kém để lưu trữ và truy vấn; (3) Traces — đường đi của từng request, ưu điểm: thấy đường đi request qua hệ thống và thời gian tốn ở đâu; nhược điểm: tốn kém để lưu và truy vấn."
+      "heading": "Alerting — Alertmanager và Blackbox Exporter",
+      "content": "Alerting flow: 1) blackbox_exporter kiểm tra port TCP/UDP — detect khi service ngừng lắng nghe. 2) Prometheus phát hiện PromQL condition → fire alert → alert_manager. 3) alert_manager gửi notification (email, Slack, mattermost). 4) Sysadmin nhận thông báo. 5) Clickable links → web UI để investigate. Blackbox Exporter: attempt to open tcp/udp connection against target. Pros: easy to setup, understand http responses, run remotely. Cons: floods logs, có thể trông như unusual network activity. Alert examples: Services ngừng lắng nghe, Disks >90%, Compute nodes <50% usage, Entropy too low."
     },
     {
-      "heading": "Black-box vs White-box Monitoring",
-      "content": "Có hai cách tiếp cận monitoring: (1) Black-box monitoring — kiểm tra từ bên ngoài, 'poke it with a stick', tức là thử kết nối đến service để xem nó còn sống không (dùng blackbox_exporter trong Prometheus để mở kết nối TCP/UDP đến target port); (2) White-box monitoring — hệ thống tự báo cáo trạng thái của mình, ví dụ như 'I'm having trouble connecting to the database'. White-box cho thấy nguyên nhân sâu xa hơn, còn black-box chỉ cho biết triệu chứng bề ngoài. Monitoring thông báo rằng hệ thống có hoạt động không, còn Observability cho phép hỏi tại sao nó không hoạt động (Baron Schwartz)."
+      "heading": "Monitoring Containers và Services — cAdvisor",
+      "content": "cAdvisor (Google): records và exports metrics của containers và cgroups. Dùng được cho Docker và normal systemd services. Fine-grained Memory/CPU usage per application. Prometheus capabilities: Realtime monitoring multiple servers, monitoring/alerting services, Granular monitoring containers, Tiered Historical data. Prometheus track bất kỳ numerical data qua HTTP: server metrics, radiation levels, temperature, disk seek time... Black-box monitoring: test từ ngoài (is service responding?). White-box monitoring: monitor internals (how is it performing?). Proactive (phát hiện trước) vs Reactive (chờ user báo)."
     },
     {
-      "heading": "Tại sao cần Monitoring & Dashboard Grafana",
-      "content": "Lý do cần monitoring: đảm bảo hệ thống hoạt động đúng như dự định, hiểu cách hệ thống đang được sử dụng, phát hiện vấn đề trước khi khách hàng phản ánh, chi phí downtime cao hơn chi phí đầu tư vào chất lượng, chia sẻ kiến thức trong tổ chức, ra quyết định dựa trên dữ liệu thay vì cảm tính. Grafana cung cấp nhiều dashboard do cộng đồng tạo sẵn có thể tải về và tùy chỉnh. Lưu ý: từ node_exporter v0.16.0, các metrics đã được đổi tên và chuẩn hóa, khiến nhiều dashboard cũ không tương thích trực tiếp."
+      "heading": "3 Loại dữ liệu Monitoring",
+      "content": "1) Metrics (Prometheus): numerical data theo thời gian — CPU usage, request count, error rate. Dùng PromQL để query. 2) Logs (ELK Stack, Loki): text-based event records — application logs, system logs. 3) Traces (Jaeger, Zipkin): theo dõi request qua distributed system. Full stack monitoring tốt nhất kết hợp cả 3: Metrics để detect anomalies, Logs để investigate root cause, Traces để hiểu behavior trong distributed microservices. Prometheus chuyên về Metrics — mạnh nhất cho time-series numerical data và alerting."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "Prometheus là loại hệ thống monitoring nào?",
-      "options": [
-        "Push-based, phân tán, stateless",
-        "Pull-based, tập trung, stateful",
-        "Push-based, tập trung, stateful",
-        "Pull-based, phân tán, stateless"
-      ],
+      "question": "Prometheus sử dụng model nào để thu thập metrics?",
+      "options": ["Push model — targets gửi metrics đến Prometheus", "Pull model — Prometheus chủ động pull metrics từ targets", "Event-driven model", "Streaming model"],
       "answer": 1,
-      "explanation": "Theo tài liệu, Prometheus là hệ thống monitoring tập trung (centralised), có trạng thái (stateful) và dùng cơ chế pull-based — tức là Prometheus chủ động kéo (pull) metrics từ các target, không phải các target đẩy (push) dữ liệu lên."
+      "explanation": "Prometheus dùng pull-based model — server chủ động scrape (pull) metrics từ targets (node_exporter, app endpoints) theo định kỳ. Khác với push-based nơi agents gửi data tới server."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Thành phần nào trong hệ sinh thái Prometheus chạy trên các máy cần giám sát để thu thập dữ liệu hệ thống?",
-      "options": [
-        "Alertmanager",
-        "Grafana",
-        "node_exporter",
-        "Prometheus server"
-      ],
-      "answer": 2,
-      "explanation": "node_exporter chạy trên các máy cần được giám sát (Prometheus targets) để thu thập dữ liệu hệ thống như CPU, memory, traffic mạng, storage, số file/socket mở, v.v."
+      "question": "3 components cần thiết để monitoring với Prometheus là gì?",
+      "options": ["Prometheus, Kibana, Logstash", "node_exporter, Prometheus Server, Grafana", "Prometheus, Alertmanager, Pushgateway", "Grafana, InfluxDB, Telegraf"],
+      "answer": 1,
+      "explanation": "3 components: 1) node_exporter — thu thập system metrics trên machines được monitor. 2) Prometheus Server — thu thập, lưu trữ, xử lý metrics. 3) Grafana — visualization và dashboard tool."
     },
     {
       "id": 3,
       "level": "basic",
-      "question": "Ba loại dữ liệu monitoring chính được đề cập trong tài liệu Grafana là gì?",
-      "options": [
-        "Metrics, Events, Alerts",
-        "Logs, Dashboards, Queries",
-        "Counters, Gauges, Histograms",
-        "Metrics, Logs, Traces"
-      ],
-      "answer": 3,
-      "explanation": "Ba loại dữ liệu chính để trích xuất từ một tiến trình đang chạy là: Metrics (dữ liệu số, dễ tổng hợp), Logs (dữ liệu văn bản, hiểu chuyện gì đã xảy ra), và Traces (đường đi thực thi của từng request)."
+      "question": "node_exporter trong Prometheus dùng để làm gì?",
+      "options": ["Export Prometheus data sang Grafana", "Chạy trên máy được monitor, thu thập system data (CPU, memory, disk, network...)", "Quản lý alerts", "Lưu trữ time-series data"],
+      "answer": 1,
+      "explanation": "node_exporter chạy trên các máy cần monitor, thu thập system metrics: CPU/Memory usage, network traffic, disk I/O, open files/sockets, login sessions, entropy... Prometheus server pull metrics từ node_exporter."
     },
     {
       "id": 4,
       "level": "basic",
-      "question": "Ngôn ngữ truy vấn dữ liệu của Prometheus được gọi là gì?",
-      "options": [
-        "GraphQL",
-        "SQL",
-        "PromQL",
-        "MetricQL"
-      ],
-      "answer": 2,
-      "explanation": "PromQL (Prometheus Query Language) là ngôn ngữ truy vấn riêng của Prometheus, hỗ trợ phép toán toán học, pattern matching theo label, và có thể trả về vector hoặc scalar."
+      "question": "Grafana có vai trò gì trong Prometheus monitoring stack?",
+      "options": ["Thu thập metrics từ servers", "Plotting/dashboard tool — visualize data từ Prometheus, build và save dashboards", "Lưu trữ time-series data thay thế Prometheus", "Send alerts qua email"],
+      "answer": 1,
+      "explanation": "Grafana là visualization tool — 'gets all of the focus when being run day to day'. 'Does a better job of presenting multiple queries và building/saving dashboards' so với Prometheus web UI. Có nhiều pre-built community dashboards."
     },
     {
       "id": 5,
       "level": "basic",
-      "question": "Công cụ nào được sử dụng để vẽ dashboard và trực quan hóa dữ liệu từ Prometheus?",
-      "options": [
-        "Grafana",
-        "Kibana",
-        "Alertmanager",
-        "node_exporter"
-      ],
+      "question": "PromQL là gì?",
+      "options": ["Prometheus Query Language — ngôn ngữ truy vấn dữ liệu monitoring", "Prometheus Quick Link", "Plugin Query Library", "Protocol cho Prometheus metrics"],
       "answer": 0,
-      "explanation": "Grafana là công cụ vẽ dashboard (plotting/dashboard tool), được dùng nhiều nhất khi vận hành hàng ngày. Grafana làm tốt hơn Prometheus web UI trong việc trình bày kết quả nhiều truy vấn và lưu dashboard."
+      "explanation": "PromQL = Prometheus Query Language. Dùng để query time-series data trong Prometheus. Hỗ trợ: math operations (BODMAS, quantiles), pattern matching, return vectors hoặc scalars."
     },
     {
       "id": 6,
       "level": "basic",
-      "question": "Theo tài liệu Grafana, tại sao chúng ta cần monitoring hệ thống?",
-      "options": [
-        "Chỉ để tạo báo cáo cho quản lý",
-        "Để thay thế hoàn toàn việc kiểm thử phần mềm",
-        "Để phát hiện vấn đề trước khi khách hàng phản ánh và ra quyết định dựa trên dữ liệu",
-        "Chỉ để giảm chi phí hạ tầng"
-      ],
+      "question": "Prometheus được viết bằng ngôn ngữ nào và điều này mang lại lợi ích gì?",
+      "options": ["Python — dễ viết script", "Java — portable across platforms", "Go (Golang) — statically compiled, no 3rd party libs, chỉ cần grab binary và run", "C++ — high performance"],
       "answer": 2,
-      "explanation": "Theo tài liệu, lý do cần monitoring bao gồm: đảm bảo hệ thống hoạt động đúng, hiểu cách sử dụng, phát hiện vấn đề trước khi khách hàng phản ánh, ra quyết định dựa trên dữ liệu thay vì cảm tính, và chia sẻ kiến thức trong tổ chức."
+      "explanation": "Prometheus viết bằng Go — statically compiled, everything shipped với executable, no 3rd party libraries, no yum install. Chỉ cần download binary và run. node_exporter có thể run như unprivileged user."
     },
     {
       "id": 7,
-      "level": "intermediate",
-      "question": "blackbox_exporter trong Prometheus được dùng để làm gì?",
-      "options": [
-        "Thu thập metrics từ bên trong ứng dụng qua instrumentation",
-        "Lưu trữ dữ liệu monitoring dài hạn",
-        "Mở kết nối TCP/UDP đến target port để kiểm tra service còn hoạt động không",
-        "Gửi cảnh báo qua email và PagerDuty"
-      ],
-      "answer": 2,
-      "explanation": "blackbox_exporter thực hiện black-box monitoring bằng cách cố gắng mở kết nối TCP/UDP đến target port của host. Ưu điểm: dễ setup, dễ test, có thể hiểu HTTP responses, chạy remote. Nhược điểm: làm đầy log với các kết nối trái phép và có thể trông như hoạt động mạng bất thường."
+      "level": "basic",
+      "question": "Blackbox Exporter trong Prometheus dùng để làm gì?",
+      "options": ["Export Docker container metrics", "Kiểm tra service có đang lắng nghe bằng cách attempt to open TCP/UDP connection", "Export GPU metrics", "Lưu trữ black-box test results"],
+      "answer": 1,
+      "explanation": "Blackbox Exporter attempts to open tcp/udp connection against target port — kiểm tra service có đang lắng nghe không (black-box testing từ ngoài). Dùng trong alerting để phát hiện service outages."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "Sự khác biệt chính giữa Monitoring và Observability theo Baron Schwartz là gì?",
+      "question": "Alerting flow đầy đủ trong Prometheus stack là gì?",
       "options": [
-        "Monitoring dùng metrics, Observability dùng logs",
-        "Monitoring cho biết hệ thống có hoạt động không, Observability cho phép hỏi tại sao nó không hoạt động",
-        "Monitoring là real-time, Observability là historical",
-        "Monitoring dùng black-box, Observability dùng white-box"
+        "node_exporter → Grafana → Email",
+        "blackbox_exporter detect issue → Prometheus fire alert → alert_manager → Notification → sysadmin",
+        "Prometheus → Alertmanager → PagerDuty trực tiếp",
+        "Grafana → Prometheus → alert_manager"
       ],
       "answer": 1,
-      "explanation": "Theo câu trích dẫn của Baron Schwartz trong tài liệu: 'Monitoring tells you whether the system works. Observability lets you ask why it's not working.' — Monitoring báo hệ thống có hoạt động không, Observability cho phép đặt câu hỏi tại sao không hoạt động."
+      "explanation": "Flow: 1) blackbox_exporter/Prometheus detect issue (PromQL condition thỏa mãn). 2) Prometheus fires alert → alert_manager. 3) alert_manager route và gửi notification (mattermost/Slack/email). 4) Sysadmin nhận thông báo. 5) Clickable links để investigate."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "Ưu điểm của việc viết node_exporter và Prometheus bằng ngôn ngữ Go là gì?",
+      "question": "Sự khác biệt giữa Black-box và White-box Monitoring là gì?",
       "options": [
-        "Dễ dàng tích hợp với Python scripts",
-        "Mọi thứ được ship tĩnh trong file thực thi, không cần thư viện thứ ba hay yum install",
-        "Hỗ trợ Windows tốt hơn các ngôn ngữ khác",
-        "Tự động tạo file .service cho systemd"
+        "Black-box: monitor production; White-box: monitor staging",
+        "Black-box: test từ bên ngoài ('is service responding?'); White-box: monitor internal state ('how is it performing internally?')",
+        "Black-box dùng Prometheus; White-box dùng Grafana",
+        "Không có sự khác biệt"
       ],
       "answer": 1,
-      "explanation": "Vì được viết bằng Go, node_exporter và Prometheus được ship dưới dạng binary tĩnh — không cần thư viện thứ ba, không cần yum install. Tuy nhiên, đây cũng có nghĩa là không có file .service hay tích hợp hệ thống tự động."
+      "explanation": "Black-box: kiểm tra từ góc độ external/user (blackbox_exporter) — service có respond không. White-box: monitor internals (node_exporter, app metrics) — CPU, memory, error rates. Kết hợp cả hai cho comprehensive monitoring."
     },
     {
       "id": 10,
       "level": "intermediate",
-      "question": "Metrics có ưu và nhược điểm gì so với Logs?",
+      "question": "cAdvisor (Google) dùng để làm gì?",
       "options": [
-        "Metrics tốn kém để lưu, Logs thì không",
-        "Metrics cho thấy đúng những gì đã xảy ra, Logs chỉ cho xu hướng",
-        "Metrics ít dữ liệu và query nhanh nhưng cần cấu hình trước; Logs thấy chi tiết nhưng tốn kém để lưu và query",
-        "Metrics và Logs có ưu nhược điểm giống nhau"
+        "Certificate Advisor — quản lý SSL certificates",
+        "Records và exports metrics của containers và cgroups — fine-grained CPU/Memory per container/application",
+        "Cloud Advisor — tư vấn cost optimization",
+        "Code Advisor — analyze code quality"
       ],
-      "answer": 2,
-      "explanation": "Theo tài liệu Grafana: Metrics — Pros: thấy xu hướng và mẫu, ít dữ liệu, query nhanh; Cons: cần cấu hình trước. Logs — Pros: thấy chính xác tiến trình đang làm gì tại thời điểm cụ thể; Cons: tốn kém để lưu trữ và query."
+      "answer": 1,
+      "explanation": "cAdvisor (Container Advisor) records và exports metrics của containers và cgroups. Thiết kế cho Docker nhưng dùng được cho systemd services. Cho phép fine-grained Memory/CPU view trên per-application level."
     },
     {
       "id": 11,
       "level": "intermediate",
-      "question": "Từ phiên bản nào của node_exporter, các metrics đã được đổi tên và chuẩn hóa làm nhiều dashboard cũ không tương thích?",
+      "question": "Prometheus có thể track được những loại data nào ngoài server metrics thông thường?",
       "options": [
-        "v1.0.0",
-        "v0.18.0",
-        "v0.16.0",
-        "v2.0.0"
+        "Chỉ CPU và memory",
+        "Bất kỳ numerical data qua HTTP — radiation levels, temperature, sunlight, disk seek time...",
+        "Chỉ network metrics",
+        "Chỉ application logs"
       ],
-      "answer": 0,
-      "explanation": "Từ node_exporter version 0.16.0, đã có sự thay đổi lớn: các metrics được đổi tên và chuẩn hóa. Điều này có nghĩa là nhiều dashboard cũ (do cộng đồng tạo) không còn tương thích trực tiếp với phiên bản mới."
+      "answer": 1,
+      "explanation": "Prometheus track được bất kỳ numerical data exposable qua HTTP. Examples từ slides: background radiation levels từ geiger-counter, sunlight amount, temperature từ met-office, disk seek time — 'anything that can be exported as numerical data via http'."
     },
     {
       "id": 12,
       "level": "intermediate",
-      "question": "node_exporter có thể monitor những loại dữ liệu nào từ hệ thống?",
+      "question": "Tại sao có thể gặp vấn đề với Grafana dashboards cũ khi upgrade node_exporter?",
       "options": [
-        "Chỉ CPU và Memory",
-        "CPU/Memory, traffic mạng IPv4/IPv6, storage, số file/socket mở, login session, context switching, NUMA statistics",
-        "Chỉ network traffic và storage",
-        "Chỉ application-level metrics từ code"
+        "Grafana không tương thích với node_exporter mới",
+        "node_exporter v0.16.0 đã rename và standardize metrics — nhiều dashboard cũ không forward compatible",
+        "PromQL thay đổi syntax trong v0.16.0",
+        "Prometheus không hỗ trợ Grafana dashboard format cũ"
       ],
-      "answer": 3,
-      "explanation": "Theo tài liệu, node_exporter có thể monitor: Traffic IPv4 vs IPv6, CPU/Memory availability/usage, số file/socket mở, Storage usage/availability, Available system entropy, Active login sessions, Context switching, NUMA statistics, và GPU statistics (chưa được test)."
+      "answer": 1,
+      "explanation": "Từ slides: 'There was a major shift in node_exporter version 0.16.0 — renamed and standardised the metrics. This means a lot of older dashboards are not directly forward compatible.' Cần update dashboard PromQL queries khi upgrade node_exporter lên v0.16.0+."
     },
     {
       "id": 13,
       "level": "advanced",
-      "question": "Prometheus sử dụng cơ chế 'pull-based'. Điều này có nghĩa là gì và kiến trúc nào hỗ trợ cơ chế này?",
+      "question": "Prometheus có đặc tính gì về storage và architecture?",
       "options": [
-        "Các ứng dụng chủ động gửi metrics đến Prometheus server; Pushgateway không cần thiết",
-        "Prometheus server định kỳ kéo (scrape) metrics từ các target endpoint HTTP; Pushgateway hỗ trợ cho các job tạm thời không thể scrape trực tiếp",
-        "Prometheus chỉ nhận metrics từ Kubernetes, không hỗ trợ bare-metal",
-        "Các target tự đăng ký với Prometheus và đẩy metrics theo lịch"
+        "Distributed — data phân tán nhiều nodes",
+        "Stateful và centralised — lưu data local trên Prometheus server",
+        "Stateless — không lưu data lâu dài",
+        "Cloud-native — chỉ lưu trên cloud object storage"
       ],
       "answer": 1,
-      "explanation": "Pull-based có nghĩa là Prometheus server chủ động scrape (kéo) metrics từ các HTTP endpoint trên các target. Trong kiến trúc đầy đủ, Pushgateway được dùng cho các short-lived job không thể scrape trực tiếp. Service discovery (Kubernetes, file_sd) giúp Prometheus tự động tìm các target."
+      "explanation": "Theo định nghĩa: Prometheus là 'centralised, stateful' — lưu trữ time-series data local trên Prometheus server. Khác với Thanos/Cortex (distributed Prometheus). Stateful có nghĩa là data persist trên disk của Prometheus server."
     },
     {
       "id": 14,
       "level": "advanced",
-      "question": "Khi giám sát Tier-2 services theo network level, tại sao nhóm tại Edinburgh chọn black-box monitoring thay vì phân tích log?",
+      "question": "Ví dụ thực tế nào về alerts được setup tại Edinburgh deployment?",
       "options": [
-        "Vì log analysis phức tạp hơn và khó phát hiện failure hơn việc kiểm tra xem service có lắng nghe kết nối mới không",
-        "Vì black-box monitoring không tốn tài nguyên",
-        "Vì log analysis không thể phát hiện lỗi network",
-        "Vì Prometheus không hỗ trợ thu thập log"
+        "CPU > 80%, Memory > 90%",
+        "Services ngừng lắng nghe, Disks >90% capacity, Compute nodes <50% usage, Entropy quá thấp",
+        "Network latency > 100ms, Error rate > 1%",
+        "Container restarts > 5 lần/giờ"
       ],
-      "answer": 0,
-      "explanation": "Có 2 lựa chọn: (1) Monitor/export logs và xây hệ thống phức tạp kiểm tra lỗi, (2) Kiểm tra xem service có đang lắng nghe kết nối mới không. Nhóm chọn option 2 (black-box) vì đơn giản hơn để triển khai và bảo trì, đồng thời đủ để phát hiện vấn đề proactively thay vì reactively."
+      "answer": 1,
+      "explanation": "Edinburgh deployment alerts: 1) Services ngừng lắng nghe new connections. 2) Disks reaching >90% capacity. 3) Compute nodes dropping below 50% usage. 4) Entropy dropping too low. Stack: node_exporter + prometheus + blackbox_exporter + alertmanager → mattermost."
     },
     {
       "id": 15,
       "level": "advanced",
-      "question": "Traces có ưu và nhược điểm gì, và khi nào nên dùng Traces thay vì Metrics?",
+      "question": "3 loại dữ liệu monitoring trong observability là gì và Prometheus thuộc loại nào?",
       "options": [
-        "Traces nhanh hơn Metrics và nên dùng cho mọi trường hợp",
-        "Traces không hữu ích trong môi trường microservices",
-        "Traces cho thấy đường đi của request và thời gian tốn ở đâu, nhưng tốn kém để lưu và query; dùng khi cần debug hiệu năng request cụ thể",
-        "Traces chỉ hữu ích với database queries, không phù hợp với HTTP services"
-      ],
-      "answer": 2,
-      "explanation": "Theo tài liệu Grafana: Traces — Pros: cho thấy đường đi request qua hệ thống và thời gian tốn ở đâu; Cons: tốn kém để lưu trữ và query. Traces đặc biệt hữu ích trong môi trường microservices khi cần debug hiệu năng từng request cụ thể qua nhiều service."
-    },
-    {
-      "id": 16,
-      "level": "advanced",
-      "question": "Prometheus có thể track loại dữ liệu nào NGOÀI các system metrics thông thường?",
-      "options": [
-        "Chỉ các metrics từ Kubernetes pods",
-        "Bất kỳ dữ liệu nào có thể được xuất dưới dạng số (numerical) qua HTTP — ví dụ: bức xạ từ geiger counter, ánh sáng mặt trời, nhiệt độ, seek time ổ đĩa",
-        "Chỉ metrics từ các ứng dụng được viết bằng Go",
-        "Chỉ dữ liệu network và storage"
+        "Build/Test/Deploy — Prometheus thuộc Build",
+        "Metrics (Prometheus), Logs (ELK/Loki), Traces (Jaeger/Zipkin) — Prometheus chuyên về Metrics",
+        "Monitoring/Alerting/Dashboards — Prometheus thuộc Alerting",
+        "Pull/Push/Stream — Prometheus thuộc Pull"
       ],
       "answer": 1,
-      "explanation": "Theo tài liệu Prometheus, bất kỳ thứ gì có thể được xuất dưới dạng dữ liệu số qua HTTP đều có thể được track: bức xạ từ geiger counter, lượng ánh sáng mặt trời cây nhận mỗi ngày, nhiệt độ từ met-office, seek time truy cập đĩa, v.v."
+      "explanation": "3 pillars of observability: 1) Metrics — numerical time-series data (Prometheus, InfluxDB). 2) Logs — text-based events (ELK Stack, Loki). 3) Traces — distributed request tracing (Jaeger, Zipkin). Prometheus chuyên về Metrics — mạnh nhất cho time-series data và alerting based on thresholds."
     }
   ]
 }

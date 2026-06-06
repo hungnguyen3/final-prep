@@ -1,224 +1,191 @@
 {
-  "title": "Chương 7: Azure DevOps — Pipelines & Agents",
+  "title": "Chương 7: Configuration Management — Ansible",
   "theory": [
     {
-      "heading": "Traditional vs. Modern Software Delivery",
-      "content": "Traditional IT: Waterfall approach, các team riêng biệt cho requirements/development/test/operations, clear separation giữa business và IT, release 2-3 lần/năm, budget/cost driven. Modern: Agile/Scrum approach, multidisciplinary teams (mọi discipline cùng làm việc trên small piece), business + dev + ops trong một team, release multiple times a day, value stream driven. Continuous Delivery: tạo ra repeatable và reliable process để deliver high-value software nhanh đến customers. DevOps (Donovan Brown): 'the union of people, process, and products to enable continuous delivery of value to end users.' DevOps loop: Plan → Code → Build → Test → Release → Deploy → Operate → Monitor."
+      "heading": "Ansible là gì?",
+      "content": "Ansible có 3 vai trò: 1) Simple automation language — mô tả IT application infrastructure trong Ansible Playbooks. 2) Automation engine — thực thi Ansible Playbooks. 3) Ansible Tower — enterprise framework để control, secure, manage Ansible automation với UI và RESTful API. Ansible được phát triển bởi Red Hat. Đặc điểm nổi bật: SIMPLE (human readable automation, no special coding skills, tasks executed in order, get productive quickly), POWERFUL (app deployment, configuration management, workflow orchestration, orchestrate the app lifecycle), AGENTLESS (agentless architecture, uses OpenSSH & WinRM, no agents to exploit or update, more efficient & more secure)."
     },
     {
-      "heading": "Azure DevOps — 5 Services chính",
-      "content": "Azure DevOps là end-to-end solution cho enterprise-grade toolchain. 5 services: 1) Azure Boards: agile planning tools — track work với Kanban boards, interactive backlogs, unparalleled traceability & reporting. 2) Azure Repos: unlimited cloud-hosted private Git repos, collaborate với pull requests và advanced file management. 3) Azure Pipelines: build, test, deploy với CI/CD, works với any language/platform/cloud, connect GitHub hay bất kỳ Git provider. 4) Azure Test Plans: test và ship với manual + exploratory testing tools. 5) Azure Artifacts: create, host, share packages với team, add artifacts vào CI/CD pipelines với single click. Thêm: Extensions Marketplace (Slack, SonarCloud, 1000+ apps). Đặc điểm: Fully Integrated với end-to-end traceability, Scalable to any team & project size, Highly available multi-region hybrid cloud & on-prem, Customer Support, Consistent admin & access control."
+      "heading": "How Ansible Works — Kiến trúc",
+      "content": "Ansible's Automation Engine gồm: Inventory (danh sách hosts), Modules (bits of code thực thi task), API, Plugins. Flow: Users viết Ansible Playbook → Automation Engine đọc Inventory và Playbook → giao tiếp với Hosts và Networking qua SSH/WinRM. Không cần agent cài trên target hosts — Ansible kết nối qua SSH (Linux) hoặc WinRM (Windows). Có thể kết hợp với Public/Private Cloud và CMDB (Configuration Management Database). Community: Most popular open-source automation community on GitHub — 13,000+ stars, 2000+ contributors, 900+ modules, Ansible Galaxy 18,000+ subscribers."
     },
     {
-      "heading": "Azure DevOps Hierarchy — Organization, Project, Team",
-      "content": "Cấu trúc phân cấp: Azure AD (authentication) → Organization (đơn vị cao nhất, ví dụ: Contoso A, Contoso B) → Projects (chứa all services: Boards, Repos, Pipelines...) → Teams (nhóm làm việc trong một Project). Một Organization có thể chứa nhiều Projects. Mỗi Project có thể có nhiều Teams (Project 1 Team, Team A, Team B, Team C...). Pipelines nằm trong Project: Organization → Project → Pipeline 1, Pipeline 2. Truy cập qua: https://<org>.visualstudio.com/ hoặc https://dev.azure.com/<org>."
+      "heading": "Inventory — Quản lý hosts",
+      "content": "Inventory là collection của hosts (nodes) với associated data và groupings mà Ansible có thể connect và manage. Inventory chứa: Hosts (nodes), Groups (nhóm hosts), Inventory-specific data (variables), Static hoặc Dynamic sources. Static Inventory example: liệt kê IPs/hostnames trong file INI format. Group syntax: [group-name] ở trên danh sách hosts. Ví dụ: [web] chứa node-[1:3] ansible_host=10.42.0.[6:8], [haproxy] chứa haproxy ansible_host=10.42.0.100, [all:vars] ansible_user=vagrant ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key. Dynamic inventory: lấy từ cloud provider API, CMDB, hoặc script."
     },
     {
-      "heading": "Microsoft-Hosted Agents — Đặc điểm",
-      "content": "Microsoft-Hosted Agents là single-use virtual machines được Microsoft cung cấp. Đặc điểm: 1) Single-use VMs — sau mỗi pipeline run, VM bị xóa và tạo mới. 2) All patches and upgrades được Microsoft tự lo. 3) Pre-defined software packages đã cài sẵn. 4) Tasks run với highest level of permissions. 5) Data does NOT persist giữa các pipeline runs (mỗi run = VM mới). 6) Additional packages có thể cài thêm trong pipeline. Available hosted agents: windows-2019 (VS 2019), vs2017-win2016 (VS 2017), macOS-10.14, macOS-10.13, ubuntu-16.04. Agent Pools: Default (self-hosted) và Hosted (Microsoft-hosted) — Azure Pipelines quản lý qua Agent Pools."
+      "heading": "Modules, Tasks và Ad-Hoc Commands",
+      "content": "Modules: bits of code được transfer đến target system và execute để thỏa mãn task declaration. Ansible ships với 900+ modules. Ví dụ modules: apt/yum (package management), copy (copy files), file (manage files/dirs), get_url (download from URL), git (clone repos), ping (test connectivity), debug (print messages), service (manage services), synchronize, template (render Jinja2 templates). Run Command Modules (dùng khi không có sẵn module phù hợp): command (most secure, predictable), shell (qua /bin/sh, dùng pipes), script (chạy local script trên remote), raw (bypass Ansible module subsystem). NOTE: run commands không có concept of desired state — dùng làm last resort. Ad-Hoc commands: lệnh đơn lẻ không cần playbook. Ví dụ: ansible all -m ping (kiểm tra tất cả hosts), ansible localhost -m setup (xem facts), ansible web -m command -a 'uptime' (chạy uptime trên web group). Tasks: application của module để thực hiện một unit of work — ví dụ: yum (package installed), copy (file copied), service (service running), template (config rendered), get_url (fetch file), git (clone repo)."
     },
     {
-      "heading": "Self-hosted Agents — Đặc điểm và Chuẩn bị",
-      "content": "Self-hosted Agents là agents bạn tự quản lý trên infrastructure của mình. Đặc điểm: 1) Provides much greater control over application binaries. 2) Data caches and configuration persist between runs — không mất cache giữa các builds (nhanh hơn). 3) Can run trên macOS, Linux, Windows và Docker. 4) Agent runs interactively hoặc as a service. 5) User chịu trách nhiệm all management and configuration. 6) User chịu trách nhiệm all major version agent upgrades. Chuẩn bị: Check OS & runtime dependencies, Identify user với permissions để administer agent pool, Generate Personal Access Token (PAT), Ensure system can communicate outbound via HTTPS (TCP port 443), Determine proxy requirements, Identify local system account cho agent. Networking: Self-hosted kết nối với Azure Pipelines qua TCP/443, có thể access Private Deployment environment (line of sight). Microsoft-Hosted agents không có access vào private networks theo mặc định."
+      "heading": "Variables và Facts",
+      "content": "Ansible Variables: work with metadata từ nhiều sources — Command line parameters, Plays và tasks, Files, Inventory, Discovered facts, Roles. Facts: bits of information derived from examining host systems, stored as variables for later use. Thu thập facts bằng: ansible localhost -m setup → trả về ansible_facts với thông tin như ansible_default_ipv4 (address, gateway, interface, macaddress, mtu, netmask...). Facts tự động được gather khi bắt đầu play (gather_facts: true). Handler Tasks: special tasks chỉ chạy ở cuối play khi được notified bởi task khác khi có thay đổi xảy ra. Ví dụ: khi config file thay đổi → notify handler restart service. Handlers chạy một lần duy nhất, sau tất cả tasks."
     },
     {
-      "heading": "Agent Capabilities — System & User",
-      "content": "Agent Capabilities mô tả những gì agent có thể làm — được dùng làm demands trong pipeline jobs. Hai loại: 1) System capabilities (automatic): Azure DevOps tự detect từ OS, applications, environment variables của agent (ví dụ: Agent.Name, Agent.OS, Agent.OSArchitecture, docker path, git path, curl path...). 2) User capabilities (manual): do người dùng tự định nghĩa cho custom naming. Pipeline jobs có thể khai báo demands để yêu cầu agent phải có capability cụ thể. Capability names are automatically assigned. Có thể get Agent Capabilities qua REST API: endpoint _apis/distributedtask/pools/{poolId}/agents/{agentId}?includeCapabilities=true."
-    },
-    {
-      "heading": "Azure Pipelines YAML — Cấu trúc",
-      "content": "Azure Pipelines hỗ trợ YAML-based pipelines (Pipeline as Code). Cấu trúc YAML pipeline: trigger (branch triggers), pool (agent pool name: azure-pipelines hoặc self-hosted pool), stages → jobs → steps. Ví dụ: trigger: [main], pool: {vmImage: 'ubuntu-latest'}, steps: [task: Maven@3 với inputs, task: Docker@2 để build/push image]. Classic UI Pipelines (non-YAML) cũng available nhưng YAML được khuyến nghị vì version-controlled. Multi-stage pipelines: Build stage → Test stage → Deploy to Staging → Deploy to Production với environment approvals."
+      "heading": "Playbooks — Cấu trúc và Ví dụ",
+      "content": "Playbook là file YAML chứa một hoặc nhiều Plays. Play là tập hợp Tasks chạy trên một group hosts. Cấu trúc: hosts (target hosts/groups), vars (biến), tasks (danh sách tasks). Ví dụ tasks trong một play: task 1 dùng 'yum' module cài httpd (state: latest), task 2 dùng 'copy' module copy index.html vào /var/www/html/, task 3 dùng 'service' module restart httpd (state: restarted). Cài Ansible: trên RHEL7 dùng yum --enablerepo=epel install ansible. Hoặc pip install ansible. Xem module docs: ansible-doc -l (list all), ansible-doc copy (xem docs module copy). ansible-doc giải thích options với 'required' field, 'choices', 'default' values."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "Azure DevOps gồm bao nhiêu services chính?",
-      "options": ["3 services", "4 services", "5 services", "6 services"],
-      "answer": 2,
-      "explanation": "Azure DevOps có 5 services chính: Azure Boards, Azure Repos, Azure Pipelines, Azure Test Plans, và Azure Artifacts."
+      "question": "Ansible được phát triển bởi công ty nào?",
+      "options": ["HashiCorp", "Red Hat", "Google", "Microsoft"],
+      "answer": 1,
+      "explanation": "Ansible được phát triển và maintained bởi Red Hat (subsidiary của IBM). Đây là một open-source automation tool phổ biến nhất trên GitHub."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Azure Boards được dùng để làm gì?",
-      "options": ["Build và deploy code", "Host Git repositories", "Agile planning — track work với Kanban boards và backlogs", "Lưu trữ và chia sẻ packages"],
+      "question": "Ansible sử dụng giao thức nào để kết nối với Linux hosts?",
+      "options": ["HTTP/HTTPS", "Telnet", "OpenSSH (và WinRM cho Windows)", "RDP"],
       "answer": 2,
-      "explanation": "Azure Boards là agile planning tool — track work với configurable Kanban boards, interactive backlogs, và powerful planning tools với unparalleled traceability."
+      "explanation": "Ansible là AGENTLESS — không cần cài agent trên target hosts. Kết nối qua OpenSSH với Linux/Unix và WinRM (Windows Remote Management) với Windows. Không có agents để exploit hoặc update — more secure."
     },
     {
       "id": 3,
       "level": "basic",
-      "question": "Azure Artifacts dùng để làm gì?",
-      "options": ["Chạy automated tests", "Create, host, và share packages với team, add vào CI/CD pipelines", "Monitor application performance", "Manage Git branches"],
+      "question": "Ansible Inventory là gì?",
+      "options": ["File chứa Ansible playbooks", "Collection của hosts (nodes) với associated data và groupings mà Ansible manage", "Danh sách modules đã cài đặt", "Log file của Ansible runs"],
       "answer": 1,
-      "explanation": "Azure Artifacts cho phép tạo, host và share packages (npm, NuGet, Maven...) với team, và thêm artifacts vào CI/CD pipelines với single click."
+      "explanation": "Inventory là collection của hosts (nodes) với associated data và groupings. Chứa: Hosts, Groups, Inventory-specific variables. Có thể là Static (file INI) hoặc Dynamic (từ cloud API, script)."
     },
     {
       "id": 4,
       "level": "basic",
-      "question": "Điểm khác biệt quan trọng của Modern software delivery so với Traditional là gì?",
-      "options": ["Release 2-3 lần/năm thay vì daily", "Multidisciplinary teams, release multiple times a day, value stream driven", "Waterfall approach và separate teams", "Budget/cost driven và clear business-IT separation"],
+      "question": "Ansible Modules là gì?",
+      "options": ["Plugins để extend Ansible Tower", "Bits of code được transfer đến target system và execute để thỏa mãn task declaration", "File cấu hình Ansible", "Scripts cài đặt Ansible"],
       "answer": 1,
-      "explanation": "Modern: Agile/Scrum, multidisciplinary teams (tất cả disciplines cùng làm), business+dev+ops trong một team, release multiple times a day, value stream driven — ngược với Traditional Waterfall."
+      "explanation": "Modules là bits of code được transfer đến target system và executed. Ansible ships với 900+ modules: apt/yum, copy, file, service, git, template, ping, debug, get_url, synchronize..."
     },
     {
       "id": 5,
       "level": "basic",
-      "question": "Trong Azure DevOps hierarchy, thứ tự từ cao xuống thấp là gì?",
-      "options": ["Project → Organization → Team", "Organization → Project → Team", "Team → Project → Organization", "Azure AD → Team → Project → Organization"],
+      "question": "Ad-Hoc command trong Ansible là gì?",
+      "options": ["Lệnh trong Playbook chạy tuần tự", "Single Ansible task thực thi nhanh mà không cần save thành playbook", "Lệnh cấu hình Ansible Tower", "Plugin để run advanced tasks"],
       "answer": 1,
-      "explanation": "Hierarchy: Azure AD (authentication) → Organization → Projects → Teams. Organization là đơn vị quản lý cao nhất trong Azure DevOps."
+      "explanation": "Ad-hoc command là single Ansible task để thực hiện nhanh, nhưng không muốn save lại thành playbook. Ví dụ: ansible all -m ping, ansible web -m command -a 'uptime'."
     },
     {
       "id": 6,
       "level": "basic",
-      "question": "Microsoft-Hosted Agent có đặc điểm gì về data persistence?",
-      "options": ["Data persist giữa tất cả pipeline runs", "Data does NOT persist giữa pipeline runs — mỗi run dùng VM mới", "Data persist trong 24 giờ", "Chỉ cache persist, data thì không"],
+      "question": "Ansible Tower có thêm tính năng gì so với Ansible cơ bản?",
+      "options": ["Thêm nhiều modules hơn", "Enterprise framework với UI và RESTful API để control, secure, manage Ansible automation", "Hỗ trợ thêm Windows hosts", "Tích hợp sẵn Kubernetes"],
       "answer": 1,
-      "explanation": "Microsoft-Hosted Agents là single-use VMs — sau mỗi pipeline run, VM bị xóa và tạo VM mới. Do đó data KHÔNG persist giữa các runs. Đây là khác biệt quan trọng với Self-hosted agents."
+      "explanation": "Ansible Tower là enterprise framework on top of Ansible, cung cấp: Web UI để quản lý và chạy playbooks, RESTful API để tích hợp với các tools khác, role-based access control, centralized logging, scheduling."
     },
     {
       "id": 7,
       "level": "basic",
-      "question": "Self-hosted Agents có thể chạy trên những platform nào?",
-      "options": ["Chỉ Windows", "Chỉ Linux và Windows", "macOS, Linux, Windows và Docker", "Chỉ cloud VMs"],
-      "answer": 2,
-      "explanation": "Self-hosted agents có thể chạy trên macOS, Linux, Windows và Docker — linh hoạt hơn Microsoft-Hosted agents."
+      "question": "Lệnh nào dùng để xem documentation của module 'copy' trong Ansible?",
+      "options": ["ansible --help copy", "ansible-doc copy", "ansible copy --docs", "man ansible-copy"],
+      "answer": 1,
+      "explanation": "ansible-doc [module-name] hiển thị documentation cho module đó. 'ansible-doc -l' liệt kê tất cả modules. 'ansible-doc copy' hiển thị synopsis, options, examples cho copy module."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "Điểm khác biệt quan trọng giữa Microsoft-Hosted và Self-hosted agents về caching là gì?",
+      "question": "Handler Tasks trong Ansible Playbook hoạt động như thế nào?",
       "options": [
-        "Microsoft-Hosted: cache persist giữa runs; Self-hosted: không có cache",
-        "Microsoft-Hosted: data KHÔNG persist giữa runs; Self-hosted: data caches và config persist between runs",
-        "Cả hai đều persist cache",
-        "Cả hai đều không persist cache"
+        "Chạy trước tất cả tasks khác",
+        "Chạy ở cuối play khi được notify bởi task khác khi có thay đổi xảy ra",
+        "Chạy định kỳ theo lịch",
+        "Chạy song song với tasks thông thường"
       ],
       "answer": 1,
-      "explanation": "Microsoft-Hosted: mỗi run tạo VM mới → không có cache. Self-hosted: data caches và configuration persist between runs → builds sau nhanh hơn do có sẵn cached dependencies."
+      "explanation": "Handlers là special tasks chỉ chạy ở cuối play khi được 'notify' bởi task khác AND có change xảy ra. Ví dụ: task copy config file notifies handler 'restart httpd' — handler chỉ chạy nếu file thực sự thay đổi. Handler chạy một lần dù được notify nhiều lần."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "Agent Capabilities trong Azure DevOps dùng để làm gì?",
+      "question": "Sự khác biệt giữa module 'command' và 'shell' trong Ansible là gì?",
       "options": [
-        "Mô tả những gì agent có thể làm — dùng làm demands trong pipeline jobs để chọn đúng agent",
-        "Kiểm soát quyền truy cập vào Azure Repos",
-        "Định nghĩa số lượng concurrent jobs",
-        "Cấu hình network của agent"
+        "command dùng cho Linux, shell dùng cho Windows",
+        "command: secure và predictable, không dùng shell; shell: thực thi qua /bin/sh cho phép pipes, redirects — dùng cẩn thận",
+        "shell nhanh hơn command",
+        "Không có sự khác biệt"
       ],
-      "answer": 0,
-      "explanation": "Agent Capabilities mô tả OS, applications, environment variables của agent. Capabilities được dùng làm 'demands' trong pipeline jobs — job chỉ chạy trên agent có đủ required capabilities."
+      "answer": 1,
+      "explanation": "command: thực thi trực tiếp, most secure và predictable, không support pipes/redirects. shell: thực thi qua /bin/sh — support pipes, environment variables, redirects nhưng kém secure hơn. NOTE: cả hai không có concept of desired state — dùng làm last resort."
     },
     {
       "id": 10,
       "level": "intermediate",
-      "question": "Để chuẩn bị Self-hosted Agent, cần tạo gì để authenticate với Azure DevOps?",
-      "options": ["Username và password", "Personal Access Token (PAT)", "SSH key pair", "OAuth 2.0 token"],
+      "question": "Ansible Facts là gì và thu thập như thế nào?",
+      "options": [
+        "Log files của các lần chạy playbook",
+        "Thông tin về host (IP, OS, hardware) được tự động gather — truy cập bằng 'ansible localhost -m setup'",
+        "Danh sách modules đã installed",
+        "Biến được định nghĩa thủ công trong playbook"
+      ],
       "answer": 1,
-      "explanation": "Cần tạo Personal Access Token (PAT) trong Azure DevOps để authenticate self-hosted agent với Azure Pipelines. PAT được dùng khi configure agent lần đầu."
+      "explanation": "Facts là bits of information derived from examining host systems — IP address, OS version, memory, CPU, network interfaces... Thu thập bằng setup module: 'ansible localhost -m setup'. Kết quả trả về 'ansible_facts' dictionary. Có thể dùng trong playbook với {{ ansible_default_ipv4.address }}."
     },
     {
       "id": 11,
       "level": "intermediate",
-      "question": "Self-hosted Agent kết nối với Azure Pipelines qua protocol và port nào?",
-      "options": ["HTTP, port 80", "HTTPS (TCP port 443)", "SSH, port 22", "gRPC, port 9090"],
+      "question": "Trong Static Inventory, section [all:vars] dùng để làm gì?",
+      "options": [
+        "Định nghĩa group chứa tất cả hosts",
+        "Định nghĩa variables áp dụng cho TẤT CẢ hosts trong inventory",
+        "Import inventory từ file khác",
+        "Định nghĩa connection type"
+      ],
       "answer": 1,
-      "explanation": "Self-hosted Agent kết nối outbound với Azure Pipelines qua HTTPS (TCP port 443). Cần đảm bảo firewall cho phép outbound HTTPS từ máy chủ agent."
+      "explanation": "[all:vars] trong inventory file định nghĩa variables áp dụng cho tất cả hosts. Ví dụ: ansible_user=vagrant, ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key. Có thể dùng [group_name:vars] cho variables của một group cụ thể."
     },
     {
       "id": 12,
       "level": "intermediate",
-      "question": "Tại sao Self-hosted Agent thường được dùng khi cần deploy vào Private Deployment environment?",
+      "question": "Lệnh ad-hoc 'ansible all -m ping' làm gì?",
       "options": [
-        "Self-hosted agent nằm trong cùng network với private servers (line of sight), trong khi Microsoft-Hosted không có access vào private networks mặc định",
-        "Self-hosted agent có nhiều CPU hơn",
-        "Microsoft-Hosted không hỗ trợ deployment",
-        "Self-hosted luôn nhanh hơn"
+        "Ping network để test latency",
+        "Kiểm tra tất cả inventory hosts có sẵn sàng được manage bởi Ansible không",
+        "Restart tất cả services",
+        "Cài ping utility trên tất cả hosts"
       ],
-      "answer": 0,
-      "explanation": "Microsoft-Hosted agents không có access vào private networks theo mặc định (No access by default). Self-hosted agents nằm trong internal network → có line of sight tới private deployment servers."
+      "answer": 1,
+      "explanation": "'ansible all -m ping' dùng Ansible ping module (không phải network ICMP ping) để kiểm tra tất cả hosts trong inventory có kết nối được và sẵn sàng nhận Ansible commands không. Trả về SUCCESS nếu OK."
     },
     {
       "id": 13,
-      "level": "intermediate",
-      "question": "Hai loại Agent Capabilities trong Azure DevOps là gì?",
+      "level": "advanced",
+      "question": "Tại sao run command modules (command, shell, script, raw) chỉ nên dùng làm 'last resort' trong Ansible?",
       "options": [
-        "Build capabilities và Deploy capabilities",
-        "System capabilities (auto-detected) và User capabilities (manually defined)",
-        "Hosted capabilities và On-premise capabilities",
-        "Read capabilities và Write capabilities"
+        "Vì chúng chậm hơn standard modules",
+        "Vì chúng không có concept of desired state — không idempotent, chạy nhiều lần có thể gây side effects",
+        "Vì chúng không support biến",
+        "Vì chúng chỉ chạy được trên Linux"
       ],
       "answer": 1,
-      "explanation": "System capabilities: tự động được detect từ OS, applications, environment variables (Agent.OS, docker path, git path...). User capabilities: do người dùng tự định nghĩa cho custom naming và special requirements."
+      "explanation": "Standard modules (yum, copy, service...) có concept of desired state và idempotent — chạy nhiều lần cho same result. Run commands (command, shell...) không có desired state — chạy lại có thể gây duplicate actions, side effects. Ví dụ: 'apt install nginx' chạy nhiều lần = OK; nhưng một script tạo user chạy nhiều lần = error."
     },
     {
       "id": 14,
       "level": "advanced",
-      "question": "Trong Azure DevOps, 'Agent Pool' là gì và có những loại nào mặc định?",
+      "question": "Dynamic Inventory trong Ansible được dùng khi nào?",
       "options": [
-        "Nhóm các projects trong một Organization",
-        "Tập hợp các agents — Default pool (self-hosted) và Hosted pool (Microsoft-hosted) được Azure Pipelines quản lý",
-        "Nhóm các repositories trong một Project",
-        "Danh sách các pipeline definitions"
+        "Khi inventory file quá lớn",
+        "Khi hosts thay đổi dynamically (cloud VMs, auto-scaling) — inventory được generate tự động từ cloud API hoặc CMDB thay vì file tĩnh",
+        "Khi cần chạy playbook faster",
+        "Khi dùng Ansible Tower"
       ],
       "answer": 1,
-      "explanation": "Agent Pool là tập hợp các agents được quản lý cùng nhau. Azure Pipelines có sẵn 2 pools: Default (self-hosted agents bạn đăng ký) và Hosted (Microsoft-hosted agents). Pipeline job dùng pool name để chọn agent."
+      "explanation": "Dynamic inventory dùng khi infrastructure thay đổi thường xuyên (cloud environments, auto-scaling groups). Thay vì file INI tĩnh, Ansible gọi script hoặc plugin để lấy danh sách hosts từ AWS EC2, Azure, GCP, vSphere... Inventory luôn up-to-date."
     },
     {
       "id": 15,
       "level": "advanced",
-      "question": "Định nghĩa DevOps theo Donovan Brown là gì?",
+      "question": "Trong Ansible Playbook, task dùng 'service' module với 'state: restarted' làm gì?",
       "options": [
-        "DevOps là tự động hóa toàn bộ deployment process",
-        "DevOps là the union of people, process, and products to enable continuous delivery of value to end users",
-        "DevOps là sự kết hợp giữa Development và Operations teams",
-        "DevOps là framework dùng Agile + Scrum"
+        "Chỉ start service nếu chưa chạy",
+        "Luôn luôn restart service, dù đang chạy hay không",
+        "Chỉ restart nếu service đang chạy",
+        "Stop service"
       ],
       "answer": 1,
-      "explanation": "Donovan Brown định nghĩa: 'DevOps is the union of people, process, and products to enable continuous delivery of value to our end users.' Đây là định nghĩa quan trọng nhấn mạnh cả 3 yếu tố: con người, quy trình, và công cụ."
-    },
-    {
-      "id": 16,
-      "level": "advanced",
-      "question": "Azure Pipelines hỗ trợ kết nối với Git source control nào?",
-      "options": [
-        "Chỉ Azure Repos",
-        "Azure Repos và GitHub",
-        "GitHub, Azure Repos, Bitbucket, và bất kỳ Git provider nào",
-        "Chỉ GitHub và GitLab"
-      ],
-      "answer": 2,
-      "explanation": "Azure Pipelines có thể kết nối với GitHub, Azure Repos, Bitbucket, và bất kỳ Git provider nào — đây là điểm mạnh của Azure Pipelines so với các CI/CD tools khác."
-    },
-    {
-      "id": 17,
-      "level": "advanced",
-      "question": "Tại sao nên dùng YAML-based pipelines thay vì Classic UI pipelines trong Azure DevOps?",
-      "options": [
-        "YAML pipelines chạy nhanh hơn Classic",
-        "YAML pipelines được version-controlled cùng source code, dễ review, audit, và reuse",
-        "Classic UI không hỗ trợ Docker",
-        "YAML chỉ available cho self-hosted agents"
-      ],
-      "answer": 1,
-      "explanation": "YAML pipelines (Pipeline as Code): được lưu trong Git repository cùng source code → version controlled, có thể code review, audit history, reuse qua templates. Classic UI pipelines lưu trong Azure DevOps UI, không có version control tốt."
-    },
-    {
-      "id": 18,
-      "level": "advanced",
-      "question": "Khi Microsoft-Hosted Agent chạy tasks, chúng chạy với permission level như thế nào?",
-      "options": [
-        "Quyền thấp nhất (least privilege)",
-        "Quyền theo user account đã config",
-        "Highest level of permissions",
-        "Read-only permissions"
-      ],
-      "answer": 2,
-      "explanation": "Theo slide, Microsoft-Hosted Agents: 'Tasks run with the highest level of permissions' — đây là điểm cần lưu ý về security khi dùng Microsoft-Hosted agents."
+      "explanation": "service module với state: restarted sẽ LUÔN restart service (stop + start), bất kể service đang ở trạng thái nào. Khác với state: started (chỉ start nếu đang stopped) và state: reloaded (reload config mà không restart). Thường dùng sau khi deploy config mới."
     }
   ]
 }

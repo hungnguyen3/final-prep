@@ -157,37 +157,63 @@ function startExam() {
 
 function renderExam() {
   const area = document.getElementById('quiz-area');
-  area.innerHTML = `
-    <div id="exam-questions">
-      ${filtered.map((q, qi) => `
-        <div class="question-card" id="qcard-${qi}">
-          <div class="q-meta">Câu ${qi + 1}/${filtered.length} · ${LEVEL_LABEL[q.level] || q.level}</div>
-          <div class="q-text">${q.question}</div>
-          <div class="options">
-            ${q.options.map((opt, i) => `
-          <button type="button" class="option-btn" data-qi="${qi}" data-index="${i}">${opt}</button>
-            `).join('')}
-          </div>
-          <div class="explanation" id="exp-${qi}">${q.explanation}</div>
-        </div>
-      `).join('')}
-    </div>
-    <div style="text-align:center; margin: 1.5rem 0">
-      <button class="btn primary" id="btn-submit">Nộp bài</button>
-    </div>
-    <div id="exam-result"></div>
-  `;
 
-  area.querySelectorAll('.option-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const qi = parseInt(btn.dataset.qi, 10);
-      examAnswers[qi] = parseInt(btn.dataset.index, 10);
-      area.querySelectorAll(`.option-btn[data-qi="${qi}"]`).forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  const container = document.createElement('div');
+  container.id = 'exam-questions';
+
+  filtered.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `qcard-${qi}`;
+
+    const meta = document.createElement('div');
+    meta.className = 'q-meta';
+    meta.textContent = `Câu ${qi + 1}/${filtered.length} · ${LEVEL_LABEL[q.level] || q.level}`;
+
+    const qtext = document.createElement('div');
+    qtext.className = 'q-text';
+    qtext.textContent = q.question;
+
+    const opts = document.createElement('div');
+    opts.className = 'options';
+
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'option-btn';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => {
+        examAnswers[qi] = i;
+        opts.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+      opts.appendChild(btn);
     });
+
+    const exp = document.createElement('div');
+    exp.className = 'explanation';
+    exp.id = `exp-${qi}`;
+    exp.textContent = q.explanation;
+
+    card.append(meta, qtext, opts, exp);
+    container.appendChild(card);
   });
 
-  document.getElementById('btn-submit').addEventListener('click', submitExam);
+  const submitWrap = document.createElement('div');
+  submitWrap.style.cssText = 'text-align:center; margin: 1.5rem 0';
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'button';
+  submitBtn.className = 'btn primary';
+  submitBtn.id = 'btn-submit';
+  submitBtn.textContent = 'Nộp bài';
+  submitBtn.addEventListener('click', submitExam);
+  submitWrap.appendChild(submitBtn);
+
+  const resultDiv = document.createElement('div');
+  resultDiv.id = 'exam-result';
+
+  area.innerHTML = '';
+  area.append(container, submitWrap, resultDiv);
 }
 
 function submitExam() {
@@ -196,10 +222,10 @@ function submitExam() {
     const chosen = examAnswers[qi];
     const correctIdx = parseInt(q.answer, 10);
     const card = document.getElementById(`qcard-${qi}`);
-    card.querySelectorAll('.option-btn').forEach(b => {
+    const optBtns = card.querySelectorAll('.option-btn');
+    optBtns.forEach((b, idx) => {
       b.disabled = true;
       b.classList.remove('active');
-      const idx = parseInt(b.dataset.index, 10);
       if (idx === correctIdx) b.classList.add('correct');
       else if (idx === chosen && chosen !== correctIdx) b.classList.add('wrong');
     });
@@ -208,20 +234,25 @@ function submitExam() {
   });
 
   document.getElementById('btn-submit').style.display = 'none';
-  document.getElementById('exam-result').innerHTML = `
-    <div class="result-box">
-      <div class="score">${correct}/${filtered.length}</div>
-      <p class="score-label">Điểm của bạn · ${Math.round(correct / filtered.length * 100)}%</p>
-    </div>
-    <div style="text-align:center">
-      <button class="btn primary" id="btn-retry">Làm lại</button>
-    </div>
-  `;
-  document.getElementById('btn-retry').addEventListener('click', () => {
+  const resultDiv = document.getElementById('exam-result');
+
+  const box = document.createElement('div');
+  box.className = 'result-box';
+  box.innerHTML = `<div class="score">${correct}/${filtered.length}</div><p class="score-label">Điểm của bạn · ${Math.round(correct / filtered.length * 100)}%</p>`;
+
+  const retryWrap = document.createElement('div');
+  retryWrap.style.textAlign = 'center';
+  const retryBtn = document.createElement('button');
+  retryBtn.type = 'button';
+  retryBtn.className = 'btn primary';
+  retryBtn.textContent = 'Làm lại';
+  retryBtn.addEventListener('click', () => {
     examAnswers = new Array(filtered.length).fill(null);
     document.getElementById('quiz-controls').style.display = 'flex';
     document.getElementById('quiz-area').innerHTML = '';
   });
+  retryWrap.appendChild(retryBtn);
+  resultDiv.append(box, retryWrap);
 }
 
 init();

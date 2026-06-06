@@ -1,39 +1,123 @@
 {
-  "title": "Chương 1: Giới thiệu DevOps",
+  "title": "Chương 1: Version Control & Git là gì?",
   "theory": [
     {
-      "heading": "DevOps là gì?",
-      "content": "DevOps là sự kết hợp giữa Development (phát triển) và Operations (vận hành). Mục tiêu là rút ngắn vòng đời phát triển phần mềm và cung cấp phần mềm chất lượng cao liên tục."
+      "heading": "Version Control System (VCS) là gì?",
+      "content": "VCS là hệ thống quản lý thay đổi của tài liệu, code, hoặc bất kỳ tập hợp thông tin nào. Mỗi thay đổi được nhận dạng bằng số/chữ gọi là 'revision number'. Revision có timestamp và tác giả. Có thể so sánh, khôi phục, và merge các revision."
     },
     {
-      "heading": "Lợi ích của DevOps",
-      "content": "Triển khai nhanh hơn, ít lỗi hơn, phục hồi nhanh khi có sự cố, tăng cường cộng tác giữa team Dev và Ops."
+      "heading": "Các use case của VCS",
+      "content": "1) Lưu lịch sử: có thể revert về bất kỳ revision nào, xem ai thay đổi gì, khi nào, tại sao. 2) Làm việc nhóm: share file, merge thay đổi, tránh ghi đè nhầm. 3) Branching: quản lý nhiều phiên bản song song (main, maintenance, feature, release branch). 4) External contributors: fork và gửi patch."
+    },
+    {
+      "heading": "Repository, Revision, HEAD, Tag",
+      "content": "Repository: kho lưu toàn bộ lịch sử dự án từ đầu. Revision: mỗi commit giới thiệu thay đổi từ revision trước, có tác giả và message. HEAD: revision hiện tại (mới nhất). Tag: nhãn đánh dấu một revision cụ thể, thường dùng cho release (v1.0, v1.1)."
+    },
+    {
+      "heading": "Tại sao dùng Git?",
+      "content": "Git là distributed VCS — industry standard. Ưu điểm: Staging Area (kiểm soát chính xác những gì commit), Undoing Mistakes (reset/revert), Branching & Merging mạnh mẽ, Distributed System (mỗi người có full copy), Collaboration dễ dàng, tích hợp với nhiều tool CI/CD."
+    },
+    {
+      "heading": "Các loại Branch trong Git",
+      "content": "Main branch: nơi phát triển hằng ngày. Maintenance branch: phát hành bugfix cho các release cũ. Feature branch: phát triển tính năng mới mà không ảnh hưởng main. Release branch: đóng băng code trước khi release — chỉ nhận bugfix. Khi feature hoàn thành, merge lại vào main."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "DevOps là sự kết hợp của?",
-      "options": ["Development + Operations", "Design + Optimization", "Deploy + Orchestration", "Data + Operations"],
+      "question": "VCS là viết tắt của gì?",
+      "options": ["Version Control System", "Virtual Code Storage", "Visual Commit System", "Versioned Code Source"],
       "answer": 0,
-      "explanation": "DevOps = Development (phát triển) + Operations (vận hành)."
+      "explanation": "VCS = Version Control System — hệ thống quản lý và theo dõi các thay đổi của code/tài liệu theo thời gian."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Mục tiêu chính của DevOps là gì?",
-      "options": ["Rút ngắn vòng đời phát triển phần mềm", "Tăng số lượng lập trình viên", "Loại bỏ testing", "Chỉ tập trung vào vận hành"],
+      "question": "Trong Git, 'HEAD' chỉ đến điều gì?",
+      "options": ["Revision hiện tại (commit mới nhất)", "Tên của remote repository", "Nhánh đầu tiên được tạo", "File cấu hình của Git"],
       "answer": 0,
-      "explanation": "DevOps hướng đến việc rút ngắn chu kỳ phát triển và cung cấp phần mềm liên tục với chất lượng cao."
+      "explanation": "HEAD trỏ đến revision hiện tại — thường là commit mới nhất trên branch đang làm việc."
     },
     {
       "id": 3,
-      "level": "intermediate",
-      "question": "Thực hành nào KHÔNG thuộc về DevOps?",
-      "options": ["Waterfall development", "Continuous Integration", "Infrastructure as Code", "Automated Testing"],
+      "level": "basic",
+      "question": "Repository trong Git lưu trữ gì?",
+      "options": ["Toàn bộ lịch sử thay đổi của dự án từ đầu", "Chỉ code của phiên bản hiện tại", "Danh sách các thành viên trong team", "Cấu hình server deploy"],
       "answer": 0,
-      "explanation": "Waterfall là mô hình phát triển tuần tự truyền thống, không phù hợp với triết lý DevOps vốn đề cao tính liên tục và lặp lại."
+      "explanation": "Repository lưu toàn bộ lịch sử (tất cả revision) của dự án từ khi khởi tạo."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Tag trong Git được dùng để làm gì?",
+      "options": ["Đánh dấu một revision cụ thể, thường cho release", "Tạo một branch mới", "Xóa commit cũ", "Theo dõi remote repository"],
+      "answer": 0,
+      "explanation": "Tag là nhãn gắn vào một commit cụ thể — thường dùng để đánh dấu các release (v1.0, v2.0)."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Feature branch trong Git dùng để làm gì?",
+      "options": ["Phát triển tính năng mới mà không ảnh hưởng đến main branch", "Lưu trữ các bugfix cho phiên bản cũ", "Deploy lên production", "Backup code hiện tại"],
+      "answer": 0,
+      "explanation": "Feature branch tách ra từ main để phát triển tính năng mới độc lập — khi xong thì merge lại vào main."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Lợi ích nào sau đây KHÔNG phải của Git?",
+      "options": ["Tự động viết code cho developer", "Staging Area để kiểm soát commit", "Branching & Merging mạnh mẽ", "Undo mistakes với reset/revert"],
+      "answer": 0,
+      "explanation": "Git không tự viết code. Các lợi ích thực sự của Git: Staging Area, Branching, Merging, Undo, Distributed system, Collaboration."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "Sự khác biệt chính giữa Centralized VCS và Distributed VCS (Git) là gì?",
+      "options": ["Distributed: mỗi người có full copy của repository; Centralized: chỉ có một server trung tâm", "Distributed chậm hơn Centralized", "Centralized hỗ trợ branching tốt hơn", "Không có sự khác biệt thực sự"],
+      "answer": 0,
+      "explanation": "Git là distributed — mỗi developer clone về full repository (kể cả toàn bộ history). Centralized VCS (SVN) chỉ có một server, mọi thao tác đều cần kết nối server."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Release branch trong Git có đặc điểm gì?",
+      "options": ["Code bị đóng băng, chỉ nhận bugfix, không nhận tính năng mới", "Chứa tất cả các tính năng mới nhất chưa release", "Được merge vào main sau mỗi commit", "Dùng để test tính năng thực nghiệm"],
+      "answer": 0,
+      "explanation": "Release branch dùng để chuẩn bị cho một release: code frozen (đóng băng), chỉ accept bugfix, không thêm feature mới."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Maintenance branch khác Feature branch như thế nào?",
+      "options": ["Maintenance dùng để fix bug cho release cũ; Feature dùng để phát triển tính năng mới", "Maintenance luôn merge vào Feature khi hoàn thành", "Feature branch không thể merge vào main", "Chúng giống nhau hoàn toàn"],
+      "answer": 0,
+      "explanation": "Maintenance branch: phát hành bugfix cho các phiên bản cũ đã release. Feature branch: phát triển tính năng mới cho phiên bản tiếp theo."
+    },
+    {
+      "id": 10,
+      "level": "advanced",
+      "question": "Staging Area (Index) trong Git có vai trò gì?",
+      "options": ["Cho phép chọn chính xác những thay đổi nào đưa vào commit tiếp theo", "Lưu trữ toàn bộ history của project", "Là bản copy của remote repository", "Tự động merge các branch khi có conflict"],
+      "answer": 0,
+      "explanation": "Staging Area là vùng trung gian giữa working directory và repository. Dùng 'git add' để đưa thay đổi vào staging, sau đó 'git commit' mới ghi vào history — cho phép kiểm soát chi tiết nội dung commit."
+    },
+    {
+      "id": 11,
+      "level": "advanced",
+      "question": "Khi fork một dự án mã nguồn mở và muốn đóng góp, quy trình chuẩn là gì?",
+      "options": ["Fork → clone → tạo feature branch → commit → tạo Pull Request về repo gốc", "Clone trực tiếp repo gốc → commit thẳng vào main", "Fork → commit thẳng vào main của fork → tự động merge", "Gửi file patch qua email cho maintainer là đủ"],
+      "answer": 0,
+      "explanation": "Quy trình chuẩn: fork về tài khoản của bạn, làm việc trên feature branch, sau đó tạo Pull Request để maintainer review và merge vào repo gốc."
+    },
+    {
+      "id": 12,
+      "level": "advanced",
+      "question": "Mỗi revision trong Git bao gồm những thông tin gì?",
+      "options": ["Thay đổi từ revision trước, tác giả, và commit message mô tả thay đổi", "Chỉ nội dung file tại thời điểm đó", "Tên branch và timestamp mà không có tác giả", "Chỉ danh sách file đã thay đổi"],
+      "answer": 0,
+      "explanation": "Mỗi revision (commit) trong Git chứa: thay đổi so với revision trước (diff), tác giả (author), timestamp, và commit message mô tả lý do thay đổi."
     }
   ]
 }

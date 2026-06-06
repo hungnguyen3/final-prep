@@ -1,0 +1,139 @@
+{
+  "title": "Chương 3: Branch, Merge & Lệnh nâng cao",
+  "theory": [
+    {
+      "heading": "Làm việc với Branch",
+      "content": "git branch: Liệt kê branch, branch hiện tại có dấu *. git branch [name]: Tạo branch mới. git checkout [branch]: Chuyển sang branch khác — cập nhật working directory. git checkout -b [branch]: Tạo và chuyển sang branch mới cùng lúc. git branch -d [branch]: Xóa branch đã merge."
+    },
+    {
+      "heading": "Merge và Conflict",
+      "content": "git merge [branch]: Merge branch được chỉ định vào branch hiện tại — tạo merge commit. Merge conflict xảy ra khi cùng một dòng bị sửa ở cả hai branch. Git đánh dấu conflict bằng <<<<<<< HEAD, =======, >>>>>>> branch. Phải giải quyết thủ công rồi 'git add' và 'git commit'."
+    },
+    {
+      "heading": "Stash — Lưu tạm thời",
+      "content": "git stash: Lưu tạm thời các thay đổi chưa commit vào một stack, working directory trở về trạng thái clean. Hữu ích khi cần chuyển branch gấp. git stash pop: Lấy lại thay đổi đã stash gần nhất. git stash list: Xem danh sách các stash."
+    },
+    {
+      "heading": "Rebase vs Merge",
+      "content": "git rebase [branch]: Áp dụng lại các commit của branch hiện tại lên đầu branch đích — tạo history tuyến tính, sạch hơn. git rebase -i: Interactive rebase — cho phép reorder, edit, squash, xóa commit. Khác với merge: rebase viết lại history nên không dùng cho branch đã push."
+    },
+    {
+      "heading": "Các lệnh nâng cao khác",
+      "content": "git cherry-pick [commit]: Áp dụng một commit cụ thể vào branch hiện tại — không merge toàn bộ branch. git bisect: Tìm commit gây ra bug bằng binary search. git blame [file]: Xem ai đã sửa từng dòng của file và khi nào. git reflog: Xem log của tất cả thay đổi HEAD — dùng để phục hồi commit bị mất. git stash: Lưu thay đổi tạm thời. git merge --squash: Merge tất cả commit thành một commit duy nhất."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Lệnh nào tạo và chuyển sang branch mới cùng một lúc?",
+      "options": ["git checkout -b [branch]", "git branch -new [branch]", "git switch --create [branch]", "git branch [branch] && git checkout"],
+      "answer": 0,
+      "explanation": "'git checkout -b [name]' vừa tạo branch mới vừa chuyển sang branch đó trong một lệnh. (git switch -c cũng làm tương tự trong Git mới hơn)"
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Lệnh 'git merge [branch]' làm gì?",
+      "options": ["Merge branch được chỉ định vào branch hiện tại", "Xóa branch được chỉ định", "Tạo branch mới từ branch được chỉ định", "Chuyển sang branch được chỉ định"],
+      "answer": 0,
+      "explanation": "'git merge [branch]' kết hợp thay đổi từ branch đó vào branch bạn đang đứng — tạo một merge commit."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "git stash có tác dụng gì?",
+      "options": ["Lưu tạm thời các thay đổi chưa commit, làm sạch working directory", "Xóa các thay đổi chưa commit vĩnh viễn", "Tạo commit tạm thời", "Tạo branch mới từ thay đổi hiện tại"],
+      "answer": 0,
+      "explanation": "'git stash' đẩy thay đổi hiện tại vào một stack tạm thời, working directory trở về trạng thái clean — hữu ích khi cần switch branch gấp."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Lệnh 'git cherry-pick [commit]' làm gì?",
+      "options": ["Áp dụng một commit cụ thể vào branch hiện tại mà không merge toàn bộ branch", "Chọn branch để merge", "Xóa commit được chỉ định", "Di chuyển commit sang branch khác"],
+      "answer": 0,
+      "explanation": "'git cherry-pick' cho phép lấy đúng một commit từ branch khác áp dụng vào branch hiện tại — hữu ích khi chỉ cần một fix cụ thể."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Lệnh 'git blame [file]' cho biết gì?",
+      "options": ["Ai đã sửa từng dòng của file và khi nào", "Ai đã xóa file đó", "Danh sách bug trong file", "File nào đang bị conflict"],
+      "answer": 0,
+      "explanation": "'git blame' hiển thị mỗi dòng trong file kèm tác giả và commit đã sửa dòng đó — hữu ích để truy tìm ai thêm một đoạn code cụ thể."
+    },
+    {
+      "id": 6,
+      "level": "intermediate",
+      "question": "Khi xảy ra merge conflict, Git đánh dấu vùng conflict bằng gì?",
+      "options": ["<<<<<<< HEAD, =======, >>>>>>> branch-name", "*** CONFLICT ***, END CONFLICT ***", "[START], [END]", "// conflict-start, // conflict-end"],
+      "answer": 0,
+      "explanation": "Git dùng marker: '<<<<<<< HEAD' (thay đổi của branch hiện tại), '=======' (ranh giới), '>>>>>>> branch' (thay đổi của branch đang merge). Phải sửa thủ công rồi commit."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "Sự khác biệt giữa 'git merge' và 'git rebase' là gì?",
+      "options": ["Merge tạo merge commit giữ nguyên history; Rebase viết lại history thành tuyến tính", "Rebase chậm hơn merge", "Merge chỉ dùng được với remote branch", "Không có sự khác biệt thực tế"],
+      "answer": 0,
+      "explanation": "Merge: tạo merge commit, history giữ nguyên (thấy rõ nhánh). Rebase: di chuyển commit lên đầu branch đích, history tuyến tính sạch hơn nhưng viết lại commit hash — không dùng cho branch đã push."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Lệnh 'git bisect' dùng để làm gì?",
+      "options": ["Tìm commit gây ra bug bằng binary search trên commit history", "Chia đôi branch hiện tại", "So sánh hai commit", "Merge hai branch theo kiểu binary"],
+      "answer": 0,
+      "explanation": "'git bisect' dùng thuật toán binary search trên lịch sử commit để tìm chính xác commit đầu tiên gây ra bug — rất hiệu quả với history dài."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "git reflog khác git log ở điểm nào?",
+      "options": ["reflog ghi lại mọi thay đổi của HEAD kể cả reset/rebase; log chỉ hiển thị commit history hiện tại", "reflog nhanh hơn log", "log xem được remote history; reflog chỉ local", "Chúng giống nhau"],
+      "answer": 0,
+      "explanation": "'git reflog' ghi lại mọi thay đổi của HEAD — kể cả sau khi reset hay rebase làm mất commit. Đây là 'lưới an toàn' để phục hồi commit tưởng đã mất."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "Lệnh 'git merge --squash [branch]' có tác dụng gì?",
+      "options": ["Gộp tất cả commit của branch thành một commit duy nhất trước khi merge", "Merge và xóa branch ngay lập tức", "Merge mà không tạo merge commit", "Squash các merge conflict"],
+      "answer": 0,
+      "explanation": "'git merge --squash' gộp (squash) toàn bộ commit của branch đang merge thành một commit duy nhất — giúp giữ history clean, thường dùng trong Pull Request workflow."
+    },
+    {
+      "id": 11,
+      "level": "advanced",
+      "question": "Khi nào KHÔNG nên dùng 'git rebase'?",
+      "options": ["Khi branch đã được push lên remote và người khác đang dựa vào nó", "Khi làm việc một mình trên feature branch local", "Khi muốn clean up commit history trước khi merge", "Khi cần tạo linear history"],
+      "answer": 0,
+      "explanation": "Rebase viết lại commit hash — nếu branch đã push và người khác đã clone/pull, rebase sẽ gây ra diverged history và buộc họ phải force pull. Golden rule: không rebase public branch."
+    },
+    {
+      "id": 12,
+      "level": "advanced",
+      "question": "Interactive rebase 'git rebase -i HEAD~3' cho phép làm gì?",
+      "options": ["Chỉnh sửa, gộp, xóa hoặc đổi thứ tự 3 commit gần nhất", "Xem 3 commit gần nhất", "Merge 3 branch cùng lúc", "Tạo 3 branch mới từ HEAD"],
+      "answer": 0,
+      "explanation": "'git rebase -i HEAD~3' mở interactive editor cho 3 commit gần nhất — có thể: pick (giữ), squash (gộp), edit (sửa), drop (xóa), reword (đổi message)."
+    },
+    {
+      "id": 13,
+      "level": "advanced",
+      "question": "Sau khi 'git reset --hard HEAD~1' vô tình xóa commit quan trọng, bạn dùng lệnh nào để phục hồi?",
+      "options": ["git reflog, sau đó git checkout [hash] hoặc git reset --hard [hash]", "git log --deleted", "git recover [commit]", "git undo"],
+      "answer": 0,
+      "explanation": "'git reflog' ghi lại mọi thay đổi HEAD — tìm hash của commit bị mất trong reflog, sau đó dùng 'git reset --hard [hash]' hoặc 'git cherry-pick [hash]' để phục hồi."
+    },
+    {
+      "id": 14,
+      "level": "advanced",
+      "question": "Git Hooks là gì và dùng để làm gì?",
+      "options": ["Scripts tự động chạy trước/sau các Git event như commit, push — dùng để chạy test, lint, enforce code style", "Plugin để tích hợp GitHub với IDE", "Lệnh để tạo webhook trên GitHub", "Cơ chế bảo mật của Git server"],
+      "answer": 0,
+      "explanation": "Git Hooks là các script trong .git/hooks/ tự động chạy tại các thời điểm cụ thể: pre-commit (chạy test trước khi commit), pre-push (kiểm tra trước khi push), commit-msg (validate message format)..."
+    }
+  ]
+}

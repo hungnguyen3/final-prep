@@ -1,8 +1,10 @@
 {
   "id": "devops",
   "title": "DevOps",
-  "description": "Văn hóa, quy trình và công cụ DevOps",
+  "description": "Git, GitHub & Version Control — từ cơ bản đến nâng cao",
   "chapters": [
-    { "id": 1, "title": "Giới thiệu DevOps" }
+    { "id": 1, "title": "Version Control & Git là gì?" },
+    { "id": 2, "title": "Lệnh Git thiết yếu" },
+    { "id": 3, "title": "Branch, Merge & Lệnh nâng cao" }
   ]
 }

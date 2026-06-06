@@ -7,9 +7,9 @@
     { "id": 2, "title": "Lệnh Git thiết yếu" },
     { "id": 3, "title": "Branch, Merge & Lệnh nâng cao" },
     { "id": 4, "title": "GitOps & ArgoCD" },
-    { "id": 5, "title": "CI/CD — Jenkins, GitHub Actions & Azure DevOps" },
-    { "id": 6, "title": "Cloud — AWS & Azure" },
-    { "id": 7, "title": "Configuration Management — Ansible" },
+    { "id": 5, "title": "Jenkins — CI/CD Automation Server" },
+    { "id": 6, "title": "GitHub Actions — CI/CD tích hợp GitHub" },
+    { "id": 7, "title": "Azure DevOps — Pipelines & Agents" },
     { "id": 8, "title": "Containerization — Docker & Kubernetes" },
     { "id": 9, "title": "Infrastructure as Code — Terraform & CloudFormation" },
     { "id": 10, "title": "Monitoring — Prometheus & Grafana" }

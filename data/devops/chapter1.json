@@ -1,0 +1,39 @@
+{
+  "title": "Chương 1: Giới thiệu DevOps",
+  "theory": [
+    {
+      "heading": "DevOps là gì?",
+      "content": "DevOps là sự kết hợp giữa Development (phát triển) và Operations (vận hành). Mục tiêu là rút ngắn vòng đời phát triển phần mềm và cung cấp phần mềm chất lượng cao liên tục."
+    },
+    {
+      "heading": "Lợi ích của DevOps",
+      "content": "Triển khai nhanh hơn, ít lỗi hơn, phục hồi nhanh khi có sự cố, tăng cường cộng tác giữa team Dev và Ops."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "DevOps là sự kết hợp của?",
+      "options": ["Development + Operations", "Design + Optimization", "Deploy + Orchestration", "Data + Operations"],
+      "answer": 0,
+      "explanation": "DevOps = Development (phát triển) + Operations (vận hành)."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Mục tiêu chính của DevOps là gì?",
+      "options": ["Rút ngắn vòng đời phát triển phần mềm", "Tăng số lượng lập trình viên", "Loại bỏ testing", "Chỉ tập trung vào vận hành"],
+      "answer": 0,
+      "explanation": "DevOps hướng đến việc rút ngắn chu kỳ phát triển và cung cấp phần mềm liên tục với chất lượng cao."
+    },
+    {
+      "id": 3,
+      "level": "intermediate",
+      "question": "Thực hành nào KHÔNG thuộc về DevOps?",
+      "options": ["Waterfall development", "Continuous Integration", "Infrastructure as Code", "Automated Testing"],
+      "answer": 0,
+      "explanation": "Waterfall là mô hình phát triển tuần tự truyền thống, không phù hợp với triết lý DevOps vốn đề cao tính liên tục và lặp lại."
+    }
+  ]
+}

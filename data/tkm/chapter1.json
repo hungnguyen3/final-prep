@@ -1,0 +1,39 @@
+{
+  "title": "Chương 1: Giới thiệu TKM",
+  "theory": [
+    {
+      "heading": "TKM là gì?",
+      "content": "TKM (Toán Kỹ thuật / Toán Kinh tế) nghiên cứu các phương pháp toán học ứng dụng vào giải quyết bài toán kỹ thuật và kinh tế."
+    },
+    {
+      "heading": "Các phương pháp chính",
+      "content": "Quy hoạch tuyến tính, quy hoạch động, lý thuyết đồ thị, mô hình xác suất."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Quy hoạch tuyến tính giải quyết bài toán nào?",
+      "options": ["Tối ưu hóa hàm mục tiêu tuyến tính với ràng buộc tuyến tính", "Giải phương trình vi phân", "Tìm nghiệm của đa thức", "Phân tích chuỗi thời gian"],
+      "answer": 0,
+      "explanation": "Linear Programming (quy hoạch tuyến tính) tìm cực trị của hàm mục tiêu tuyến tính subject to các ràng buộc tuyến tính."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Phương pháp simplex được dùng để?",
+      "options": ["Giải bài toán quy hoạch tuyến tính", "Giải bài toán quy hoạch động", "Tìm đường đi ngắn nhất", "Tối ưu hóa mạng"],
+      "answer": 0,
+      "explanation": "Simplex là thuật toán cổ điển để giải bài toán quy hoạch tuyến tính."
+    },
+    {
+      "id": 3,
+      "level": "intermediate",
+      "question": "Trong quy hoạch động, nguyên lý tối ưu Bellman phát biểu?",
+      "options": ["Lời giải tối ưu của bài toán con là phần của lời giải tối ưu toàn cục", "Hàm mục tiêu luôn là tuyến tính", "Không thể chia bài toán thành bài toán con", "Chỉ áp dụng cho bài toán có ràng buộc nguyên"],
+      "answer": 0,
+      "explanation": "Bellman's principle of optimality: một chính sách tối ưu có tính chất là tại bất kỳ state nào, các quyết định còn lại phải tạo thành chính sách tối ưu."
+    }
+  ]
+}

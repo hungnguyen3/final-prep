@@ -1,0 +1,39 @@
+{
+  "title": "Chương 1: Giới thiệu Reinforcement Learning",
+  "theory": [
+    {
+      "heading": "Reinforcement Learning là gì?",
+      "content": "RL là một nhánh của Machine Learning, trong đó một agent học cách hành động trong môi trường để tối đa hóa phần thưởng tích lũy theo thời gian."
+    },
+    {
+      "heading": "Các thành phần cơ bản",
+      "content": "Agent, Environment, State (trạng thái), Action (hành động), Reward (phần thưởng), Policy (chính sách)."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Trong RL, 'agent' là gì?",
+      "options": ["Thực thể học và đưa ra quyết định", "Môi trường mà agent hoạt động trong đó", "Phần thưởng nhận được", "Trạng thái hiện tại"],
+      "answer": 0,
+      "explanation": "Agent là thực thể học hỏi và đưa ra các hành động trong môi trường để tối đa hóa phần thưởng."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Mục tiêu của agent trong RL là?",
+      "options": ["Tối đa hóa tổng phần thưởng tích lũy", "Tối thiểu hóa số bước hành động", "Khám phá toàn bộ môi trường", "Tìm trạng thái khởi đầu tốt nhất"],
+      "answer": 0,
+      "explanation": "Agent học để tối đa hóa cumulative reward (tổng phần thưởng tích lũy) theo thời gian."
+    },
+    {
+      "id": 3,
+      "level": "intermediate",
+      "question": "Policy trong RL là gì?",
+      "options": ["Hàm ánh xạ từ state sang action", "Hàm tính phần thưởng", "Mô hình của môi trường", "Tập hợp tất cả các state"],
+      "answer": 0,
+      "explanation": "Policy (π) là chiến lược của agent: ánh xạ từ mỗi state sang action mà agent sẽ thực hiện."
+    }
+  ]
+}

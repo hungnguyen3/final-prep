@@ -1,0 +1,8 @@
+{
+  "id": "devops",
+  "title": "DevOps",
+  "description": "Văn hóa, quy trình và công cụ DevOps",
+  "chapters": [
+    { "id": 1, "title": "Giới thiệu DevOps" }
+  ]
+}

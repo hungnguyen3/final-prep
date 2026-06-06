@@ -1,0 +1,8 @@
+{
+  "id": "rl",
+  "title": "RL",
+  "description": "Reinforcement Learning — Học tăng cường",
+  "chapters": [
+    { "id": 1, "title": "Giới thiệu Reinforcement Learning" }
+  ]
+}

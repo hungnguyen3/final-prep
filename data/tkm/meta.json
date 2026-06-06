@@ -1,0 +1,8 @@
+{
+  "id": "tkm",
+  "title": "TKM",
+  "description": "Toán kinh tế / Toán kỹ thuật — Tối ưu hóa và mô hình toán",
+  "chapters": [
+    { "id": 1, "title": "Giới thiệu TKM" }
+  ]
+}

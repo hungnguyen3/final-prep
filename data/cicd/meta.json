@@ -1,0 +1,8 @@
+{
+  "id": "cicd",
+  "title": "CI/CD",
+  "description": "Continuous Integration / Continuous Deployment",
+  "chapters": [
+    { "id": 1, "title": "Giới thiệu CI/CD" }
+  ]
+}

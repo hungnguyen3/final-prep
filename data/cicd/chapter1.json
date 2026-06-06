@@ -1,0 +1,39 @@
+{
+  "title": "Chương 1: Giới thiệu CI/CD",
+  "theory": [
+    {
+      "heading": "CI là gì?",
+      "content": "Continuous Integration (CI) là thực hành tích hợp code thường xuyên vào một nhánh chung, kèm theo chạy automated tests để phát hiện lỗi sớm."
+    },
+    {
+      "heading": "CD là gì?",
+      "content": "Continuous Delivery/Deployment (CD) là tự động hóa quá trình đưa phần mềm đã được test lên môi trường staging hoặc production."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "CI viết tắt của?",
+      "options": ["Continuous Integration", "Continuous Improvement", "Code Integration", "Container Infrastructure"],
+      "answer": 0,
+      "explanation": "CI = Continuous Integration — tích hợp code liên tục vào nhánh chung."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Lợi ích chính của CI là?",
+      "options": ["Phát hiện lỗi sớm nhờ tích hợp thường xuyên", "Loại bỏ hoàn toàn lỗi phần mềm", "Không cần viết test", "Tăng tốc độ gõ code"],
+      "answer": 0,
+      "explanation": "CI giúp phát hiện lỗi tích hợp sớm vì code được merge và test thường xuyên."
+    },
+    {
+      "id": 3,
+      "level": "intermediate",
+      "question": "Sự khác biệt giữa Continuous Delivery và Continuous Deployment là?",
+      "options": ["Delivery cần approval thủ công trước khi lên production, Deployment tự động hoàn toàn", "Delivery nhanh hơn Deployment", "Deployment chỉ dùng cho staging", "Không có sự khác biệt"],
+      "answer": 0,
+      "explanation": "Continuous Delivery: pipeline tự động đến staging, cần bước approve thủ công trước production. Continuous Deployment: tự động deploy lên production không cần can thiệp."
+    }
+  ]
+}

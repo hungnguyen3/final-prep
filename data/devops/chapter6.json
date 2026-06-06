@@ -1,239 +1,199 @@
 {
-  "title": "Chương 6: Cloud — AWS & Azure",
+  "title": "Chương 6: GitHub Actions — CI/CD tích hợp trong GitHub",
   "theory": [
     {
-      "heading": "Cloud Computing là gì?",
-      "content": "Cloud Computing (điện toán đám mây) là thực hành sử dụng mạng các máy chủ từ xa được lưu trữ trên Internet để lưu trữ, quản lý và xử lý dữ liệu, thay vì dùng máy chủ cục bộ hoặc máy tính cá nhân. Với On-Premise, bạn sở hữu máy chủ, thuê nhân viên IT và chịu toàn bộ rủi ro. Với Cloud Provider, nhà cung cấp sở hữu phần cứng; bạn chỉ cần cấu hình dịch vụ và code. Cloud Hosting dùng nhiều máy vật lý hoạt động như một hệ thống, linh hoạt, có thể mở rộng (Scalable), bảo mật (Secure), tiết kiệm chi phí (Cost-Effective) và dễ cấu hình."
+      "heading": "CI/CD là gì? Lợi ích",
+      "content": "Continuous Integration (CI): tự động integrate và test code changes thường xuyên. Developer commit code lên shared repository, automated tests chạy để đảm bảo không break existing functionality. Continuous Deployment (CD): tự động hóa việc release code changes — sau khi code pass tests và được approve, tự động deploy lên production/staging mà không cần can thiệp thủ công. Key Benefits: Faster Delivery (tự động testing và deployment), Higher Code Quality (automated tests), Reduced Errors (ít manual intervention), Continuous Feedback (developer phát hiện bugs nhanh)."
     },
     {
-      "heading": "AWS — Amazon Web Services",
-      "content": "Amazon được thành lập năm 1994 bởi Jeff Bezos tại Seattle, Washington. AWS (Amazon Web Services) là dịch vụ điện toán đám mây của Amazon, ra mắt năm 2006 và hiện là nhà cung cấp dịch vụ đám mây hàng đầu thế giới (CSP — Cloud Service Provider). Dịch vụ đầu tiên của AWS ra mắt công khai là SQS (Simple Queue Service) năm 2004. Tiếp theo là S3 (Simple Storage Service) tháng 3/2006 và EC2 (Elastic Compute Cloud) tháng 8/2006. Năm 2010, toàn bộ website bán lẻ Amazon.com đã chuyển sang AWS. Năm 2013, AWS bắt đầu cung cấp chương trình chứng chỉ cho kỹ sư. AWS có hơn 200+ dịch vụ đám mây."
+      "heading": "GitHub Actions là gì? Key Features",
+      "content": "GitHub Actions là CI/CD tool tích hợp sẵn trong GitHub. Cho phép tạo custom workflows để build, test, deploy code trực tiếp từ GitHub repository. Workflows được định nghĩa bằng YAML files bên trong repository. Key Features: Automation of workflows (build, test, deploy tự động), Event-driven workflows (trigger theo events: push, pull_request, release, schedule), Support for multiple languages (JavaScript, Python, Go, Java...), Custom actions (reusable code có thể share qua workflows hoặc repositories khác nhau)."
     },
     {
-      "heading": "Cloud Service Provider (CSP) & Các dịch vụ cốt lõi",
-      "content": "Một CSP cung cấp hàng chục đến hàng trăm dịch vụ đám mây có thể kết nối với nhau (chained together) qua một Single Unified API (ví dụ: AWS API). CSP dùng mô hình tính phí theo mức sử dụng (metered billing) — tính theo giây hoặc giờ, có monitoring tích hợp (AWS CloudTrail), cung cấp IaaS và hỗ trợ tự động hóa qua Infrastructure as Code (IaC). 4 dịch vụ cốt lõi của IaaS gồm: Compute (EC2 — máy ảo), Storage (EBS — ổ cứng ảo), Database (RDS — cơ sở dữ liệu SQL), Networking (VPC — mạng riêng ảo). Các CSP Tier-1 hàng đầu: AWS, Microsoft Azure, Google Cloud Platform (GCP), Alibaba Cloud."
+      "heading": "Key Concepts: Workflow, Events, Jobs, Steps, Runners",
+      "content": "Workflow: automated process định nghĩa bằng YAML file, chạy 1 hoặc nhiều jobs. Trigger bởi events hoặc schedule. Location: .github/workflows/ directory. Events: activities trigger workflow — push, pull_request, release, scheduled cron jobs. Jobs: tập hợp steps chạy trên cùng runner — jobs có thể chạy sequentially hoặc in parallel, mỗi job chạy trên own virtual machine (runner). Steps: individual tasks làm nên một job — có thể run commands, scripts, hoặc pre-built actions. Runners: servers thực thi jobs. GitHub cung cấp free hosted runners (Linux ubuntu-latest, Windows, macOS). Có thể dùng self-hosted runners. Mỗi hosted runner có predefined environment."
     },
     {
-      "heading": "Mô hình dịch vụ: IaaS, PaaS, SaaS",
-      "content": "IaaS (Infrastructure as a Service): bạn kiểm soát toàn bộ tài nguyên (VM, OS, middleware, app, data), nhà cung cấp quản lý phần cứng bên dưới (Virtualization, Servers, Storage, Networking). Ưu điểm: kiểm soát tốt, pay-as-you-go, dễ mở rộng. Nhược điểm: cần nhiều quản lý hơn. PaaS (Platform as a Service): bạn chỉ quản lý Applications và Data; nhà cung cấp quản lý từ Runtime trở xuống. Ưu điểm: ít quản lý hơn, triển khai nhanh. Nhược điểm: ít kiểm soát hơn. SaaS (Software as a Service): nhà cung cấp quản lý toàn bộ; bạn chỉ sử dụng ứng dụng. Ưu điểm: cài đặt nhanh, không cần quản lý hạ tầng. Nhược điểm: ít tùy chỉnh, dữ liệu lưu ở nơi khác."
+      "heading": "Anatomy of a GitHub Actions Workflow — YAML Structure",
+      "content": "Cấu trúc workflow YAML: name (tên workflow), on (triggers: push/pull_request với branches filter), jobs (chứa các jobs). Trong job: runs-on (chỉ định runner environment, ví dụ ubuntu-latest), steps (các bước thực hiện). Ví dụ CI workflow cho Spring Boot Maven: step 1 'Checkout repository' dùng actions/checkout@v2 (pull code từ repo), step 2 'Set up JDK' dùng actions/setup-java@v4 với java-version: 17, step 3 'Cache Maven repository' dùng actions/cache@v4 với path ~/.m2/repository và key dựa trên runner.os + hash pom.xml (để tăng tốc build lần sau), step 4 'Build with Maven' chạy mvn clean package -DskipTests, step 5 'Run tests' chạy mvn test."
     },
     {
-      "heading": "Lợi ích của Cloud: Scalability, High Availability, CapEx vs OpEx",
-      "content": "Scalability: khả năng tăng số lượng instance (Scale Out — ngang, không gián đoạn) hoặc tăng kích thước instance (Scale Up — dọc, có gián đoạn). Elasticity: tự động điều chỉnh tài nguyên theo nhu cầu. High Availability (HA): duy trì hiệu suất liên tục mặc dù có sự cố phần cứng hay datacenter; dùng Data Center Redundancy, Availability Zone, Region Redundancy. Fault Tolerance: hệ thống vẫn hoạt động dù có lỗi xảy ra. Disaster Recovery: phục hồi nhanh sau sự cố nghiêm trọng. CapEx (Capital Expenditure): đầu tư ban đầu lớn, dùng On-Premise (CapEx cao, OpEx thấp). OpEx (Operational Expenditure): chi phí vận hành, không đầu tư ban đầu — mô hình Cloud (CapEx thấp, OpEx cao)."
+      "heading": "GitHub Secrets — Quản lý thông tin nhạy cảm",
+      "content": "Secrets là biến môi trường được mã hóa lưu trong GitHub repository. Truy cập trong workflow bằng cú pháp: ${{ secrets.SECRET_NAME }}. Ví dụ: secrets.DOCKER_PASSWORD, secrets.SLACK_WEBHOOK_URL, secrets.HEROKU_API_KEY. Cách tạo: repository Settings > Secrets and variables > Actions > New repository secret. Không bao giờ hardcode credentials trực tiếp trong workflow file — luôn dùng secrets."
     },
     {
-      "heading": "Microsoft Azure & Mô hình Cloud Public/Private/Hybrid",
-      "content": "Microsoft Azure là CSP Tier-1 của Microsoft, tập trung vào AZ-900 (Azure Fundamentals) với 4 lĩnh vực: Cloud Concepts, Core Azure Services, Security/Privacy/Compliance/Trust, Azure Pricing and Support. Consumption-Based Model của Azure: không đầu tư trước, pay-as-you-go, trả ít hơn khi đặt trước (reserve), trả ít hơn khi dùng nhiều hơn. Compute tính theo CPU/giờ, Storage theo GB, Data Transfer theo GB ra ngoài. Ba mô hình Cloud: Public Cloud (tài nguyên chia sẻ, do nhà cung cấp sở hữu), Private Cloud (tài nguyên dành riêng cho một tổ chức), Hybrid Cloud (kết hợp cả hai, kết nối On-Premise với Cloud)."
+      "heading": "Advanced Features: Matrix Strategy, Caching, Notifications",
+      "content": "1) Parallel Jobs / Matrix Strategy: chạy nhiều jobs song song trên nhiều environments. Ví dụ test trên JDK 8, 11, 17 cùng lúc bằng strategy.matrix: {java-version: [8, 11, 17]}. 2) Caching Dependencies: dùng actions/cache@v4 để cache Maven/Gradle dependencies (~/.m2/repository) — key dựa trên runner.os và hash của pom.xml để cache tự invalidate khi dependencies thay đổi. 3) Notifications: gửi Slack notification sau build bằng action 8398a7/action-slack@v3 với SLACK_WEBHOOK_URL từ secrets. 4) needs keyword: khai báo dependency giữa jobs, job B chỉ chạy sau khi job A hoàn thành."
+    },
+    {
+      "heading": "Continuous Deployment với GitHub Actions",
+      "content": "Sau khi CI pass, setup CD để auto-deploy. Deploy to Docker Hub: docker login với secrets.DOCKER_PASSWORD, docker build -t username/app ., docker push username/app. Deploy to Heroku: dùng action akhileshns/heroku-deploy@v3 với heroku_api_key, heroku_app_name. Deploy to AWS Elastic Beanstalk: eb init -p java-17 app-name --region us-west-2, eb deploy. Multi-stage Dockerfile (build stage dùng maven:3.9.7, runtime stage dùng openjdk:21) giúp image nhỏ gọn hơn — build JAR trong stage 1, copy sang stage 2."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "Cloud Computing được định nghĩa là gì?",
-      "options": [
-        "Sử dụng mạng máy chủ từ xa trên Internet để lưu trữ, quản lý và xử lý dữ liệu",
-        "Mua máy chủ vật lý riêng để lưu trữ dữ liệu tại chỗ",
-        "Dùng phần mềm diệt virus để bảo vệ máy tính cá nhân",
-        "Kết nối nhiều máy tính cá nhân qua mạng LAN nội bộ"
-      ],
-      "answer": 0,
-      "explanation": "Theo PDF AWS, Cloud Computing là 'the practice of using a network of remote servers hosted on the Internet to store, manage, and process data, rather than a local server or a personal computer.'"
+      "question": "GitHub Actions workflow được định nghĩa bằng file loại nào?",
+      "options": ["JSON files trong .github/actions/", "YAML files trong .github/workflows/", "XML files trong src/ci/", "Groovy files trong root directory"],
+      "answer": 1,
+      "explanation": "GitHub Actions workflows được định nghĩa bằng YAML files đặt trong thư mục .github/workflows/ của repository."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "AWS (Amazon Web Services) được ra mắt chính thức vào năm nào?",
-      "options": [
-        "2000",
-        "2004",
-        "2006",
-        "2010"
-      ],
-      "answer": 2,
-      "explanation": "Theo PDF AWS, 'AWS was launched in *2006 is the leading cloud service provider in the world.' SQS ra mắt năm 2004 nhưng AWS chính thức ra đời năm 2006."
+      "question": "Trong GitHub Actions, 'Runner' là gì?",
+      "options": ["Tên của một workflow", "Server thực thi các jobs", "Người quản trị repository", "Một loại trigger event"],
+      "answer": 1,
+      "explanation": "Runner là server thực thi các jobs trong GitHub Actions. GitHub cung cấp free hosted runners (ubuntu-latest, windows-latest, macos-latest) hoặc bạn có thể dùng self-hosted runners."
     },
     {
       "id": 3,
       "level": "basic",
-      "question": "Dịch vụ AWS đầu tiên được ra mắt cho công chúng sử dụng là gì?",
-      "options": [
-        "EC2 (Elastic Compute Cloud)",
-        "S3 (Simple Storage Service)",
-        "RDS (Relational Database Service)",
-        "SQS (Simple Queue Service)"
-      ],
-      "answer": 3,
-      "explanation": "Theo PDF AWS, 'Simple Queue Service (SQS) was the first AWS service launched for public use in 2004.' S3 ra mắt tháng 3/2006 và EC2 tháng 8/2006."
+      "question": "Keyword 'on' trong GitHub Actions workflow dùng để làm gì?",
+      "options": ["Bật/tắt workflow", "Định nghĩa events trigger workflow (push, pull_request, schedule...)", "Khai báo tên workflow", "Chỉ định runner environment"],
+      "answer": 1,
+      "explanation": "Keyword 'on' định nghĩa triggers — events nào sẽ kích hoạt workflow. Ví dụ: on: push: branches: [master] sẽ chạy khi có push lên branch master."
     },
     {
       "id": 4,
       "level": "basic",
-      "question": "Trong mô hình Cloud Hosting, đặc điểm nào sau đây là ĐÚNG?",
-      "options": [
-        "Một máy vật lý dành riêng cho một doanh nghiệp duy nhất",
-        "Một máy vật lý chia sẻ cho hàng trăm doanh nghiệp",
-        "Nhiều máy vật lý hoạt động như một hệ thống, linh hoạt và có thể mở rộng",
-        "Một máy vật lý ảo hóa thành nhiều máy con để chạy nhiều ứng dụng"
-      ],
-      "answer": 2,
-      "explanation": "Theo PDF AWS, Cloud Hosting dùng 'Multiple physical machines that act as one system. The system is abstracted into multiple cloud services — Flexible, Scalable, Secure, Cost-Effective, High Configurability.'"
+      "question": "Action 'actions/checkout@v2' trong GitHub Actions được dùng để làm gì?",
+      "options": ["Deploy code lên server", "Pull source code từ repository về runner", "Setup JDK version", "Chạy unit tests"],
+      "answer": 1,
+      "explanation": "actions/checkout là pre-built action pull source code từ GitHub repository về runner để các steps tiếp theo có thể làm việc với code."
     },
     {
       "id": 5,
       "level": "basic",
-      "question": "High Availability (HA) trong Azure được định nghĩa là gì?",
-      "options": [
-        "Khả năng tự động sao lưu dữ liệu mỗi giờ một lần",
-        "Duy trì hiệu suất liên tục chấp nhận được dù có sự cố tạm thời về phần cứng hoặc datacenter",
-        "Khả năng mở rộng số lượng instance mà không cần dừng dịch vụ",
-        "Mô hình tính phí theo mức sử dụng thực tế"
-      ],
+      "question": "GitHub Secrets được truy cập trong workflow bằng cú pháp nào?",
+      "options": ["@secrets.SECRET_NAME", "${{ secrets.SECRET_NAME }}", "env.SECRET_NAME", "config.SECRET_NAME"],
       "answer": 1,
-      "explanation": "Theo PDF Azure, 'High Availability: Maintaining acceptable continuous performance despite temporary load fluctuations or failures in services, hardware, or data centers.' HA dùng Data Center Redundancy, Availability Zone Redundancy và Region Redundancy."
+      "explanation": "Trong GitHub Actions, secrets được truy cập bằng expression syntax: ${{ secrets.SECRET_NAME }}. Ví dụ: ${{ secrets.DOCKER_PASSWORD }}, ${{ secrets.SLACK_WEBHOOK_URL }}."
     },
     {
       "id": 6,
       "level": "basic",
-      "question": "Trong mô hình Azure Consumption-Based, chi phí Compute được tính như thế nào?",
-      "options": [
-        "Trả một lần cố định theo tháng bất kể sử dụng",
-        "Trả theo số lượng người dùng trong hệ thống",
-        "Trả theo CPU/giờ sử dụng",
-        "Trả theo số lượng file được lưu trữ"
-      ],
+      "question": "Trong GitHub Actions, Jobs có thể chạy theo cách nào?",
+      "options": ["Chỉ chạy tuần tự, không thể song song", "Chỉ chạy song song, không thể tuần tự", "Sequentially (tuần tự) hoặc in parallel (song song)", "Luôn chạy theo thứ tự alphabet"],
       "answer": 2,
-      "explanation": "Theo PDF Azure về Consumption-Based Model: 'Compute — Pay by CPU/hour', Storage tính theo GB, Data Transfer tính theo GB data ra ngoài."
+      "explanation": "Jobs có thể chạy sequentially (dùng 'needs' keyword để tạo dependency) hoặc in parallel (mặc định, không có needs). Mỗi job chạy trên own virtual machine."
     },
     {
       "id": 7,
-      "level": "intermediate",
-      "question": "4 dịch vụ cốt lõi (4 core) của một Cloud Service Provider (CSP) theo mô hình IaaS là gì?",
-      "options": [
-        "Analytics, Machine Learning, IoT, Blockchain",
-        "Compute, Storage, Database, Networking",
-        "Security, Identity, Compliance, Trust",
-        "SQS, S3, EC2, RDS"
-      ],
+      "level": "basic",
+      "question": "Key benefit của CI/CD là gì?",
+      "options": ["Tăng số lượng developer cần thiết", "Faster Delivery, Higher Code Quality, Reduced Errors, Continuous Feedback", "Loại bỏ hoàn toàn nhu cầu testing", "Chỉ áp dụng được cho Java projects"],
       "answer": 1,
-      "explanation": "Theo PDF AWS, '4 core cloud service offerings' của IaaS gồm: Compute (EC2 Virtual Machines), Storage (EBS Virtual Hard drives), Database (RDS SQL databases), Networking (VPC Private Cloud Network)."
+      "explanation": "CI/CD mang lại: Faster Delivery (tự động hóa), Higher Code Quality (automated tests), Reduced Errors (ít manual intervention), Continuous Feedback (phát hiện bugs sớm)."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "Sự khác biệt giữa Scale Out và Scale Up là gì?",
-      "options": [
-        "Scale Out tăng kích thước instance (disruptive); Scale Up tăng số lượng instance (non-disruptive)",
-        "Scale Out và Scale Up đều tăng kích thước instance nhưng theo hướng khác nhau",
-        "Scale Out tăng số lượng instance (non-disruptive); Scale Up tăng kích thước instance (disruptive)",
-        "Scale Out dùng cho database; Scale Up dùng cho compute"
-      ],
-      "answer": 2,
-      "explanation": "Theo PDF Azure: 'Scaling Out — Increase instance count of existing resources, Non-disruptive. Scaling Up — Increase instance size of existing resources, Disruptive.'"
+      "question": "Action 'actions/cache@v4' trong GitHub Actions được dùng để làm gì?",
+      "options": ["Xóa cache sau mỗi build", "Cache dependencies (Maven .m2, npm node_modules) để tăng tốc build", "Lưu artifacts sau khi build", "Cache Docker images"],
+      "answer": 1,
+      "explanation": "actions/cache@v4 cache thư mục dependencies (ví dụ: ~/.m2/repository cho Maven). Cache key thường dựa trên runner.os + hash của pom.xml — khi pom.xml thay đổi, cache tự invalidate và download dependencies mới."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "Trong mô hình PaaS (Platform as a Service), người dùng chịu trách nhiệm quản lý những lớp nào?",
-      "options": [
-        "Toàn bộ: từ Networking đến Applications",
-        "Chỉ Applications và Data",
-        "Chỉ Applications",
-        "Từ O/S đến Applications (bao gồm Middleware, Runtime)"
-      ],
-      "answer": 1,
-      "explanation": "Theo PDF Azure, với PaaS người dùng chỉ quản lý Applications và Data. Tất cả các lớp phía dưới (Runtime, Middleware, O/S, Virtualization, Servers, Storage, Networking) do Microsoft/nhà cung cấp quản lý."
+      "question": "Matrix strategy trong GitHub Actions dùng để làm gì?",
+      "options": ["Chạy job trên nhiều environments/versions song song — ví dụ test trên JDK 8, 11, 17 cùng lúc", "Định nghĩa ma trận bảo mật cho repository", "Cấu hình multiple runners", "Tạo nhiều workflows từ một template"],
+      "answer": 0,
+      "explanation": "Matrix strategy: strategy: { matrix: { java-version: [8, 11, 17] } } — GitHub Actions tạo 3 job instances chạy song song, mỗi job test với một JDK version khác nhau. Rất hiệu quả để đảm bảo compatibility."
     },
     {
       "id": 10,
       "level": "intermediate",
-      "question": "Điểm khác biệt chính giữa CapEx (Capital Expenditure) và OpEx (Operational Expenditure) trong bối cảnh Cloud là gì?",
-      "options": [
-        "CapEx là chi phí bảo mật, OpEx là chi phí lưu trữ",
-        "CapEx là đầu tư ban đầu lớn (On-Premise: CapEx cao, OpEx thấp); OpEx là chi phí vận hành không đầu tư trước (Cloud: CapEx thấp, OpEx cao)",
-        "CapEx dùng cho doanh nghiệp nhỏ, OpEx dùng cho doanh nghiệp lớn",
-        "CapEx và OpEx đều dùng mô hình pay-as-you-go"
-      ],
+      "question": "Keyword 'needs' trong GitHub Actions job definition có nghĩa gì?",
+      "options": ["Job cần thêm resources", "Job chỉ chạy sau khi job được chỉ định hoàn thành thành công", "Job cần có secrets", "Job yêu cầu self-hosted runner"],
       "answer": 1,
-      "explanation": "Theo PDF Azure: CapEx là 'Up-front investment, usually non-recurring, related to purchase of permanent assets.' OpEx là 'No up-front investment, Recurring cost of doing business.' On-Premise: CapEx cao, OpEx thấp. Cloud: CapEx thấp, OpEx cao."
+      "explanation": "needs: [job-name] tạo dependency giữa jobs — job hiện tại chỉ chạy sau khi job được chỉ định hoàn thành. Ví dụ: deploy job cần build job chạy xong trước."
     },
     {
       "id": 11,
       "level": "intermediate",
-      "question": "Một Cloud Service Provider (CSP) khác với một Cloud Platform (như Twilio, HashiCorp) ở điểm nào?",
-      "options": [
-        "CSP không cung cấp API, Cloud Platform có API đầy đủ",
-        "CSP cung cấp nhiều dịch vụ qua Single Unified API, metered billing, IaaS và IaC automation; Cloud Platform chỉ cung cấp một số dịch vụ, không đáp ứng đầy đủ các tiêu chí",
-        "CSP chỉ dành cho doanh nghiệp lớn; Cloud Platform dành cho startup",
-        "CSP không có chứng chỉ; Cloud Platform có chương trình chứng chỉ riêng"
-      ],
+      "question": "Trong workflow YAML, 'runs-on: ubuntu-latest' có nghĩa gì?",
+      "options": ["Workflow chỉ chạy khi push lên Ubuntu", "Job sẽ chạy trên GitHub-hosted runner với môi trường Ubuntu mới nhất", "Cần cài Ubuntu trên máy developer", "Job chạy trong Ubuntu Docker container local"],
       "answer": 1,
-      "explanation": "Theo PDF AWS: 'If a company offers multiple cloud services under a single UI but do not meet most of or all of these requirements, it would be referred to as a Cloud Platform e.g. Twilio, HashiCorp, Databricks.' CSP đầy đủ phải có Single Unified API, metered billing, monitoring tích hợp, IaaS và IaC automation."
+      "explanation": "runs-on chỉ định runner environment. ubuntu-latest = GitHub-hosted runner với Ubuntu mới nhất. GitHub cũng cung cấp windows-latest và macos-latest."
     },
     {
       "id": 12,
       "level": "intermediate",
-      "question": "Theo Gartner Magic Quadrant cho Cloud Infrastructure, nhà cung cấp nào dẫn đầu trong ô 'Leaders' với vị trí cao nhất?",
-      "options": [
-        "Google Cloud Platform",
-        "Microsoft Azure",
-        "Amazon Web Services (AWS)",
-        "Alibaba Cloud"
-      ],
-      "answer": 2,
-      "explanation": "Theo PDF AWS, trong biểu đồ Gartner Magic Quadrant (July 2021), Amazon Web Services nằm cao nhất trong ô 'Leaders', theo sau là Microsoft và Google. AWS được đánh giá cao nhất về cả 'Ability to Execute' và 'Completeness of Vision'."
+      "question": "Để deploy lên Docker Hub trong GitHub Actions, cần làm gì đầu tiên?",
+      "options": ["Cài Docker Desktop trên runner", "Login vào Docker Hub dùng secrets: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin", "Tạo Dockerfile trong .github/workflows/", "Push code trực tiếp không cần login"],
+      "answer": 1,
+      "explanation": "Step đầu tiên là docker login với credentials từ secrets. Dùng --password-stdin để tránh password xuất hiện trong logs. Sau đó docker build và docker push."
     },
     {
       "id": 13,
-      "level": "advanced",
-      "question": "Phân tích mô hình tiến hóa của Cloud Hosting: tại sao VPS (Virtual Private Server) được đánh giá là 'Better Utilization and Isolation of Resources' so với Dedicated Server?",
-      "options": [
-        "Vì VPS dùng nhiều máy vật lý hơn Dedicated Server nên tài nguyên nhiều hơn",
-        "Vì VPS ảo hóa một máy vật lý thành nhiều máy con (sub-machines), cho phép chạy nhiều web-app trên cùng một máy, tận dụng tài nguyên tốt hơn trong khi vẫn cô lập các môi trường",
-        "Vì VPS dùng chung phần cứng với hàng trăm doanh nghiệp nên chi phí thấp hơn",
-        "Vì VPS không cần Hypervisor nên hiệu suất cao hơn Dedicated Server"
-      ],
-      "answer": 1,
-      "explanation": "Theo PDF AWS, VPS là 'One physical machine dedicated to a single business. The physical machine is virtualized into sub-machines. Runs multiple web-apps/sites — Better Utilization and Isolation of Resources.' Ảo hóa cho phép tận dụng tài nguyên tốt hơn và cô lập môi trường, khắc phục nhược điểm của Dedicated Server (lãng phí tài nguyên — Wasted Space)."
+      "level": "intermediate",
+      "question": "Sự khác biệt giữa 'run' và 'uses' trong một step của GitHub Actions là gì?",
+      "options": ["run chạy shell commands; uses gọi pre-built actions từ marketplace", "run chạy trên Linux; uses chạy trên Windows", "run dùng cho CI; uses dùng cho CD", "Không có sự khác biệt"],
+      "answer": 0,
+      "explanation": "run: thực thi shell command trực tiếp (ví dụ: run: mvn test). uses: gọi một pre-built action từ GitHub marketplace hoặc repository khác (ví dụ: uses: actions/checkout@v2)."
     },
     {
       "id": 14,
       "level": "advanced",
-      "question": "So sánh Containers và VMs trong mô hình tiến hóa của Computing: Container có ưu điểm gì so với VM về hiệu quả tài nguyên?",
+      "question": "Trong CI workflow cho Spring Boot, tại sao dùng 'mvn clean package -DskipTests' thay vì 'mvn clean package'?",
       "options": [
-        "Container dùng Hypervisor riêng cho mỗi app nên bảo mật tốt hơn VM",
-        "Container chia sẻ cùng OS nền với nhau thông qua Docker Daemon, hiệu quả hơn VM vì không cần Guest OS riêng cho mỗi môi trường, giảm Wasted Space và xung đột tài nguyên",
-        "Container chỉ chạy được trên Windows trong khi VM chạy được trên mọi OS",
-        "Container cần nhiều RAM hơn VM vì phải chạy nhiều Guest OS song song"
+        "Để build nhanh hơn bằng cách bỏ qua tests ở bước build, tests sẽ được chạy riêng ở step 'Run tests'",
+        "Vì GitHub Actions không hỗ trợ chạy tests",
+        "Để tạo WAR file thay vì JAR file",
+        "-DskipTests là bắt buộc khi dùng Maven trên Ubuntu"
       ],
-      "answer": 1,
-      "explanation": "Theo PDF AWS: 'Your containers share the same underlying OS so containers are more efficient than multiple VMs. Multiple apps can run side by side without being limited to the same OS requirements and will not cause conflicts during resource sharing.' Docker Daemon là phần mềm quản lý containers thay vì Hypervisor của VM."
+      "answer": 0,
+      "explanation": "-DskipTests bỏ qua việc chạy tests trong bước build (chỉ compile). Tests được chạy riêng ở step kế tiếp (mvn test) để tách biệt build và test phases, dễ debug hơn khi có lỗi."
     },
     {
       "id": 15,
       "level": "advanced",
-      "question": "Trong mô hình Economies of Scale của Azure, ba nguồn tiết kiệm chính là gì và cách chúng giúp giảm chi phí cho người dùng cuối?",
+      "question": "Multi-stage Dockerfile (FROM maven AS build + FROM openjdk) mang lại lợi ích gì?",
       "options": [
-        "Tiết kiệm từ phần mềm (Software Savings), phần cứng (Hardware Savings) và nhân công (Labor Savings)",
-        "Supply-Side Savings (giảm chi phí đất, máy chủ, điện, lao động), Demand-Side Savings (phục vụ nhiều khách hàng hơn giúp tận dụng server tốt hơn 80% CPU) và Multi-Tenancy Savings (nhiều tenant hơn giảm chi phí quản lý mỗi tenant)",
-        "Public Cloud Savings, Private Cloud Savings và Hybrid Cloud Savings dựa trên mô hình triển khai",
-        "CapEx Savings, OpEx Savings và Hybrid Savings từ kết hợp đầu tư ban đầu và vận hành"
+        "Cho phép dùng nhiều base images, giai đoạn build dùng Maven image (nặng), runtime image chỉ cần openjdk (nhỏ gọn) — giảm kích thước final image",
+        "Tăng tốc độ build",
+        "Bắt buộc phải dùng khi deploy lên AWS",
+        "Cho phép chạy nhiều ứng dụng trong một container"
       ],
-      "answer": 1,
-      "explanation": "Theo PDF Azure về Economies of Scale: 'Supply-Side Savings — Lower costs of land, servers, power, labor. Demand-Side Savings — Serving more customers means using more server resources (e.g., 80% CPU), higher server utilization rates means lower costs. Multi-Tenancy Savings — More tenants (customers or users) lowers the cost of servers and management per tenant.'"
+      "answer": 0,
+      "explanation": "Multi-stage build: Stage 1 (maven:3.9.7) compile và tạo JAR. Stage 2 (openjdk:21) chỉ copy JAR từ stage 1 — final image không chứa Maven, source code, hay build tools. Kết quả: image nhỏ hơn nhiều, bảo mật hơn."
     },
     {
       "id": 16,
       "level": "advanced",
-      "question": "Khi nào nên chọn SaaS thay vì IaaS trong doanh nghiệp, và nhược điểm lớn nhất của SaaS về mặt bảo mật là gì?",
+      "question": "Tại sao cache key trong actions/cache nên dựa trên hash của pom.xml?",
       "options": [
-        "Nên chọn SaaS khi cần kiểm soát toàn bộ hạ tầng; nhược điểm là tốn nhiều chi phí vận hành hơn",
-        "Nên chọn SaaS khi cần triển khai nhanh, không muốn quản lý hạ tầng, bất kỳ ai cũng dùng được; nhược điểm là nhà cung cấp có thể truy cập dữ liệu khách hàng và ít kiểm soát hơn",
-        "Nên chọn SaaS khi cần môi trường lập trình linh hoạt; nhược điểm là không hỗ trợ tự động hóa",
-        "Nên chọn SaaS khi doanh nghiệp có đội ngũ IT lớn; nhược điểm là phải quản lý O/S và Runtime"
+        "Để cache tự động invalidate khi dependencies thay đổi (pom.xml thay đổi → hash thay đổi → cache mới được tạo)",
+        "Vì pom.xml chứa runner configuration",
+        "Để tránh conflict giữa nhiều branches",
+        "Đây là yêu cầu bắt buộc của GitHub Actions"
+      ],
+      "answer": 0,
+      "explanation": "Cache key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}. Khi pom.xml thay đổi (thêm/xóa dependency), hash thay đổi → cache key thay đổi → download dependencies mới. Khi pom.xml không đổi → dùng cache cũ → build nhanh hơn."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "Trong Complete CI/CD example từ slide, workflow Integration Test được trigger bởi event nào?",
+      "options": ["push lên mọi branches", "pull_request lên branch master", "schedule chạy hàng ngày", "workflow_dispatch (chạy thủ công)"],
+      "answer": 1,
+      "explanation": "Theo workflow trong slide: on: pull_request: branches: [master] — workflow Integration Test chạy khi có Pull Request nhắm vào branch master. Đây là pattern phổ biến để chạy tests trước khi merge."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "Để deploy lên AWS Elastic Beanstalk từ GitHub Actions, lệnh nào được dùng?",
+      "options": [
+        "aws deploy create-deployment",
+        "eb init -p java-17 app-name --region us-west-2, sau đó eb deploy",
+        "kubectl apply -f deployment.yaml",
+        "docker push aws-ecr-url/app"
       ],
       "answer": 1,
-      "explanation": "Theo PDF Azure: SaaS có ưu điểm 'No management & administration, No up-front costs; pay-as-you-go, No physical infrastructure to manage, Fast setup, Anyone can use it.' Nhược điểm bảo mật: 'Vendor may have access to customer data' và 'No control over software or infrastructure.' IaaS phù hợp khi cần kiểm soát tối đa còn SaaS khi cần triển khai nhanh và đơn giản."
+      "explanation": "Deploy lên AWS Elastic Beanstalk: eb init -p java-17 spring-boot-app --region us-west-2 (khởi tạo EB environment với Java 17 platform tại region us-west-2), sau đó eb deploy để deploy version mới."
     }
   ]
 }

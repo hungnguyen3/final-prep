@@ -21,6 +21,9 @@ async function init() {
   document.title = `${data.title} — Quiz`;
   document.getElementById('chapter-title').textContent = data.title;
 
+  const backBtn = document.getElementById('btn-back');
+  if (backBtn) backBtn.href = `subject.html?subject=${subject}`;
+
   renderBreadcrumb(document.getElementById('breadcrumb'), [
     { label: 'Trang chủ', href: 'index.html' },
     { label: meta.title, href: `subject.html?subject=${subject}` },

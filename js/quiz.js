@@ -112,25 +112,26 @@ function renderPracticeQuestion() {
       <div class="q-text">${q.question}</div>
       <div class="options">
         ${q.options.map((opt, i) => `
-          <button class="option-btn" data-index="${i}">${opt}</button>
+          <button type="button" class="option-btn" data-index="${i}">${opt}</button>
         `).join('')}
       </div>
       <div class="explanation" id="explanation">${q.explanation}</div>
     </div>
     <div class="quiz-nav">
       <span class="q-counter"></span>
-      <button class="btn primary" id="btn-next" style="display:none">Câu tiếp theo →</button>
+      <button type="button" class="btn primary" id="btn-next" style="display:none">Câu tiếp theo →</button>
     </div>
   `;
 
   area.querySelectorAll('.option-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const chosen = parseInt(btn.dataset.index);
+      const chosen = parseInt(btn.dataset.index, 10);
+      const correctIdx = parseInt(q.answer, 10);
       area.querySelectorAll('.option-btn').forEach(b => {
         b.disabled = true;
-        const idx = parseInt(b.dataset.index);
-        if (idx === q.answer) b.classList.add('correct');
-        else if (idx === chosen) b.classList.add('wrong');
+        const idx = parseInt(b.dataset.index, 10);
+        if (idx === correctIdx) b.classList.add('correct');
+        else if (idx === chosen && chosen !== correctIdx) b.classList.add('wrong');
       });
       document.getElementById('explanation').classList.add('show');
       document.getElementById('btn-next').style.display = 'inline-block';
@@ -164,7 +165,7 @@ function renderExam() {
           <div class="q-text">${q.question}</div>
           <div class="options">
             ${q.options.map((opt, i) => `
-              <button class="option-btn" data-qi="${qi}" data-index="${i}">${opt}</button>
+          <button type="button" class="option-btn" data-qi="${qi}" data-index="${i}">${opt}</button>
             `).join('')}
           </div>
           <div class="explanation" id="exp-${qi}">${q.explanation}</div>
@@ -179,8 +180,8 @@ function renderExam() {
 
   area.querySelectorAll('.option-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const qi = parseInt(btn.dataset.qi);
-      examAnswers[qi] = parseInt(btn.dataset.index);
+      const qi = parseInt(btn.dataset.qi, 10);
+      examAnswers[qi] = parseInt(btn.dataset.index, 10);
       area.querySelectorAll(`.option-btn[data-qi="${qi}"]`).forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     });
@@ -193,16 +194,17 @@ function submitExam() {
   let correct = 0;
   filtered.forEach((q, qi) => {
     const chosen = examAnswers[qi];
+    const correctIdx = parseInt(q.answer, 10);
     const card = document.getElementById(`qcard-${qi}`);
     card.querySelectorAll('.option-btn').forEach(b => {
       b.disabled = true;
       b.classList.remove('active');
-      const idx = parseInt(b.dataset.index);
-      if (idx === q.answer) b.classList.add('correct');
-      else if (idx === chosen && chosen !== q.answer) b.classList.add('wrong');
+      const idx = parseInt(b.dataset.index, 10);
+      if (idx === correctIdx) b.classList.add('correct');
+      else if (idx === chosen && chosen !== correctIdx) b.classList.add('wrong');
     });
     document.getElementById(`exp-${qi}`).classList.add('show');
-    if (chosen === q.answer) correct++;
+    if (chosen === correctIdx) correct++;
   });
 
   document.getElementById('btn-submit').style.display = 'none';

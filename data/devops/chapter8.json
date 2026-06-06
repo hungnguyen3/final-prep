@@ -1,0 +1,239 @@
+{
+  "title": "Chương 8: Containerization — Docker & Kubernetes",
+  "theory": [
+    {
+      "heading": "Kiến trúc Monolithic và Microservices",
+      "content": "Monolithic Architecture: toàn bộ ứng dụng (UI, business logic, data access) đóng gói trong một đơn vị duy nhất (ví dụ: file WAR chạy trên Tomcat). Ưu điểm: dễ phát triển, test, deploy và scale ban đầu, ít tốn kém. Nhược điểm: tightly coupled, khó hiểu và chỉnh sửa, thời gian khởi động lâu, một bug có thể làm sập toàn bộ hệ thống, khó scale và áp dụng công nghệ mới. Microservices Architecture: mỗi service (Account, Inventory, Shipping...) chạy độc lập, giao tiếp qua REST API, có database riêng. Ưu điểm: decoupled, deploy độc lập, dễ test từng phần, không bị ràng buộc công nghệ. Nhược điểm: chi phí ban đầu cao, khởi động VM chậm, tốn bộ nhớ, phức tạp khi deploy hệ thống phân tán."
+    },
+    {
+      "heading": "Docker là gì và tại sao cần Docker",
+      "content": "Docker là công cụ phát triển phần mềm và công nghệ ảo hóa giúp dễ dàng phát triển, deploy và quản lý ứng dụng bằng container. Trước Docker: developer gửi code cho tester nhưng không chạy được do khác dependency — 'works on my machine'. Sau Docker: cả hai cùng dùng Docker container chứa môi trường đồng nhất, loại bỏ sự khác biệt về dependency. Container là gói phần mềm nhẹ, độc lập, thực thi được, chứa tất cả thư viện, file cấu hình, dependency cần thiết (ví dụ: Ubuntu + Python + Dependencies). So với VM: container chỉ tốn MB (không phải GB), khởi động nhanh hơn nhiều, không cần OS riêng cho mỗi container vì chúng chia sẻ kernel của host OS thông qua Docker engine."
+    },
+    {
+      "heading": "VM vs Docker Container và Hypervisor",
+      "content": "Hypervisor là phần mềm tạo và chạy các máy ảo (VMs). Type 1 (bare-metal): chạy trực tiếp trên phần cứng, ví dụ Microsoft Hyper-V, VMware ESXi. Type 2 (hosted): chạy như software layer trên OS, ví dụ VirtualBox, VMware Player. VM: mỗi VM có OS riêng, kích thước GB, boot time dài, strong isolation. Docker Container: không cần OS riêng, kích thước MB, boot nhanh, chia sẻ kernel host OS qua Docker engine — giải quyết 'Matrix from Hell' (xung đột dependency phức tạp giữa nhiều service và môi trường Dev/Test/Prod)."
+    },
+    {
+      "heading": "Container Orchestration và Docker Swarm vs Kubernetes",
+      "content": "Container Orchestration tự động hóa việc deploy, quản lý, scaling và networking của container trên cluster. Các tác vụ bao gồm: cấu hình và scheduling container, provisioning và deploy, redundancy và availability, scale up/down, di chuyển container khi host hỏng, load balancing, health monitoring. Docker Swarm: cài đặt đơn giản nhưng cluster yếu hơn, scale nhanh gấp 5x so với K8s, KHÔNG có auto-scaling, không có GUI, rolling update nhưng không tự rollback, dùng ELK cho logging. Kubernetes: cài đặt phức tạp nhưng cluster mạnh, có auto-scaling, có Kubernetes Dashboard (GUI), automatic rollbacks, in-built logging & monitoring, data volumes chỉ chia sẻ trong cùng Pod."
+    },
+    {
+      "heading": "Kubernetes — Kiến trúc và các thành phần",
+      "content": "Kubernetes (K8s) là open-source Container Management tool, được Google phát triển, viết bằng Golang, sau đó donate cho CNCF. Cung cấp: container runtime, orchestration, self-healing, service discovery, load balancing, auto-scaling. Cluster gồm các node — Master node quản lý cluster, Worker node chạy ứng dụng. Master node có 4 thành phần: (1) ETCD — distributed key-value store lưu toàn bộ trạng thái cluster, đảm bảo không xung đột giữa các masters; (2) Scheduler — phân phối containers lên các nodes, gán container mới vừa tạo; (3) Controller Manager — 'bộ não' của orchestration, phát hiện và phản hồi khi node/container hỏng, quyết định khởi tạo container mới; (4) API Server — cổng giao tiếp chính, validate và thực thi lệnh REST, đảm bảo cấu hình trong etcd khớp với thực tế. Worker node có: Kubelet (agent báo cáo sức khỏe và thực thi lệnh từ master) và Kube-proxy (định tuyến network traffic theo network policies)."
+    },
+    {
+      "heading": "kubectl và các bản phân phối Kubernetes",
+      "content": "kubectl là command-line tool tương tác với K8s cluster thông qua API Server. Lệnh phổ biến: 'kubectl run nginx' (deploy app), 'kubectl cluster-info' (xem thông tin cluster), 'kubectl get nodes' (liệt kê tất cả nodes). Các bản phân phối K8s: Cloud Managed — EKS (AWS), AKS (Microsoft), GKE (Google); Self Managed — OpenShift (Redhat), Docker Enterprise; Local dev/test — Minikube, MicroK8s (Canonical); Vanilla — Kubeadm; Special builds — K3s (Rancher, lightweight cho Edge devices, <100MB memory, dùng SQLite thay ETCD, dùng containerd thay Docker, có built-in Ingress controller Traefik)."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Docker Container là gì?",
+      "options": [
+        "Một máy ảo đầy đủ với hệ điều hành riêng, kích thước hàng GB",
+        "Gói phần mềm nhẹ, độc lập, chứa ứng dụng và toàn bộ dependency cần thiết để chạy",
+        "Một công cụ quản lý mã nguồn phân tán",
+        "Một hypervisor kiểu Type 1 chạy trực tiếp trên phần cứng"
+      ],
+      "answer": 1,
+      "explanation": "Container là gói phần mềm lightweight, stand-alone, executable chứa tất cả libraries, config files, dependencies cần thiết để vận hành ứng dụng (ví dụ: Ubuntu + Python + Dependencies). Khác với VM, container không có OS riêng mà chia sẻ kernel của host."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Vấn đề 'Matrix from Hell' trong môi trường Monolithic/Microservices truyền thống xảy ra do nguyên nhân nào?",
+      "options": [
+        "Kubernetes không hỗ trợ rolling update tự động",
+        "Mỗi service có yêu cầu dependency khác nhau, thời gian setup lâu, và môi trường Dev/Test/Prod khác nhau gây xung đột",
+        "Docker không thể chạy trên Windows",
+        "ETCD không đồng bộ được dữ liệu giữa các master node"
+      ],
+      "answer": 1,
+      "explanation": "Vấn đề 'Matrix from Hell' phát sinh khi các service (Node.js, MongoDB, Redis, Ansible...) có yêu cầu dependency khác nhau, thời gian setup lâu, và môi trường Dev/Test/Prod không đồng nhất, dẫn đến xung đột dependency phức tạp."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Docker giải quyết bài toán 'works on my machine' như thế nào?",
+      "options": [
+        "Bằng cách chạy mỗi ứng dụng trong một VM riêng biệt với OS đầy đủ",
+        "Bằng cách yêu cầu tất cả developer dùng cùng hệ điều hành vật lý",
+        "Developer và tester cùng chạy ứng dụng trong Docker container đồng nhất, loại bỏ sự khác biệt về dependency",
+        "Bằng cách biên dịch ứng dụng thành file binary duy nhất không cần dependency"
+      ],
+      "answer": 2,
+      "explanation": "Sau khi dùng Docker, cả developer lẫn tester đều chạy cùng một Docker container với môi trường hoàn toàn đồng nhất, loại bỏ vấn đề dependency khác nhau giữa các máy."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Trong kiến trúc Kubernetes, thành phần nào trên Master node có nhiệm vụ lưu trữ toàn bộ dữ liệu trạng thái của cluster?",
+      "options": [
+        "Scheduler",
+        "Controller Manager",
+        "API Server",
+        "ETCD"
+      ],
+      "answer": 3,
+      "explanation": "ETCD là distributed reliable key-value store được Kubernetes dùng để lưu toàn bộ dữ liệu quản lý cluster. Nó cũng chịu trách nhiệm implement locks để tránh xung đột giữa các Master nodes."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Hypervisor Type 1 (bare-metal) khác Hypervisor Type 2 (hosted) ở điểm nào?",
+      "options": [
+        "Type 1 chạy như software layer trên OS (ví dụ VirtualBox); Type 2 chạy trực tiếp trên phần cứng (ví dụ VMware ESXi)",
+        "Type 1 chạy trực tiếp trên phần cứng (ví dụ VMware ESXi, Hyper-V); Type 2 chạy như software layer trên OS (ví dụ VirtualBox, VMware Player)",
+        "Type 1 dùng cho container; Type 2 dùng cho máy ảo truyền thống",
+        "Type 1 và Type 2 đều chạy trên OS nhưng khác nhau về hiệu năng"
+      ],
+      "answer": 1,
+      "explanation": "Type 1 hypervisor (bare-metal) chạy trực tiếp trên phần cứng host, ví dụ Microsoft Hyper-V và VMware ESXi. Type 2 hypervisor (hosted) chạy như một software layer trên hệ điều hành, ví dụ VirtualBox và VMware Player."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Mỗi máy trong một Kubernetes cluster được gọi là gì, và có mấy loại?",
+      "options": [
+        "Được gọi là Pod, có 3 loại: master, worker và edge",
+        "Được gọi là Node, có 2 loại: Master node (quản lý cluster) và Worker node (chạy ứng dụng containerized)",
+        "Được gọi là Container, có 2 loại: primary và secondary",
+        "Được gọi là Service, có 2 loại: internal và external"
+      ],
+      "answer": 1,
+      "explanation": "Mỗi máy trong Kubernetes cluster được gọi là node. Có 2 loại: Master node chứa các thành phần control plane và quản lý cluster; Worker node chạy các ứng dụng containerized."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "Sự khác biệt về kích thước và thời gian khởi động giữa VM và Docker Container là gì?",
+      "options": [
+        "VM có kích thước MB và khởi động trong vài giây; Container có kích thước GB và khởi động trong vài phút",
+        "VM và Container có kích thước tương đương nhau nhưng Container khởi động nhanh hơn",
+        "VM có kích thước GB và boot time dài; Container chỉ tốn MB và khởi động nhanh hơn nhiều vì không có OS riêng",
+        "Cả hai đều có kích thước và thời gian khởi động tương đương, sự khác biệt chỉ là về bảo mật"
+      ],
+      "answer": 2,
+      "explanation": "VM có kích thước hàng GB (vì mỗi VM có OS riêng) và thời gian boot dài. Container chỉ tốn hàng MB và khởi động rất nhanh vì container không cần OS riêng — chúng chia sẻ kernel của host OS thông qua Docker engine."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Trong kiến trúc Kubernetes, Scheduler trên Master node có nhiệm vụ gì?",
+      "options": [
+        "Lưu trữ toàn bộ trạng thái cluster dưới dạng key-value",
+        "Phân phối work/containers lên các nodes và gán container mới vừa tạo cho node phù hợp",
+        "Định tuyến network traffic đến đúng service bên trong cluster",
+        "Thực thi lệnh REST từ kubectl và đảm bảo cấu hình đồng nhất với etcd"
+      ],
+      "answer": 1,
+      "explanation": "Scheduler chịu trách nhiệm phân phối work hoặc containers lên nhiều nodes. Cụ thể, nó phát hiện container mới vừa được tạo và assign chúng vào node phù hợp trong cluster."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Kubelet trên Worker node có vai trò gì trong Kubernetes cluster?",
+      "options": [
+        "Lưu trạng thái cluster và đảm bảo không xung đột giữa các master",
+        "Phân phối tải và cân bằng network traffic giữa các service",
+        "Agent chịu trách nhiệm tương tác với master để cung cấp thông tin sức khỏe của worker node và thực thi các hành động được master yêu cầu",
+        "Quản lý toàn bộ vòng đời của container từ khi tạo đến khi xóa"
+      ],
+      "answer": 2,
+      "explanation": "Kubelet là agent trên Worker node có hai nhiệm vụ chính: (1) tương tác với Master để báo cáo thông tin sức khỏe của worker node; (2) thực hiện các hành động mà Master yêu cầu trên worker node."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "Container Orchestration tự động hóa những tác vụ nào? (Chọn mô tả đúng nhất)",
+      "options": [
+        "Chỉ tự động hóa việc build Docker image và push lên registry",
+        "Tự động hóa deploy, quản lý, scaling, networking container; bao gồm scheduling, provisioning, redundancy, load balancing, health monitoring và di chuyển container khi host hỏng",
+        "Chỉ tự động hóa việc viết Dockerfile và docker-compose.yml",
+        "Chỉ tự động hóa việc scale up container khi CPU vượt ngưỡng"
+      ],
+      "answer": 1,
+      "explanation": "Container Orchestration tự động hóa toàn bộ vòng đời container ở quy mô lớn: scheduling, provisioning/deploy, redundancy/availability, scaling up/down, di chuyển container khi host thiếu tài nguyên hoặc hỏng, phân bổ tài nguyên, expose service ra ngoài, load balancing và health monitoring."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "Điểm khác biệt chính về Auto-Scaling và Logging giữa Kubernetes và Docker Swarm là gì?",
+      "options": [
+        "Kubernetes không có auto-scaling; Docker Swarm có auto-scaling và tích hợp sẵn logging",
+        "Kubernetes có auto-scaling và in-built logging & monitoring; Docker Swarm không có auto-scaling và phải dùng công cụ bên thứ ba như ELK cho logging",
+        "Cả hai đều có auto-scaling nhưng Kubernetes dùng ELK còn Docker Swarm dùng Prometheus",
+        "Docker Swarm có auto-scaling nhưng Kubernetes phải dùng plugin bên ngoài"
+      ],
+      "answer": 1,
+      "explanation": "Kubernetes hỗ trợ auto-scaling và có in-built tools cho logging & monitoring. Docker Swarm không có khả năng auto-scaling và phải dùng công cụ bên thứ ba như ELK stack cho logging & monitoring."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "Ưu điểm nổi bật của kiến trúc Microservices so với Monolithic là gì?",
+      "options": [
+        "Microservices đơn giản hơn để phát triển và debug, chi phí ban đầu thấp hơn",
+        "Microservices cho phép deploy từng service độc lập, không bị ràng buộc về công nghệ, và đảm bảo continuous delivery cho ứng dụng phức tạp",
+        "Microservices chỉ có một binary duy nhất dễ deploy và không có điểm hỏng đơn lẻ",
+        "Microservices không cần API Gateway và có thể giao tiếp trực tiếp với database dùng chung"
+      ],
+      "answer": 1,
+      "explanation": "Ưu điểm chính của Microservices: decoupled (tách rời), đảm bảo continuous delivery cho ứng dụng lớn phức tạp, mỗi service có thể deploy độc lập (better deployments), test nhanh hơn (service nhỏ hơn), và không bị ràng buộc công nghệ lâu dài (có thể dùng tech stack mới cho service mới)."
+    },
+    {
+      "id": 13,
+      "level": "advanced",
+      "question": "Trong kiến trúc Kubernetes, Controller Manager (kube-controller-manager) có vai trò gì và hoạt động như thế nào?",
+      "options": [
+        "Lưu trữ toàn bộ state của cluster dưới dạng key-value và implement locks giữa các masters",
+        "Là 'bộ não' của orchestration — phát hiện và phản hồi khi nodes/containers/endpoints hỏng bằng cách khởi tạo containers mới, đồng thời chạy control loops kiểm tra deployments, replicas và nodes đang running",
+        "Định tuyến toàn bộ network traffic theo network policies và rules được định nghĩa trong cluster",
+        "Validate và thực thi lệnh REST từ kubectl, đảm bảo config trong etcd khớp với trạng thái thực tế của cluster"
+      ],
+      "answer": 1,
+      "explanation": "Controller Manager là 'bộ não' phía sau orchestration. Nó phát hiện và phản hồi khi nodes, containers hoặc endpoints bị hỏng, đưa ra quyết định khởi tạo container mới. Kube-controller-manager chạy các control loops liên tục kiểm tra xem deployments, replicas, và nodes cần thiết có đang running trong cluster hay không."
+    },
+    {
+      "id": 14,
+      "level": "advanced",
+      "question": "K3s khác với Kubernetes tiêu chuẩn (vanilla K8s) như thế nào, và được tối ưu cho môi trường nào?",
+      "options": [
+        "K3s là bản cloud-managed chỉ chạy trên AWS EKS, thay thế Docker bằng containerd và dùng PostgreSQL thay ETCD",
+        "K3s là bản phân phối nhẹ (<100MB memory), đóng gói trong single binary, dùng SQLite thay ETCD, dùng containerd thay Docker, có built-in Ingress controller Traefik, tối ưu cho Edge devices và ARM",
+        "K3s là phiên bản Enterprise của Kubernetes được Rancher bán thương mại, không phải open-source",
+        "K3s loại bỏ hoàn toàn API Server và Scheduler, chỉ giữ lại etcd và kubelet để giảm footprint"
+      ],
+      "answer": 1,
+      "explanation": "K3s là fully compliant Kubernetes distribution của Rancher, tối ưu cho Edge devices. Các điểm khác biệt: đóng gói thành single binary, memory footprint <100MB, hỗ trợ ARM và x86, dùng SQLite thay ETCD server nặng hơn, thay Docker bằng containerd runtime, và tích hợp sẵn Ingress controller Traefik."
+    },
+    {
+      "id": 15,
+      "level": "advanced",
+      "question": "So sánh cách chia sẻ Data Volumes giữa Kubernetes và Docker Swarm:",
+      "options": [
+        "Kubernetes có thể chia sẻ storage volumes với bất kỳ container nào trong cluster; Docker Swarm chỉ chia sẻ trong cùng một Pod",
+        "Cả Kubernetes và Docker Swarm đều chia sẻ storage volumes tự do giữa tất cả containers không giới hạn",
+        "Kubernetes chỉ có thể chia sẻ storage volumes với các containers trong cùng một Pod; Docker Swarm có thể chia sẻ storage volumes với bất kỳ container nào khác",
+        "Docker Swarm không hỗ trợ data volumes; chỉ Kubernetes mới có tính năng này"
+      ],
+      "answer": 2,
+      "explanation": "Đây là một điểm khác biệt quan trọng: Kubernetes chỉ có thể chia sẻ storage volumes với các containers khác trong cùng một Pod, trong khi Docker Swarm linh hoạt hơn — có thể chia sẻ storage volumes với bất kỳ container nào trong cluster."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "Tại sao Kubernetes được thiết kế cho phép có nhiều hơn một Master node trong cluster, và thành phần nào đảm bảo tính nhất quán khi có nhiều Masters?",
+      "options": [
+        "Để tăng tốc độ scheduling; API Server đảm bảo nhất quán bằng cách nhân bản mọi lệnh",
+        "Để đạt fault tolerance (chịu lỗi); ETCD đảm bảo nhất quán bằng cách lưu thông tin trên tất cả nodes theo cách phân tán và implement locks để tránh xung đột giữa các Masters",
+        "Để tăng tốc độ deploy ứng dụng; Scheduler phân phối lệnh đều giữa các Masters",
+        "Để hỗ trợ multi-cloud; Controller Manager đồng bộ trạng thái giữa các cloud providers"
+      ],
+      "answer": 1,
+      "explanation": "Kubernetes cho phép nhiều Master node để đạt fault tolerance (chịu lỗi) — nếu một Master hỏng, cluster vẫn hoạt động. ETCD đảm bảo tính nhất quán: khi có nhiều nodes và nhiều masters, ETCD lưu toàn bộ thông tin trên tất cả nodes trong cluster theo cách phân tán và chịu trách nhiệm implement locks để đảm bảo không có xung đột giữa các Masters."
+    }
+  ]
+}

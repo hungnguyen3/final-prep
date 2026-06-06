@@ -1,0 +1,239 @@
+{
+  "title": "Chương 6: Cloud — AWS & Azure",
+  "theory": [
+    {
+      "heading": "Cloud Computing là gì?",
+      "content": "Cloud Computing (điện toán đám mây) là thực hành sử dụng mạng các máy chủ từ xa được lưu trữ trên Internet để lưu trữ, quản lý và xử lý dữ liệu, thay vì dùng máy chủ cục bộ hoặc máy tính cá nhân. Với On-Premise, bạn sở hữu máy chủ, thuê nhân viên IT và chịu toàn bộ rủi ro. Với Cloud Provider, nhà cung cấp sở hữu phần cứng; bạn chỉ cần cấu hình dịch vụ và code. Cloud Hosting dùng nhiều máy vật lý hoạt động như một hệ thống, linh hoạt, có thể mở rộng (Scalable), bảo mật (Secure), tiết kiệm chi phí (Cost-Effective) và dễ cấu hình."
+    },
+    {
+      "heading": "AWS — Amazon Web Services",
+      "content": "Amazon được thành lập năm 1994 bởi Jeff Bezos tại Seattle, Washington. AWS (Amazon Web Services) là dịch vụ điện toán đám mây của Amazon, ra mắt năm 2006 và hiện là nhà cung cấp dịch vụ đám mây hàng đầu thế giới (CSP — Cloud Service Provider). Dịch vụ đầu tiên của AWS ra mắt công khai là SQS (Simple Queue Service) năm 2004. Tiếp theo là S3 (Simple Storage Service) tháng 3/2006 và EC2 (Elastic Compute Cloud) tháng 8/2006. Năm 2010, toàn bộ website bán lẻ Amazon.com đã chuyển sang AWS. Năm 2013, AWS bắt đầu cung cấp chương trình chứng chỉ cho kỹ sư. AWS có hơn 200+ dịch vụ đám mây."
+    },
+    {
+      "heading": "Cloud Service Provider (CSP) & Các dịch vụ cốt lõi",
+      "content": "Một CSP cung cấp hàng chục đến hàng trăm dịch vụ đám mây có thể kết nối với nhau (chained together) qua một Single Unified API (ví dụ: AWS API). CSP dùng mô hình tính phí theo mức sử dụng (metered billing) — tính theo giây hoặc giờ, có monitoring tích hợp (AWS CloudTrail), cung cấp IaaS và hỗ trợ tự động hóa qua Infrastructure as Code (IaC). 4 dịch vụ cốt lõi của IaaS gồm: Compute (EC2 — máy ảo), Storage (EBS — ổ cứng ảo), Database (RDS — cơ sở dữ liệu SQL), Networking (VPC — mạng riêng ảo). Các CSP Tier-1 hàng đầu: AWS, Microsoft Azure, Google Cloud Platform (GCP), Alibaba Cloud."
+    },
+    {
+      "heading": "Mô hình dịch vụ: IaaS, PaaS, SaaS",
+      "content": "IaaS (Infrastructure as a Service): bạn kiểm soát toàn bộ tài nguyên (VM, OS, middleware, app, data), nhà cung cấp quản lý phần cứng bên dưới (Virtualization, Servers, Storage, Networking). Ưu điểm: kiểm soát tốt, pay-as-you-go, dễ mở rộng. Nhược điểm: cần nhiều quản lý hơn. PaaS (Platform as a Service): bạn chỉ quản lý Applications và Data; nhà cung cấp quản lý từ Runtime trở xuống. Ưu điểm: ít quản lý hơn, triển khai nhanh. Nhược điểm: ít kiểm soát hơn. SaaS (Software as a Service): nhà cung cấp quản lý toàn bộ; bạn chỉ sử dụng ứng dụng. Ưu điểm: cài đặt nhanh, không cần quản lý hạ tầng. Nhược điểm: ít tùy chỉnh, dữ liệu lưu ở nơi khác."
+    },
+    {
+      "heading": "Lợi ích của Cloud: Scalability, High Availability, CapEx vs OpEx",
+      "content": "Scalability: khả năng tăng số lượng instance (Scale Out — ngang, không gián đoạn) hoặc tăng kích thước instance (Scale Up — dọc, có gián đoạn). Elasticity: tự động điều chỉnh tài nguyên theo nhu cầu. High Availability (HA): duy trì hiệu suất liên tục mặc dù có sự cố phần cứng hay datacenter; dùng Data Center Redundancy, Availability Zone, Region Redundancy. Fault Tolerance: hệ thống vẫn hoạt động dù có lỗi xảy ra. Disaster Recovery: phục hồi nhanh sau sự cố nghiêm trọng. CapEx (Capital Expenditure): đầu tư ban đầu lớn, dùng On-Premise (CapEx cao, OpEx thấp). OpEx (Operational Expenditure): chi phí vận hành, không đầu tư ban đầu — mô hình Cloud (CapEx thấp, OpEx cao)."
+    },
+    {
+      "heading": "Microsoft Azure & Mô hình Cloud Public/Private/Hybrid",
+      "content": "Microsoft Azure là CSP Tier-1 của Microsoft, tập trung vào AZ-900 (Azure Fundamentals) với 4 lĩnh vực: Cloud Concepts, Core Azure Services, Security/Privacy/Compliance/Trust, Azure Pricing and Support. Consumption-Based Model của Azure: không đầu tư trước, pay-as-you-go, trả ít hơn khi đặt trước (reserve), trả ít hơn khi dùng nhiều hơn. Compute tính theo CPU/giờ, Storage theo GB, Data Transfer theo GB ra ngoài. Ba mô hình Cloud: Public Cloud (tài nguyên chia sẻ, do nhà cung cấp sở hữu), Private Cloud (tài nguyên dành riêng cho một tổ chức), Hybrid Cloud (kết hợp cả hai, kết nối On-Premise với Cloud)."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Cloud Computing được định nghĩa là gì?",
+      "options": [
+        "Sử dụng mạng máy chủ từ xa trên Internet để lưu trữ, quản lý và xử lý dữ liệu",
+        "Mua máy chủ vật lý riêng để lưu trữ dữ liệu tại chỗ",
+        "Dùng phần mềm diệt virus để bảo vệ máy tính cá nhân",
+        "Kết nối nhiều máy tính cá nhân qua mạng LAN nội bộ"
+      ],
+      "answer": 0,
+      "explanation": "Theo PDF AWS, Cloud Computing là 'the practice of using a network of remote servers hosted on the Internet to store, manage, and process data, rather than a local server or a personal computer.'"
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "AWS (Amazon Web Services) được ra mắt chính thức vào năm nào?",
+      "options": [
+        "2000",
+        "2004",
+        "2006",
+        "2010"
+      ],
+      "answer": 2,
+      "explanation": "Theo PDF AWS, 'AWS was launched in *2006 is the leading cloud service provider in the world.' SQS ra mắt năm 2004 nhưng AWS chính thức ra đời năm 2006."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Dịch vụ AWS đầu tiên được ra mắt cho công chúng sử dụng là gì?",
+      "options": [
+        "EC2 (Elastic Compute Cloud)",
+        "S3 (Simple Storage Service)",
+        "RDS (Relational Database Service)",
+        "SQS (Simple Queue Service)"
+      ],
+      "answer": 3,
+      "explanation": "Theo PDF AWS, 'Simple Queue Service (SQS) was the first AWS service launched for public use in 2004.' S3 ra mắt tháng 3/2006 và EC2 tháng 8/2006."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Trong mô hình Cloud Hosting, đặc điểm nào sau đây là ĐÚNG?",
+      "options": [
+        "Một máy vật lý dành riêng cho một doanh nghiệp duy nhất",
+        "Một máy vật lý chia sẻ cho hàng trăm doanh nghiệp",
+        "Nhiều máy vật lý hoạt động như một hệ thống, linh hoạt và có thể mở rộng",
+        "Một máy vật lý ảo hóa thành nhiều máy con để chạy nhiều ứng dụng"
+      ],
+      "answer": 2,
+      "explanation": "Theo PDF AWS, Cloud Hosting dùng 'Multiple physical machines that act as one system. The system is abstracted into multiple cloud services — Flexible, Scalable, Secure, Cost-Effective, High Configurability.'"
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "High Availability (HA) trong Azure được định nghĩa là gì?",
+      "options": [
+        "Khả năng tự động sao lưu dữ liệu mỗi giờ một lần",
+        "Duy trì hiệu suất liên tục chấp nhận được dù có sự cố tạm thời về phần cứng hoặc datacenter",
+        "Khả năng mở rộng số lượng instance mà không cần dừng dịch vụ",
+        "Mô hình tính phí theo mức sử dụng thực tế"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF Azure, 'High Availability: Maintaining acceptable continuous performance despite temporary load fluctuations or failures in services, hardware, or data centers.' HA dùng Data Center Redundancy, Availability Zone Redundancy và Region Redundancy."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Trong mô hình Azure Consumption-Based, chi phí Compute được tính như thế nào?",
+      "options": [
+        "Trả một lần cố định theo tháng bất kể sử dụng",
+        "Trả theo số lượng người dùng trong hệ thống",
+        "Trả theo CPU/giờ sử dụng",
+        "Trả theo số lượng file được lưu trữ"
+      ],
+      "answer": 2,
+      "explanation": "Theo PDF Azure về Consumption-Based Model: 'Compute — Pay by CPU/hour', Storage tính theo GB, Data Transfer tính theo GB data ra ngoài."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "4 dịch vụ cốt lõi (4 core) của một Cloud Service Provider (CSP) theo mô hình IaaS là gì?",
+      "options": [
+        "Analytics, Machine Learning, IoT, Blockchain",
+        "Compute, Storage, Database, Networking",
+        "Security, Identity, Compliance, Trust",
+        "SQS, S3, EC2, RDS"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF AWS, '4 core cloud service offerings' của IaaS gồm: Compute (EC2 Virtual Machines), Storage (EBS Virtual Hard drives), Database (RDS SQL databases), Networking (VPC Private Cloud Network)."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Sự khác biệt giữa Scale Out và Scale Up là gì?",
+      "options": [
+        "Scale Out tăng kích thước instance (disruptive); Scale Up tăng số lượng instance (non-disruptive)",
+        "Scale Out và Scale Up đều tăng kích thước instance nhưng theo hướng khác nhau",
+        "Scale Out tăng số lượng instance (non-disruptive); Scale Up tăng kích thước instance (disruptive)",
+        "Scale Out dùng cho database; Scale Up dùng cho compute"
+      ],
+      "answer": 2,
+      "explanation": "Theo PDF Azure: 'Scaling Out — Increase instance count of existing resources, Non-disruptive. Scaling Up — Increase instance size of existing resources, Disruptive.'"
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Trong mô hình PaaS (Platform as a Service), người dùng chịu trách nhiệm quản lý những lớp nào?",
+      "options": [
+        "Toàn bộ: từ Networking đến Applications",
+        "Chỉ Applications và Data",
+        "Chỉ Applications",
+        "Từ O/S đến Applications (bao gồm Middleware, Runtime)"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF Azure, với PaaS người dùng chỉ quản lý Applications và Data. Tất cả các lớp phía dưới (Runtime, Middleware, O/S, Virtualization, Servers, Storage, Networking) do Microsoft/nhà cung cấp quản lý."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "Điểm khác biệt chính giữa CapEx (Capital Expenditure) và OpEx (Operational Expenditure) trong bối cảnh Cloud là gì?",
+      "options": [
+        "CapEx là chi phí bảo mật, OpEx là chi phí lưu trữ",
+        "CapEx là đầu tư ban đầu lớn (On-Premise: CapEx cao, OpEx thấp); OpEx là chi phí vận hành không đầu tư trước (Cloud: CapEx thấp, OpEx cao)",
+        "CapEx dùng cho doanh nghiệp nhỏ, OpEx dùng cho doanh nghiệp lớn",
+        "CapEx và OpEx đều dùng mô hình pay-as-you-go"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF Azure: CapEx là 'Up-front investment, usually non-recurring, related to purchase of permanent assets.' OpEx là 'No up-front investment, Recurring cost of doing business.' On-Premise: CapEx cao, OpEx thấp. Cloud: CapEx thấp, OpEx cao."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "Một Cloud Service Provider (CSP) khác với một Cloud Platform (như Twilio, HashiCorp) ở điểm nào?",
+      "options": [
+        "CSP không cung cấp API, Cloud Platform có API đầy đủ",
+        "CSP cung cấp nhiều dịch vụ qua Single Unified API, metered billing, IaaS và IaC automation; Cloud Platform chỉ cung cấp một số dịch vụ, không đáp ứng đầy đủ các tiêu chí",
+        "CSP chỉ dành cho doanh nghiệp lớn; Cloud Platform dành cho startup",
+        "CSP không có chứng chỉ; Cloud Platform có chương trình chứng chỉ riêng"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF AWS: 'If a company offers multiple cloud services under a single UI but do not meet most of or all of these requirements, it would be referred to as a Cloud Platform e.g. Twilio, HashiCorp, Databricks.' CSP đầy đủ phải có Single Unified API, metered billing, monitoring tích hợp, IaaS và IaC automation."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "Theo Gartner Magic Quadrant cho Cloud Infrastructure, nhà cung cấp nào dẫn đầu trong ô 'Leaders' với vị trí cao nhất?",
+      "options": [
+        "Google Cloud Platform",
+        "Microsoft Azure",
+        "Amazon Web Services (AWS)",
+        "Alibaba Cloud"
+      ],
+      "answer": 2,
+      "explanation": "Theo PDF AWS, trong biểu đồ Gartner Magic Quadrant (July 2021), Amazon Web Services nằm cao nhất trong ô 'Leaders', theo sau là Microsoft và Google. AWS được đánh giá cao nhất về cả 'Ability to Execute' và 'Completeness of Vision'."
+    },
+    {
+      "id": 13,
+      "level": "advanced",
+      "question": "Phân tích mô hình tiến hóa của Cloud Hosting: tại sao VPS (Virtual Private Server) được đánh giá là 'Better Utilization and Isolation of Resources' so với Dedicated Server?",
+      "options": [
+        "Vì VPS dùng nhiều máy vật lý hơn Dedicated Server nên tài nguyên nhiều hơn",
+        "Vì VPS ảo hóa một máy vật lý thành nhiều máy con (sub-machines), cho phép chạy nhiều web-app trên cùng một máy, tận dụng tài nguyên tốt hơn trong khi vẫn cô lập các môi trường",
+        "Vì VPS dùng chung phần cứng với hàng trăm doanh nghiệp nên chi phí thấp hơn",
+        "Vì VPS không cần Hypervisor nên hiệu suất cao hơn Dedicated Server"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF AWS, VPS là 'One physical machine dedicated to a single business. The physical machine is virtualized into sub-machines. Runs multiple web-apps/sites — Better Utilization and Isolation of Resources.' Ảo hóa cho phép tận dụng tài nguyên tốt hơn và cô lập môi trường, khắc phục nhược điểm của Dedicated Server (lãng phí tài nguyên — Wasted Space)."
+    },
+    {
+      "id": 14,
+      "level": "advanced",
+      "question": "So sánh Containers và VMs trong mô hình tiến hóa của Computing: Container có ưu điểm gì so với VM về hiệu quả tài nguyên?",
+      "options": [
+        "Container dùng Hypervisor riêng cho mỗi app nên bảo mật tốt hơn VM",
+        "Container chia sẻ cùng OS nền với nhau thông qua Docker Daemon, hiệu quả hơn VM vì không cần Guest OS riêng cho mỗi môi trường, giảm Wasted Space và xung đột tài nguyên",
+        "Container chỉ chạy được trên Windows trong khi VM chạy được trên mọi OS",
+        "Container cần nhiều RAM hơn VM vì phải chạy nhiều Guest OS song song"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF AWS: 'Your containers share the same underlying OS so containers are more efficient than multiple VMs. Multiple apps can run side by side without being limited to the same OS requirements and will not cause conflicts during resource sharing.' Docker Daemon là phần mềm quản lý containers thay vì Hypervisor của VM."
+    },
+    {
+      "id": 15,
+      "level": "advanced",
+      "question": "Trong mô hình Economies of Scale của Azure, ba nguồn tiết kiệm chính là gì và cách chúng giúp giảm chi phí cho người dùng cuối?",
+      "options": [
+        "Tiết kiệm từ phần mềm (Software Savings), phần cứng (Hardware Savings) và nhân công (Labor Savings)",
+        "Supply-Side Savings (giảm chi phí đất, máy chủ, điện, lao động), Demand-Side Savings (phục vụ nhiều khách hàng hơn giúp tận dụng server tốt hơn 80% CPU) và Multi-Tenancy Savings (nhiều tenant hơn giảm chi phí quản lý mỗi tenant)",
+        "Public Cloud Savings, Private Cloud Savings và Hybrid Cloud Savings dựa trên mô hình triển khai",
+        "CapEx Savings, OpEx Savings và Hybrid Savings từ kết hợp đầu tư ban đầu và vận hành"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF Azure về Economies of Scale: 'Supply-Side Savings — Lower costs of land, servers, power, labor. Demand-Side Savings — Serving more customers means using more server resources (e.g., 80% CPU), higher server utilization rates means lower costs. Multi-Tenancy Savings — More tenants (customers or users) lowers the cost of servers and management per tenant.'"
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "Khi nào nên chọn SaaS thay vì IaaS trong doanh nghiệp, và nhược điểm lớn nhất của SaaS về mặt bảo mật là gì?",
+      "options": [
+        "Nên chọn SaaS khi cần kiểm soát toàn bộ hạ tầng; nhược điểm là tốn nhiều chi phí vận hành hơn",
+        "Nên chọn SaaS khi cần triển khai nhanh, không muốn quản lý hạ tầng, bất kỳ ai cũng dùng được; nhược điểm là nhà cung cấp có thể truy cập dữ liệu khách hàng và ít kiểm soát hơn",
+        "Nên chọn SaaS khi cần môi trường lập trình linh hoạt; nhược điểm là không hỗ trợ tự động hóa",
+        "Nên chọn SaaS khi doanh nghiệp có đội ngũ IT lớn; nhược điểm là phải quản lý O/S và Runtime"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF Azure: SaaS có ưu điểm 'No management & administration, No up-front costs; pay-as-you-go, No physical infrastructure to manage, Fast setup, Anyone can use it.' Nhược điểm bảo mật: 'Vendor may have access to customer data' và 'No control over software or infrastructure.' IaaS phù hợp khi cần kiểm soát tối đa còn SaaS khi cần triển khai nhanh và đơn giản."
+    }
+  ]
+}

@@ -1,0 +1,239 @@
+{
+  "title": "Chương 9: Infrastructure as Code — Terraform & CloudFormation",
+  "theory": [
+    {
+      "heading": "Infrastructure as Code (IaC) là gì?",
+      "content": "IaC là phương pháp cung cấp (provisioning) hạ tầng thông qua phần mềm để đạt được môi trường nhất quán và có thể dự đoán được. Các khái niệm cốt lõi: Defined in code (định nghĩa bằng code), Stored in source control (lưu trong source control), Declarative hoặc Imperative (khai báo hoặc mệnh lệnh), Idempotent and consistent (đồng nhất), Push or pull (đẩy hoặc kéo). Lợi ích: Automated deployment, Consistent environments, Repeatable process, Reusable components, Documented architecture."
+    },
+    {
+      "heading": "Terraform là gì?",
+      "content": "Terraform là công cụ provisioning khai báo (declarative) dựa trên mô hình Infrastructure as Code. Đặc điểm chính: sử dụng ngôn ngữ HCL (HashiCorp Configuration Language), viết bằng Golang, hỗ trợ đa đám mây (multi-cloud), áp dụng Graph Theory vào IaaC để xác định thứ tự tạo tài nguyên. Terraform là công cụ đa mục đích: kết hợp nhiều tầng (SaaS/PaaS/IaaS), kiến trúc plugin-based. Terraform KHÔNG phải cloud agnostic — nó ôm ấp (embraces) tất cả các Cloud Provider lớn và cung cấp ngôn ngữ chung để điều phối hạ tầng. Thuộc HashiCorp Suite (mã nguồn mở), cùng bộ với Nomad, Vault, Packer, Vagrant, Consul."
+    },
+    {
+      "heading": "Quy trình làm việc với Terraform trên AWS",
+      "content": "Terraform với AWS hoạt động theo quy trình: (1) Viết file cấu hình .tf sử dụng HCL; (2) terraform init — khởi tạo, tải provider plugin; (3) terraform plan — hiển thị execution plan, cho thấy những gì sẽ thay đổi mà không thực thi; (4) terraform apply — áp dụng thay đổi, tạo/cập nhật/xóa tài nguyên; (5) terraform destroy — xóa toàn bộ hạ tầng. Terraform lưu trạng thái trong state file (terraform.tfstate) để theo dõi tài nguyên đã tạo. Terraform chạy REST calls qua client machine, không phải upload template lên cloud."
+    },
+    {
+      "heading": "AWS CloudFormation — Tổng quan & Template Anatomy",
+      "content": "AWS CloudFormation là dịch vụ IaC của AWS, ra mắt năm 2011, bị lock-in với AWS, miễn phí (AWS Managed Service). Hỗ trợ JSON và YAML (từ 2016), có CloudFormation Designer với giao diện drag-and-drop, hỗ trợ Rollback actions và Change sets (từ 2016). Cấu trúc template (Template Anatomy) gồm 6 phần chính: Resources (bắt buộc — định nghĩa tài nguyên AWS như EC2, VPC, Security Group, Route Table, Internet Gateway, CodeBuild, CodeDeploy, CodePipeline, SNS...), Parameters (tham số đầu vào), Mappings (bảng tra cứu giá trị), Conditions (điều kiện logic), Outputs (giá trị xuất ra), Metadata (thông tin bổ sung, cfn-init)."
+    },
+    {
+      "heading": "CloudFormation — Intrinsic Functions, Pseudo Parameters & cfn-init",
+      "content": "Intrinsic Functions: Fn::Ref, Fn::Base64, Fn::FindInMap, Fn::GetAtt, Fn::GetAzs, Fn::ImportValue, Fn::Join, Fn::Select, Fn::Sub. Condition Functions: Fn::And, Fn::Equals, Fn::If, Fn::Not, Fn::Or. Pseudo Parameters (tham số giả): AWS::Region, AWS::AccountId, AWS::StackName, AWS::NoValue (quan trọng khi dùng conditions). cfn-init là helper script cho EC2 UserData, xử lý theo thứ tự: packages → groups → users → sources → files → commands → services. cfn-signal thông báo stack tạo thành công. cfn-hup cho phép update stack (deploy v2 app)."
+    },
+    {
+      "heading": "CloudFormation Nested Stacks & So sánh Terraform vs CloudFormation",
+      "content": "Nested Stacks: cho phép tái sử dụng template — một Root Stack tham chiếu đến các nested stack con (VPC Nested Stack, Security Group Nested Stack). Tương tự Modules trong Terraform. So sánh Terraform vs CloudFormation: Terraform hỗ trợ multi-cloud, có execution plans, dependencies implied; CloudFormation chỉ AWS, không có execution plan riêng, dependencies explicit. Terraform dùng HCL (dễ đọc hơn), CloudFormation dùng JSON/YAML. Terraform duy trì state file (có thể corrupt), CloudFormation không cần state file riêng. Ansible/Chef/Puppet là configuration management tools (không phải orchestration) — Puppet/Salt dùng declarative, Ansible/Chef dùng imperative."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "IaC (Infrastructure as Code) được định nghĩa là gì?",
+      "options": [
+        "Viết code để phát triển ứng dụng web",
+        "Cung cấp hạ tầng thông qua phần mềm để đạt được môi trường nhất quán và có thể dự đoán",
+        "Công cụ kiểm thử tự động cho hệ thống CI/CD",
+        "Phương pháp quản lý container bằng Kubernetes"
+      ],
+      "answer": 1,
+      "explanation": "IaC (Infrastructure as Code) là phương pháp cung cấp hạ tầng thông qua phần mềm để đạt được môi trường nhất quán (consistent) và có thể dự đoán (predictable). Đây là định nghĩa cốt lõi được nhấn mạnh trong slide PDF."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Terraform sử dụng ngôn ngữ cấu hình nào?",
+      "options": [
+        "YAML",
+        "JSON",
+        "XML",
+        "HCL (HashiCorp Configuration Language)"
+      ],
+      "answer": 3,
+      "explanation": "Terraform sử dụng ngôn ngữ HCL — HashiCorp Configuration Language. Đây là ngôn ngữ riêng của Terraform, khác với YAML/JSON mà CloudFormation sử dụng."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "AWS CloudFormation được phát hành vào năm nào và thuộc loại dịch vụ nào?",
+      "options": [
+        "2010, dịch vụ trả phí theo giờ",
+        "2011, dịch vụ AWS Managed Service miễn phí",
+        "2013, dịch vụ mã nguồn mở",
+        "2016, dịch vụ trả phí theo số template"
+      ],
+      "answer": 1,
+      "explanation": "AWS CloudFormation ra mắt năm 2011, là AWS Managed Service và hoàn toàn miễn phí. Từ 2016, CloudFormation bổ sung hỗ trợ YAML và Change Sets."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Trong CloudFormation Template Anatomy, phần nào là BẮT BUỘC phải có?",
+      "options": [
+        "Parameters",
+        "Outputs",
+        "Resources",
+        "Conditions"
+      ],
+      "answer": 2,
+      "explanation": "Phần Resources là phần duy nhất BẮT BUỘC trong một CloudFormation template. Các phần còn lại như Parameters, Mappings, Conditions, Outputs, Metadata đều là tùy chọn."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Terraform được viết bằng ngôn ngữ lập trình nào?",
+      "options": [
+        "Python",
+        "Java",
+        "Golang",
+        "Ruby"
+      ],
+      "answer": 2,
+      "explanation": "Terraform được viết bằng Golang (Go). Đây là thông tin cơ bản về Terraform từ slide PDF Terraform Overview."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Lệnh Terraform nào hiển thị kế hoạch thực thi mà KHÔNG thực sự áp dụng thay đổi?",
+      "options": [
+        "terraform apply",
+        "terraform init",
+        "terraform validate",
+        "terraform plan"
+      ],
+      "answer": 3,
+      "explanation": "Lệnh terraform plan hiển thị execution plan — cho thấy những gì sẽ được tạo/thay đổi/xóa mà không thực sự thực thi. Đây là bước quan trọng để kiểm tra trước khi apply."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "Phát biểu nào sau đây về Terraform là ĐÚNG?",
+      "options": [
+        "Terraform là cloud agnostic tool, có thể kiểm soát hoàn toàn mọi cloud bằng cùng một cú pháp",
+        "Terraform ôm ấp tất cả Cloud Provider lớn và cung cấp ngôn ngữ chung để điều phối hạ tầng",
+        "Terraform chỉ hỗ trợ AWS và Azure",
+        "Terraform upload template lên cloud để thực thi, giống như CloudFormation"
+      ],
+      "answer": 1,
+      "explanation": "Terraform KHÔNG phải cloud agnostic. Nó embraces (ôm ấp) tất cả Cloud Provider lớn và cung cấp ngôn ngữ chung để điều phối. Terraform chạy REST calls qua client machine, không upload template lên cloud."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Điểm khác biệt chính giữa Terraform và AWS CloudFormation về quản lý trạng thái là gì?",
+      "options": [
+        "CloudFormation lưu state file trên S3, Terraform không cần state file",
+        "Cả hai đều dùng state file lưu trên local",
+        "Terraform duy trì state file (terraform.tfstate) để theo dõi tài nguyên; CloudFormation không cần state file riêng",
+        "Terraform và CloudFormation đều không cần theo dõi trạng thái tài nguyên"
+      ],
+      "answer": 2,
+      "explanation": "Terraform duy trì state file (terraform.tfstate) để theo dõi tài nguyên đã tạo — đây có thể trở thành vấn đề nếu file bị hỏng (corrupted state). CloudFormation là AWS Managed Service nên không cần state file riêng, AWS tự quản lý trạng thái stack."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Trong CloudFormation, cfn-init xử lý các phần theo thứ tự nào?",
+      "options": [
+        "services → packages → files → commands → users → groups → sources",
+        "packages → groups → users → sources → files → commands → services",
+        "commands → files → packages → users → groups → sources → services",
+        "users → groups → packages → sources → files → commands → services"
+      ],
+      "answer": 1,
+      "explanation": "cfn-init xử lý theo thứ tự cố định: packages → groups → users → sources → files → commands → services. Thứ tự này đảm bảo các gói được cài trước, sau đó tạo user/group, tải source, tạo file, chạy lệnh, và cuối cùng khởi động service."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "Trong CloudFormation, Pseudo Parameter nào được coi là 'rất quan trọng khi sử dụng conditions'?",
+      "options": [
+        "AWS::Region",
+        "AWS::AccountId",
+        "AWS::StackName",
+        "AWS::NoValue"
+      ],
+      "answer": 3,
+      "explanation": "AWS::NoValue là pseudo parameter đặc biệt, được nhấn mạnh là 'very important when using conditions'. Nó cho phép loại bỏ một property khỏi resource khi điều kiện không thỏa mãn, thay vì để giá trị null."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "Ansible và Chef khác Puppet và Salt về mô hình cấu hình như thế nào?",
+      "options": [
+        "Ansible và Chef dùng mô hình declarative; Puppet và Salt dùng imperative",
+        "Ansible và Chef dùng mô hình imperative; Puppet và Salt dùng declarative",
+        "Tất cả đều dùng mô hình declarative",
+        "Tất cả đều dùng mô hình imperative"
+      ],
+      "answer": 1,
+      "explanation": "Theo slide PDF: Declarative approach: Puppet, Salt. Imperative approach: Ansible, Chef. Ansible dùng YAML/Python, Chef dùng Ruby. Lưu ý: các công cụ này được tạo cho configuration management, không phải resource orchestration."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "CloudFormation Nested Stacks được dùng để làm gì?",
+      "options": [
+        "Tạo nhiều AWS account từ một template",
+        "Tái sử dụng template — Root Stack tham chiếu đến các stack con như VPC Stack, Security Group Stack",
+        "Chạy nhiều stack song song để tăng tốc độ deploy",
+        "Backup và restore stack từ S3"
+      ],
+      "answer": 1,
+      "explanation": "CloudFormation Nested Stacks cho phép tái sử dụng template. Một Root Stack có thể tham chiếu đến nhiều nested stack con (ví dụ: VPC Nested Stack, Security Group Nested Stack). Đây tương đương với Modules trong Terraform."
+    },
+    {
+      "id": 13,
+      "level": "advanced",
+      "question": "So sánh Terraform và Azure ARM Templates: tính năng nào Terraform có nhưng ARM KHÔNG có?",
+      "options": [
+        "Infrastructure as Code và hỗ trợ KeyVault",
+        "Parallel deployments và Count/Loops",
+        "Execution plans và Multi-Cloud support",
+        "Sub-Templates/Modules và Math Functions"
+      ],
+      "answer": 0,
+      "explanation": "Theo bảng Feature Comparison trong slide: ARM không có Execution plans (Terraform có Yes) và không hỗ trợ Multi-Cloud (Terraform có Yes). ARM bị lock-in với Azure, trong khi Terraform có thể deploy lên nhiều cloud. Đây là hai điểm khác biệt nổi bật nhất."
+    },
+    {
+      "id": 14,
+      "level": "advanced",
+      "question": "Trong kiến trúc Terraform with AWS với VPC multi-AZ, thành phần nào đóng vai trò entry point an toàn vào private subnet?",
+      "options": [
+        "NAT Gateway trong public subnet",
+        "Application Load Balancer (ALB) trên port 80",
+        "Bastion Host trong public subnet với Security Group port 22",
+        "Internet Gateway kết nối trực tiếp vào EC2"
+      ],
+      "answer": 2,
+      "explanation": "Trong kiến trúc AWS VPC được mô tả trong slide Terraform with AWS: Bastion Host nằm trong public subnet 1 với Security Group cho phép port 22 (SSH). Đây là entry point an toàn để SSH vào các EC2 trong private subnet. NAT Gateway trong public subnet 2 cho phép private subnet ra internet nhưng không phải entry point SSH."
+    },
+    {
+      "id": 15,
+      "level": "advanced",
+      "question": "Điểm nào ĐÚNG khi mô tả sự khác biệt về cách Terraform và ARM Template thực thi?",
+      "options": [
+        "Cả Terraform và ARM đều upload template lên cloud để thực thi",
+        "ARM template được upload và deploy trong Azure; Terraform dùng REST calls qua client machine",
+        "Terraform upload lên HashiCorp cloud; ARM chạy trực tiếp từ local machine",
+        "Cả hai đều chạy trực tiếp từ local machine mà không cần upload"
+      ],
+      "answer": 1,
+      "explanation": "Theo Feature Comparison slide: ARM template được 'uploaded / deployed in Azure' — tức là template được gửi lên và Azure thực thi. Terraform sử dụng REST calls via a client machine — Terraform chạy trên máy client, gọi API cloud từ đó. Đây là sự khác biệt kiến trúc quan trọng."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "Trong CloudFormation, Intrinsic Function nào được dùng để lấy thuộc tính của một resource đã tạo (ví dụ: lấy ARN của một S3 bucket)?",
+      "options": [
+        "Fn::Ref",
+        "Fn::ImportValue",
+        "Fn::FindInMap",
+        "Fn::GetAtt"
+      ],
+      "answer": 3,
+      "explanation": "Fn::GetAtt (Get Attribute) được dùng để lấy giá trị thuộc tính của một resource trong cùng template, ví dụ: lấy ARN, DNS name, hay các thuộc tính khác của resource đã tạo. Fn::Ref trả về giá trị mặc định (thường là ID), còn Fn::ImportValue lấy giá trị Outputs từ stack khác."
+    }
+  ]
+}

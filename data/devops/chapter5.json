@@ -1,0 +1,239 @@
+{
+  "title": "Chương 5: CI/CD — Jenkins, GitHub Actions & Azure DevOps",
+  "theory": [
+    {
+      "heading": "Tổng quan về CI/CD",
+      "content": "CI/CD là nền tảng của DevOps hiện đại. Continuous Integration (CI) có mục tiêu tích hợp và kiểm thử các thay đổi code một cách tự động và thường xuyên — lập trình viên commit code lên repository chung, hệ thống tự động chạy test để đảm bảo thay đổi mới không phá vỡ chức năng hiện có. Continuous Deployment (CD) tự động hóa việc phát hành — sau khi code vượt qua test, ứng dụng được triển khai lên môi trường staging hoặc production mà không cần can thiệp thủ công. Lợi ích chính: giao hàng nhanh hơn, chất lượng code cao hơn, giảm lỗi, và phản hồi liên tục cho nhóm phát triển."
+    },
+    {
+      "heading": "Jenkins — Máy chủ tự động hóa mã nguồn mở",
+      "content": "Jenkins là máy chủ tự động hóa mã nguồn mở viết bằng Java, giúp tự động hóa các khâu build, test và deploy trong phát triển phần mềm. Ban đầu được phát triển với tên Hudson tại Sun Microsystems năm 2004, Jenkins ra đời năm 2011 sau tranh chấp giữa Oracle và cộng đồng mã nguồn mở. Các khái niệm cốt lõi: Pipeline (quy trình tự động từ version control đến production), Job (đại diện cho một task hoặc bước trong pipeline), Build (kết quả của việc thực thi job), Node/Agent (máy thực thi job theo kiến trúc master-slave), Executor (slot trên node chạy job). Jenkins sử dụng kiến trúc plugin-based tích hợp với SCM, build tools (Maven, Gradle), Docker, Slack và hàng nghìn công cụ khác. Jenkins chạy mặc định trên cổng 8080 và yêu cầu JDK 17."
+    },
+    {
+      "heading": "Jenkins Pipeline — Declarative và Scripted",
+      "content": "Jenkins Pipeline là workflow được scripted, cung cấp nhiều kiểm soát và linh hoạt hơn Freestyle Project. Pipeline được định nghĩa trong file Jenkinsfile lưu trong repository. Có hai loại: Declarative Pipeline (cú pháp đơn giản, có cấu trúc, sử dụng từ khóa 'pipeline') và Scripted Pipeline (dùng cú pháp Groovy nâng cao, linh hoạt hơn). Một pipeline cơ bản gồm ba stage: Build (pull code từ GitHub, chạy mvn clean package, lưu artifact JAR/WAR), Test (chạy unit test và integration test bằng JUnit, mvn test), Deploy (triển khai lên staging/production nếu test thành công). Build triggers bao gồm Poll SCM (kiểm tra repository theo chu kỳ), Webhooks (GitHub/Bitbucket gửi sự kiện), và Manual (kích hoạt thủ công)."
+    },
+    {
+      "heading": "GitHub Actions — CI/CD tích hợp trong GitHub",
+      "content": "GitHub Actions là công cụ CI/CD tích hợp trực tiếp trong GitHub, cho phép tạo workflow tùy chỉnh để build, test và deploy code từ repository. Workflow được định nghĩa bằng file YAML đặt trong thư mục .github/workflows/. Các khái niệm chính: Workflow (quy trình tự động định nghĩa bằng YAML, chạy một hoặc nhiều job), Event (sự kiện kích hoạt workflow: push, pull_request, release, schedule), Job (tập hợp các step chạy trên cùng một runner, có thể chạy tuần tự hoặc song song), Step (tác vụ riêng lẻ trong job, có thể chạy lệnh, script hoặc action), Runner (máy chủ thực thi job — GitHub cung cấp hosted runners với Linux, Windows, macOS, hoặc dùng self-hosted runner). GitHub Actions hỗ trợ nhiều ngôn ngữ: JavaScript, Python, Go, Java. Tính năng nâng cao: Parallel Jobs (matrix strategy), Caching Dependencies (actions/cache), và Notifications (Slack, email)."
+    },
+    {
+      "heading": "Azure DevOps — Nền tảng DevOps toàn diện của Microsoft",
+      "content": "Azure DevOps là giải pháp end-to-end cho các tổ chức cần enterprise-grade toolchain. Nó bao gồm 5 dịch vụ tích hợp: Azure Boards (quản lý công việc Agile với Kanban boards, backlogs, sprints), Azure Repos (private Git repositories không giới hạn, cloud-hosted), Azure Pipelines (CI/CD hỗ trợ mọi ngôn ngữ, platform và cloud), Azure Test Plans (kiểm thử thủ công và exploratory), Azure Artifacts (tạo, host và chia sẻ packages). Azure DevOps được tổ chức theo cấu trúc: Organization > Project > Repository/Pipeline. Xác thực thông qua Azure Active Directory (Azure AD). So với mô hình truyền thống (Waterfall, phát hành 2-3 lần/năm), mô hình DevOps hiện đại cho phép phát hành nhiều lần/ngày với nhóm đa chức năng."
+    },
+    {
+      "heading": "So sánh Jenkins, GitHub Actions và Azure DevOps",
+      "content": "Jenkins là công cụ self-hosted, mã nguồn mở, yêu cầu cài đặt và bảo trì hạ tầng, nhưng có hệ sinh thái plugin phong phú nhất (hơn 1800 plugins) và phù hợp với môi trường on-premise. GitHub Actions được tích hợp trực tiếp vào GitHub, dễ thiết lập, cung cấp hosted runners miễn phí, phù hợp cho dự án mã nguồn mở và team nhỏ-vừa. Azure DevOps là giải pháp toàn diện của Microsoft, tích hợp với hệ sinh thái Azure, hỗ trợ cả Git và TFVC, phù hợp cho doanh nghiệp lớn cần quản lý toàn bộ vòng đời phần mềm. Cả ba đều hỗ trợ CI/CD pipeline với build, test và deploy stages, đều có thể tích hợp Docker, Kubernetes và các cloud providers (AWS, GCP, Azure)."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Jenkins được viết bằng ngôn ngữ lập trình nào?",
+      "options": [
+        "Python",
+        "Java",
+        "Go",
+        "Ruby"
+      ],
+      "answer": 1,
+      "explanation": "Jenkins là máy chủ tự động hóa mã nguồn mở được viết bằng Java. Vì vậy để chạy Jenkins, máy cần cài đặt JDK (khuyến nghị JDK 17)."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Jenkins ban đầu được phát triển với tên gì tại Sun Microsystems năm 2004?",
+      "options": [
+        "Jenkins",
+        "Travis",
+        "Hudson",
+        "Bamboo"
+      ],
+      "answer": 2,
+      "explanation": "Jenkins ban đầu được phát triển với tên Hudson tại Sun Microsystems năm 2004. Tên Jenkins xuất hiện vào năm 2011 sau tranh chấp giữa Oracle và cộng đồng mã nguồn mở Hudson."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Trong GitHub Actions, file workflow được lưu ở thư mục nào trong repository?",
+      "options": [
+        ".github/actions/",
+        "workflows/",
+        ".github/workflows/",
+        "ci/config/"
+      ],
+      "answer": 2,
+      "explanation": "Workflow trong GitHub Actions được định nghĩa bằng file YAML và phải đặt trong thư mục .github/workflows/ của repository."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Azure DevOps bao gồm bao nhiêu dịch vụ chính?",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "answer": 2,
+      "explanation": "Azure DevOps bao gồm 5 dịch vụ chính: Azure Boards, Azure Repos, Azure Pipelines, Azure Test Plans, và Azure Artifacts."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Trong CI/CD, mục tiêu của Continuous Deployment (CD) là gì?",
+      "options": [
+        "Tích hợp code thường xuyên vào nhánh chính",
+        "Viết unit test tự động cho từng function",
+        "Tự động hóa việc phát hành code lên môi trường production hoặc staging",
+        "Quản lý phiên bản source code"
+      ],
+      "answer": 2,
+      "explanation": "Mục tiêu của Continuous Deployment (CD) là tự động hóa việc phát hành — sau khi code vượt qua các bài test và được phê duyệt, nó được triển khai tự động lên môi trường production hoặc staging mà không cần can thiệp thủ công."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Jenkins mặc định chạy trên cổng (port) nào sau khi cài đặt?",
+      "options": [
+        "8080",
+        "3000",
+        "5000",
+        "9090"
+      ],
+      "answer": 0,
+      "explanation": "Sau khi cài đặt, Jenkins chạy mặc định trên http://localhost:8080. Khi truy cập lần đầu, hệ thống yêu cầu nhập mật khẩu admin ban đầu từ file /var/lib/jenkins/secrets/initialAdminPassword."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "Điểm khác biệt giữa Declarative Pipeline và Scripted Pipeline trong Jenkins là gì?",
+      "options": [
+        "Declarative Pipeline dùng Python, Scripted Pipeline dùng Groovy",
+        "Declarative Pipeline có cấu trúc đơn giản dùng cú pháp 'pipeline', Scripted Pipeline dùng Groovy nâng cao cho linh hoạt hơn",
+        "Declarative Pipeline chạy trên cloud, Scripted Pipeline chạy on-premise",
+        "Declarative Pipeline không hỗ trợ Docker, Scripted Pipeline hỗ trợ Docker"
+      ],
+      "answer": 1,
+      "explanation": "Declarative Pipeline là cách đơn giản, có cấu trúc hơn để định nghĩa pipeline bằng cú pháp 'pipeline {}'. Scripted Pipeline dùng cú pháp Groovy nâng cao, cung cấp nhiều linh hoạt và kiểm soát hơn nhưng phức tạp hơn để viết."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Trong GitHub Actions, 'Runner' là gì?",
+      "options": [
+        "File cấu hình YAML định nghĩa workflow",
+        "Sự kiện kích hoạt workflow",
+        "Máy chủ thực thi các job trong workflow",
+        "Tập hợp các step trong một job"
+      ],
+      "answer": 2,
+      "explanation": "Runner là máy chủ (server) thực thi các job trong workflow. GitHub cung cấp hosted runners miễn phí với các môi trường Linux, Windows và macOS. Ngoài ra, người dùng có thể thiết lập self-hosted runners trên máy chủ riêng."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Trong kiến trúc Jenkins, vai trò của Master Node là gì?",
+      "options": [
+        "Thực thi trực tiếp các build task",
+        "Lưu trữ source code của dự án",
+        "Quản lý việc lập lịch và điều phối các job",
+        "Cung cấp giao diện web cho người dùng cuối"
+      ],
+      "answer": 2,
+      "explanation": "Trong kiến trúc master-slave của Jenkins, Master Node chịu trách nhiệm lập lịch (scheduling) và điều phối (orchestration) các job. Còn Slave/Agent Nodes mới là nơi thực sự thực thi các job và có thể nằm trên các máy/server khác nhau."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "Khi cấu hình GitHub Actions workflow, từ khóa 'on' dùng để làm gì?",
+      "options": [
+        "Chỉ định runner environment cho job",
+        "Định nghĩa các step trong một job",
+        "Khai báo các biến môi trường",
+        "Xác định sự kiện nào sẽ kích hoạt workflow"
+      ],
+      "answer": 3,
+      "explanation": "Từ khóa 'on' trong file YAML của GitHub Actions dùng để xác định sự kiện nào sẽ kích hoạt workflow, ví dụ: on: push (khi push code), on: pull_request (khi tạo PR), hoặc on: schedule (theo lịch định kỳ)."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "Azure Boards cung cấp tính năng nào để hỗ trợ quy trình Agile?",
+      "options": [
+        "Tự động build và deploy ứng dụng",
+        "Lưu trữ source code Git không giới hạn",
+        "Kanban boards, backlogs và công cụ lập kế hoạch sprint",
+        "Host và chia sẻ packages trong nhóm"
+      ],
+      "answer": 2,
+      "explanation": "Azure Boards là dịch vụ quản lý công việc Agile trong Azure DevOps, cung cấp Kanban boards (bảng Kanban có thể cấu hình), interactive backlogs (danh sách công việc tồn đọng), và công cụ lập kế hoạch sprint để theo dõi và thảo luận công việc nhóm."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "Trong GitHub Actions, tính năng 'matrix strategy' được dùng để làm gì?",
+      "options": [
+        "Định nghĩa thứ tự chạy tuần tự của các step",
+        "Chạy các job song song trên nhiều môi trường/phiên bản cùng lúc",
+        "Cache dependencies để tăng tốc build",
+        "Gửi thông báo khi build thất bại"
+      ],
+      "answer": 1,
+      "explanation": "Matrix strategy trong GitHub Actions cho phép chạy các job song song trên nhiều môi trường hoặc phiên bản khác nhau cùng lúc. Ví dụ: chạy test đồng thời với Java 8, 11, và 17 để đảm bảo tương thích."
+    },
+    {
+      "id": 13,
+      "level": "advanced",
+      "question": "Khi so sánh mô hình phát triển phần mềm truyền thống với DevOps hiện đại, đâu là sự khác biệt quan trọng nhất theo tài liệu Azure DevOps?",
+      "options": [
+        "Mô hình truyền thống dùng ngôn ngữ lập trình cũ hơn, DevOps dùng ngôn ngữ hiện đại",
+        "Mô hình truyền thống phát hành 2-3 lần/năm theo Waterfall; DevOps phát hành nhiều lần/ngày với nhóm đa chức năng theo Agile",
+        "Mô hình truyền thống không dùng database; DevOps sử dụng cloud database",
+        "Mô hình truyền thống chạy on-premise; DevOps chỉ chạy trên cloud"
+      ],
+      "answer": 1,
+      "explanation": "Theo tài liệu Azure DevOps, mô hình truyền thống dùng Waterfall, phân tách rõ các nhóm (requirements, dev, test, ops) và chỉ phát hành 2-3 lần/năm. DevOps hiện đại dùng Agile/Scrum, nhóm đa chức năng làm việc cùng nhau và có thể phát hành nhiều lần/ngày, hướng đến value stream thay vì budget/cost."
+    },
+    {
+      "id": 14,
+      "level": "advanced",
+      "question": "Trong Jenkins, sự khác biệt giữa 'static agents' và 'dynamic agents' là gì?",
+      "options": [
+        "Static agents chạy trên Linux, dynamic agents chạy trên Windows",
+        "Static agents là máy/VM đã cấu hình sẵn, dynamic agents được tạo theo nhu cầu (Docker containers, Kubernetes pods)",
+        "Static agents xử lý build, dynamic agents xử lý deploy",
+        "Static agents dùng cho CI, dynamic agents dùng cho CD"
+      ],
+      "answer": 1,
+      "explanation": "Trong Jenkins, Static agents là các máy vật lý hoặc VM đã được cấu hình sẵn và luôn sẵn sàng. Dynamic agents (còn gọi là dynamic agents) được tạo ra theo nhu cầu (on-demand) như Docker containers hoặc Kubernetes pods, và bị hủy sau khi hoàn thành job, giúp tối ưu tài nguyên."
+    },
+    {
+      "id": 15,
+      "level": "advanced",
+      "question": "Trong một GitHub Actions workflow để deploy lên Docker Hub, bước nào sau đây thể hiện thực hành bảo mật tốt nhất?",
+      "options": [
+        "Hardcode Docker credentials trực tiếp vào file YAML để tiện quản lý",
+        "Lưu Docker credentials trong biến môi trường hệ thống của runner",
+        "Sử dụng GitHub Secrets (${{ secrets.DOCKER_PASSWORD }}) để truyền credentials vào workflow",
+        "Tạo file .env trong repository chứa credentials và đọc từ đó"
+      ],
+      "answer": 2,
+      "explanation": "Thực hành tốt nhất là sử dụng GitHub Secrets để lưu trữ thông tin nhạy cảm như credentials. Trong workflow, chúng được tham chiếu bằng cú pháp ${{ secrets.TEN_SECRET }}. Điều này đảm bảo credentials không bao giờ được lộ trong code hay logs, không như các phương pháp khác đều tiềm ẩn rủi ro bảo mật."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "Theo tài liệu Azure DevOps, định nghĩa nào về DevOps là chính xác nhất?",
+      "options": [
+        "DevOps là một ngôn ngữ lập trình mới dùng để tự động hóa infrastructure",
+        "DevOps là sự kết hợp của con người, quy trình và sản phẩm để liên tục cung cấp giá trị cho người dùng cuối",
+        "DevOps là phương pháp chỉ dành cho các công ty lớn có đội ngũ vận hành riêng",
+        "DevOps là công cụ thay thế hoàn toàn cho Agile và Scrum"
+      ],
+      "answer": 1,
+      "explanation": "Theo định nghĩa của Donovan Brown được trích dẫn trong tài liệu Azure DevOps: 'DevOps is the union of people, process, and products to enable continuous delivery of value to our end users.' (DevOps là sự kết hợp của con người, quy trình và sản phẩm để liên tục cung cấp giá trị cho người dùng cuối). Đây là định nghĩa chính xác nhất về DevOps."
+    }
+  ]
+}

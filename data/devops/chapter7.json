@@ -1,0 +1,239 @@
+{
+  "title": "Chương 7: Configuration Management — Ansible",
+  "theory": [
+    {
+      "heading": "Ansible là gì?",
+      "content": "Ansible là một ngôn ngữ tự động hóa đơn giản có thể mô tả toàn bộ hạ tầng ứng dụng CNTT trong các Ansible Playbook. Ansible còn là một automation engine (công cụ tự động hóa) thực thi các Playbook đó. Ansible Tower là một enterprise framework (khung doanh nghiệp) để kiểm soát, bảo mật và quản lý tự động hóa Ansible thông qua giao diện UI và RESTful API."
+    },
+    {
+      "heading": "Đặc điểm nổi bật của Ansible",
+      "content": "Ansible có ba đặc điểm chính: (1) Simple — tự động hóa dễ đọc như ngôn ngữ tự nhiên, không cần kỹ năng lập trình đặc biệt, các tác vụ được thực hiện tuần tự; (2) Powerful — triển khai ứng dụng, quản lý cấu hình, điều phối workflow; (3) Agentless — kiến trúc không cần agent, sử dụng OpenSSH & WinRM, không có agent để khai thác hoặc cập nhật, giúp hiệu quả hơn và bảo mật hơn."
+    },
+    {
+      "heading": "Cách Ansible hoạt động",
+      "content": "Ansible hoạt động thông qua Automation Engine bao gồm: Inventory (danh sách host cần quản lý), Modules (các đoạn code thực thi trên host đích), API, và Plugins. Người dùng viết Ansible Playbook, Ansible Engine kết hợp inventory và modules để thực thi các tác vụ lên Hosts và Networking devices. Ansible cũng có thể kết nối với Public/Private Cloud và CMDB."
+    },
+    {
+      "heading": "Inventory và Ad-Hoc Commands",
+      "content": "Inventory là tập hợp các host (node) cùng dữ liệu và nhóm tương ứng mà Ansible có thể kết nối và quản lý. Inventory bao gồm: Hosts (nodes), Groups, Inventory-specific data (biến), và có thể là Static hoặc Dynamic sources. Ad-hoc command là một lệnh Ansible đơn lẻ thực hiện nhanh mà không cần lưu lại. Ví dụ: `ansible all -m ping` để kiểm tra tất cả hosts, `ansible localhost -m setup` để thu thập facts, `ansible web -m command -a 'uptime'` để chạy lệnh trên nhóm web."
+    },
+    {
+      "heading": "Modules và Tasks",
+      "content": "Modules là các đoạn code được truyền tới hệ thống đích và thực thi để thỏa mãn khai báo tác vụ. Ansible đi kèm với hàng trăm module như: apt/yum, copy, file, get_url, git, ping, debug, service, synchronize, template. Tasks là việc áp dụng một module để thực hiện một đơn vị công việc cụ thể. Ví dụ: file (kiểm tra thư mục tồn tại), yum (cài package), service (chạy dịch vụ), template (render file cấu hình), get_url (tải file từ URL), git (clone repository). Run command modules (command, shell, script, raw) được dùng khi không có module phù hợp, nhưng không có khái niệm desired state và chỉ nên dùng như phương án cuối cùng."
+    },
+    {
+      "heading": "Variables, Facts và Handlers",
+      "content": "Variables: Ansible có thể làm việc với metadata từ nhiều nguồn khác nhau dưới dạng biến, bao gồm: command line parameters, plays and tasks, files, inventory, discovered facts, và roles. Facts: là các mảnh thông tin thu thập được từ việc kiểm tra hệ thống host, được lưu dưới dạng biến để sử dụng trong play (dùng lệnh `ansible localhost -m setup`). Handlers: là các task đặc biệt chạy vào cuối một play khi được thông báo bởi task khác khi có thay đổi xảy ra — ví dụ khi file cấu hình thay đổi thì thông báo cho task restart service."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Ansible là gì?",
+      "options": [
+        "Một hệ điều hành dành cho máy chủ",
+        "Một ngôn ngữ tự động hóa đơn giản và automation engine chạy Ansible Playbooks",
+        "Một công cụ giám sát hệ thống mạng",
+        "Một cơ sở dữ liệu quan hệ dành cho DevOps"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF, Ansible là 'a simple automation language that can perfectly describe an IT application infrastructure in Ansible Playbooks' và 'an automation engine that runs Ansible Playbooks'."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Ansible Tower là gì?",
+      "options": [
+        "Một phiên bản Ansible chỉ chạy trên Windows",
+        "Một công cụ dùng để viết Playbook nhanh hơn",
+        "Một module đặc biệt để quản lý file",
+        "Một enterprise framework để kiểm soát, bảo mật và quản lý Ansible automation với UI và RESTful API"
+      ],
+      "answer": 3,
+      "explanation": "Ansible Tower là 'an enterprise framework for controlling, securing and managing your Ansible automation with a UI and RESTful API'."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Ansible sử dụng giao thức nào để kết nối với các host từ xa (agentless)?",
+      "options": [
+        "OpenSSH và WinRM",
+        "FTP và Telnet",
+        "HTTP và SMTP",
+        "SNMP và ICMP"
+      ],
+      "answer": 0,
+      "explanation": "Ansible có kiến trúc agentless và sử dụng OpenSSH (cho Linux/Unix) và WinRM (cho Windows) để kết nối với các host từ xa mà không cần cài agent."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Inventory trong Ansible là gì?",
+      "options": [
+        "Danh sách các module được cài đặt trong Ansible",
+        "File cấu hình chính của Ansible",
+        "Tập hợp các host (node) cùng dữ liệu và nhóm tương ứng mà Ansible có thể kết nối và quản lý",
+        "Lịch sử các lần chạy Playbook"
+      ],
+      "answer": 2,
+      "explanation": "Theo PDF: 'Inventory is a collection of hosts (nodes) with associated data and groupings that Ansible can connect and manage', bao gồm Hosts, Groups, Inventory-specific data (variables), và có thể là Static hoặc Dynamic sources."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Lệnh nào dùng để cài đặt Ansible bằng pip?",
+      "options": [
+        "pip install ansible-core",
+        "pip install ansible",
+        "yum install ansible",
+        "apt-get install ansible"
+      ],
+      "answer": 1,
+      "explanation": "Theo slide 'Installing Ansible' trong PDF, lệnh cài đặt Ansible bằng pip là: `pip install ansible`."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Module nào được dùng để thu thập 'facts' (thông tin hệ thống) về một host?",
+      "options": [
+        "ping",
+        "debug",
+        "setup",
+        "gather"
+      ],
+      "answer": 2,
+      "explanation": "Module `setup` được dùng để thu thập và hiển thị facts của host. Ví dụ lệnh: `ansible localhost -m setup` sẽ trả về các thông tin hệ thống như địa chỉ IP, interface mạng, v.v."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "Ad-hoc command trong Ansible là gì?",
+      "options": [
+        "Một Playbook được lập lịch chạy định kỳ",
+        "Một lệnh Ansible đơn lẻ để thực hiện nhanh mà không cần lưu lại",
+        "Một role đặc biệt dùng cho môi trường production",
+        "Một loại module dành cho cloud providers"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF: 'An ad-hoc command is a single Ansible task to perform quickly, but don't want to save for later.' Đây là cách chạy một tác vụ nhanh mà không cần viết Playbook."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Trong Ansible, 'run command modules' (command, shell, script, raw) khác gì so với các module thông thường?",
+      "options": [
+        "Run command modules nhanh hơn và được ưu tiên sử dụng hơn",
+        "Run command modules không có khái niệm 'desired state' và chỉ nên dùng như phương án cuối cùng",
+        "Run command modules chỉ hoạt động trên Windows",
+        "Run command modules yêu cầu cài đặt agent trên host đích"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF: 'Unlike standard modules, run commands have no concept of desired state and should only be used as a last resort.' Module command, shell, script, raw chỉ dùng khi không có module phù hợp."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Facts trong Ansible là gì và được lưu như thế nào?",
+      "options": [
+        "Là file log của quá trình chạy Playbook, lưu trong /var/log/ansible",
+        "Là tài liệu hướng dẫn về các module, lưu ở docs.ansible.com",
+        "Là các mảnh thông tin thu thập từ việc kiểm tra hệ thống host, được lưu dưới dạng biến để dùng trong play",
+        "Là danh sách các host đã được Ansible quản lý thành công"
+      ],
+      "answer": 2,
+      "explanation": "Theo PDF: 'Facts are bits of information derived from examining a host systems that are stored as variables for later use in a play.' Facts bao gồm thông tin như địa chỉ IP, MAC address, MTU, v.v."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "Handler Tasks trong Ansible hoạt động như thế nào?",
+      "options": [
+        "Handler chạy trước khi tất cả các task khác trong play",
+        "Handler chạy ngay lập tức sau mỗi task khi có thay đổi",
+        "Handler là task đặc biệt chạy cuối play khi được thông báo bởi task khác khi có thay đổi xảy ra",
+        "Handler chạy định kỳ mỗi giờ để kiểm tra trạng thái hệ thống"
+      ],
+      "answer": 2,
+      "explanation": "Theo PDF: 'Handlers are special tasks that run at the end of a play if notified by another task when a change occurs.' Ví dụ điển hình: khi file cấu hình thay đổi thì thông báo cho task restart service."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "Ansible có thể nhận biến (variables) từ những nguồn nào?",
+      "options": [
+        "Chỉ từ file vars.yml trong thư mục Playbook",
+        "Chỉ từ command line và inventory",
+        "Từ command line parameters, plays/tasks, files, inventory, discovered facts và roles",
+        "Chỉ từ environment variables của hệ điều hành"
+      ],
+      "answer": 2,
+      "explanation": "Theo PDF slide 'Variables': 'Ansible can work with metadata from various sources and manage their context in the form of variables', bao gồm: Command line parameters, Plays and tasks, Files, Inventory, Discovered facts, Roles."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "Module `shell` trong Ansible khác module `command` như thế nào?",
+      "options": [
+        "Shell chạy bảo mật và dự đoán được hơn command",
+        "Shell thực thi qua shell như /bin/sh nên có thể dùng pipes, còn command không dùng được pipes",
+        "Shell chỉ chạy được trên Windows, command chạy trên Linux",
+        "Shell và command hoàn toàn giống nhau, chỉ khác tên gọi"
+      ],
+      "answer": 1,
+      "explanation": "Theo PDF: module `command` 'Takes the command and executes it on the host. The most secure and predictable.' Còn `shell` 'Executes through a shell like /bin/sh so you can use pipes etc. Be careful.' Shell có thể dùng pipes, redirects nhưng kém an toàn hơn."
+    },
+    {
+      "id": 13,
+      "level": "advanced",
+      "question": "Trong static inventory, cú pháp nào dùng để định nghĩa một dãy host với IP từ 10.42.0.6 đến 10.42.0.8 thuộc nhóm [web]?",
+      "options": [
+        "[web]\nnode-{1:3} ansible_host=10.42.0.{6:8}",
+        "[web]\nnode-[1:3] ansible_host=10.42.0.[6:8]",
+        "[web]\nnode-(1-3) ansible_host=10.42.0.(6-8)",
+        "[web]\nnode-1,node-2,node-3 ansible_host=10.42.0.6,10.42.0.7,10.42.0.8"
+      ],
+      "answer": 1,
+      "explanation": "Theo slide 'Static Inventory Example' trong PDF, Ansible dùng cú pháp dấu ngoặc vuông `[start:end]` để định nghĩa dãy. Ví dụ: `node-[1:3] ansible_host=10.42.0.[6:8]` tạo ra node-1, node-2, node-3 với IP tương ứng."
+    },
+    {
+      "id": 14,
+      "level": "advanced",
+      "question": "Trong một Playbook, tại sao nên dùng `notify` + Handler thay vì đặt task restart service trực tiếp trong danh sách tasks?",
+      "options": [
+        "Vì Handler chạy nhanh hơn task thông thường",
+        "Vì Handler chỉ chạy khi có thay đổi thực sự xảy ra, tránh restart service không cần thiết",
+        "Vì Ansible bắt buộc phải dùng Handler cho tất cả các service tasks",
+        "Vì task trực tiếp trong danh sách tasks không thể gọi module service"
+      ],
+      "answer": 1,
+      "explanation": "Handler chỉ được kích hoạt khi task thông báo nó (notify) VÀ task đó tạo ra thay đổi (changed). Nếu task không tạo thay đổi (ví dụ file cấu hình đã đúng rồi), handler không chạy, tránh restart service không cần thiết — đây là nguyên tắc idempotency trong Ansible."
+    },
+    {
+      "id": 15,
+      "level": "advanced",
+      "question": "Khi dùng `ansible-doc copy`, Ansible cho biết: 'If you need variable interpolation in copied files, use the [template] module.' Điều này có nghĩa là gì?",
+      "options": [
+        "Module copy không thể sao chép file có kích thước lớn hơn 1MB",
+        "Module copy chỉ hoạt động trên localhost, không làm việc được với remote host",
+        "Module copy sao chép file nguyên văn, còn module template xử lý biến Jinja2 trong file trước khi copy lên host đích",
+        "Module copy và template đều giống nhau về chức năng"
+      ],
+      "answer": 2,
+      "explanation": "Module `copy` chỉ sao chép file nguyên vẹn từ local sang remote. Module `template` xử lý các biến Jinja2 ({{ variable }}) trong file template trước khi copy, cho phép tạo file cấu hình động phù hợp với từng host."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "Trong kiến trúc của Ansible Automation Engine, thành phần nào chịu trách nhiệm lưu trữ thông tin về các host và nhóm host cần quản lý?",
+      "options": [
+        "Plugins",
+        "Modules",
+        "API",
+        "Inventory"
+      ],
+      "answer": 3,
+      "explanation": "Theo sơ đồ 'How Ansible Works' trong PDF, Ansible Automation Engine gồm 4 thành phần: Inventory (lưu thông tin hosts và groups), API, Modules (code thực thi trên host đích), và Plugins. Inventory là thành phần chịu trách nhiệm quản lý danh sách host."
+    }
+  ]
+}

@@ -27,23 +27,38 @@
       "id": 1,
       "level": "basic",
       "question": "Lệnh nào dùng để khởi tạo một Git repository mới?",
-      "options": ["git init", "git start", "git create", "git new"],
-      "answer": 0,
+      "options": [
+        "git new",
+        "git init",
+        "git create",
+        "git start"
+      ],
+      "answer": 1,
       "explanation": "'git init' tạo repository Git mới trong thư mục hiện tại — tạo folder .git ẩn chứa toàn bộ metadata của repo."
     },
     {
       "id": 2,
       "level": "basic",
       "question": "Lệnh nào sao chép một repository từ remote về máy local?",
-      "options": ["git clone [URL]", "git copy [URL]", "git download [URL]", "git pull [URL]"],
-      "answer": 0,
+      "options": [
+        "git pull [URL]",
+        "git clone [URL]",
+        "git download [URL]",
+        "git copy [URL]"
+      ],
+      "answer": 1,
       "explanation": "'git clone [URL]' tạo một bản sao đầy đủ của repository — bao gồm toàn bộ history và tất cả branch."
     },
     {
       "id": 3,
       "level": "basic",
       "question": "Lệnh nào thêm file vào Staging Area?",
-      "options": ["git add [file]", "git stage [file]", "git commit [file]", "git push [file]"],
+      "options": [
+        "git add [file]",
+        "git commit [file]",
+        "git push [file]",
+        "git stage [file]"
+      ],
       "answer": 0,
       "explanation": "'git add' đưa file vào Staging Area (Index) — chuẩn bị cho lần commit tiếp theo."
     },
@@ -51,7 +66,12 @@
       "id": 4,
       "level": "basic",
       "question": "Lệnh 'git commit -m \"message\"' làm gì?",
-      "options": ["Tạo commit mới với message mô tả thay đổi", "Gửi code lên remote repository", "Tạo branch mới", "Merge hai branch lại"],
+      "options": [
+        "Tạo commit mới với message mô tả thay đổi",
+        "Tạo branch mới",
+        "Merge hai branch lại",
+        "Gửi code lên remote repository"
+      ],
       "answer": 0,
       "explanation": "'git commit -m' tạo một snapshot mới (commit) với message mô tả — lưu vĩnh viễn vào local repository."
     },
@@ -59,31 +79,51 @@
       "id": 5,
       "level": "basic",
       "question": "Lệnh 'git status' cho biết điều gì?",
-      "options": ["Trạng thái repository: file đã staged, chưa staged, untracked", "Lịch sử tất cả commit", "Danh sách tất cả branch", "URL của remote repository"],
-      "answer": 0,
+      "options": [
+        "Danh sách tất cả branch",
+        "URL của remote repository",
+        "Trạng thái repository: file đã staged, chưa staged, untracked",
+        "Lịch sử tất cả commit"
+      ],
+      "answer": 2,
       "explanation": "'git status' hiển thị trạng thái hiện tại: file nào trong staging area, file nào đã sửa nhưng chưa stage, file nào chưa được track."
     },
     {
       "id": 6,
       "level": "basic",
       "question": "Lệnh 'git push' làm gì?",
-      "options": ["Đẩy commit từ local lên remote repository", "Tải code từ remote về local", "Tạo commit mới", "Xóa branch trên remote"],
-      "answer": 0,
+      "options": [
+        "Xóa branch trên remote",
+        "Tạo commit mới",
+        "Đẩy commit từ local lên remote repository",
+        "Tải code từ remote về local"
+      ],
+      "answer": 2,
       "explanation": "'git push' upload các commit mới từ local repository lên remote repository (GitHub, GitLab...)."
     },
     {
       "id": 7,
       "level": "basic",
       "question": "Sự khác biệt giữa 'git pull' và 'git fetch' là gì?",
-      "options": ["git pull = fetch + merge; git fetch chỉ tải về mà không merge", "git fetch nhanh hơn git pull", "git pull chỉ tải metadata; git fetch tải toàn bộ code", "Chúng giống nhau hoàn toàn"],
-      "answer": 0,
+      "options": [
+        "git pull chỉ tải metadata; git fetch tải toàn bộ code",
+        "git pull = fetch + merge; git fetch chỉ tải về mà không merge",
+        "Chúng giống nhau hoàn toàn",
+        "git fetch nhanh hơn git pull"
+      ],
+      "answer": 1,
       "explanation": "'git fetch' tải thay đổi từ remote về nhưng không merge vào branch hiện tại. 'git pull' = git fetch + git merge — vừa tải vừa merge luôn."
     },
     {
       "id": 8,
       "level": "basic",
       "question": "Lệnh 'git log' hiển thị gì?",
-      "options": ["Danh sách tất cả commit với author, date và message", "Sự khác biệt giữa các file", "Danh sách branch", "Remote repository URL"],
+      "options": [
+        "Danh sách tất cả commit với author, date và message",
+        "Danh sách branch",
+        "Remote repository URL",
+        "Sự khác biệt giữa các file"
+      ],
       "answer": 0,
       "explanation": "'git log' liệt kê toàn bộ lịch sử commit: hash, tác giả, ngày giờ và commit message."
     },
@@ -91,7 +131,12 @@
       "id": 9,
       "level": "intermediate",
       "question": "Lệnh 'git diff [file]' hiển thị điều gì?",
-      "options": ["Sự khác biệt giữa working directory và staging area", "Lịch sử thay đổi của file", "Ai đã sửa file đó", "Danh sách commit ảnh hưởng đến file"],
+      "options": [
+        "Sự khác biệt giữa working directory và staging area",
+        "Ai đã sửa file đó",
+        "Danh sách commit ảnh hưởng đến file",
+        "Lịch sử thay đổi của file"
+      ],
       "answer": 0,
       "explanation": "'git diff' so sánh working directory với staging area — cho thấy những dòng nào đã thay đổi nhưng chưa được stage."
     },
@@ -99,15 +144,25 @@
       "id": 10,
       "level": "intermediate",
       "question": "Điều gì xảy ra khi chạy 'git reset [file]'?",
-      "options": ["File bị xóa khỏi staging area nhưng thay đổi vẫn còn trong working directory", "File bị xóa hoàn toàn khỏi dự án", "Commit cuối bị xóa", "Branch hiện tại bị reset về HEAD"],
-      "answer": 0,
+      "options": [
+        "Branch hiện tại bị reset về HEAD",
+        "Commit cuối bị xóa",
+        "File bị xóa khỏi staging area nhưng thay đổi vẫn còn trong working directory",
+        "File bị xóa hoàn toàn khỏi dự án"
+      ],
+      "answer": 2,
       "explanation": "'git reset [file]' unstage file — đưa file ra khỏi staging area nhưng không mất thay đổi trong working directory."
     },
     {
       "id": 11,
       "level": "intermediate",
       "question": "Tại sao 'git revert' an toàn hơn 'git reset --hard' trong môi trường team?",
-      "options": ["git revert tạo commit mới để đảo ngược, không xóa history; git reset --hard xóa commit khỏi history", "git revert nhanh hơn", "git reset --hard tự động push lên remote", "Không có sự khác biệt về độ an toàn"],
+      "options": [
+        "git revert tạo commit mới để đảo ngược, không xóa history; git reset --hard xóa commit khỏi history",
+        "Không có sự khác biệt về độ an toàn",
+        "git reset --hard tự động push lên remote",
+        "git revert nhanh hơn"
+      ],
       "answer": 0,
       "explanation": "'git revert' tạo commit mới đảo ngược thay đổi — history được giữ nguyên, an toàn khi cộng tác. 'git reset --hard' xóa commit khỏi history — nguy hiểm khi code đã được push."
     },
@@ -115,7 +170,12 @@
       "id": 12,
       "level": "intermediate",
       "question": "Lệnh 'git remote -v' cho biết gì?",
-      "options": ["Danh sách tất cả remote repository và URL của chúng", "Phiên bản Git đang dùng", "Lịch sử kết nối remote", "Tên của tất cả branch trên remote"],
+      "options": [
+        "Danh sách tất cả remote repository và URL của chúng",
+        "Tên của tất cả branch trên remote",
+        "Lịch sử kết nối remote",
+        "Phiên bản Git đang dùng"
+      ],
       "answer": 0,
       "explanation": "'git remote -v' liệt kê tất cả remote được cấu hình (thường là origin) kèm URL fetch và push."
     },
@@ -123,7 +183,12 @@
       "id": 13,
       "level": "advanced",
       "question": "Bạn muốn stage chỉ một phần thay đổi trong file (không phải toàn bộ file). Lệnh nào dùng?",
-      "options": ["git add -p [file]", "git add --partial [file]", "git stage --chunk [file]", "git commit --partial [file]"],
+      "options": [
+        "git add -p [file]",
+        "git commit --partial [file]",
+        "git stage --chunk [file]",
+        "git add --partial [file]"
+      ],
       "answer": 0,
       "explanation": "'git add -p' (patch mode) cho phép chọn từng hunk (đoạn thay đổi) trong file để stage — rất hữu ích khi muốn tách thành nhiều commit nhỏ."
     },
@@ -131,8 +196,13 @@
       "id": 14,
       "level": "advanced",
       "question": "Lệnh nào xem lịch sử commit dạng ngắn gọn, một dòng mỗi commit?",
-      "options": ["git log --oneline", "git log --short", "git log -1", "git log --brief"],
-      "answer": 0,
+      "options": [
+        "git log -1",
+        "git log --oneline",
+        "git log --brief",
+        "git log --short"
+      ],
+      "answer": 1,
       "explanation": "'git log --oneline' hiển thị mỗi commit trên một dòng với hash rút gọn và commit message — dễ đọc khi xem lịch sử dài."
     }
   ]

@@ -27,7 +27,12 @@
       "id": 1,
       "level": "basic",
       "question": "VCS là viết tắt của gì?",
-      "options": ["Version Control System", "Virtual Code Storage", "Visual Commit System", "Versioned Code Source"],
+      "options": [
+        "Version Control System",
+        "Versioned Code Source",
+        "Visual Commit System",
+        "Virtual Code Storage"
+      ],
       "answer": 0,
       "explanation": "VCS = Version Control System — hệ thống quản lý và theo dõi các thay đổi của code/tài liệu theo thời gian."
     },
@@ -35,7 +40,12 @@
       "id": 2,
       "level": "basic",
       "question": "Trong Git, 'HEAD' chỉ đến điều gì?",
-      "options": ["Revision hiện tại (commit mới nhất)", "Tên của remote repository", "Nhánh đầu tiên được tạo", "File cấu hình của Git"],
+      "options": [
+        "Revision hiện tại (commit mới nhất)",
+        "Nhánh đầu tiên được tạo",
+        "File cấu hình của Git",
+        "Tên của remote repository"
+      ],
       "answer": 0,
       "explanation": "HEAD trỏ đến revision hiện tại — thường là commit mới nhất trên branch đang làm việc."
     },
@@ -43,23 +53,38 @@
       "id": 3,
       "level": "basic",
       "question": "Repository trong Git lưu trữ gì?",
-      "options": ["Toàn bộ lịch sử thay đổi của dự án từ đầu", "Chỉ code của phiên bản hiện tại", "Danh sách các thành viên trong team", "Cấu hình server deploy"],
-      "answer": 0,
+      "options": [
+        "Danh sách các thành viên trong team",
+        "Cấu hình server deploy",
+        "Toàn bộ lịch sử thay đổi của dự án từ đầu",
+        "Chỉ code của phiên bản hiện tại"
+      ],
+      "answer": 2,
       "explanation": "Repository lưu toàn bộ lịch sử (tất cả revision) của dự án từ khi khởi tạo."
     },
     {
       "id": 4,
       "level": "basic",
       "question": "Tag trong Git được dùng để làm gì?",
-      "options": ["Đánh dấu một revision cụ thể, thường cho release", "Tạo một branch mới", "Xóa commit cũ", "Theo dõi remote repository"],
-      "answer": 0,
+      "options": [
+        "Theo dõi remote repository",
+        "Xóa commit cũ",
+        "Đánh dấu một revision cụ thể, thường cho release",
+        "Tạo một branch mới"
+      ],
+      "answer": 2,
       "explanation": "Tag là nhãn gắn vào một commit cụ thể — thường dùng để đánh dấu các release (v1.0, v2.0)."
     },
     {
       "id": 5,
       "level": "basic",
       "question": "Feature branch trong Git dùng để làm gì?",
-      "options": ["Phát triển tính năng mới mà không ảnh hưởng đến main branch", "Lưu trữ các bugfix cho phiên bản cũ", "Deploy lên production", "Backup code hiện tại"],
+      "options": [
+        "Phát triển tính năng mới mà không ảnh hưởng đến main branch",
+        "Backup code hiện tại",
+        "Deploy lên production",
+        "Lưu trữ các bugfix cho phiên bản cũ"
+      ],
       "answer": 0,
       "explanation": "Feature branch tách ra từ main để phát triển tính năng mới độc lập — khi xong thì merge lại vào main."
     },
@@ -67,31 +92,51 @@
       "id": 6,
       "level": "basic",
       "question": "Lợi ích nào sau đây KHÔNG phải của Git?",
-      "options": ["Tự động viết code cho developer", "Staging Area để kiểm soát commit", "Branching & Merging mạnh mẽ", "Undo mistakes với reset/revert"],
-      "answer": 0,
+      "options": [
+        "Undo mistakes với reset/revert",
+        "Branching & Merging mạnh mẽ",
+        "Tự động viết code cho developer",
+        "Staging Area để kiểm soát commit"
+      ],
+      "answer": 2,
       "explanation": "Git không tự viết code. Các lợi ích thực sự của Git: Staging Area, Branching, Merging, Undo, Distributed system, Collaboration."
     },
     {
       "id": 7,
       "level": "intermediate",
       "question": "Sự khác biệt chính giữa Centralized VCS và Distributed VCS (Git) là gì?",
-      "options": ["Distributed: mỗi người có full copy của repository; Centralized: chỉ có một server trung tâm", "Distributed chậm hơn Centralized", "Centralized hỗ trợ branching tốt hơn", "Không có sự khác biệt thực sự"],
-      "answer": 0,
+      "options": [
+        "Centralized hỗ trợ branching tốt hơn",
+        "Distributed: mỗi người có full copy của repository; Centralized: chỉ có một server trung tâm",
+        "Không có sự khác biệt thực sự",
+        "Distributed chậm hơn Centralized"
+      ],
+      "answer": 1,
       "explanation": "Git là distributed — mỗi developer clone về full repository (kể cả toàn bộ history). Centralized VCS (SVN) chỉ có một server, mọi thao tác đều cần kết nối server."
     },
     {
       "id": 8,
       "level": "intermediate",
       "question": "Release branch trong Git có đặc điểm gì?",
-      "options": ["Code bị đóng băng, chỉ nhận bugfix, không nhận tính năng mới", "Chứa tất cả các tính năng mới nhất chưa release", "Được merge vào main sau mỗi commit", "Dùng để test tính năng thực nghiệm"],
-      "answer": 0,
+      "options": [
+        "Được merge vào main sau mỗi commit",
+        "Dùng để test tính năng thực nghiệm",
+        "Code bị đóng băng, chỉ nhận bugfix, không nhận tính năng mới",
+        "Chứa tất cả các tính năng mới nhất chưa release"
+      ],
+      "answer": 2,
       "explanation": "Release branch dùng để chuẩn bị cho một release: code frozen (đóng băng), chỉ accept bugfix, không thêm feature mới."
     },
     {
       "id": 9,
       "level": "intermediate",
       "question": "Maintenance branch khác Feature branch như thế nào?",
-      "options": ["Maintenance dùng để fix bug cho release cũ; Feature dùng để phát triển tính năng mới", "Maintenance luôn merge vào Feature khi hoàn thành", "Feature branch không thể merge vào main", "Chúng giống nhau hoàn toàn"],
+      "options": [
+        "Maintenance dùng để fix bug cho release cũ; Feature dùng để phát triển tính năng mới",
+        "Feature branch không thể merge vào main",
+        "Chúng giống nhau hoàn toàn",
+        "Maintenance luôn merge vào Feature khi hoàn thành"
+      ],
       "answer": 0,
       "explanation": "Maintenance branch: phát hành bugfix cho các phiên bản cũ đã release. Feature branch: phát triển tính năng mới cho phiên bản tiếp theo."
     },
@@ -99,7 +144,12 @@
       "id": 10,
       "level": "advanced",
       "question": "Staging Area (Index) trong Git có vai trò gì?",
-      "options": ["Cho phép chọn chính xác những thay đổi nào đưa vào commit tiếp theo", "Lưu trữ toàn bộ history của project", "Là bản copy của remote repository", "Tự động merge các branch khi có conflict"],
+      "options": [
+        "Cho phép chọn chính xác những thay đổi nào đưa vào commit tiếp theo",
+        "Tự động merge các branch khi có conflict",
+        "Là bản copy của remote repository",
+        "Lưu trữ toàn bộ history của project"
+      ],
       "answer": 0,
       "explanation": "Staging Area là vùng trung gian giữa working directory và repository. Dùng 'git add' để đưa thay đổi vào staging, sau đó 'git commit' mới ghi vào history — cho phép kiểm soát chi tiết nội dung commit."
     },
@@ -107,16 +157,26 @@
       "id": 11,
       "level": "advanced",
       "question": "Khi fork một dự án mã nguồn mở và muốn đóng góp, quy trình chuẩn là gì?",
-      "options": ["Fork → clone → tạo feature branch → commit → tạo Pull Request về repo gốc", "Clone trực tiếp repo gốc → commit thẳng vào main", "Fork → commit thẳng vào main của fork → tự động merge", "Gửi file patch qua email cho maintainer là đủ"],
-      "answer": 0,
+      "options": [
+        "Fork → commit thẳng vào main của fork → tự động merge",
+        "Gửi file patch qua email cho maintainer là đủ",
+        "Fork → clone → tạo feature branch → commit → tạo Pull Request về repo gốc",
+        "Clone trực tiếp repo gốc → commit thẳng vào main"
+      ],
+      "answer": 2,
       "explanation": "Quy trình chuẩn: fork về tài khoản của bạn, làm việc trên feature branch, sau đó tạo Pull Request để maintainer review và merge vào repo gốc."
     },
     {
       "id": 12,
       "level": "advanced",
       "question": "Mỗi revision trong Git bao gồm những thông tin gì?",
-      "options": ["Thay đổi từ revision trước, tác giả, và commit message mô tả thay đổi", "Chỉ nội dung file tại thời điểm đó", "Tên branch và timestamp mà không có tác giả", "Chỉ danh sách file đã thay đổi"],
-      "answer": 0,
+      "options": [
+        "Chỉ danh sách file đã thay đổi",
+        "Tên branch và timestamp mà không có tác giả",
+        "Thay đổi từ revision trước, tác giả, và commit message mô tả thay đổi",
+        "Chỉ nội dung file tại thời điểm đó"
+      ],
+      "answer": 2,
       "explanation": "Mỗi revision (commit) trong Git chứa: thay đổi so với revision trước (diff), tác giả (author), timestamp, và commit message mô tả lý do thay đổi."
     }
   ]

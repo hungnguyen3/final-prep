@@ -5,6 +5,7 @@
   "chapters": [
     { "id": 1, "title": "Version Control & Git là gì?" },
     { "id": 2, "title": "Lệnh Git thiết yếu" },
-    { "id": 3, "title": "Branch, Merge & Lệnh nâng cao" }
+    { "id": 3, "title": "Branch, Merge & Lệnh nâng cao" },
+    { "id": 4, "title": "GitOps & ArgoCD" }
   ]
 }

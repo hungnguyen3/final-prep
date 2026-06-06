@@ -9,6 +9,15 @@ let examIndex = 0;
 let mode = null;
 let examAnswers = [];
 
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 async function init() {
   const { subject, chapter } = getParams();
   if (!subject || !chapter) return;
@@ -77,9 +86,48 @@ function setupModeButtons() {
   document.getElementById('btn-exam')?.addEventListener('click', () => startExam());
 }
 
+function resetToControls() {
+  const area = document.getElementById('quiz-area');
+  area.innerHTML = '';
+  document.getElementById('quiz-controls').style.display = 'flex';
+}
+
+function makeReloadBar() {
+  const bar = document.createElement('div');
+  bar.style.cssText = 'display:flex; gap:0.75rem; justify-content:center; margin: 1rem 0 2rem';
+
+  const againBtn = document.createElement('button');
+  againBtn.type = 'button';
+  againBtn.className = 'btn';
+  againBtn.textContent = '↩ Chọn chế độ khác';
+  againBtn.addEventListener('click', resetToControls);
+
+  const reloadBtn = document.createElement('button');
+  reloadBtn.type = 'button';
+  reloadBtn.className = 'btn primary';
+  reloadBtn.textContent = '🔀 Làm lại (shuffle)';
+  reloadBtn.addEventListener('click', () => {
+    filtered = shuffle(filtered);
+    if (mode === 'practice') {
+      currentIndex = 0;
+      document.getElementById('quiz-controls').style.display = 'none';
+      renderPracticeQuestion();
+    } else {
+      examIndex = 0;
+      examAnswers = new Array(filtered.length).fill(null);
+      document.getElementById('quiz-controls').style.display = 'none';
+      renderExamQuestion();
+    }
+  });
+
+  bar.append(againBtn, reloadBtn);
+  return bar;
+}
+
 function startPractice() {
   mode = 'practice';
   currentIndex = 0;
+  filtered = shuffle(filtered);
   if (filtered.length === 0) {
     document.getElementById('quiz-area').innerHTML = '<p class="empty">Không có câu hỏi nào.</p>';
     return;
@@ -91,18 +139,12 @@ function startPractice() {
 function renderPracticeQuestion() {
   const area = document.getElementById('quiz-area');
   if (currentIndex >= filtered.length) {
-    area.innerHTML = `
-      <div class="result-box">
-        <div class="score">Hoàn thành!</div>
-        <p class="score-label">Bạn đã làm xong ${filtered.length} câu.</p>
-      </div>
-      <button class="btn primary" id="btn-restart">Làm lại</button>
-    `;
-    document.getElementById('btn-restart').addEventListener('click', () => {
-      currentIndex = 0;
-      document.getElementById('quiz-controls').style.display = 'flex';
-      area.innerHTML = '';
-    });
+    area.innerHTML = '';
+    const box = document.createElement('div');
+    box.className = 'result-box';
+    box.innerHTML = `<div class="score">Hoàn thành!</div><p class="score-label">Bạn đã làm xong ${filtered.length} câu.</p>`;
+    area.appendChild(box);
+    area.appendChild(makeReloadBar());
     return;
   }
 
@@ -146,7 +188,9 @@ function renderPracticeQuestion() {
 }
 
 function startExam() {
+  mode = 'exam';
   examIndex = 0;
+  filtered = shuffle(filtered);
   examAnswers = new Array(filtered.length).fill(null);
   if (filtered.length === 0) {
     document.getElementById('quiz-area').innerHTML = '<p class="empty">Không có câu hỏi nào.</p>';
@@ -278,21 +322,8 @@ function submitExam() {
   box.className = 'result-box';
   box.innerHTML = `<div class="score">${correct}/${filtered.length}</div><p class="score-label">Điểm của bạn · ${Math.round(correct / filtered.length * 100)}%</p>`;
 
-  const retryWrap = document.createElement('div');
-  retryWrap.style.cssText = 'text-align:center; margin: 1.5rem 0';
-  const retryBtn = document.createElement('button');
-  retryBtn.type = 'button';
-  retryBtn.className = 'btn primary';
-  retryBtn.textContent = 'Làm lại';
-  retryBtn.addEventListener('click', () => {
-    examAnswers = new Array(filtered.length).fill(null);
-    document.getElementById('quiz-controls').style.display = 'flex';
-    area.innerHTML = '';
-  });
-  retryWrap.appendChild(retryBtn);
-
   area.insertBefore(box, area.firstChild);
-  area.insertBefore(retryWrap, area.children[1]);
+  area.insertBefore(makeReloadBar(), area.children[1]);
 }
 
 init();

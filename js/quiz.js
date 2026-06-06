@@ -5,6 +5,7 @@ const LEVEL_LABEL = { basic: 'Cơ bản', intermediate: 'Trung bình', advanced:
 let allQuestions = [];
 let filtered = [];
 let currentIndex = 0;
+let examIndex = 0;
 let mode = null;
 let examAnswers = [];
 
@@ -145,30 +146,104 @@ function renderPracticeQuestion() {
 }
 
 function startExam() {
-  mode = 'exam';
+  examIndex = 0;
   examAnswers = new Array(filtered.length).fill(null);
   if (filtered.length === 0) {
     document.getElementById('quiz-area').innerHTML = '<p class="empty">Không có câu hỏi nào.</p>';
     return;
   }
   document.getElementById('quiz-controls').style.display = 'none';
-  renderExam();
+  renderExamQuestion();
 }
 
-function renderExam() {
+function renderExamQuestion() {
   const area = document.getElementById('quiz-area');
+  const q = filtered[examIndex];
+  const isLast = examIndex === filtered.length - 1;
 
-  const container = document.createElement('div');
-  container.id = 'exam-questions';
+  area.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+
+  const qmeta = document.createElement('div');
+  qmeta.className = 'q-meta';
+  qmeta.textContent = `Câu ${examIndex + 1}/${filtered.length} · ${LEVEL_LABEL[q.level] || q.level}`;
+
+  const qtext = document.createElement('div');
+  qtext.className = 'q-text';
+  qtext.textContent = q.question;
+
+  const opts = document.createElement('div');
+  opts.className = 'options';
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    if (examAnswers[examIndex] === i) btn.classList.add('active');
+    btn.addEventListener('click', () => {
+      examAnswers[examIndex] = i;
+      opts.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+    opts.appendChild(btn);
+  });
+
+  card.append(qmeta, qtext, opts);
+  area.appendChild(card);
+
+  // Navigation bar
+  const nav = document.createElement('div');
+  nav.className = 'quiz-nav';
+  nav.style.marginTop = '1rem';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.type = 'button';
+  prevBtn.className = 'btn';
+  prevBtn.textContent = '← Câu trước';
+  prevBtn.disabled = examIndex === 0;
+  prevBtn.addEventListener('click', () => { examIndex--; renderExamQuestion(); });
+
+  const counter = document.createElement('span');
+  counter.className = 'q-counter';
+  counter.textContent = `${examIndex + 1} / ${filtered.length}`;
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.className = isLast ? 'btn primary' : 'btn';
+  nextBtn.textContent = isLast ? 'Nộp bài' : 'Câu tiếp →';
+  nextBtn.addEventListener('click', () => {
+    if (isLast) {
+      submitExam();
+    } else {
+      examIndex++;
+      renderExamQuestion();
+    }
+  });
+
+  nav.append(prevBtn, counter, nextBtn);
+  area.appendChild(nav);
+}
+
+function submitExam() {
+  const area = document.getElementById('quiz-area');
+  area.innerHTML = '';
+  document.getElementById('quiz-controls').style.display = 'none';
+
+  let correct = 0;
 
   filtered.forEach((q, qi) => {
+    const chosen = examAnswers[qi];
+    const correctIdx = parseInt(q.answer, 10);
+
     const card = document.createElement('div');
     card.className = 'question-card';
-    card.id = `qcard-${qi}`;
 
-    const meta = document.createElement('div');
-    meta.className = 'q-meta';
-    meta.textContent = `Câu ${qi + 1}/${filtered.length} · ${LEVEL_LABEL[q.level] || q.level}`;
+    const qmeta = document.createElement('div');
+    qmeta.className = 'q-meta';
+    qmeta.textContent = `Câu ${qi + 1}/${filtered.length} · ${LEVEL_LABEL[q.level] || q.level}`;
 
     const qtext = document.createElement('div');
     qtext.className = 'q-text';
@@ -182,66 +257,29 @@ function renderExam() {
       btn.type = 'button';
       btn.className = 'option-btn';
       btn.textContent = opt;
-      btn.addEventListener('click', () => {
-        examAnswers[qi] = i;
-        opts.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
+      btn.disabled = true;
+      if (i === correctIdx) btn.classList.add('correct');
+      else if (i === chosen && chosen !== correctIdx) btn.classList.add('wrong');
       opts.appendChild(btn);
     });
 
     const exp = document.createElement('div');
-    exp.className = 'explanation';
-    exp.id = `exp-${qi}`;
+    exp.className = 'explanation show';
     exp.textContent = q.explanation;
 
-    card.append(meta, qtext, opts, exp);
-    container.appendChild(card);
-  });
+    card.append(qmeta, qtext, opts, exp);
+    area.appendChild(card);
 
-  const submitWrap = document.createElement('div');
-  submitWrap.style.cssText = 'text-align:center; margin: 1.5rem 0';
-  const submitBtn = document.createElement('button');
-  submitBtn.type = 'button';
-  submitBtn.className = 'btn primary';
-  submitBtn.id = 'btn-submit';
-  submitBtn.textContent = 'Nộp bài';
-  submitBtn.addEventListener('click', submitExam);
-  submitWrap.appendChild(submitBtn);
-
-  const resultDiv = document.createElement('div');
-  resultDiv.id = 'exam-result';
-
-  area.innerHTML = '';
-  area.append(container, submitWrap, resultDiv);
-}
-
-function submitExam() {
-  let correct = 0;
-  filtered.forEach((q, qi) => {
-    const chosen = examAnswers[qi];
-    const correctIdx = parseInt(q.answer, 10);
-    const card = document.getElementById(`qcard-${qi}`);
-    const optBtns = card.querySelectorAll('.option-btn');
-    optBtns.forEach((b, idx) => {
-      b.disabled = true;
-      b.classList.remove('active');
-      if (idx === correctIdx) b.classList.add('correct');
-      else if (idx === chosen && chosen !== correctIdx) b.classList.add('wrong');
-    });
-    document.getElementById(`exp-${qi}`).classList.add('show');
     if (chosen === correctIdx) correct++;
   });
 
-  document.getElementById('btn-submit').style.display = 'none';
-  const resultDiv = document.getElementById('exam-result');
-
+  // Score box
   const box = document.createElement('div');
   box.className = 'result-box';
   box.innerHTML = `<div class="score">${correct}/${filtered.length}</div><p class="score-label">Điểm của bạn · ${Math.round(correct / filtered.length * 100)}%</p>`;
 
   const retryWrap = document.createElement('div');
-  retryWrap.style.textAlign = 'center';
+  retryWrap.style.cssText = 'text-align:center; margin: 1.5rem 0';
   const retryBtn = document.createElement('button');
   retryBtn.type = 'button';
   retryBtn.className = 'btn primary';
@@ -249,10 +287,12 @@ function submitExam() {
   retryBtn.addEventListener('click', () => {
     examAnswers = new Array(filtered.length).fill(null);
     document.getElementById('quiz-controls').style.display = 'flex';
-    document.getElementById('quiz-area').innerHTML = '';
+    area.innerHTML = '';
   });
   retryWrap.appendChild(retryBtn);
-  resultDiv.append(box, retryWrap);
+
+  area.insertBefore(box, area.firstChild);
+  area.insertBefore(retryWrap, area.children[1]);
 }
 
 init();

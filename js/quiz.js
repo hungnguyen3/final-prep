@@ -55,10 +55,39 @@ async function init() {
 function renderTheory(theory) {
   const el = document.getElementById('theory-content');
   if (!el) return;
+
+  function parseContent(raw) {
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    let html = '';
+    let inList = false;
+
+    const formatInline = s => s
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+    lines.forEach(line => {
+      if (line.startsWith('- ') || line.startsWith('• ')) {
+        if (!inList) { html += '<ul>'; inList = true; }
+        html += `<li>${formatInline(line.slice(2))}</li>`;
+      } else if (/^\d+\)/.test(line)) {
+        if (!inList) { html += '<ul>'; inList = true; }
+        html += `<li>${formatInline(line.replace(/^\d+\)\s*/, ''))}</li>`;
+      } else if (line.startsWith('⚠️') || line.startsWith('NOTE:') || line.startsWith('Lưu ý:')) {
+        if (inList) { html += '</ul>'; inList = false; }
+        html += `<div class="note">${formatInline(line)}</div>`;
+      } else {
+        if (inList) { html += '</ul>'; inList = false; }
+        html += `<p>${formatInline(line)}</p>`;
+      }
+    });
+    if (inList) html += '</ul>';
+    return html;
+  }
+
   el.innerHTML = theory.map(s => `
     <div class="theory-section">
       <h3>${s.heading}</h3>
-      <p>${s.content}</p>
+      <div class="theory-body">${parseContent(s.content)}</div>
     </div>
   `).join('');
 }

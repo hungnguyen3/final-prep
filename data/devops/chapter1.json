@@ -3,27 +3,27 @@
   "theory": [
     {
       "heading": "Version Control System (VCS) là gì?",
-      "content": "VCS là hệ thống quản lý và theo dõi thay đổi của code/tài liệu theo thời gian. Mỗi thay đổi được gán revision number, có timestamp và tác giả. Cho phép: so sánh các revision, khôi phục về bất kỳ revision nào, merge thay đổi từ nhiều người. Use cases: lưu lịch sử (ai thay đổi gì, khi nào, tại sao), làm việc nhóm (tránh ghi đè), branching (nhiều phiên bản song song), external contributors (fork + patch). Hai loại: Centralized VCS — một server trung tâm (SVN, CVS); Distributed VCS — mỗi người có full copy (Git, Mercurial)."
+      "content": "VCS là hệ thống **quản lý và theo dõi thay đổi** của code/tài liệu theo thời gian. Mỗi thay đổi được gán **revision number**, có timestamp và tác giả.\n- **So sánh** các revision với nhau\n- **Khôi phục** về bất kỳ revision nào trong quá khứ\n- **Merge** thay đổi từ nhiều người cùng lúc\n- Xem **ai** thay đổi **gì**, **khi nào**, **tại sao**\n\n**Hai loại VCS:**\n- **Centralized VCS** (SVN, CVS): một server trung tâm duy nhất — mất server = mất tất cả\n- **Distributed VCS** (Git, Mercurial): mỗi người có **full copy** toàn bộ repo — không có single point of failure"
     },
     {
       "heading": "Tại sao dùng Git?",
-      "content": "Git là industry-standard distributed VCS. Lý do dùng Git: Staging Area (kiểm soát chính xác nội dung commit), Undoing Mistakes (reset/revert), Branching & Merging mạnh mẽ, Distributed System (mỗi người có full copy — làm việc offline), Collaboration (pull request, code review), Integration với CI/CD tools, Community & Support lớn, Standard in the Industry. Git giữ history của toàn bộ project — dễ dàng revert khi có lỗi. Tracking Changes — biết chính xác ai thay đổi gì dòng nào."
+      "content": "Git là **industry-standard distributed VCS** — được dùng bởi hầu hết công ty phần mềm trên thế giới.\n\n**10 lý do dùng Git (từ Git & GitHub Handbook):**\n- **Staging Area**: kiểm soát chính xác những gì đưa vào commit\n- **Undoing Mistakes**: `git reset`, `git revert` để sửa lỗi\n- **Branching & Merging**: làm việc song song, tách biệt\n- **Distributed System**: mỗi người có full copy — làm offline được\n- **Collaboration**: Pull Requests, Code Review\n- **Integration**: tích hợp với CI/CD, IDE, cloud\n- **Community & Support**: cộng đồng lớn nhất\n- **Standard in the Industry**: mọi công ty đều dùng\n- **Version Control**: lịch sử đầy đủ toàn bộ project\n- **Tracking Changes**: biết chính xác ai sửa dòng nào"
     },
     {
-      "heading": "Repository, Revision, HEAD, Tag, Staging Area",
-      "content": "Repository: kho lưu toàn bộ lịch sử dự án — có 2 loại: local (trên máy) và remote (GitHub/GitLab). Revision/Commit: snapshot thay đổi tại một thời điểm — có tác giả, timestamp, commit message, unique hash (SHA-1). HEAD: con trỏ đến commit hiện tại (thường là commit mới nhất của branch đang làm việc). Tag: nhãn đánh dấu commit cụ thể — thường dùng cho release (v1.0, v2.1). Staging Area (Index): vùng trung gian giữa working directory và repository — dùng git add để đưa thay đổi vào staging, git commit để lưu vào repo. Working Directory: thư mục làm việc hiện tại. Workflow: Working Directory → git add → Staging Area → git commit → Local Repository → git push → Remote Repository."
+      "heading": "Repository, Commit, HEAD, Tag, Staging Area",
+      "content": "**Repository**: kho lưu toàn bộ lịch sử — local (máy bạn) hoặc remote (GitHub/GitLab)\n\n**Commit (Revision)**: snapshot tại một thời điểm, chứa:\n- Tác giả (author) + email\n- Timestamp\n- Commit message (mô tả thay đổi)\n- **SHA-1 hash** duy nhất (40 ký tự) — đảm bảo integrity\n\n**HEAD**: con trỏ đến commit **hiện tại** — di chuyển khi bạn checkout branch khác\n\n**Tag**: nhãn gắn vào commit cụ thể — dùng cho releases (`v1.0`, `v2.1`). Annotated tag (`-a`) chứa thêm metadata.\n\n**Staging Area (Index)**: vùng trung gian giữa working directory và repo\n\n**Workflow cơ bản:**\n- Working Directory → `git add` → Staging Area → `git commit` → Local Repo → `git push` → Remote Repo"
     },
     {
       "heading": "Các loại Branch trong Git",
-      "content": "Main/Master branch: nhánh chính, nơi code ổn định. Feature branch: tách ra từ main để phát triển tính năng mới — khi hoàn thành merge lại vào main. Release branch: đóng băng code trước khi release — chỉ nhận bugfixes, không thêm feature. Maintenance/Hotfix branch: fix bug khẩn cấp cho phiên bản đã release — tách từ tag release, merge lại cả main và release. Branching strategy phổ biến: Git Flow (main + develop + feature + release + hotfix), GitHub Flow (main + feature branches đơn giản hơn). Branch cho phép làm việc song song mà không ảnh hưởng nhau."
+      "content": "Branch cho phép **làm việc song song** mà không ảnh hưởng nhau.\n\n**Main/Master branch**: nhánh chính, chứa code production-ready\n\n**Feature branch**: tách từ main → phát triển tính năng mới → merge lại khi xong\n- ⚠️ Không commit thẳng vào main trong teamwork\n\n**Release branch**: đóng băng code trước khi release — **chỉ nhận bugfix**, không thêm feature\n\n**Hotfix/Maintenance branch**: fix bug khẩn cấp cho version cũ đã release\n- Tách từ **tag release** (không phải main)\n- Merge lại cả main **VÀ** release branch\n\n**Branching Strategies:**\n- **Git Flow**: main + develop + feature + release + hotfix (phức tạp, scheduled releases)\n- **GitHub Flow**: main + feature branches (đơn giản, continuous deployment)\n- **Trunk-based**: commit thẳng vào main với feature flags (CI/CD tốc độ cao)"
     },
     {
       "heading": "GitHub — Remote Repository & Collaboration",
-      "content": "GitHub là platform lưu trữ remote Git repositories và hỗ trợ collaboration. Các tính năng chính: Repository hosting (public/private), Pull Requests (code review trước khi merge), Issues (track bugs, features), Actions (CI/CD), Wiki, Projects (project management). Fork: tạo bản copy của repo về account của mình — dùng để contribute vào open-source. Clone: tạo bản copy local từ remote. Upstream: remote repository gốc (thường là repo bạn fork từ đó). Origin: remote mặc định sau khi clone. Quy trình contribute: Fork → Clone → Branch → Commit → Push → Pull Request."
+      "content": "GitHub là platform **lưu trữ remote Git repos** và hỗ trợ collaboration.\n\n**Tính năng chính:**\n- **Repository hosting**: public/private repos\n- **Pull Requests**: propose thay đổi + code review trước khi merge\n- **Issues**: track bugs, features, tasks\n- **Actions**: CI/CD tích hợp sẵn\n- **Branch protection**: require review, require CI pass trước khi merge\n- **Dependabot**: tự động tạo PRs update dependencies\n\n**Fork vs Clone:**\n- **Fork**: tạo bản copy về GitHub account của bạn (server-side)\n- **Clone**: tạo bản copy về máy local (`git clone [URL]`)\n\n**Quy trình contribute open-source:**\n- Fork → Clone → Tạo Feature Branch → Commit → Push → Pull Request về repo gốc\n\n**Origin vs Upstream:**\n- `origin`: remote mặc định sau khi clone (thường là fork của bạn)\n- `upstream`: remote trỏ về repo gốc (repo bạn fork từ đó)"
     },
     {
-      "heading": "GitOps — Git làm trung tâm của DevOps",
-      "content": "GitOps là phương pháp dùng Git làm single source of truth cho cả code lẫn infrastructure. 3 trụ cột: 1) Infrastructure as Code / Configuration as Code — mọi config lưu trong Git (Kubernetes manifests, Terraform, Ansible). 2) Collaboration + change mechanism — thay đổi qua code review, Pull Request. 3) CI/CD pipelines — CI: automated validation & tests; CD: automated deployment. Vấn đề trước GitOps: manually creating/configuring resources → cannot reproduce same infrastructure. Bad practice: IaC trong Git nhưng apply thủ công không qua CI/CD. GitOps benefits: Versioned IaC, Collaboration qua code reviews, CI automated tests, CD automated deployment, Improved Security (chỉ CD system có cluster permission), Easy Rollbacks (git revert)."
+      "heading": "GitOps — Git là trung tâm của DevOps",
+      "content": "GitOps dùng **Git làm single source of truth** cho cả code lẫn infrastructure.\n\n**3 trụ cột của GitOps:**\n- **Infrastructure as Code**: mọi config lưu trong Git (K8s manifests, Terraform, Ansible)\n- **Collaboration**: thay đổi infra qua code review, Pull Request như code\n- **CI/CD Pipelines**: CI automated tests + CD automated deployment\n\n**Lợi ích GitOps:**\n- **Versioned IaC**: infrastructure có lịch sử version\n- **Improved Security**: chỉ CD system có cluster permission, developers không cần credentials\n- **Easy Rollbacks**: `git revert` → CD tự động deploy version cũ\n- **Disaster Recovery**: deploy cluster mới chỉ cần point ArgoCD vào Git repo\n\n**Push Model vs Pull Model:**\n- **Push Model** (Traditional): CI/CD system push vào cluster — cần kubeconfig, open connectivity → security concern\n- **Pull Model** (ArgoCD): controller trong cluster tự pull từ Git — không cần mở inbound connection → **bảo mật hơn**\n\n⚠️ **Bad practice cần tránh**: IaC trong Git nhưng apply thủ công không qua CI/CD"
     }
   ],
   "questions": [
@@ -137,7 +137,7 @@
       "question": "GitOps dựa trên những trụ cột nào?",
       "options": ["Docker, K8s, CI/CD", "IaC/Config as Code + Collaboration qua code review + CI/CD pipelines", "Git, GitHub, GitLab", "Terraform, Ansible, Jenkins"],
       "answer": 1,
-      "explanation": "3 trụ cột GitOps: 1) Infrastructure as Code / Configuration as Code (lưu trong Git), 2) Collaboration + change mechanism (code review, PR), 3) CI/CD pipelines (automated validation + automated deployment)."
+      "explanation": "3 trụ cột GitOps: 1) Infrastructure as Code / Configuration as Code (lưu trong Git), 2) Collaboration + change mechanism (code review, PR), 3) CI/CD pipelines (CI: automated tests, CD: automated deployment)."
     },
     {
       "id": 15,
@@ -145,7 +145,7 @@
       "question": "Bad practice nào từ slide GitOps cần tránh?",
       "options": ["Dùng Git để lưu IaC", "IaC trong Git nhưng apply thủ công không qua CI/CD", "Dùng Pull Requests để review thay đổi", "Dùng automated tests"],
       "answer": 1,
-      "explanation": "Bad practice: lưu IaC trong Git nhưng vẫn apply thủ công (không có CD pipeline) → không đảm bảo reproducibility. GitOps đúng = Git + CI/CD pipeline tự động apply mọi thay đổi."
+      "explanation": "Slide: 'Bad practices — IaC in git but applied manually without CI/CD.' Lưu IaC trong Git là tốt, nhưng nếu vẫn apply thủ công thì mất đi lợi ích automation và reproducibility của GitOps."
     },
     {
       "id": 16,
@@ -161,7 +161,7 @@
       "question": "Sự khác biệt giữa 'git pull' và 'git fetch' là gì?",
       "options": ["Chúng giống nhau", "git pull = fetch + merge (tải về VÀ merge luôn); git fetch = chỉ tải về, không merge", "git fetch nhanh hơn git pull", "git pull chỉ tải metadata"],
       "answer": 1,
-      "explanation": "'git fetch' tải thay đổi từ remote về local tracking branches nhưng KHÔNG tự động merge. 'git pull' = git fetch + git merge — tải về và merge vào branch hiện tại. Dùng fetch khi muốn review trước khi merge."
+      "explanation": "'git fetch' tải thay đổi từ remote về local tracking branches nhưng KHÔNG tự động merge. 'git pull' = git fetch + git merge — tải về và merge ngay vào branch hiện tại. Dùng fetch khi muốn review trước khi merge."
     },
     {
       "id": 18,
@@ -169,7 +169,7 @@
       "question": "Pull Request trong GitHub được dùng để làm gì?",
       "options": ["Lệnh để pull code từ remote", "Yêu cầu merge code + code review — developer propose thay đổi, team review trước khi merge", "Tạo branch mới", "Xóa branch sau khi merge"],
       "answer": 1,
-      "explanation": "Pull Request (PR) là cơ chế để propose thay đổi và request review trước khi merge vào main branch. Team members review code, comment, request changes. Sau khi approved → merge. Đây là trung tâm của collaboration trên GitHub."
+      "explanation": "Pull Request (PR) là cơ chế để propose thay đổi và request review trước khi merge vào main branch. Team members review code, comment, request changes. Sau khi approved → merge."
     },
     {
       "id": 19,
@@ -177,7 +177,7 @@
       "question": "Tại sao GitOps cải thiện Security?",
       "options": ["Git mã hóa toàn bộ code", "Developer không cần cluster credentials — chỉ CD system có permission, giảm attack surface", "GitOps tự động scan vulnerabilities", "GitOps dùng private repositories"],
       "answer": 1,
-      "explanation": "Với GitOps: developers chỉ push code lên Git, không cần kubeconfig hay cluster credentials. Chỉ CD system (ArgoCD) có cluster permission. Ít người có access = ít attack surface. Slide GitOps: Improved Security — chỉ CD system có Permission."
+      "explanation": "Với GitOps: developers chỉ push code lên Git, không cần kubeconfig hay cluster credentials. Chỉ CD system (ArgoCD) có cluster permission. Ít người có access = ít attack surface."
     },
     {
       "id": 20,
@@ -225,7 +225,7 @@
       "question": "Sự khác biệt giữa GitHub Flow và Git Flow là gì?",
       "options": ["Chúng giống nhau", "GitHub Flow: đơn giản hơn (main + feature branches), phù hợp CD; Git Flow: phức tạp hơn (main + develop + feature + release + hotfix)", "Git Flow chỉ dùng cho open-source", "GitHub Flow dùng cho enterprise"],
       "answer": 1,
-      "explanation": "GitHub Flow: đơn giản — main + feature branches, merge thẳng vào main, phù hợp cho continuous deployment. Git Flow: phức tạp hơn với nhiều branch types (main, develop, feature, release, hotfix) — phù hợp cho scheduled releases."
+      "explanation": "GitHub Flow: đơn giản — main + feature branches, merge thẳng vào main, phù hợp cho continuous deployment. Git Flow: phức tạp hơn với nhiều loại branches (main, develop, feature, release, hotfix) — phù hợp cho scheduled releases."
     },
     {
       "id": 26,
@@ -265,7 +265,7 @@
       "question": "GitOps Push Model vs Pull Model — sự khác biệt về security là gì?",
       "options": ["Không có sự khác biệt", "Push Model: CI/CD agent bên ngoài cần cluster credentials và open connectivity — security concern. Pull Model (ArgoCD): controller trong cluster tự pull, không cần mở inbound connection", "Pull Model kém secure hơn", "Push Model an toàn hơn vì có authentication"],
       "answer": 1,
-      "explanation": "Slide ArgoCD: Traditional CD Tool Push Model — 'Grant access in CICD system to apply deployments into k8s cluster', 'Open connectivity between CICD systems and your k8s cluster = security concern'. Pull Model (ArgoCD): controller trong cluster, không cần open inbound connectivity."
+      "explanation": "Push Model: cần 'grant access in CICD system', 'open connectivity between CICD and k8s cluster = security concern'. Pull Model (ArgoCD): controller trong cluster, không cần open inbound connectivity — bảo mật hơn nhiều."
     }
   ]
 }

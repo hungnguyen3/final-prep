@@ -41,8 +41,8 @@
       "question": "GitHub Actions workflow được định nghĩa bằng file loại nào?",
       "options": [
         "YAML files trong .github/workflows/",
-        "XML files trong src/ci/",
-        "Groovy files trong root directory",
+        "XML files trong thư mục src/ci/",
+        "Groovy files trong thư mục gốc repo",
         "JSON files trong .github/actions/"
       ],
       "answer": 0,
@@ -53,10 +53,10 @@
       "level": "basic",
       "question": "Trong GitHub Actions, 'Runner' là gì?",
       "options": [
-        "Server thực thi các jobs",
-        "Tên của một workflow",
-        "Một loại trigger event",
-        "Người quản trị repository"
+        "Server thực thi các jobs workflow",
+        "Tên gọi của một workflow file",
+        "Loại event trigger workflow",
+        "Người quản trị GitHub repository"
       ],
       "answer": 0,
       "explanation": "Runner là server thực thi các jobs trong GitHub Actions. GitHub cung cấp free hosted runners (ubuntu-latest, windows-latest, macos-latest) hoặc bạn có thể dùng self-hosted runners."
@@ -66,10 +66,10 @@
       "level": "basic",
       "question": "Keyword 'on' trong GitHub Actions workflow dùng để làm gì?",
       "options": [
-        "Khai báo tên workflow",
-        "Chỉ định runner environment",
-        "Bật/tắt workflow",
-        "Định nghĩa events trigger workflow (push, pull_request, schedule...)"
+        "Khai báo tên của workflow",
+        "Chỉ định loại runner cần dùng",
+        "Bật hoặc tắt workflow",
+        "Định nghĩa events trigger workflow"
       ],
       "answer": 3,
       "explanation": "Keyword 'on' định nghĩa triggers — events nào sẽ kích hoạt workflow. Ví dụ: on: push: branches: [master] sẽ chạy khi có push lên branch master."
@@ -79,10 +79,10 @@
       "level": "basic",
       "question": "Action 'actions/checkout@v2' trong GitHub Actions được dùng để làm gì?",
       "options": [
-        "Deploy code lên server",
-        "Chạy unit tests",
-        "Pull source code từ repository về runner",
-        "Setup JDK version"
+        "Deploy code lên remote server",
+        "Chạy unit tests tự động",
+        "Pull source code từ repo về runner",
+        "Cài đặt phiên bản JDK cần dùng"
       ],
       "answer": 2,
       "explanation": "actions/checkout là pre-built action pull source code từ GitHub repository về runner để các steps tiếp theo có thể làm việc với code."
@@ -105,10 +105,10 @@
       "level": "basic",
       "question": "Trong GitHub Actions, Jobs có thể chạy theo cách nào?",
       "options": [
-        "Chỉ chạy tuần tự, không thể song song",
-        "Sequentially (tuần tự) hoặc in parallel (song song)",
+        "Chỉ tuần tự, không thể song song",
+        "Tuần tự hoặc song song tùy cấu hình",
         "Luôn chạy theo thứ tự alphabet",
-        "Chỉ chạy song song, không thể tuần tự"
+        "Chỉ song song, không thể tuần tự"
       ],
       "answer": 1,
       "explanation": "Jobs có thể chạy sequentially (dùng 'needs' keyword để tạo dependency) hoặc in parallel (mặc định, không có needs). Mỗi job chạy trên own virtual machine."
@@ -118,10 +118,10 @@
       "level": "basic",
       "question": "Key benefit của CI/CD là gì?",
       "options": [
-        "Tăng số lượng developer cần thiết",
+        "Tăng số developer, giảm chi phí server",
         "Loại bỏ hoàn toàn nhu cầu testing",
         "Chỉ áp dụng được cho Java projects",
-        "Faster Delivery, Higher Code Quality, Reduced Errors, Continuous Feedback"
+        "Delivery nhanh hơn, chất lượng và ít lỗi hơn"
       ],
       "answer": 3,
       "explanation": "CI/CD mang lại: Faster Delivery (tự động hóa), Higher Code Quality (automated tests), Reduced Errors (ít manual intervention), Continuous Feedback (phát hiện bugs sớm)."
@@ -131,10 +131,10 @@
       "level": "intermediate",
       "question": "Action 'actions/cache@v4' trong GitHub Actions được dùng để làm gì?",
       "options": [
-        "Xóa cache sau mỗi build",
-        "Cache Docker images",
-        "Lưu artifacts sau khi build",
-        "Cache dependencies (Maven .m2, npm node_modules) để tăng tốc build"
+        "Xóa cache cũ sau mỗi lần build xong",
+        "Cache Docker images giữa các jobs",
+        "Lưu trữ artifacts sau khi build xong",
+        "Cache dependencies như .m2 để tăng tốc build"
       ],
       "answer": 3,
       "explanation": "actions/cache@v4 cache thư mục dependencies (ví dụ: ~/.m2/repository cho Maven). Cache key thường dựa trên runner.os + hash của pom.xml — khi pom.xml thay đổi, cache tự invalidate và download dependencies mới."
@@ -144,10 +144,10 @@
       "level": "intermediate",
       "question": "Matrix strategy trong GitHub Actions dùng để làm gì?",
       "options": [
-        "Định nghĩa ma trận bảo mật cho repository",
-        "Cấu hình multiple runners",
+        "Định nghĩa ma trận bảo mật repository",
+        "Cấu hình nhiều runners cùng lúc",
         "Tạo nhiều workflows từ một template",
-        "Chạy job trên nhiều environments/versions song song — ví dụ test trên JDK 8, 11, 17 cùng lúc"
+        "Chạy job song song trên nhiều phiên bản JDK"
       ],
       "answer": 3,
       "explanation": "Matrix strategy: strategy: { matrix: { java-version: [8, 11, 17] } } — GitHub Actions tạo 3 job instances chạy song song, mỗi job test với một JDK version khác nhau. Rất hiệu quả để đảm bảo compatibility."
@@ -157,10 +157,10 @@
       "level": "intermediate",
       "question": "Keyword 'needs' trong GitHub Actions job definition có nghĩa gì?",
       "options": [
-        "Job cần thêm resources",
+        "Job cần thêm tài nguyên CPU",
         "Job yêu cầu self-hosted runner",
-        "Job chỉ chạy sau khi job được chỉ định hoàn thành thành công",
-        "Job cần có secrets"
+        "Job chỉ chạy sau khi job chỉ định xong",
+        "Job cần có secrets được cấu hình"
       ],
       "answer": 2,
       "explanation": "needs: [job-name] tạo dependency giữa jobs — job hiện tại chỉ chạy sau khi job được chỉ định hoàn thành. Ví dụ: deploy job cần build job chạy xong trước."
@@ -170,10 +170,10 @@
       "level": "intermediate",
       "question": "Trong workflow YAML, 'runs-on: ubuntu-latest' có nghĩa gì?",
       "options": [
-        "Job chạy trong Ubuntu Docker container local",
-        "Cần cài Ubuntu trên máy developer",
-        "Workflow chỉ chạy khi push lên Ubuntu",
-        "Job sẽ chạy trên GitHub-hosted runner với môi trường Ubuntu mới nhất"
+        "Job chạy trong Ubuntu Docker container cục bộ",
+        "Cần cài Ubuntu trên máy developer trước",
+        "Workflow chỉ chạy khi push lên Ubuntu server",
+        "Job chạy trên GitHub-hosted runner Ubuntu mới nhất"
       ],
       "answer": 3,
       "explanation": "runs-on chỉ định runner environment. ubuntu-latest = GitHub-hosted runner với Ubuntu mới nhất. GitHub cũng cung cấp windows-latest và macos-latest."
@@ -185,8 +185,8 @@
       "options": [
         "Push code trực tiếp không cần login",
         "Tạo Dockerfile trong .github/workflows/",
-        "Cài Docker Desktop trên runner",
-        "Login vào Docker Hub dùng secrets: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin"
+        "Cài Docker Desktop lên runner",
+        "Đăng nhập Docker Hub bằng secrets qua stdin"
       ],
       "answer": 3,
       "explanation": "Step đầu tiên là docker login với credentials từ secrets. Dùng --password-stdin để tránh password xuất hiện trong logs. Sau đó docker build và docker push."
@@ -197,8 +197,8 @@
       "question": "Sự khác biệt giữa 'run' và 'uses' trong một step của GitHub Actions là gì?",
       "options": [
         "run dùng cho CI; uses dùng cho CD",
-        "run chạy shell commands; uses gọi pre-built actions từ marketplace",
-        "Không có sự khác biệt",
+        "run thực thi shell command; uses gọi action",
+        "Không có sự khác biệt giữa hai từ khóa",
         "run chạy trên Linux; uses chạy trên Windows"
       ],
       "answer": 1,
@@ -209,10 +209,10 @@
       "level": "advanced",
       "question": "Trong CI workflow cho Spring Boot, tại sao dùng 'mvn clean package -DskipTests' thay vì 'mvn clean package'?",
       "options": [
-        "-DskipTests là bắt buộc khi dùng Maven trên Ubuntu",
-        "Để build nhanh hơn bằng cách bỏ qua tests ở bước build, tests sẽ được chạy riêng ở step 'Run tests'",
-        "Để tạo WAR file thay vì JAR file",
-        "Vì GitHub Actions không hỗ trợ chạy tests"
+        "-DskipTests bắt buộc khi dùng Maven trên Ubuntu",
+        "Bỏ qua tests ở bước build, chạy riêng ở bước sau",
+        "Để tạo WAR file thay vì JAR trong build",
+        "GitHub Actions không hỗ trợ chạy tests Maven"
       ],
       "answer": 1,
       "explanation": "-DskipTests bỏ qua việc chạy tests trong bước build (chỉ compile). Tests được chạy riêng ở step kế tiếp (mvn test) để tách biệt build và test phases, dễ debug hơn khi có lỗi."
@@ -222,10 +222,10 @@
       "level": "advanced",
       "question": "Multi-stage Dockerfile (FROM maven AS build + FROM openjdk) mang lại lợi ích gì?",
       "options": [
-        "Cho phép chạy nhiều ứng dụng trong một container",
-        "Cho phép dùng nhiều base images, giai đoạn build dùng Maven image (nặng), runtime image chỉ cần openjdk (nhỏ gọn) — giảm kích thước final image",
+        "Cho phép chạy nhiều ứng dụng trong container",
+        "Build dùng Maven (nặng), runtime dùng openjdk (nhỏ)",
         "Bắt buộc phải dùng khi deploy lên AWS",
-        "Tăng tốc độ build"
+        "Tăng tốc độ build nhờ parallel compilation"
       ],
       "answer": 1,
       "explanation": "Multi-stage build: Stage 1 (maven:3.9.7) compile và tạo JAR. Stage 2 (openjdk:21) chỉ copy JAR từ stage 1 — final image không chứa Maven, source code, hay build tools. Kết quả: image nhỏ hơn nhiều, bảo mật hơn."
@@ -235,10 +235,10 @@
       "level": "advanced",
       "question": "Tại sao cache key trong actions/cache nên dựa trên hash của pom.xml?",
       "options": [
-        "Vì pom.xml chứa runner configuration",
+        "Vì pom.xml chứa cấu hình runner",
         "Đây là yêu cầu bắt buộc của GitHub Actions",
-        "Để cache tự động invalidate khi dependencies thay đổi (pom.xml thay đổi → hash thay đổi → cache mới được tạo)",
-        "Để tránh conflict giữa nhiều branches"
+        "Khi pom.xml đổi, hash đổi, cache tự invalidate",
+        "Để tránh xung đột cache giữa các branches"
       ],
       "answer": 2,
       "explanation": "Cache key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}. Khi pom.xml thay đổi (thêm/xóa dependency), hash thay đổi → cache key thay đổi → download dependencies mới. Khi pom.xml không đổi → dùng cache cũ → build nhanh hơn."
@@ -248,10 +248,10 @@
       "level": "advanced",
       "question": "Trong Complete CI/CD example từ slide, workflow Integration Test được trigger bởi event nào?",
       "options": [
-        "workflow_dispatch (chạy thủ công)",
-        "push lên mọi branches",
-        "pull_request lên branch master",
-        "schedule chạy hàng ngày"
+        "workflow_dispatch (chạy thủ công từ UI)",
+        "push lên tất cả các branches",
+        "pull_request nhắm vào branch master",
+        "schedule chạy hàng ngày theo cron"
       ],
       "answer": 2,
       "explanation": "Theo workflow trong slide: on: pull_request: branches: [master] — workflow Integration Test chạy khi có Pull Request nhắm vào branch master. Đây là pattern phổ biến để chạy tests trước khi merge."
@@ -261,10 +261,10 @@
       "level": "advanced",
       "question": "Để deploy lên AWS Elastic Beanstalk từ GitHub Actions, lệnh nào được dùng?",
       "options": [
-        "aws deploy create-deployment",
-        "eb init -p java-17 app-name --region us-west-2, sau đó eb deploy",
+        "aws deploy create-deployment --region",
+        "eb init -p java-17 app-name, sau đó eb deploy",
         "kubectl apply -f deployment.yaml",
-        "docker push aws-ecr-url/app"
+        "docker push aws-ecr-url/app:latest"
       ],
       "answer": 1,
       "explanation": "Deploy lên AWS Elastic Beanstalk: eb init -p java-17 spring-boot-app --region us-west-2 (khởi tạo EB environment với Java 17 platform tại region us-west-2), sau đó eb deploy để deploy version mới."
@@ -274,10 +274,10 @@
       "level": "basic",
       "question": "CI/CD mang lại những Key Benefits nào?",
       "options": [
-        "Chỉ áp dụng cho Java, yêu cầu Docker, cần cloud environment, không hỗ trợ monorepo",
-        "Faster Delivery (tự động hóa deployment), Higher Code Quality (automated tests), Reduced Errors (ít manual intervention), Continuous Feedback (phát hiện bugs nhanh)",
-        "Auto-scaling, load balancing, database migration, API versioning",
-        "Tăng số lượng developer, giảm chi phí server, loại bỏ testing, tăng tốc networking"
+        "Chỉ dùng cho Java, yêu cầu Docker và cloud",
+        "Delivery nhanh, chất lượng cao, ít lỗi, phản hồi nhanh",
+        "Auto-scaling, load balancing, database migration",
+        "Tăng developer, giảm server, loại bỏ testing"
       ],
       "answer": 1,
       "explanation": "CI/CD có 4 key benefits: Faster Delivery — automates testing và deployment, speeding up release process; Higher Code Quality — automated tests ensure code works as expected; Reduced Errors — less manual intervention means fewer mistakes in production; Continuous Feedback — developers can identify bugs and issues quickly."
@@ -288,9 +288,9 @@
       "question": "'runs-on: ubuntu-latest' trong GitHub Actions workflow có nghĩa là gì?",
       "options": [
         "Developer phải cài Ubuntu để chạy workflow",
-        "Job sẽ được thực thi trên GitHub-hosted runner với môi trường Ubuntu mới nhất",
-        "Workflow chỉ được phép chạy trên Ubuntu servers",
-        "Container Docker sẽ dùng Ubuntu làm base image"
+        "Job chạy trên GitHub-hosted runner Ubuntu mới nhất",
+        "Workflow chỉ được chạy trên Ubuntu servers",
+        "Container Docker dùng Ubuntu làm base image"
       ],
       "answer": 1,
       "explanation": "runs-on chỉ định runner environment cho job. 'ubuntu-latest' = GitHub-hosted runner chạy Ubuntu phiên bản mới nhất. GitHub cung cấp free hosted runners với predefined environments: ubuntu-latest, windows-latest, macos-latest — developer không cần quản lý infrastructure."
@@ -300,10 +300,10 @@
       "level": "intermediate",
       "question": "Matrix strategy với 'java-version: [8, 11, 17]' trong GitHub Actions sẽ tạo ra bao nhiêu job instances và chạy như thế nào?",
       "options": [
-        "3 job instances chạy tuần tự theo thứ tự 8 → 11 → 17",
+        "3 job instances chạy tuần tự: 8 → 11 → 17",
         "1 job chạy tuần tự qua từng JDK version",
-        "Chỉ chạy với JDK version mới nhất trong danh sách (17)",
-        "3 job instances chạy song song, mỗi job test với một JDK version khác nhau (8, 11, 17)"
+        "Chỉ chạy với JDK version mới nhất (17)",
+        "3 job instances chạy song song trên 3 JDK khác nhau"
       ],
       "answer": 3,
       "explanation": "Matrix strategy: strategy: { matrix: { java-version: [8, 11, 17] } } — GitHub Actions tự động tạo 3 job instances chạy song song, mỗi job dùng một JDK version khác nhau. Biến matrix được dùng trong step: java-version: ${{ matrix.java-version }}. Giúp đảm bảo code tương thích với nhiều JDK versions cùng lúc."
@@ -313,10 +313,10 @@
       "level": "basic",
       "question": "Event 'workflow_dispatch' trong GitHub Actions được dùng để làm gì?",
       "options": [
-        "Cho phép chạy workflow thủ công từ GitHub UI hoặc API",
-        "Tự động chạy workflow mỗi giờ",
-        "Chạy workflow khi có Pull Request được merge",
-        "Trigger workflow khi có push lên branch main"
+        "Chạy workflow thủ công từ GitHub UI hoặc API",
+        "Tự động chạy workflow mỗi giờ định kỳ",
+        "Chạy workflow khi Pull Request được merge",
+        "Trigger workflow khi push lên branch main"
       ],
       "answer": 0,
       "explanation": "workflow_dispatch là manual trigger — cho phép người dùng kích hoạt workflow thủ công từ tab Actions trên GitHub UI hoặc qua GitHub API. Rất hữu ích cho các tác vụ on-demand như deploy hoặc maintenance scripts."
@@ -326,10 +326,10 @@
       "level": "basic",
       "question": "Cú pháp 'on: schedule: - cron: \"0 9 * * 1-5\"' trong GitHub Actions có nghĩa là gì?",
       "options": [
-        "Chạy workflow 9 lần mỗi ngày từ Thứ Hai đến Thứ Sáu",
-        "Chạy workflow lúc 9:00 AM UTC mỗi ngày trong tuần (Thứ Hai đến Thứ Sáu)",
-        "Chạy workflow mỗi 9 phút vào các ngày trong tuần",
-        "Chạy workflow lúc 9:00 PM vào mỗi ngày đầu tuần"
+        "Chạy workflow 9 lần mỗi ngày trong tuần",
+        "Chạy lúc 9:00 AM UTC từ Thứ Hai đến Thứ Sáu",
+        "Chạy mỗi 9 phút vào các ngày trong tuần",
+        "Chạy lúc 9:00 PM vào ngày đầu tuần"
       ],
       "answer": 1,
       "explanation": "Cron syntax trong GitHub Actions: '0 9 * * 1-5' — field lần lượt là minute(0), hour(9), day-of-month(*), month(*), day-of-week(1-5 = Mon-Fri). Workflow sẽ chạy lúc 9:00 AM UTC mỗi ngày từ Thứ Hai đến Thứ Sáu."
@@ -339,10 +339,10 @@
       "level": "basic",
       "question": "Sự khác biệt chính giữa 'actions/checkout@v2' và 'actions/checkout@v4' là gì?",
       "options": [
-        "v4 là phiên bản mới hơn với cải thiện hiệu năng và bug fixes, v2 là phiên bản cũ hơn — nên dùng v4 cho các project mới",
-        "v4 yêu cầu token xác thực, v2 thì không",
-        "v2 dùng HTTPS, v4 dùng SSH để clone repository",
-        "v2 checkout branch master, v4 checkout branch main"
+        "v4 mới hơn, hiệu năng tốt hơn; v2 cũ hơn",
+        "v4 yêu cầu token xác thực; v2 không cần",
+        "v2 dùng HTTPS; v4 dùng SSH để clone",
+        "v2 checkout branch master; v4 checkout main"
       ],
       "answer": 0,
       "explanation": "actions/checkout@v4 là phiên bản mới hơn so với @v2, mang lại cải tiến về hiệu năng, hỗ trợ Node.js 20, và sửa nhiều bugs. Các project mới nên dùng @v4. @v2 vẫn hoạt động nhưng không được cập nhật tích cực."
@@ -352,10 +352,10 @@
       "level": "basic",
       "question": "Distribution 'temurin' trong 'actions/setup-java@v4' là gì?",
       "options": [
-        "GraalVM — phiên bản JDK hỗ trợ native compilation",
-        "Một bản phân phối Oracle JDK thương mại",
-        "Amazon Corretto — bản JDK do AWS phát triển",
-        "OpenJDK distribution từ Eclipse Adoptium — miễn phí, phổ biến, và được hỗ trợ tốt"
+        "GraalVM hỗ trợ native compilation",
+        "Bản phân phối Oracle JDK thương mại",
+        "Amazon Corretto — JDK do AWS phát triển",
+        "OpenJDK từ Eclipse Adoptium, miễn phí, phổ biến"
       ],
       "answer": 3,
       "explanation": "Temurin là OpenJDK distribution từ Eclipse Adoptium (trước đây là AdoptOpenJDK). Miễn phí, open-source, và được hỗ trợ tốt bởi actions/setup-java. Đây là lựa chọn phổ biến trong CI/CD pipelines."
@@ -366,9 +366,9 @@
       "question": "secrets.GITHUB_TOKEN trong GitHub Actions là gì?",
       "options": [
         "Token để đăng nhập vào Docker Hub",
-        "Token do developer tạo thủ công trong Settings > Secrets",
-        "Token xác thực cho AWS services",
-        "Token được GitHub tự động cung cấp cho mỗi workflow run — không cần tạo thủ công"
+        "Token developer tạo thủ công trong Settings",
+        "Token xác thực cho các AWS services",
+        "Token GitHub tự cấp cho mỗi workflow run"
       ],
       "answer": 3,
       "explanation": "secrets.GITHUB_TOKEN là token đặc biệt được GitHub tự động tạo và cung cấp cho mỗi workflow run. Nó có quyền đọc/ghi trên repository hiện tại và có thể dùng để tạo releases, comment PR, push commits, v.v. — không cần developer tạo thủ công."
@@ -378,10 +378,10 @@
       "level": "basic",
       "question": "GitHub Actions Marketplace là gì?",
       "options": [
-        "Trang chủ quản lý billing cho GitHub Actions minutes",
-        "Nơi mua/bán GitHub repositories",
+        "Trang quản lý billing cho Actions minutes",
+        "Nơi mua bán các GitHub repositories",
         "Nơi đăng ký GitHub Enterprise license",
-        "Kho lưu trữ các pre-built actions có thể tái sử dụng trong workflows — do GitHub và cộng đồng đóng góp"
+        "Kho các pre-built actions tái sử dụng workflows"
       ],
       "answer": 3,
       "explanation": "GitHub Actions Marketplace (marketplace.github.com/actions) là nơi tìm kiếm và sử dụng các pre-built actions được publish bởi GitHub và cộng đồng. Ví dụ: actions/checkout, actions/setup-java, 8398a7/action-slack. Dùng 'uses: owner/action-name@version' để sử dụng."
@@ -393,8 +393,8 @@
       "options": [
         "Đếm số lượng dependencies trong pom.xml",
         "Mã hóa nội dung pom.xml để bảo mật",
-        "Tạo checksum để xác minh tính toàn vẹn của file pom.xml sau khi download",
-        "Tạo hash string từ nội dung pom.xml — khi pom.xml thay đổi, hash thay đổi, khiến cache key thay đổi và cache bị invalidate"
+        "Xác minh tính toàn vẹn file pom.xml sau tải về",
+        "Tạo hash từ pom.xml để cache key thay đổi khi đổi"
       ],
       "answer": 3,
       "explanation": "hashFiles('**/pom.xml') tính SHA-256 hash của tất cả file pom.xml trong repository. Kết hợp với runner.os tạo thành cache key duy nhất. Khi thêm/xóa dependency (thay đổi pom.xml), hash thay đổi → cache key mới → GitHub Actions tải dependencies mới thay vì dùng cache cũ."
@@ -404,10 +404,10 @@
       "level": "intermediate",
       "question": "'restore-keys' trong actions/cache@v4 được dùng khi nào?",
       "options": [
-        "Khôi phục cache bị corrupt sau khi build thất bại",
-        "Đồng bộ cache giữa nhiều runners chạy song song",
-        "Xóa cache cũ và tạo cache mới sau mỗi build thành công",
-        "Cung cấp fallback cache keys — khi exact key không tìm thấy, GitHub tìm cache với prefix match từ restore-keys để dùng cache gần nhất"
+        "Khôi phục cache bị corrupt sau build thất bại",
+        "Đồng bộ cache giữa nhiều runners song song",
+        "Xóa cache cũ và tạo mới sau mỗi build",
+        "Cung cấp fallback key khi exact key không tìm thấy"
       ],
       "answer": 3,
       "explanation": "restore-keys cung cấp danh sách fallback keys. Nếu exact cache key không match (ví dụ pom.xml vừa thay đổi), GitHub tìm cache có prefix khớp trong restore-keys để restore cache gần nhất. Điều này tránh việc phải download toàn bộ dependencies từ đầu khi chỉ có thay đổi nhỏ."
@@ -418,9 +418,9 @@
       "question": "Cú pháp 'if: github.event_name == \"push\"' trong một step có tác dụng gì?",
       "options": [
         "Dừng workflow nếu không phải push event",
-        "In ra tên event khi step chạy",
-        "Bắt buộc step chỉ chạy khi workflow được trigger bởi event push — bỏ qua nếu trigger bởi event khác",
-        "Kiểm tra xem push có thay đổi file hay không"
+        "In ra tên event khi step đang chạy",
+        "Chỉ chạy step khi trigger là push event",
+        "Kiểm tra xem push có thay đổi file không"
       ],
       "answer": 2,
       "explanation": "if: conditional cho phép chạy step có điều kiện. 'if: github.event_name == \"push\"' — step này chỉ thực thi khi workflow được kích hoạt bởi push event. Nếu trigger bởi pull_request hoặc schedule, step bị skip. Hữu ích để có hành vi khác nhau tùy theo loại event."
@@ -430,10 +430,10 @@
       "level": "intermediate",
       "question": "Biến 'github.sha' trong GitHub Actions context chứa thông tin gì?",
       "options": [
-        "SHA hash của file pom.xml",
-        "Tên branch hiện tại đang chạy workflow",
-        "SHA của commit kích hoạt workflow — dùng để tag Docker images hoặc track deployment versions",
-        "Secret hash để xác thực với GitHub API"
+        "SHA hash của file pom.xml hiện tại",
+        "Tên branch đang chạy workflow",
+        "SHA của commit kích hoạt workflow",
+        "Hash bí mật để xác thực với GitHub API"
       ],
       "answer": 2,
       "explanation": "github.sha là SHA-1 hash (40 ký tự) của commit đã trigger workflow. Thường dùng để: tag Docker image với commit SHA (docker build -t app:${{ github.sha }}), tạo release notes, hoặc track chính xác version code nào đang được deploy."
@@ -443,9 +443,9 @@
       "level": "intermediate",
       "question": "Sự khác biệt giữa 'mvn verify' và 'mvn test' trong Maven build là gì?",
       "options": [
-        "mvn test tạo JAR file; mvn verify chỉ kiểm tra syntax",
-        "mvn test chạy unit tests; mvn verify chạy unit tests + integration tests + kiểm tra các quality checks",
-        "mvn verify nhanh hơn mvn test vì bỏ qua compilation",
+        "mvn test tạo JAR; mvn verify chỉ kiểm tra syntax",
+        "mvn test chỉ unit tests; mvn verify thêm integration tests",
+        "mvn verify nhanh hơn mvn test vì bỏ compilation",
         "Hai lệnh hoàn toàn giống nhau, chỉ khác tên"
       ],
       "answer": 1,
@@ -456,10 +456,10 @@
       "level": "intermediate",
       "question": "Trong workflow YAML, 'env:' có thể được khai báo ở các cấp độ nào?",
       "options": [
-        "Chỉ ở cấp step, vì mỗi step cần môi trường riêng",
-        "Chỉ ở cấp workflow (global), không thể khai báo trong job hay step",
-        "Ở cấp workflow (global cho tất cả jobs), cấp job (chỉ job đó), và cấp step (chỉ step đó) — step-level ghi đè job-level, job-level ghi đè workflow-level",
-        "Chỉ ở cấp job và step, không thể khai báo ở cấp workflow"
+        "Chỉ ở cấp step vì mỗi step cần môi trường riêng",
+        "Chỉ ở cấp workflow, không khai báo trong job/step",
+        "Ở cấp workflow, cấp job, hoặc cấp step — có thứ tự ghi đè",
+        "Chỉ ở cấp job và step, không được ở cấp workflow"
       ],
       "answer": 2,
       "explanation": "env: có thể khai báo ở 3 cấp: (1) Workflow level — áp dụng cho tất cả jobs và steps; (2) Job level — áp dụng cho tất cả steps trong job đó; (3) Step level — chỉ áp dụng cho step đó và ghi đè các cấp cao hơn. Ví dụ từ slide: env ở job level dùng ${{ secrets.* }} để inject credentials."
@@ -469,10 +469,10 @@
       "level": "intermediate",
       "question": "Tại sao dùng '--password-stdin' khi thực hiện 'docker login' trong GitHub Actions?",
       "options": [
-        "--password-stdin là bắt buộc khi dùng Docker phiên bản 20+",
-        "Để password được đọc từ stdin thay vì command line argument — tránh password bị lộ trong process list và workflow logs",
-        "Vì Docker Hub yêu cầu cú pháp đặc biệt này trên Linux",
-        "Để tăng tốc độ authentication với Docker Hub"
+        "--password-stdin bắt buộc với Docker phiên bản 20+",
+        "Password đọc từ stdin, tránh lộ trong logs",
+        "Docker Hub yêu cầu cú pháp này trên Linux",
+        "Để tăng tốc độ xác thực với Docker Hub"
       ],
       "answer": 1,
       "explanation": "docker login -u username --password-stdin nhận password qua stdin (pipe từ echo). Nếu dùng -p password trực tiếp, password sẽ xuất hiện trong: (1) process list của OS, (2) shell history, (3) workflow logs. --password-stdin bảo vệ credentials khỏi bị expose trong logs."
@@ -482,10 +482,10 @@
       "level": "advanced",
       "question": "Reusable workflow (workflow_call) trong GitHub Actions khác gì so với workflow thông thường?",
       "options": [
-        "Reusable workflow tự động chạy mỗi ngày mà không cần trigger",
-        "Reusable workflow chạy nhanh hơn vì dùng cached runner",
-        "Reusable workflow chỉ có thể dùng trong cùng một repository",
-        "Reusable workflow được trigger bởi 'workflow_call' event — cho phép một workflow gọi workflow khác như một function, giúp tái sử dụng logic CI/CD giữa nhiều repositories"
+        "Reusable workflow tự động chạy hàng ngày",
+        "Reusable workflow chạy nhanh hơn nhờ cache runner",
+        "Reusable workflow chỉ dùng trong cùng repository",
+        "Được gọi bởi workflow khác như function tái sử dụng"
       ],
       "answer": 3,
       "explanation": "workflow_call là trigger đặc biệt biến workflow thành reusable — có thể được gọi từ workflow khác bằng 'uses: owner/repo/.github/workflows/reusable.yml@main'. Hữu ích để standardize build/deploy logic across multiple repositories mà không duplicate YAML. Hỗ trợ inputs và secrets để customize."
@@ -495,10 +495,10 @@
       "level": "advanced",
       "question": "Composite Action trong GitHub Actions là gì và khác gì so với regular action?",
       "options": [
-        "Composite action tự động tạo matrix strategy cho job",
-        "Composite action là action viết bằng nhiều ngôn ngữ lập trình cùng lúc",
-        "Composite action đóng gói nhiều steps thành một action tái sử dụng — định nghĩa trong action.yml với 'using: composite', cho phép tạo custom action bằng shell commands mà không cần Docker hay Node.js",
-        "Composite action là action kết hợp nhiều workflows thành một pipeline"
+        "Composite action tự tạo matrix strategy cho job",
+        "Composite action viết bằng nhiều ngôn ngữ cùng lúc",
+        "Composite action đóng gói nhiều steps thành action tái sử dụng",
+        "Composite action kết hợp nhiều workflows thành pipeline"
       ],
       "answer": 2,
       "explanation": "Composite action được định nghĩa trong action.yml với 'using: composite' và chứa list các steps (run hoặc uses). Ưu điểm: không cần Docker container hay JavaScript runtime, dùng shell commands quen thuộc, dễ maintain. Khác với JavaScript action (using: node20) hay Docker action (using: docker)."
@@ -508,10 +508,10 @@
       "level": "advanced",
       "question": "Khi setup self-hosted runner cho GitHub Actions, runner được đăng ký ở đâu và cần làm gì?",
       "options": [
-        "Runner tự động được GitHub phát hiện khi cài Docker trên máy chủ",
-        "Vào repository Settings > Actions > Runners > New self-hosted runner, download runner application, configure với token từ GitHub, rồi chạy runner agent trên máy chủ của bạn",
-        "Chỉ cần thêm IP address của máy chủ vào GitHub repository settings",
-        "Self-hosted runner cần được đăng ký qua GitHub CLI bằng lệnh 'gh runner add'"
+        "Runner tự GitHub phát hiện khi cài Docker",
+        "Vào Settings > Actions > Runners, tải và cấu hình runner",
+        "Chỉ cần thêm IP vào GitHub repository settings",
+        "Đăng ký qua GitHub CLI bằng lệnh gh runner add"
       ],
       "answer": 1,
       "explanation": "Để setup self-hosted runner: (1) Vào Settings > Actions > Runners > New self-hosted runner; (2) Chọn OS (Linux/Windows/macOS); (3) Download và extract runner package; (4) Chạy ./config.sh với URL và token từ GitHub; (5) Chạy ./run.sh để start runner agent. Trong workflow, dùng 'runs-on: self-hosted' hoặc dùng labels."
@@ -522,8 +522,8 @@
       "question": "Biến 'github.ref' trong GitHub Actions context trả về giá trị gì?",
       "options": [
         "SHA của commit cha (parent commit)",
-        "Reference của branch hoặc tag kích hoạt workflow — ví dụ 'refs/heads/main' cho branch main, 'refs/tags/v1.0' cho tag v1.0",
-        "URL của GitHub repository",
+        "Reference branch/tag kích hoạt workflow",
+        "URL đầy đủ của GitHub repository",
         "Tên người dùng đã trigger workflow"
       ],
       "answer": 1,
@@ -534,10 +534,10 @@
       "level": "advanced",
       "question": "Trong Integration Test workflow từ slide, tại sao có step 'Test if secrets are set' trước khi build?",
       "options": [
-        "Để in ra giá trị của secrets trong logs để debug",
-        "Để kiểm tra xem secrets có bị hết hạn hay không",
+        "Để in ra giá trị secrets trong logs để debug",
+        "Để kiểm tra xem secrets có bị hết hạn không",
         "GitHub yêu cầu kiểm tra secrets trước mỗi build",
-        "Để validate rằng các environment variables cần thiết (BASE_URL, MONGO_URI, v.v.) tồn tại trước khi chạy build — tránh build thất bại với error message không rõ ràng ở giữa pipeline"
+        "Xác nhận biến môi trường tồn tại, tránh lỗi không rõ ràng"
       ],
       "answer": 3,
       "explanation": "Step 'Test if secrets are set' kiểm tra sớm rằng tất cả environment variables cần thiết đều được set (từ secrets). Nếu secret nào đó bị thiếu hoặc chưa được cấu hình trong repository settings, pipeline fail ngay từ đầu với error message rõ ràng — thay vì fail ở giữa bước build/test với error khó debug hơn."
@@ -547,10 +547,10 @@
       "level": "advanced",
       "question": "Lệnh 'mvn clean package -DskipTests' trong CI workflow làm gì chính xác?",
       "options": [
-        "Xóa source code, tạo package mới, và bỏ qua tất cả Maven plugins",
-        "Xóa Maven cache và download lại tất cả dependencies",
-        "Chỉ tạo JAR file mà không compile lại source code",
-        "clean: xóa thư mục target; package: compile code và đóng gói thành JAR/WAR; -DskipTests: bỏ qua việc compile và chạy test classes"
+        "Xóa source code, tạo package mới, bỏ qua plugins",
+        "Xóa Maven cache và tải lại toàn bộ dependencies",
+        "Chỉ tạo JAR mà không compile lại source code",
+        "Xóa target, compile, đóng gói JAR, bỏ qua tests"
       ],
       "answer": 3,
       "explanation": "mvn clean package -DskipTests: (1) clean — xóa thư mục target/ để đảm bảo fresh build; (2) package — chạy lifecycle: compile → test-compile (bị skip) → package, tạo JAR/WAR trong target/; (3) -DskipTests — bỏ qua cả compilation và execution của test classes. Tests sẽ được chạy riêng ở step 'mvn clean test' hoặc 'mvn test' tiếp theo."
@@ -560,10 +560,10 @@
       "level": "advanced",
       "question": "Trong GitHub Actions, 'github.event_name' context variable dùng để làm gì trong thực tế?",
       "options": [
-        "Lấy tên của GitHub repository đang chạy workflow",
-        "Kiểm tra xem event có payload hay không trước khi parse",
-        "Log tên event vào file để audit trail",
-        "Điều kiện hóa các steps — ví dụ chỉ deploy khi event là 'push' (không deploy khi chạy từ pull_request hoặc schedule), giúp workflow có hành vi khác nhau tùy theo cách nó được trigger"
+        "Lấy tên GitHub repository đang chạy workflow",
+        "Kiểm tra xem event có payload hay không",
+        "Ghi tên event vào file để audit trail",
+        "Điều kiện hóa steps theo cách workflow được trigger"
       ],
       "answer": 3,
       "explanation": "github.event_name chứa tên event trigger workflow (push, pull_request, schedule, workflow_dispatch, v.v.). Dùng với if: conditional để tùy biến hành vi: ví dụ 'if: github.event_name == \"push\" && github.ref == \"refs/heads/main\"' — chỉ deploy khi push lên main branch, không deploy khi chạy test từ PR hoặc scheduled run."
@@ -587,9 +587,9 @@
       "question": "Thuộc tính 'timeout-minutes' trong GitHub Actions job được dùng để làm gì?",
       "options": [
         "Đặt thời gian chờ giữa các steps",
-        "Giới hạn thời gian chạy tối đa của job — job tự động bị hủy nếu vượt quá thời gian này",
+        "Giới hạn thời gian chạy tối đa của job",
         "Đặt thời gian tối thiểu job phải chạy",
-        "Cấu hình thời gian timeout cho network requests trong job"
+        "Cấu hình timeout cho network requests"
       ],
       "answer": 1,
       "explanation": "timeout-minutes đặt thời gian tối đa (tính bằng phút) cho một job được phép chạy. Nếu job chạy lâu hơn giá trị này, GitHub Actions tự động cancel job đó. Mặc định GitHub Actions có timeout 6 giờ cho một job — dùng timeout-minutes để giới hạn chặt hơn, tránh bị charge minutes không cần thiết."
@@ -599,10 +599,10 @@
       "level": "basic",
       "question": "'continue-on-error: true' trong một step của GitHub Actions có tác dụng gì?",
       "options": [
-        "Cho phép step tiếp theo chạy ngay cả khi step hiện tại thất bại — job không bị đánh dấu là failed nếu chỉ step này fail",
+        "Cho phép tiếp tục chạy dù step này thất bại",
         "Bỏ qua tất cả lỗi trong toàn bộ workflow",
         "Tự động retry step khi gặp lỗi",
-        "Ghi lỗi vào log nhưng không hiển thị trong GitHub UI"
+        "Ghi lỗi vào log nhưng ẩn khỏi GitHub UI"
       ],
       "answer": 0,
       "explanation": "continue-on-error: true trên một step cho phép workflow tiếp tục chạy dù step đó bị lỗi. Hữu ích cho các bước optional như lint checks hoặc code coverage — nếu fail thì log lại nhưng không chặn deployment. Khác với 'if: always()' — continue-on-error ảnh hưởng đến cả job-level result."
@@ -612,10 +612,10 @@
       "level": "intermediate",
       "question": "Hai actions 'actions/upload-artifact' và 'actions/download-artifact' trong GitHub Actions được dùng để làm gì?",
       "options": [
-        "Upload source code lên GitHub và download về runner",
+        "Upload source code và download về runner",
         "Tải và cài đặt third-party tools cho runner",
-        "Lưu trữ và truy xuất files (artifacts như JAR, test reports) giữa các jobs trong cùng workflow run",
-        "Upload và download Docker images lên/từ Docker Hub"
+        "Lưu trữ và truy xuất files giữa các jobs trong workflow",
+        "Upload và download Docker images lên Docker Hub"
       ],
       "answer": 2,
       "explanation": "upload-artifact lưu files từ job này để các jobs khác có thể dùng: uses: actions/upload-artifact@v4 với name và path. download-artifact tải files đó về trong job khác. Vì mỗi job chạy trên runner riêng biệt, artifacts là cách duy nhất để truyền files giữa jobs trong cùng workflow run."
@@ -625,10 +625,10 @@
       "level": "intermediate",
       "question": "GitHub Actions 'environment protection rules' với 'required reviewers' hoạt động như thế nào?",
       "options": [
-        "Khi job deploy đến một environment được bảo vệ, workflow tạm dừng và chờ một hoặc nhiều reviewer được chỉ định phê duyệt trước khi tiếp tục",
+        "Workflow tạm dừng, chờ reviewer được chỉ định phê duyệt",
         "Ngăn workflow chạy nếu code chưa được review",
-        "Yêu cầu tất cả thành viên team phê duyệt mỗi deployment",
-        "Tự động approve mọi deployment sau khi code review pass"
+        "Yêu cầu tất cả thành viên phê duyệt deployment",
+        "Tự động approve mọi deployment sau code review"
       ],
       "answer": 0,
       "explanation": "Environment protection rules cấu hình trong Settings > Environments. Khi 'Required reviewers' được bật, job với 'environment: production' sẽ tạm dừng và gửi notification đến reviewers được chỉ định. Chỉ sau khi reviewer approve, job mới tiếp tục deploy. Đây là cơ chế manual gate cho production deployments."
@@ -638,9 +638,9 @@
       "level": "intermediate",
       "question": "Khối 'concurrency' trong GitHub Actions workflow được dùng để làm gì?",
       "options": [
-        "Định nghĩa nhóm đồng thời — nếu workflow mới cùng nhóm được trigger, workflow đang chạy sẽ bị cancel để tránh chạy nhiều deployment cùng lúc",
-        "Tăng tốc độ build bằng cách phân bổ nhiều CPU hơn",
-        "Giới hạn số lượng runners được sử dụng đồng thời",
+        "Định nghĩa nhóm; workflow mới cancel workflow cũ",
+        "Tăng tốc độ build bằng phân bổ nhiều CPU hơn",
+        "Giới hạn số lượng runners được dùng đồng thời",
         "Chạy nhiều jobs song song trong cùng workflow"
       ],
       "answer": 0,
@@ -652,9 +652,9 @@
       "question": "Khối 'permissions' trong GitHub Actions workflow được dùng để làm gì?",
       "options": [
         "Xác định ai có quyền chạy workflow thủ công",
-        "Cấu hình quyền đọc/ghi cho GITHUB_TOKEN — giới hạn những gì workflow được phép làm với repository",
-        "Cấp quyền cho runner truy cập các secrets",
-        "Cấp quyền cho người dùng GitHub truy cập repository"
+        "Cấu hình quyền đọc/ghi cho GITHUB_TOKEN",
+        "Cấp quyền cho runner truy cập secrets",
+        "Cấp quyền cho người dùng truy cập repository"
       ],
       "answer": 1,
       "explanation": "Khối permissions kiểm soát quyền của GITHUB_TOKEN trong workflow: permissions: contents: read issues: write pull-requests: write. Principle of least privilege — chỉ cấp quyền tối thiểu cần thiết. Có thể set ở cấp workflow (áp dụng cho tất cả jobs) hoặc cấp job để kiểm soát chi tiết hơn."
@@ -664,10 +664,10 @@
       "level": "intermediate",
       "question": "GITHUB_TOKEN trong GitHub Actions có default permissions là gì và khi nào cần thay đổi?",
       "options": [
-        "Mặc định có read permission cho contents và write cho tất cả scopes khác — nên restrict xuống read-only khi không cần write",
+        "Mặc định read contents và write tất cả scopes khác",
         "Mặc định có admin quyền toàn bộ repository",
-        "Mặc định có read-only cho hầu hết scopes — cần cấp write permissions khi workflow cần tạo releases, comment PR, hay push commits",
-        "Mặc định không có quyền gì, phải cấp đầy đủ mỗi lần dùng"
+        "Mặc định read-only; cần write khi tạo release, comment PR",
+        "Mặc định không có quyền, phải cấp từng lần dùng"
       ],
       "answer": 2,
       "explanation": "GITHUB_TOKEN được tự động tạo với default permissions có thể là permissive hoặc restricted tùy cấu hình organization/repository. Thông thường cần thêm write permissions khi: tạo GitHub Release (contents: write), comment trên PR (pull-requests: write), hay publish packages (packages: write). Cấu hình bằng khối 'permissions:' trong workflow."
@@ -677,10 +677,10 @@
       "level": "basic",
       "question": "Thuộc tính 'working-directory' trong một step của GitHub Actions dùng để làm gì?",
       "options": [
-        "Cấu hình đường dẫn đến workspace của runner",
-        "Thay đổi thư mục làm việc hiện tại cho lệnh trong step đó — hữu ích khi repo có cấu trúc nhiều thư mục con",
-        "Đặt biến môi trường WORKDIR cho Docker container",
-        "Chỉ định thư mục lưu artifacts sau khi step chạy xong"
+        "Cấu hình đường dẫn workspace của runner",
+        "Thay đổi thư mục làm việc cho lệnh trong step đó",
+        "Đặt biến WORKDIR cho Docker container",
+        "Chỉ định thư mục lưu artifacts sau khi step xong"
       ],
       "answer": 1,
       "explanation": "working-directory cho phép chỉ định thư mục mà lệnh 'run' sẽ được thực thi: steps: - name: Build frontend run: npm install && npm run build working-directory: ./frontend. Thay vì phải dùng 'cd frontend &&' trong lệnh run, working-directory làm cho workflow YAML gọn gàng và rõ ràng hơn."

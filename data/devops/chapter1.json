@@ -32,9 +32,9 @@
       "level": "basic",
       "question": "VCS là viết tắt của gì?",
       "options": [
-        "Versioned Code Source",
-        "Virtual Code Storage",
-        "Visual Commit Syntax",
+        "Versioned Code Source System",
+        "Virtual Commit Storage Hub",
+        "Visual Control Syntax Engine",
         "Version Control System"
       ],
       "answer": 3,
@@ -45,10 +45,10 @@
       "level": "basic",
       "question": "Git là loại VCS nào?",
       "options": [
-        "Cloud-only VCS",
-        "Local VCS",
-        "Centralized VCS",
-        "Distributed VCS"
+        "VCS chỉ hoạt động trên cloud",
+        "VCS chỉ lưu trên máy cục bộ",
+        "VCS tập trung một server duy nhất",
+        "VCS phân tán, mỗi người có full copy"
       ],
       "answer": 3,
       "explanation": "Git là Distributed VCS — mỗi developer có full copy của toàn bộ repository (kể cả history). Khác với Centralized VCS (SVN) chỉ có một server trung tâm."
@@ -58,10 +58,10 @@
       "level": "basic",
       "question": "Staging Area trong Git dùng để làm gì?",
       "options": [
-        "Nơi chứa các branch",
-        "Backup toàn bộ project",
-        "Lưu remote repository URL",
-        "Vùng trung gian để chuẩn bị thay đổi trước khi commit"
+        "Nơi lưu trữ các nhánh cục bộ",
+        "Sao lưu toàn bộ mã nguồn dự án",
+        "Lưu địa chỉ URL của remote repo",
+        "Vùng trung gian chuẩn bị thay đổi commit"
       ],
       "answer": 3,
       "explanation": "Staging Area (Index) là vùng trung gian giữa working directory và repository. Dùng 'git add' để đưa file vào staging, sau đó 'git commit' mới lưu vào repo."
@@ -71,10 +71,10 @@
       "level": "basic",
       "question": "HEAD trong Git trỏ đến điều gì?",
       "options": [
-        "File cấu hình Git",
-        "Branch đầu tiên được tạo",
-        "Remote repository",
-        "Commit hiện tại (thường là commit mới nhất của branch)"
+        "File cấu hình của repository",
+        "Nhánh đầu tiên được khởi tạo",
+        "Địa chỉ của remote repository",
+        "Commit hiện tại trên nhánh đang dùng"
       ],
       "answer": 3,
       "explanation": "HEAD là con trỏ đến commit hiện tại — thường là commit mới nhất trên branch đang làm việc. Khi checkout branch khác, HEAD di chuyển theo."
@@ -84,10 +84,10 @@
       "level": "basic",
       "question": "Tag trong Git dùng để làm gì?",
       "options": [
-        "Tạo branch mới",
-        "Đổi tên branch",
-        "Xóa commit cũ",
-        "Đánh dấu commit cụ thể — thường cho release (v1.0, v2.0)"
+        "Tạo nhánh mới từ commit bất kỳ",
+        "Đổi tên nhánh hiện tại của repo",
+        "Xóa các commit không cần thiết",
+        "Đánh dấu commit cụ thể cho release"
       ],
       "answer": 3,
       "explanation": "Tag là nhãn gắn vào một commit cụ thể — thường dùng để đánh dấu các release versions (v1.0, v1.1, v2.0). Tags không di chuyển như branch."
@@ -97,10 +97,10 @@
       "level": "basic",
       "question": "Feature branch trong Git dùng để làm gì?",
       "options": [
-        "Phát triển tính năng mới độc lập với main branch",
-        "Lưu backup code",
-        "Fix bug cho phiên bản cũ",
-        "Deploy lên production"
+        "Phát triển tính năng mới, độc lập với main",
+        "Lưu bản sao dự phòng toàn bộ code",
+        "Sửa lỗi cho phiên bản cũ đã phát hành",
+        "Tự động triển khai code lên production"
       ],
       "answer": 0,
       "explanation": "Feature branch tách ra từ main để phát triển tính năng mới mà không ảnh hưởng đến code ổn định trên main. Khi feature hoàn thành, merge lại vào main."
@@ -110,10 +110,10 @@
       "level": "basic",
       "question": "Release branch trong Git có đặc điểm gì?",
       "options": [
-        "Code bị đóng băng, chỉ nhận bugfix, không thêm feature mới",
-        "Merge vào main sau mỗi commit",
-        "Nhận tất cả feature mới nhất",
-        "Tự động deploy lên production"
+        "Code đóng băng, chỉ nhận bugfix",
+        "Tự động merge vào main sau mỗi commit",
+        "Luôn chứa tính năng phát triển mới nhất",
+        "Tự động triển khai lên server production"
       ],
       "answer": 0,
       "explanation": "Release branch: code bị freeze (đóng băng), chỉ accept bugfixes — không thêm feature mới. Dùng để ổn định code trước khi release chính thức."
@@ -123,10 +123,10 @@
       "level": "basic",
       "question": "GitHub Fork khác Clone như thế nào?",
       "options": [
-        "Fork và Clone giống nhau hoàn toàn",
-        "Fork: tạo bản copy về account của mình trên GitHub; Clone: tạo bản copy về máy local",
-        "Fork chỉ dùng cho private repo",
-        "Fork: copy về local; Clone: copy về GitHub"
+        "Fork và Clone hoàn toàn giống nhau",
+        "Fork: copy lên GitHub; Clone: copy về local",
+        "Fork chỉ dùng được với private repo",
+        "Fork về local; Clone: copy lên GitHub"
       ],
       "answer": 1,
       "explanation": "Fork tạo bản copy của repo về GitHub account của bạn (trên server). Clone tạo bản copy về máy local. Để contribute open-source: Fork → Clone → làm việc → Pull Request."
@@ -137,9 +137,9 @@
       "question": "Repository trong Git lưu trữ gì?",
       "options": [
         "Chỉ code phiên bản hiện tại",
-        "Toàn bộ lịch sử thay đổi của dự án từ đầu đến nay",
-        "Cấu hình CI/CD",
-        "Danh sách contributors"
+        "Toàn bộ lịch sử thay đổi dự án từ đầu",
+        "Cấu hình pipeline CI/CD của dự án",
+        "Danh sách tất cả người đóng góp"
       ],
       "answer": 1,
       "explanation": "Repository lưu toàn bộ lịch sử (tất cả commits/revisions) từ khi project bắt đầu. Đây là điểm mạnh của Git — có thể xem lại bất kỳ thời điểm nào trong quá khứ."
@@ -150,7 +150,7 @@
       "question": "Workflow Git cơ bản theo thứ tự đúng là gì?",
       "options": [
         "git commit → git add → git push",
-        "Working Directory → git add → Staging → git commit → Local Repo → git push → Remote",
+        "Working Dir → Staging → Local Repo → Remote",
         "git clone → git add → git push",
         "git push → git commit → git add"
       ],
@@ -162,10 +162,10 @@
       "level": "basic",
       "question": "Lợi ích nào sau đây KHÔNG phải của Git?",
       "options": [
-        "Staging Area",
-        "Tự động viết code cho developer",
-        "Undoing Mistakes",
-        "Branching & Merging"
+        "Staging Area để kiểm soát commit",
+        "Tự động sinh code thay cho developer",
+        "Hoàn tác lỗi với reset và revert",
+        "Phân nhánh và gộp code song song"
       ],
       "answer": 1,
       "explanation": "Git không tự viết code. Các lợi ích thực của Git theo JS Mastery Handbook: Staging Area, Undoing Mistakes, Branching & Merging, Distributed System, Collaboration, Integration với tools, Community & Support, Standard in Industry, Version Control, Tracking Changes."
@@ -175,10 +175,10 @@
       "level": "basic",
       "question": "Upstream trong Git context có nghĩa gì?",
       "options": [
-        "Branch mới nhất",
-        "Branch chính của project",
-        "Remote repository gốc mà bạn đã fork từ đó",
-        "Server chứa Git"
+        "Nhánh phát triển mới nhất hiện tại",
+        "Nhánh chính chứa code production",
+        "Remote repository gốc bạn đã fork từ",
+        "Server chứa toàn bộ Git repos"
       ],
       "answer": 2,
       "explanation": "Upstream là remote repository gốc — thường là repo bạn fork từ đó khi contribute open-source. Origin là remote mặc định sau khi clone (thường là fork của bạn). Upstream = repo gốc của maintainer."
@@ -188,10 +188,10 @@
       "level": "basic",
       "question": "Distributed VCS như Git có lợi ích gì so với Centralized VCS?",
       "options": [
-        "Chỉ chạy được trên Linux",
-        "Cần nhiều storage hơn",
-        "Mỗi developer có full copy — làm việc offline được, không phụ thuộc server trung tâm",
-        "Chậm hơn Centralized VCS"
+        "Chỉ chạy trên hệ điều hành Linux",
+        "Yêu cầu nhiều bộ nhớ lưu trữ hơn",
+        "Mỗi developer có full copy, offline được",
+        "Tốc độ chậm hơn Centralized VCS"
       ],
       "answer": 2,
       "explanation": "Distributed VCS: mỗi người có full repository copy → làm việc offline, không cần network mọi lúc, không có single point of failure. Nếu server down, mọi người vẫn có đầy đủ history."
@@ -201,10 +201,10 @@
       "level": "basic",
       "question": "GitOps dựa trên những trụ cột nào?",
       "options": [
-        "IaC/Config as Code + Collaboration qua code review + CI/CD pipelines",
-        "Docker, K8s, CI/CD",
-        "Git, GitHub, GitLab",
-        "Terraform, Ansible, Jenkins"
+        "IaC as Code + Collaboration qua PR + CI/CD",
+        "Docker, Kubernetes và CI/CD pipeline",
+        "Git, GitHub và GitLab kết hợp nhau",
+        "Terraform, Ansible và Jenkins cùng lúc"
       ],
       "answer": 0,
       "explanation": "3 trụ cột GitOps: 1) Infrastructure as Code / Configuration as Code (lưu trong Git), 2) Collaboration + change mechanism (code review, PR), 3) CI/CD pipelines (CI: automated tests, CD: automated deployment)."
@@ -214,10 +214,10 @@
       "level": "basic",
       "question": "Bad practice nào từ slide GitOps cần tránh?",
       "options": [
-        "IaC trong Git nhưng apply thủ công không qua CI/CD",
-        "Dùng Pull Requests để review thay đổi",
-        "Dùng Git để lưu IaC",
-        "Dùng automated tests"
+        "Lưu IaC trong Git nhưng apply thủ công",
+        "Dùng Pull Request để review code",
+        "Lưu cấu hình hạ tầng vào Git repo",
+        "Dùng automated tests trong CI pipeline"
       ],
       "answer": 0,
       "explanation": "Slide: 'Bad practices — IaC in git but applied manually without CI/CD.' Lưu IaC trong Git là tốt, nhưng nếu vẫn apply thủ công thì mất đi lợi ích automation và reproducibility của GitOps."
@@ -227,10 +227,10 @@
       "level": "intermediate",
       "question": "Maintenance/Hotfix branch khác Feature branch như thế nào?",
       "options": [
-        "Maintenance: fix bug cho release cũ, tách từ tag; Feature: phát triển tính năng mới cho version tiếp theo",
-        "Maintenance branch để thêm tính năng; Feature branch để fix bug",
-        "Chúng giống nhau hoàn toàn",
-        "Feature branch tách từ tag; Maintenance branch tách từ main"
+        "Maintenance: fix bug cũ từ tag; Feature: tính năng mới",
+        "Maintenance dùng để thêm tính năng mới nhất",
+        "Hai loại branch này hoàn toàn giống nhau",
+        "Feature tách từ tag; Maintenance branch tách từ main"
       ],
       "answer": 0,
       "explanation": "Maintenance/Hotfix branch: fix bug khẩn cấp cho version đã release — tách từ release tag, merge lại cả main VÀ release branch. Feature branch: phát triển tính năng mới — tách từ main/develop, merge về main khi xong."
@@ -240,10 +240,10 @@
       "level": "intermediate",
       "question": "Sự khác biệt giữa 'git pull' và 'git fetch' là gì?",
       "options": [
-        "git fetch nhanh hơn git pull",
-        "git pull = fetch + merge (tải về VÀ merge luôn); git fetch = chỉ tải về, không merge",
-        "Chúng giống nhau",
-        "git pull chỉ tải metadata"
+        "git fetch nhanh hơn git pull thường",
+        "git pull = fetch + merge; git fetch = chỉ tải về",
+        "Hai lệnh này hoàn toàn giống nhau",
+        "git pull chỉ tải metadata từ remote về"
       ],
       "answer": 1,
       "explanation": "'git fetch' tải thay đổi từ remote về local tracking branches nhưng KHÔNG tự động merge. 'git pull' = git fetch + git merge — tải về và merge ngay vào branch hiện tại. Dùng fetch khi muốn review trước khi merge."
@@ -253,10 +253,10 @@
       "level": "intermediate",
       "question": "Pull Request trong GitHub được dùng để làm gì?",
       "options": [
-        "Yêu cầu merge code + code review — developer propose thay đổi, team review trước khi merge",
-        "Lệnh để pull code từ remote",
-        "Tạo branch mới",
-        "Xóa branch sau khi merge"
+        "Đề xuất merge code kèm code review trước",
+        "Lệnh dòng tải code từ remote server",
+        "Tạo nhánh mới từ commit hiện tại",
+        "Xóa nhánh sau khi đã merge xong"
       ],
       "answer": 0,
       "explanation": "Pull Request (PR) là cơ chế để propose thay đổi và request review trước khi merge vào main branch. Team members review code, comment, request changes. Sau khi approved → merge."
@@ -266,10 +266,10 @@
       "level": "intermediate",
       "question": "Tại sao GitOps cải thiện Security?",
       "options": [
-        "Developer không cần cluster credentials — chỉ CD system có permission, giảm attack surface",
-        "Git mã hóa toàn bộ code",
-        "GitOps tự động scan vulnerabilities",
-        "GitOps dùng private repositories"
+        "Developer không cần cluster credentials",
+        "Git tự động mã hóa toàn bộ source code",
+        "GitOps tự động quét lỗ hổng bảo mật",
+        "GitOps yêu cầu dùng private repository"
       ],
       "answer": 0,
       "explanation": "Với GitOps: developers chỉ push code lên Git, không cần kubeconfig hay cluster credentials. Chỉ CD system (ArgoCD) có cluster permission. Ít người có access = ít attack surface."
@@ -279,10 +279,10 @@
       "level": "intermediate",
       "question": "Tại sao GitOps giúp Rollback dễ dàng?",
       "options": [
-        "Rollback chỉ available trong GitOps Enterprise",
-        "Dùng git revert để đảo ngược commit — CD system tự động deploy phiên bản cũ",
-        "Phải manual rollback từ server",
-        "GitOps tự động rollback mà không cần làm gì"
+        "Tính năng rollback chỉ có trong Enterprise",
+        "git revert đảo ngược commit, CD deploy cũ",
+        "Phải rollback thủ công từ server",
+        "GitOps tự rollback không cần thao tác"
       ],
       "answer": 1,
       "explanation": "Với GitOps: khi deploy bad version → git revert commit đó → CD system detect thay đổi trong Git → tự động deploy version trước. Slide: 'Easy rollback with git revert' — history trong Git chính là lịch sử deploy."
@@ -292,10 +292,10 @@
       "level": "intermediate",
       "question": "Commit (Revision) trong Git chứa những thông tin gì?",
       "options": [
-        "Chỉ branch name và timestamp",
-        "Tác giả, timestamp, commit message, unique SHA-1 hash, và thay đổi so với commit trước",
-        "Chỉ tên file đã thay đổi",
-        "Chỉ nội dung file thay đổi"
+        "Chỉ tên nhánh và thời gian tạo",
+        "Tác giả, timestamp, message, hash, thay đổi",
+        "Chỉ danh sách tên file đã thay đổi",
+        "Chỉ nội dung các file đã thay đổi"
       ],
       "answer": 1,
       "explanation": "Mỗi commit chứa: tác giả (author), timestamp, commit message (mô tả thay đổi), unique SHA-1 hash (40 ký tự), và diff so với commit trước. SHA-1 hash đảm bảo integrity — không thể modify commit mà không thay đổi hash."
@@ -305,10 +305,10 @@
       "level": "intermediate",
       "question": "GitHub Issues dùng để làm gì?",
       "options": [
-        "Lưu trữ commit history",
-        "Track bugs, feature requests, tasks — nơi team thảo luận công việc cần làm",
-        "Manage CI/CD pipelines",
-        "Báo lỗi khi push code"
+        "Lưu trữ toàn bộ lịch sử commit",
+        "Theo dõi bug, tính năng và nhiệm vụ nhóm",
+        "Quản lý pipeline CI/CD của dự án",
+        "Báo lỗi khi push code lên remote"
       ],
       "answer": 1,
       "explanation": "GitHub Issues là hệ thống tracking tích hợp trong GitHub: báo cáo bugs, đề xuất features, assign tasks cho team members, label, milestone. Issues được link với PRs để trace từ vấn đề → code fix."
@@ -318,10 +318,10 @@
       "level": "intermediate",
       "question": "Quy trình chuẩn để contribute vào open-source project trên GitHub là gì?",
       "options": [
-        "Fork → Clone về local → tạo Feature Branch → Commit → Push → tạo Pull Request về repo gốc",
-        "Chỉ comment vào Issues",
-        "Download ZIP → sửa → email maintainer",
-        "Clone thẳng repo gốc → push trực tiếp"
+        "Fork → Clone → Branch → Commit → Push → PR",
+        "Chỉ bình luận Issues mà không gửi code",
+        "Tải ZIP về, sửa rồi email maintainer",
+        "Clone thẳng repo gốc, push trực tiếp"
       ],
       "answer": 0,
       "explanation": "Quy trình chuẩn: 1) Fork repo về account của mình, 2) Clone fork về local, 3) Tạo feature branch, 4) Commit changes, 5) Push lên fork, 6) Tạo Pull Request từ fork về upstream repo gốc. Maintainer review và merge."
@@ -331,10 +331,10 @@
       "level": "advanced",
       "question": "Git sử dụng SHA-1 hash cho commits để đảm bảo điều gì?",
       "options": [
-        "Tăng tốc độ push/pull",
-        "Integrity — không thể modify commit mà không thay đổi hash, đảm bảo history không bị tamper",
-        "Nén dữ liệu hiệu quả hơn",
-        "Mã hóa nội dung commit"
+        "Tăng tốc độ thực hiện lệnh push/pull",
+        "Toàn vẹn — không thể sửa commit mà đổi hash",
+        "Nén dữ liệu lịch sử hiệu quả hơn",
+        "Mã hóa bảo mật nội dung commit"
       ],
       "answer": 1,
       "explanation": "SHA-1 hash của commit được tính từ nội dung commit (tree, parent, author, message). Nếu bất kỳ thứ gì thay đổi, hash thay đổi. Điều này đảm bảo integrity của history — Git tự detect nếu history bị tamper."
@@ -344,10 +344,10 @@
       "level": "advanced",
       "question": "Sự khác biệt giữa GitHub Flow và Git Flow là gì?",
       "options": [
-        "Git Flow chỉ dùng cho open-source",
-        "GitHub Flow dùng cho enterprise",
-        "GitHub Flow: đơn giản hơn (main + feature branches), phù hợp CD; Git Flow: phức tạp hơn (main + develop + feature + release + hotfix)",
-        "Chúng giống nhau"
+        "Git Flow chỉ dùng cho dự án open-source",
+        "GitHub Flow dùng trong môi trường enterprise",
+        "GitHub Flow: đơn giản, CD; Git Flow: nhiều nhánh",
+        "Hai branching strategy hoàn toàn giống nhau"
       ],
       "answer": 2,
       "explanation": "GitHub Flow: đơn giản — main + feature branches, merge thẳng vào main, phù hợp cho continuous deployment. Git Flow: phức tạp hơn với nhiều loại branches (main, develop, feature, release, hotfix) — phù hợp cho scheduled releases."
@@ -357,10 +357,10 @@
       "level": "advanced",
       "question": "'Detached HEAD' state trong Git có nghĩa là gì?",
       "options": [
-        "Lỗi xảy ra khi merge",
-        "Branch bị detach khỏi remote",
-        "HEAD trỏ trực tiếp vào một commit thay vì vào một branch — commit mới sẽ không thuộc branch nào",
-        "HEAD bị xóa"
+        "Lỗi xảy ra khi đang thực hiện merge",
+        "Nhánh bị ngắt kết nối khỏi remote",
+        "HEAD trỏ vào commit, không phải nhánh, mất track",
+        "Con trỏ HEAD bị xóa nhầm khỏi repo"
       ],
       "answer": 2,
       "explanation": "Detached HEAD: HEAD trỏ thẳng vào commit hash thay vì branch name. Xảy ra khi checkout một commit cụ thể (git checkout abc123). Commit mới tạo ra sẽ không có branch để track → dễ mất nếu không tạo branch mới."
@@ -370,10 +370,10 @@
       "level": "advanced",
       "question": "Git Hooks là gì và dùng để làm gì?",
       "options": [
-        "Cơ chế bảo mật của Git server",
-        "Webhook để trigger CI/CD",
-        "Plugin để tích hợp GitHub với IDE",
-        "Scripts tự động chạy trước/sau Git events (commit, push) — dùng để run tests, lint, enforce code style"
+        "Cơ chế bảo mật trên máy chủ Git",
+        "Webhook để kích hoạt CI/CD pipeline",
+        "Plugin tích hợp GitHub với IDE editor",
+        "Script tự động chạy trước/sau Git events"
       ],
       "answer": 3,
       "explanation": "Git Hooks là scripts trong .git/hooks/ tự động chạy tại các thời điểm cụ thể: pre-commit (run tests/lint trước khi commit), commit-msg (validate message format), pre-push (check trước khi push). Giúp enforce team conventions tự động."
@@ -383,10 +383,10 @@
       "level": "advanced",
       "question": "Git Aliases được dùng để làm gì?",
       "options": [
-        "Tạo template cho commit messages",
-        "Tạo tên khác cho branches",
-        "Rename remote repositories",
-        "Custom shortcuts cho Git commands để tiết kiệm thời gian — ví dụ alias 'st' thay cho 'status'"
+        "Tạo template sẵn cho commit message",
+        "Đặt tên bí danh cho các nhánh Git",
+        "Đổi tên remote repository trong config",
+        "Tạo shortcut cho lệnh Git hay dùng"
       ],
       "answer": 3,
       "explanation": "Git Aliases: custom shortcuts cho commands. Ví dụ: git config --global alias.st status → sau đó gõ 'git st' thay vì 'git status'. Giúp workflow nhanh hơn đặc biệt với lệnh dài."
@@ -396,10 +396,10 @@
       "level": "advanced",
       "question": "git worktree cho phép làm gì?",
       "options": [
-        "Tạo worktree trong container",
-        "Đồng bộ worktree với remote",
-        "Tạo read-only copy của repository",
-        "Làm việc trên nhiều branches cùng lúc trong separate working directories mà không cần stash"
+        "Tạo worktree trong môi trường container",
+        "Đồng bộ worktree lên remote server",
+        "Tạo bản sao read-only của repository",
+        "Checkout nhiều nhánh song song thư mục riêng"
       ],
       "answer": 3,
       "explanation": "git worktree cho phép checkout nhiều branches cùng lúc vào các thư mục riêng biệt. Hữu ích khi cần switch nhanh giữa branches mà không muốn stash changes hay commit incomplete work."
@@ -409,10 +409,10 @@
       "level": "advanced",
       "question": "GitOps Push Model vs Pull Model — sự khác biệt về security là gì?",
       "options": [
-        "Pull Model kém secure hơn",
-        "Không có sự khác biệt",
-        "Push Model an toàn hơn vì có authentication",
-        "Push Model: CI/CD agent bên ngoài cần cluster credentials và open connectivity — security concern. Pull Model (ArgoCD): controller trong cluster tự pull, không cần mở inbound connection"
+        "Pull Model kém bảo mật hơn Push Model",
+        "Không có sự khác biệt về bảo mật",
+        "Push Model an toàn hơn nhờ xác thực mạnh",
+        "Push cần credentials ngoài; Pull tự pull trong"
       ],
       "answer": 3,
       "explanation": "Push Model: cần 'grant access in CICD system', 'open connectivity between CICD and k8s cluster = security concern'. Pull Model (ArgoCD): controller trong cluster, không cần open inbound connectivity — bảo mật hơn nhiều."
@@ -422,10 +422,10 @@
       "level": "basic",
       "question": "Use case 'Scaling' của VCS được minh chứng bằng ví dụ nào từ slide GiT for Beginners?",
       "options": [
-        "Git server với 100 repositories",
-        "Windows OS với 1,000 developers",
-        "GitHub với 1 triệu repositories",
-        "Linux kernel: ~10,000 changesets mỗi version, 1,000+ unique contributors"
+        "Git server quản lý 100 repository cùng lúc",
+        "Windows OS với hàng ngàn developer trên toàn cầu",
+        "GitHub với hàng triệu repository công khai",
+        "Linux kernel: ~10.000 changesets, 1.000+ contributors"
       ],
       "answer": 3,
       "explanation": "Slide GiT for Beginners: Linux kernel (developed with GIT) có ~10,000 changesets mỗi version mới (mỗi 2-3 tháng) và 1,000+ unique contributors — minh chứng Git scale được cho dự án cực lớn."
@@ -435,10 +435,10 @@
       "level": "basic",
       "question": "Khi bạn xóa một file và commit, nội dung đó có còn truy cập được không?",
       "options": [
-        "Không — bị xóa vĩnh viễn",
-        "Chỉ trong 30 ngày",
-        "Chỉ nếu có backup",
-        "Có — all deleted content remains accessible in the history"
+        "File xóa vĩnh viễn khỏi hệ thống Git",
+        "Chỉ còn truy cập được trong 30 ngày",
+        "Chỉ còn nếu có bản sao lưu dự phòng",
+        "Có — nội dung đã xóa vẫn còn trong lịch sử"
       ],
       "answer": 3,
       "explanation": "Theo GiT for Beginners: 'all the deleted content remains accessible in the history.' Git không thực sự xóa dữ liệu — mọi thứ đều có thể phục hồi từ commit history."
@@ -448,10 +448,10 @@
       "level": "intermediate",
       "question": "Branch trong Git được định nghĩa chính xác là gì theo slide GiT for Beginners?",
       "options": [
-        "Một bản copy của repository",
-        "Một folder riêng trong repository",
-        "Different variants of the same collection of files — they evolve independently of each other",
-        "Một commit được đặt tên"
+        "Một bản copy đầy đủ của repository",
+        "Một thư mục riêng biệt trong repository",
+        "Các biến thể cùng tập file, phát triển độc lập",
+        "Một commit đặc biệt được đặt tên riêng"
       ],
       "answer": 2,
       "explanation": "Slide: 'Branches are different variants of the same collection of files — they evolve independently of each other.' Branch không phải copy mà là pointer đến commit, cho phép phát triển song song."
@@ -461,10 +461,10 @@
       "level": "basic",
       "question": "Use case 'Working with external contributors' của Distributed VCS bao gồm những hoạt động nào?",
       "options": [
-        "Chỉ dành cho contributors nội bộ",
-        "Chỉ cho phép download code",
-        "Gửi code qua email",
-        "Cho phép submit patches, forking dự án và merge lại vào mainline"
+        "Chỉ dành cho thành viên nội bộ team",
+        "Chỉ cho phép tải code không sửa đổi",
+        "Gửi file đính kèm qua email cho maintainer",
+        "Submit patch, fork dự án và merge lại mainline"
       ],
       "answer": 3,
       "explanation": "Slide GiT for Beginners: use case 'Working with external contributors' (distributed tools only) gồm: give visibility, help submit changes (patches), integrate them, và forking development rồi merging back into mainline. Đây là lý do open-source dùng Git."
@@ -474,10 +474,10 @@
       "level": "basic",
       "question": "Linux kernel sử dụng Git có bao nhiêu changesets và contributors mỗi phiên bản mới?",
       "options": [
-        "~10,000 changesets mỗi version mới, 1,000+ unique contributors",
-        "~1,000 changesets, 100+ contributors",
-        "~50,000 changesets, 5,000 contributors",
-        "~100 changesets, 50 contributors"
+        "~10.000 changesets mỗi version, 1.000+ contributors",
+        "~1.000 changesets, 100+ contributors mỗi version",
+        "~50.000 changesets, 5.000 contributors mỗi version",
+        "~100 changesets, 50 contributors mỗi version"
       ],
       "answer": 0,
       "explanation": "Slide: Linux kernel (developed with GIT) — ~10,000 changesets mỗi version mới (phát hành mỗi 2–3 tháng), 1,000+ unique contributors. Đây là minh chứng Git scale được cho dự án cực lớn."
@@ -487,10 +487,10 @@
       "level": "intermediate",
       "question": "Git được thiết kế với mục tiêu nào trong 4 Design Objectives sau?",
       "options": [
-        "Distributed workflow, easy merging, integrity (SHA-1), speed & scalability",
-        "Lock-based concurrency, delta compression, cloud-only",
-        "Centralized workflow, simple conflicts, tốc độ trung bình",
-        "Single server, linear history, no branching"
+        "Phân tán, merge dễ, toàn vẹn SHA-1, tốc độ cao",
+        "Khóa trước khi sửa, delta compression, cloud only",
+        "Tập trung, ít conflict, tốc độ trung bình",
+        "Server duy nhất, lịch sử tuyến tính, không nhánh"
       ],
       "answer": 0,
       "explanation": "4 Git Design Objectives: (1) Distributed workflow (decentralised), (2) Easy merging — merge deemed more frequent than commit, (3) Integrity — protection against accidental/malicious corruption, (4) Speed & scalability."
@@ -500,10 +500,10 @@
       "level": "intermediate",
       "question": "SHA-1 hash trong Git đảm bảo tính toàn vẹn như thế nào?",
       "options": [
-        "SHA-1 nén dữ liệu hiệu quả hơn",
-        "Chỉ bảo vệ file nguồn không bị xóa",
-        "Mã hóa nội dung để chỉ author đọc được",
-        "Hash được tính từ nội dung commit — thay đổi bất kỳ thứ gì sẽ làm thay đổi hash, Git tự phát hiện giả mạo"
+        "SHA-1 nén dữ liệu lịch sử hiệu quả",
+        "Chỉ bảo vệ file nguồn khỏi bị xóa",
+        "Mã hóa để chỉ tác giả đọc nội dung",
+        "Hash tính từ nội dung — thay đổi gì đổi hash"
       ],
       "answer": 3,
       "explanation": "SHA-1 hash của commit được tính từ tree, parent hash, author, timestamp và message. Nếu bất kỳ thứ gì bị sửa, hash thay đổi → Git tự phát hiện corruption hoặc tampering. Đây là một Git Design Choice quan trọng: 'cryptographic tracking'."
@@ -513,10 +513,10 @@
       "level": "intermediate",
       "question": "Detached HEAD state xảy ra khi nào và gây ra vấn đề gì?",
       "options": [
-        "Khi remote không kết nối được",
-        "Khi checkout một commit cụ thể (không phải branch) — commit mới tạo ra sẽ không thuộc branch nào và dễ bị mất",
-        "Khi HEAD bị xóa nhầm",
-        "Khi branch bị đổi tên"
+        "Khi không kết nối được remote server",
+        "Khi checkout commit, commit mới không thuộc nhánh",
+        "Khi con trỏ HEAD vô tình bị xóa mất",
+        "Khi nhánh bị đổi tên trong quá trình làm"
       ],
       "answer": 1,
       "explanation": "Detached HEAD: HEAD trỏ thẳng vào commit hash thay vì branch name. Xảy ra khi 'git checkout abc1234'. Nếu tạo commits trong trạng thái này rồi checkout branch khác, các commits đó sẽ không có branch nào track → dễ bị garbage collect. Cách thoát: tạo branch mới từ đây với 'git checkout -b new-branch'."
@@ -526,10 +526,10 @@
       "level": "intermediate",
       "question": "Branch protection rules trên GitHub dùng để làm gì?",
       "options": [
-        "Giới hạn số lượng commits",
-        "Yêu cầu code review, CI phải pass trước khi merge — bảo vệ branch quan trọng khỏi thay đổi trực tiếp",
-        "Ẩn branch với người dùng bên ngoài",
-        "Mã hóa nội dung branch"
+        "Giới hạn số lượng commit mỗi ngày",
+        "Yêu cầu code review và CI pass trước merge",
+        "Ẩn nhánh với người dùng bên ngoài",
+        "Mã hóa toàn bộ nội dung của nhánh"
       ],
       "answer": 1,
       "explanation": "Branch protection rules trên GitHub cho phép: yêu cầu pull request với review approval, yêu cầu CI checks phải pass, require linear history, disallow force push, prevent deletion. Thường áp dụng cho main/master để đảm bảo code quality."
@@ -539,10 +539,10 @@
       "level": "intermediate",
       "question": "Ba loại Git Hooks phổ biến nhất và tác dụng của chúng là gì?",
       "options": [
-        "pre-commit (chạy trước commit), commit-msg (validate message), pre-push (chạy trước push)",
-        "post-commit, post-merge, post-push — chạy sau events",
-        "init-hook, clone-hook, fetch-hook",
-        "push-hook, pull-hook, merge-hook — kiểm soát network operations"
+        "pre-commit, commit-msg, pre-push — chạy trước event",
+        "post-commit, post-merge, post-push — chạy sau event",
+        "init-hook, clone-hook, fetch-hook — khởi tạo",
+        "push-hook, pull-hook, merge-hook — kiểm soát network"
       ],
       "answer": 0,
       "explanation": "Ba hooks quan trọng: pre-commit — chạy trước khi commit được tạo (dùng để run tests, lint, format check); commit-msg — validate format của commit message; pre-push — chạy trước khi push (dùng để run test suite). Nếu hook exit với code khác 0, operation bị hủy."
@@ -552,10 +552,10 @@
       "level": "advanced",
       "question": "git worktree giải quyết vấn đề gì trong workflow hàng ngày?",
       "options": [
-        "Đồng bộ worktree lên cloud",
-        "Tạo repository mới từ template",
-        "Tạo read-only copy để review",
-        "Cho phép checkout nhiều branches cùng lúc vào thư mục riêng biệt — không cần stash khi switch giữa branches"
+        "Đồng bộ worktree lên cloud storage tự động",
+        "Tạo repository mới từ template có sẵn",
+        "Tạo bản sao read-only để review code",
+        "Checkout nhiều nhánh cùng lúc thư mục riêng"
       ],
       "answer": 3,
       "explanation": "git worktree cho phép làm việc trên nhiều branches song song: 'git worktree add ../hotfix hotfix-branch' tạo thư mục mới checkout branch đó. Hữu ích khi đang làm feature nhưng cần fix bug khẩn cấp — không phải stash, không phải clone lại repo."
@@ -565,10 +565,10 @@
       "level": "basic",
       "question": "GitOps sử dụng Git như thế nào làm 'single source of truth'?",
       "options": [
-        "Git lưu logs của hệ thống",
-        "Mọi thứ — code, infrastructure config, K8s manifests đều được lưu trong Git — Git là nguồn sự thật duy nhất",
-        "Chỉ lưu code ứng dụng",
-        "Chỉ lưu CI/CD pipelines"
+        "Git chỉ lưu system log của hạ tầng",
+        "Mọi thứ — code, manifests, IaC — lưu trong Git",
+        "Chỉ lưu code ứng dụng, không lưu config",
+        "Chỉ lưu pipeline CI/CD định nghĩa"
       ],
       "answer": 1,
       "explanation": "GitOps: Git là 'single source of truth' cho cả code ứng dụng lẫn infrastructure (K8s manifests, Terraform, Ansible). Bất kỳ thay đổi nào của hệ thống đều phải đi qua Git → có lịch sử đầy đủ, có thể audit, rollback, peer review."
@@ -579,9 +579,9 @@
       "question": "Sự khác biệt an toàn giữa 'git revert' và 'git reset --hard' khi đã push code?",
       "options": [
         "git revert không dùng được sau khi push",
-        "git reset --hard an toàn hơn vì nhanh hơn",
-        "Cả hai đều an toàn như nhau",
-        "git revert: tạo commit mới — an toàn cho shared branches đã push; git reset --hard: xóa history — nguy hiểm khi đã push vì cần force push"
+        "git reset --hard an toàn hơn vì nhanh",
+        "Cả hai đều an toàn như nhau khi push",
+        "git revert tạo commit mới; reset --hard xóa history"
       ],
       "answer": 3,
       "explanation": "git revert tạo commit mới đảo ngược thay đổi → không rewrite history → safe để push lên shared branch. git reset --hard xóa commits khỏi history → nếu đã push, cần force push → người khác đã pull sẽ có diverged history → rất nguy hiểm."
@@ -591,10 +591,10 @@
       "level": "basic",
       "question": "GitHub Actions được dùng để làm gì trong context GitOps?",
       "options": [
-        "Chỉ gửi email thông báo",
-        "Tự động hóa CI/CD — chạy tests, build, deploy khi có push hoặc pull request",
-        "Manage user permissions",
-        "Backup repository"
+        "Chỉ gửi email thông báo cho developer",
+        "Tự động hóa CI/CD — chạy test, build, deploy",
+        "Quản lý phân quyền người dùng GitHub",
+        "Sao lưu tự động toàn bộ repository"
       ],
       "answer": 1,
       "explanation": "GitHub Actions là CI/CD platform tích hợp trong GitHub. Trong GitOps: tự động trigger khi push/PR → run tests (CI), build images, deploy (CD). Pipeline được định nghĩa dưới dạng YAML file trong .github/workflows/ — cũng được lưu trong Git."
@@ -604,10 +604,10 @@
       "level": "advanced",
       "question": "Làm thế nào GitOps hỗ trợ Disaster Recovery?",
       "options": [
-        "Toàn bộ infrastructure được định nghĩa trong Git — deploy cluster mới chỉ cần point ArgoCD vào repo, hệ thống tự phục hồi",
-        "Có sẵn backup server dự phòng",
-        "Backup database tự động mỗi ngày",
-        "GitOps không hỗ trợ DR"
+        "Hạ tầng trong Git — cluster mới point ArgoCD vào",
+        "Có sẵn server dự phòng tự động failover",
+        "Sao lưu database tự động mỗi ngày",
+        "GitOps không hỗ trợ Disaster Recovery"
       ],
       "answer": 0,
       "explanation": "GitOps DR: vì mọi infrastructure config đều ở trong Git, khi cluster bị mất hoàn toàn → spin up cluster mới → point ArgoCD vào Git repo → ArgoCD tự đồng bộ toàn bộ workloads về đúng trạng thái. 'Simply point the ArgoCD to the repository' — không cần manual configuration."
@@ -617,10 +617,10 @@
       "level": "intermediate",
       "question": "Git Aliases được cấu hình như thế nào và cho mục đích gì?",
       "options": [
-        "Alias tự động generate từ Git",
-        "Chỉ hoạt động trên Linux",
-        "Dùng 'git config --global alias.[tên] [command]' — tạo shortcut cho lệnh dài, ví dụ alias 'co' thay cho 'checkout'",
-        "Cấu hình trong .github/aliases.yml"
+        "Alias tự động sinh từ Git khi cài đặt",
+        "Chỉ hoạt động trên hệ điều hành Linux",
+        "git config --global alias.[tên] [lệnh] tạo shortcut",
+        "Cấu hình trong file .github/aliases.yml"
       ],
       "answer": 2,
       "explanation": "Git Aliases: 'git config --global alias.st status' → sau đó gõ 'git st'. Ví dụ phổ biến: co = checkout, br = branch, lg = log --oneline --graph --all. Lưu trong ~/.gitconfig dưới [alias] section."
@@ -630,10 +630,10 @@
       "level": "advanced",
       "question": "git submodule dùng để làm gì và khi nào nên dùng?",
       "options": [
-        "Tách một repo lớn thành nhỏ",
-        "Submodule chỉ dùng trong monorepo",
-        "Nhúng một Git repository vào repo khác như dependency — dùng khi cần phụ thuộc vào external library có own history",
-        "Tạo module trong code Python"
+        "Tách một repo lớn thành repo nhỏ hơn",
+        "Submodule chỉ dùng trong cấu trúc monorepo",
+        "Nhúng một Git repo vào repo khác như dependency",
+        "Tạo module trong dự án Python hoặc Node"
       ],
       "answer": 2,
       "explanation": "git submodule cho phép include một Git repo vào repo khác. Ví dụ: library team có repo riêng, product repo dùng nó làm submodule. Submodule có own git history. 'git submodule update --init --recursive' khởi tạo và cập nhật tất cả submodules."
@@ -644,9 +644,9 @@
       "question": "Annotated tag khác Lightweight tag như thế nào trong Git?",
       "options": [
         "Annotated tag chỉ dùng được trên GitHub",
-        "Chúng giống nhau hoàn toàn",
-        "Annotated tag (-a): lưu metadata đầy đủ (tagger, date, message, GPG signature); Lightweight tag: chỉ là pointer đến commit, không có metadata",
-        "Lightweight tag dùng cho releases; Annotated tag dùng cho testing"
+        "Hai loại tag này hoàn toàn giống nhau",
+        "Annotated: metadata đầy đủ; Lightweight: pointer",
+        "Lightweight cho release; Annotated để testing"
       ],
       "answer": 2,
       "explanation": "Lightweight tag: 'git tag v1.0' — chỉ là pointer đến commit, không có thêm thông tin. Annotated tag: 'git tag -a v1.0 -m \"Release 1.0\"' — tạo full object với tagger name, email, date, message. Có thể ký GPG. Best practice: dùng annotated tags cho releases chính thức."
@@ -656,10 +656,10 @@
       "level": "advanced",
       "question": "git filter-branch thường được dùng để làm gì?",
       "options": [
-        "Filter commit messages theo keyword",
-        "Rewrite Git history trên toàn bộ repo — ví dụ xóa file sensitive (credentials, large file) đã vô tình commit vào history",
-        "Xóa empty merge commits",
-        "Filter branch theo tên pattern"
+        "Lọc commit theo từ khóa trong message",
+        "Viết lại Git history — xóa file nhạy cảm đã commit",
+        "Xóa các merge commit rỗng trong lịch sử",
+        "Lọc danh sách nhánh theo tên pattern"
       ],
       "answer": 1,
       "explanation": "git filter-branch dùng để rewrite history: xóa file sensitive đã commit (credentials, private keys, large binary), đổi email author trên toàn history, tách một thư mục thành repo riêng. Cảnh báo: thay đổi tất cả commit hashes → cần force push và mọi collaborator phải re-clone. Thay thế hiện đại: git-filter-repo."
@@ -669,10 +669,10 @@
       "level": "intermediate",
       "question": "Conventional Commits quy định format commit message như thế nào?",
       "options": [
-        "Format: [DATE] [AUTHOR] message",
-        "Chỉ cần có ticket number",
-        "Format: <type>(<scope>): <description> — type gồm feat (feature mới), fix (bug fix), docs (tài liệu), chore, refactor...",
-        "Không có quy định cụ thể"
+        "Format: [NGÀY] [TÁC GIẢ] nội dung thay đổi",
+        "Bắt buộc có số ticket trong message",
+        "Format: <type>(<scope>): <description>",
+        "Không có quy định format cụ thể nào"
       ],
       "answer": 2,
       "explanation": "Conventional Commits: format chuẩn 'type(scope): description'. Ví dụ: 'feat(auth): add OAuth2 login', 'fix(api): handle null response', 'docs: update README'. Giúp tự động generate CHANGELOG, semantic versioning, và CI/CD decisions. Types: feat, fix, docs, style, refactor, test, chore."

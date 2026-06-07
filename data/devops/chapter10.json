@@ -40,10 +40,10 @@
       "level": "basic",
       "question": "Prometheus sử dụng model nào để thu thập metrics?",
       "options": [
-        "Push model — targets gửi metrics đến Prometheus",
-        "Event-driven model",
-        "Streaming model",
-        "Pull model — Prometheus chủ động pull metrics từ targets"
+        "Push model — targets chủ động gửi metrics đến Prometheus",
+        "Event-driven model — metrics gửi khi có sự kiện xảy ra",
+        "Streaming model — metrics được stream liên tục theo thời gian",
+        "Pull model — Prometheus chủ động scrape metrics từ targets"
       ],
       "answer": 3,
       "explanation": "Prometheus dùng pull-based model — server chủ động scrape (pull) metrics từ targets (node_exporter, app endpoints) theo định kỳ. Khác với push-based nơi agents gửi data tới server."
@@ -53,10 +53,10 @@
       "level": "basic",
       "question": "3 components cần thiết để monitoring với Prometheus là gì?",
       "options": [
-        "Prometheus, Alertmanager, Pushgateway",
-        "node_exporter, Prometheus Server, Grafana",
-        "Grafana, InfluxDB, Telegraf",
-        "Prometheus, Kibana, Logstash"
+        "Prometheus, Alertmanager, và Pushgateway",
+        "node_exporter, Prometheus Server, và Grafana",
+        "Grafana, InfluxDB, và Telegraf agent",
+        "Prometheus, Kibana, và Logstash pipeline"
       ],
       "answer": 1,
       "explanation": "3 components: 1) node_exporter — thu thập system metrics trên machines được monitor. 2) Prometheus Server — thu thập, lưu trữ, xử lý metrics. 3) Grafana — visualization và dashboard tool."
@@ -66,10 +66,10 @@
       "level": "basic",
       "question": "node_exporter trong Prometheus dùng để làm gì?",
       "options": [
-        "Quản lý alerts",
-        "Export Prometheus data sang Grafana",
-        "Lưu trữ time-series data",
-        "Chạy trên máy được monitor, thu thập system data (CPU, memory, disk, network...)"
+        "Quản lý và route các alert notifications",
+        "Export dữ liệu Prometheus sang Grafana dashboard",
+        "Lưu trữ time-series data trong local database",
+        "Chạy trên máy được monitor và thu thập system metrics"
       ],
       "answer": 3,
       "explanation": "node_exporter chạy trên các máy cần monitor, thu thập system metrics: CPU/Memory usage, network traffic, disk I/O, open files/sockets, login sessions, entropy... Prometheus server pull metrics từ node_exporter."
@@ -79,10 +79,10 @@
       "level": "basic",
       "question": "Grafana có vai trò gì trong Prometheus monitoring stack?",
       "options": [
-        "Plotting/dashboard tool — visualize data từ Prometheus, build và save dashboards",
-        "Send alerts qua email",
-        "Thu thập metrics từ servers",
-        "Lưu trữ time-series data thay thế Prometheus"
+        "Visualization tool — visualize data Prometheus, tạo dashboards",
+        "Gửi alert notifications qua email và Slack channel",
+        "Thu thập metrics trực tiếp từ các servers đang chạy",
+        "Lưu trữ time-series data thay thế Prometheus server"
       ],
       "answer": 0,
       "explanation": "Grafana là visualization tool — 'gets all of the focus when being run day to day'. 'Does a better job of presenting multiple queries và building/saving dashboards' so với Prometheus web UI. Có nhiều pre-built community dashboards."
@@ -92,10 +92,10 @@
       "level": "basic",
       "question": "PromQL là gì?",
       "options": [
-        "Protocol cho Prometheus metrics",
-        "Prometheus Query Language — ngôn ngữ truy vấn dữ liệu monitoring",
-        "Plugin Query Library",
-        "Prometheus Quick Link"
+        "Protocol chuẩn để truyền tải metrics giữa các services",
+        "Prometheus Query Language — ngôn ngữ truy vấn monitoring data",
+        "Plugin Query Library cho các Prometheus exporters",
+        "Prometheus Quick Link — shortcut để truy cập dashboard"
       ],
       "answer": 1,
       "explanation": "PromQL = Prometheus Query Language. Dùng để query time-series data trong Prometheus. Hỗ trợ: math operations (BODMAS, quantiles), pattern matching, return vectors hoặc scalars."
@@ -105,10 +105,10 @@
       "level": "basic",
       "question": "Prometheus được viết bằng ngôn ngữ nào và điều này mang lại lợi ích gì?",
       "options": [
-        "Python — dễ viết script",
-        "Go (Golang) — statically compiled, no 3rd party libs, chỉ cần grab binary và run",
-        "Java — portable across platforms",
-        "C++ — high performance"
+        "Python — dễ viết script và tự động hóa nhanh",
+        "Go (Golang) — statically compiled, không cần thư viện ngoài",
+        "Java — portable và chạy được trên mọi nền tảng",
+        "C++ — hiệu suất cao và tiêu tốn ít bộ nhớ hơn"
       ],
       "answer": 1,
       "explanation": "Prometheus viết bằng Go — statically compiled, everything shipped với executable, no 3rd party libraries, no yum install. Chỉ cần download binary và run. node_exporter có thể run như unprivileged user."
@@ -118,10 +118,10 @@
       "level": "basic",
       "question": "Blackbox Exporter trong Prometheus dùng để làm gì?",
       "options": [
-        "Kiểm tra service có đang lắng nghe bằng cách attempt to open TCP/UDP connection",
-        "Lưu trữ black-box test results",
-        "Export Docker container metrics",
-        "Export GPU metrics"
+        "Kiểm tra service có lắng nghe bằng cách mở TCP/UDP connection",
+        "Lưu trữ kết quả black-box testing vào database",
+        "Export metrics của Docker containers và cgroups",
+        "Export metrics hiệu suất của GPU và card đồ họa"
       ],
       "answer": 0,
       "explanation": "Blackbox Exporter attempts to open tcp/udp connection against target port — kiểm tra service có đang lắng nghe không (black-box testing từ ngoài). Dùng trong alerting để phát hiện service outages."
@@ -131,10 +131,10 @@
       "level": "intermediate",
       "question": "Alerting flow đầy đủ trong Prometheus stack là gì?",
       "options": [
-        "Grafana → Prometheus → alert_manager",
-        "Prometheus → Alertmanager → PagerDuty trực tiếp",
-        "node_exporter → Grafana → Email",
-        "blackbox_exporter detect issue → Prometheus fire alert → alert_manager → Notification → sysadmin"
+        "Grafana phát hiện issue → Prometheus → alert_manager",
+        "Prometheus phát hiện issue → Alertmanager → PagerDuty",
+        "node_exporter phát hiện issue → Grafana → Email ngay",
+        "blackbox_exporter → Prometheus → alert_manager → Notification"
       ],
       "answer": 3,
       "explanation": "Flow: 1) blackbox_exporter/Prometheus detect issue (PromQL condition thỏa mãn). 2) Prometheus fires alert → alert_manager. 3) alert_manager route và gửi notification (mattermost/Slack/email). 4) Sysadmin nhận thông báo. 5) Clickable links để investigate."
@@ -144,9 +144,9 @@
       "level": "intermediate",
       "question": "Sự khác biệt giữa Black-box và White-box Monitoring là gì?",
       "options": [
-        "Black-box: monitor production; White-box: monitor staging",
-        "Không có sự khác biệt",
-        "Black-box: test từ bên ngoài ('is service responding?'); White-box: monitor internal state ('how is it performing internally?')",
+        "Black-box dùng cho production; White-box dùng cho staging",
+        "Không có sự khác biệt thực sự giữa hai phương pháp",
+        "Black-box test từ bên ngoài; White-box monitor trạng thái nội bộ",
         "Black-box dùng Prometheus; White-box dùng Grafana"
       ],
       "answer": 2,
@@ -157,10 +157,10 @@
       "level": "intermediate",
       "question": "cAdvisor (Google) dùng để làm gì?",
       "options": [
-        "Code Advisor — analyze code quality",
-        "Cloud Advisor — tư vấn cost optimization",
-        "Records và exports metrics của containers và cgroups — fine-grained CPU/Memory per container/application",
-        "Certificate Advisor — quản lý SSL certificates"
+        "Code Advisor — phân tích và đánh giá chất lượng code",
+        "Cloud Advisor — tư vấn và tối ưu chi phí cloud",
+        "Ghi lại và export metrics của containers theo từng ứng dụng",
+        "Certificate Advisor — quản lý và gia hạn SSL certificates"
       ],
       "answer": 2,
       "explanation": "cAdvisor (Container Advisor) records và exports metrics của containers và cgroups. Thiết kế cho Docker nhưng dùng được cho systemd services. Cho phép fine-grained Memory/CPU view trên per-application level."
@@ -170,10 +170,10 @@
       "level": "intermediate",
       "question": "Prometheus có thể track được những loại data nào ngoài server metrics thông thường?",
       "options": [
-        "Chỉ CPU và memory",
-        "Chỉ application logs",
-        "Chỉ network metrics",
-        "Bất kỳ numerical data qua HTTP — radiation levels, temperature, sunlight, disk seek time..."
+        "Chỉ theo dõi CPU và memory của server mà thôi",
+        "Chỉ theo dõi application logs dạng text mà thôi",
+        "Chỉ theo dõi network traffic và latency mà thôi",
+        "Bất kỳ numerical data qua HTTP: radiation, nhiệt độ, disk"
       ],
       "answer": 3,
       "explanation": "Prometheus track được bất kỳ numerical data exposable qua HTTP. Examples từ slides: background radiation levels từ geiger-counter, sunlight amount, temperature từ met-office, disk seek time — 'anything that can be exported as numerical data via http'."
@@ -183,10 +183,10 @@
       "level": "intermediate",
       "question": "Tại sao có thể gặp vấn đề với Grafana dashboards cũ khi upgrade node_exporter?",
       "options": [
-        "PromQL thay đổi syntax trong v0.16.0",
-        "Prometheus không hỗ trợ Grafana dashboard format cũ",
-        "Grafana không tương thích với node_exporter mới",
-        "node_exporter v0.16.0 đã rename và standardize metrics — nhiều dashboard cũ không forward compatible"
+        "PromQL thay đổi cú pháp hoàn toàn trong phiên bản v0.16.0",
+        "Prometheus không còn hỗ trợ định dạng dashboard cũ nữa",
+        "Grafana không tương thích với các phiên bản node_exporter mới",
+        "node_exporter v0.16.0 đổi tên metrics, dashboard cũ không dùng được"
       ],
       "answer": 3,
       "explanation": "Từ slides: 'There was a major shift in node_exporter version 0.16.0 — renamed and standardised the metrics. This means a lot of older dashboards are not directly forward compatible.' Cần update dashboard PromQL queries khi upgrade node_exporter lên v0.16.0+."
@@ -196,9 +196,9 @@
       "level": "advanced",
       "question": "Prometheus có đặc tính gì về storage và architecture?",
       "options": [
-        "Cloud-native — chỉ lưu trên cloud object storage",
-        "Stateless — không lưu data lâu dài",
-        "Distributed — data phân tán nhiều nodes",
+        "Cloud-native — chỉ lưu trữ trên cloud object storage",
+        "Stateless — dữ liệu không được lưu lâu dài trên disk",
+        "Distributed — dữ liệu được phân tán trên nhiều nodes",
         "Stateful và centralised — lưu data local trên Prometheus server"
       ],
       "answer": 3,
@@ -209,10 +209,10 @@
       "level": "advanced",
       "question": "Ví dụ thực tế nào về alerts được setup tại Edinburgh deployment?",
       "options": [
-        "Container restarts > 5 lần/giờ",
-        "CPU > 80%, Memory > 90%",
-        "Network latency > 100ms, Error rate > 1%",
-        "Services ngừng lắng nghe, Disks >90% capacity, Compute nodes <50% usage, Entropy quá thấp"
+        "Container restarts vượt quá 5 lần mỗi giờ liên tiếp",
+        "CPU vượt 80% hoặc Memory vượt 90% liên tục luôn",
+        "Network latency vượt 100ms hoặc error rate vượt 1%",
+        "Services ngừng lắng nghe, Disk >90%, CPU <50%, entropy thấp"
       ],
       "answer": 3,
       "explanation": "Edinburgh deployment alerts: 1) Services ngừng lắng nghe new connections. 2) Disks reaching >90% capacity. 3) Compute nodes dropping below 50% usage. 4) Entropy dropping too low. Stack: node_exporter + prometheus + blackbox_exporter + alertmanager → mattermost."
@@ -222,10 +222,10 @@
       "level": "advanced",
       "question": "3 loại dữ liệu monitoring trong observability là gì và Prometheus thuộc loại nào?",
       "options": [
-        "Pull/Push/Stream — Prometheus thuộc Pull",
-        "Build/Test/Deploy — Prometheus thuộc Build",
+        "Pull/Push/Stream — Prometheus thuộc loại Pull-based monitoring",
+        "Build/Test/Deploy — Prometheus thuộc giai đoạn Build luôn",
         "Monitoring/Alerting/Dashboards — Prometheus thuộc Alerting",
-        "Metrics (Prometheus), Logs (ELK/Loki), Traces (Jaeger/Zipkin) — Prometheus chuyên về Metrics"
+        "Metrics (Prometheus), Logs (Loki), Traces (Jaeger) — Prometheus: Metrics"
       ],
       "answer": 3,
       "explanation": "3 pillars of observability: 1) Metrics — numerical time-series data (Prometheus, InfluxDB). 2) Logs — text-based events (ELK Stack, Loki). 3) Traces — distributed request tracing (Jaeger, Zipkin). Prometheus chuyên về Metrics — mạnh nhất cho time-series data và alerting based on thresholds."
@@ -235,9 +235,9 @@
       "level": "basic",
       "question": "Baron Schwartz nói gì về sự khác biệt giữa Monitoring và Observability?",
       "options": [
-        "Monitoring và Observability là hai từ đồng nghĩa",
-        "Observability là cũ — Monitoring là khái niệm mới hơn",
-        "\"Monitoring tells you whether the system works. Observability lets you ask why it's not working.\"",
+        "Monitoring và Observability là hai khái niệm hoàn toàn giống nhau",
+        "Observability là khái niệm cũ; Monitoring là khái niệm mới hơn",
+        "\"Monitoring cho biết hệ thống có hoạt động không; Observability hỏi tại sao\"",
         "Monitoring là tập con của Observability — không có sự khác biệt thực sự"
       ],
       "answer": 2,
@@ -248,10 +248,10 @@
       "level": "intermediate",
       "question": "Theo slides, có bao nhiêu lý do để monitor hệ thống và đâu là lý do kinh tế quan trọng nhất?",
       "options": [
-        "5 lý do — để giảm downtime",
-        "4 lý do — để làm hài lòng khách hàng",
-        "3 lý do — để detect bugs sớm hơn",
-        "6 lý do — bao gồm 'Outage cost is more expensive than investing in quality'"
+        "5 lý do — để giảm thiểu downtime cho hệ thống",
+        "4 lý do — để làm hài lòng khách hàng hơn",
+        "3 lý do — để phát hiện bugs sớm hơn trong code",
+        "6 lý do — bao gồm chi phí outage cao hơn đầu tư quality"
       ],
       "answer": 3,
       "explanation": "6 lý do: 1) Đảm bảo hệ thống hoạt động đúng. 2) Hiểu hệ thống đang được dùng thế nào. 3) Fix vấn đề TRƯỚC khi khách hàng báo. 4) Chi phí outage tốn hơn đầu tư vào chất lượng. 5) Chia sẻ kiến thức cho cả tổ chức. 6) Ra quyết định dựa trên data thay vì cảm tính."
@@ -261,10 +261,10 @@
       "level": "advanced",
       "question": "So sánh pros/cons của Metrics, Logs và Traces — loại nào rẻ nhất để lưu trữ và query?",
       "options": [
-        "Traces — vì chỉ track critical path",
-        "Logs — vì text nhỏ hơn binary",
-        "Metrics — less data, faster queries; còn Logs và Traces đều costly to store and query",
-        "Cả 3 đều có chi phí tương đương"
+        "Traces — vì chỉ theo dõi critical request path",
+        "Logs — vì kích thước text nhỏ hơn binary data",
+        "Metrics — ít dữ liệu hơn, query nhanh hơn Logs và Traces",
+        "Cả 3 loại đều có chi phí lưu trữ tương đương nhau"
       ],
       "answer": 2,
       "explanation": "Metrics: Pros — lets you see trends/patterns, less data, faster queries. Cons — needs to be configured up-front. Logs: Pros — lets you see exactly what process was doing at a given time. Cons — costly to store and query. Traces: Pros — lets you see path a request took and where time was spent. Cons — costly to store and query. Metrics rẻ nhất vì là numeric data, dễ aggregate."
@@ -274,9 +274,9 @@
       "level": "intermediate",
       "question": "Câu nói 'servers are becoming cattle, rather than pets' trong monitoring có nghĩa là gì?",
       "options": [
-        "Servers đang giảm chi phí như gia súc được nuôi hàng loạt",
-        "Infrastructure đang trở nên dynamic hơn — servers có thể bị replace bất kỳ lúc nào, không phải duy nhất và không thể thay thế",
-        "Servers cần được chăm sóc kỹ như thú cưng",
+        "Servers đang giảm chi phí như gia súc nuôi hàng loạt",
+        "Infrastructure dynamic — servers dễ thay thế, không phải duy nhất",
+        "Servers cần được chăm sóc kỹ lưỡng như thú cưng đặc biệt",
         "Monitoring không còn cần thiết vì servers tự quản lý"
       ],
       "answer": 1,
@@ -287,10 +287,10 @@
       "level": "basic",
       "question": "Theo Baron Schwartz, Monitoring cho bạn biết điều gì?",
       "options": [
-        "Hệ thống có đang hoạt động hay không",
-        "Cách optimize performance của hệ thống",
-        "Ai đang sử dụng hệ thống",
-        "Tại sao hệ thống không hoạt động"
+        "Hệ thống hiện tại có đang hoạt động hay không",
+        "Cách tối ưu hiệu suất của hệ thống",
+        "Ai đang sử dụng hệ thống tại thời điểm đó",
+        "Nguyên nhân tại sao hệ thống không hoạt động"
       ],
       "answer": 0,
       "explanation": "Theo Baron Schwartz: \"Monitoring tells you whether the system works\" — Monitoring trả lời câu hỏi YES/NO: hệ thống có đang hoạt động không. Còn Observability mới là thứ cho phép bạn hỏi WHY — tại sao nó không hoạt động."
@@ -300,10 +300,10 @@
       "level": "basic",
       "question": "Lý do nào sau đây KHÔNG phải là một trong 6 lý do chính để monitor hệ thống theo slides?",
       "options": [
-        "Make knowledge available to the rest of the organization",
-        "Fix problems BEFORE customers report them",
-        "Reduce the number of developers needed",
-        "Make decisions on data rather than gut feeling"
+        "Chia sẻ kiến thức cho toàn bộ tổ chức",
+        "Fix vấn đề trước khi khách hàng báo cáo",
+        "Giảm số lượng developers cần thiết trong team",
+        "Ra quyết định dựa trên data thay vì cảm tính"
       ],
       "answer": 2,
       "explanation": "6 lý do monitor: 1) Đảm bảo hệ thống hoạt động đúng. 2) Hiểu cách hệ thống được dùng. 3) Fix vấn đề TRƯỚC khi khách hàng báo. 4) Chi phí outage > chi phí đầu tư quality. 5) Chia sẻ kiến thức cho org. 6) Ra quyết định bằng data. 'Reduce the number of developers' KHÔNG phải lý do nào trong 6 lý do."
@@ -313,10 +313,10 @@
       "level": "basic",
       "question": "Black-box monitoring được mô tả bằng hình ảnh nào trong slides?",
       "options": [
-        "\"Open the hood and check the engine\"",
-        "\"Look through a microscope\" — examine in detail",
-        "\"Ask it to write a report\" — self-reporting",
-        "\"Poke it with a stick\" — test từ bên ngoài"
+        "\"Open the hood and check the engine\" — kiểm tra bên trong",
+        "\"Look through a microscope\" — quan sát chi tiết nội bộ",
+        "\"Ask it to write a report\" — để hệ thống tự báo cáo",
+        "\"Poke it with a stick\" — test từ bên ngoài mà không biết nội tại"
       ],
       "answer": 3,
       "explanation": "Slides mô tả Black-box monitoring là \"poke it with a stick\" — kiểm tra từ bên ngoài mà không biết nội tại. Đây là cách của blackbox_exporter: thử mở TCP/UDP connection để xem service có respond không, giống như chọc cái gì đó để xem nó có phản ứng không."
@@ -326,10 +326,10 @@
       "level": "basic",
       "question": "White-box monitoring được mô tả thế nào trong slides?",
       "options": [
-        "\"Ignore it unless it breaks\"",
-        "\"Poke it with a stick\" — test từ ngoài vào",
-        "\"Have it tell you how it's doing\" — process tự report internal state",
-        "\"Read its logs after the fact\""
+        "\"Ignore it unless it breaks\" — chỉ xử lý khi có sự cố",
+        "\"Poke it with a stick\" — kiểm tra từ bên ngoài vào",
+        "\"Have it tell you how it's doing\" — process tự báo cáo nội bộ",
+        "\"Read its logs after the fact\" — đọc lại log sau khi xảy ra"
       ],
       "answer": 2,
       "explanation": "White-box monitoring: \"have it tell you how it's doing\" — process/service tự expose thông tin về trạng thái bên trong của nó (CPU, memory, error counts, queue lengths...). node_exporter là ví dụ điển hình của white-box monitoring."
@@ -339,10 +339,10 @@
       "level": "basic",
       "question": "Trong CNCF Landscape, công cụ nào là CNCF Graduated project cho lĩnh vực Tracing?",
       "options": [
-        "Zipkin",
-        "Jaeger",
-        "OpenTracing",
-        "Datadog"
+        "Zipkin — công cụ tracing phổ biến của Twitter",
+        "Jaeger — CNCF Graduated project cho distributed tracing",
+        "OpenTracing — chuẩn API cho distributed tracing",
+        "Datadog — nền tảng monitoring thương mại"
       ],
       "answer": 1,
       "explanation": "Theo CNCF Landscape trong slides: Tracing — Jaeger là CNCF Graduated project. OpenTracing là CNCF Incubating. Zipkin không phải CNCF project. Prometheus là CNCF Graduated cho Monitoring, Fluentd là CNCF Graduated cho Logging."
@@ -352,10 +352,10 @@
       "level": "basic",
       "question": "Để setup Grafana tutorial environment, lệnh nào được dùng để khởi động containers?",
       "options": [
-        "docker-compose up -d",
-        "helm install grafana stable/grafana",
-        "docker run -d grafana/grafana",
-        "kubectl apply -f grafana.yaml"
+        "docker-compose up -d — khởi động toàn bộ stack detached",
+        "helm install grafana stable/grafana — dùng Helm chart",
+        "docker run -d grafana/grafana — chạy container đơn lẻ",
+        "kubectl apply -f grafana.yaml — deploy lên Kubernetes"
       ],
       "answer": 0,
       "explanation": "Theo slides, Grafana tutorial environment setup: 1) Install Docker. 2) git clone grafana/tutorial-environment. 3) cd tutorial-environment. 4) docker-compose up -d. Lệnh 'docker-compose up -d' khởi động toàn bộ stack (Grafana + Prometheus + node_exporter) ở chế độ detached."
@@ -365,10 +365,10 @@
       "level": "basic",
       "question": "Fluentd trong CNCF Landscape được dùng cho lĩnh vực nào?",
       "options": [
-        "Tracing — distributed tracing",
-        "Logging — thu thập và forward logs",
-        "Alerting — gửi notifications",
-        "Monitoring — thu thập metrics"
+        "Tracing — theo dõi distributed request tracing",
+        "Logging — thu thập, chuyển đổi và forward logs",
+        "Alerting — gửi thông báo khi có sự cố",
+        "Monitoring — thu thập metrics từ server"
       ],
       "answer": 1,
       "explanation": "Theo CNCF Landscape: Fluentd là CNCF Graduated project cho lĩnh vực Logging. Nó thu thập, chuyển đổi và forward log data. Prometheus (Monitoring) và Jaeger (Tracing) cũng là CNCF Graduated. Ba cái này cùng nhau cover 3 pillars of observability."
@@ -378,10 +378,10 @@
       "level": "intermediate",
       "question": "Theo slides, tại sao monitoring đang phải thay đổi so với trước đây?",
       "options": [
-        "Infrastructure dynamic hơn (cattle not pets), teams deploy nhiều lần/ngày, và ít up-front testing hơn",
-        "Vì cloud quá đắt nên cần giảm monitoring",
-        "Vì developers giỏi hơn nên ít bugs hơn",
-        "Vì phần cứng hiện đại mạnh hơn và ít lỗi hơn"
+        "Infrastructure dynamic hơn, teams deploy nhiều lần/ngày, ít testing",
+        "Cloud quá đắt nên cần giảm monitoring để tiết kiệm chi phí",
+        "Developers giỏi hơn nên ít bugs hơn cần phải theo dõi",
+        "Phần cứng hiện đại mạnh hơn và ít gặp lỗi hơn nên đỡ"
       ],
       "answer": 0,
       "explanation": "3 thay đổi buộc monitoring phải evolve: 1) Infrastructure dynamic — servers là cattle không phải pets, có thể appear/disappear bất kỳ lúc nào. 2) Teams deploy several times a day — thay đổi liên tục. 3) Less up-front testing — cần monitoring để catch issues sớm. Monitoring tools phải adapt với những thay đổi này."
@@ -392,9 +392,9 @@
       "question": "node_exporter thu thập những loại metrics nào? (Chọn nhóm đầy đủ nhất)",
       "options": [
         "Container metrics, Kubernetes pod status, service mesh latency",
-        "Chỉ CPU và RAM",
-        "Network traffic, application logs, database queries",
-        "Traffic IPv4/IPv6, CPU/memory, files/sockets, storage, entropy, login sessions, context switching"
+        "Chỉ CPU và RAM — hai metrics cơ bản nhất của một server",
+        "Network traffic, application logs, và database queries thôi",
+        "IPv4/IPv6, CPU/memory, files/sockets, storage, entropy, login"
       ],
       "answer": 3,
       "explanation": "node_exporter thu thập: Traffic IPv4/IPv6, CPU/Memory usage, open files/sockets, storage usage, system entropy, active login sessions, context switching, Numa statistics. Đây là system-level metrics. Container metrics thuộc về cAdvisor, không phải node_exporter."
@@ -404,10 +404,10 @@
       "level": "intermediate",
       "question": "Prometheus scrape interval mặc định là bao lâu và có thể thay đổi không?",
       "options": [
-        "1 giây, không thể thay đổi",
-        "5 phút mặc định, chỉ thay đổi được khi rebuild",
-        "1 phút, cố định trong code",
-        "15 giây mặc định, configurable trong file cấu hình"
+        "1 giây mặc định, không thể thay đổi trong config",
+        "5 phút mặc định, chỉ thay đổi được khi rebuild binary",
+        "1 phút mặc định, được cố định trong source code",
+        "15 giây mặc định, có thể cấu hình trong prometheus.yml"
       ],
       "answer": 3,
       "explanation": "Prometheus scrape interval mặc định là 15 giây — configurable trong prometheus.yml. Có thể set global scrape_interval và override per-job. Interval ngắn = granularity cao hơn nhưng tốn storage và CPU hơn. Đây là pull-based: Prometheus chủ động gọi /metrics endpoint mỗi 15s."
@@ -417,10 +417,10 @@
       "level": "intermediate",
       "question": "Điểm khác biệt chính giữa Prometheus (pull-based) và Graphite (push-based) là gì?",
       "options": [
-        "Prometheus dùng SQL, Graphite dùng NoSQL",
-        "Prometheus monitor containers, Graphite monitor bare-metal servers",
-        "Prometheus chủ động scrape targets; Graphite nhận metrics được push từ agents",
-        "Prometheus open-source, Graphite thương mại"
+        "Prometheus dùng SQL để query; Graphite dùng NoSQL database",
+        "Prometheus theo dõi containers; Graphite theo dõi bare-metal",
+        "Prometheus chủ động scrape targets; Graphite nhận metrics push từ agents",
+        "Prometheus là open-source còn Graphite là giải pháp thương mại"
       ],
       "answer": 2,
       "explanation": "Pull-based (Prometheus): server chủ động gọi /metrics của targets — dễ debug (curl endpoint thủ công), tự biết target down khi không scrape được. Push-based (Graphite, InfluxDB với Telegraf): agents gửi data tới server — phù hợp short-lived jobs (Prometheus dùng Pushgateway để handle case này)."
@@ -430,10 +430,10 @@
       "level": "intermediate",
       "question": "alert_manager trong Prometheus hỗ trợ những notification channel nào được đề cập trong slides?",
       "options": [
-        "Chỉ PagerDuty và OpsGenie",
-        "SMS, WhatsApp và Telegram",
-        "Chỉ email",
-        "Email, Slack và Mattermost"
+        "Chỉ PagerDuty và OpsGenie được đề cập trong slides",
+        "SMS, WhatsApp và Telegram được hỗ trợ đầy đủ",
+        "Chỉ email, không có các kênh notification khác",
+        "Email, Slack và Mattermost được đề cập trong slides"
       ],
       "answer": 3,
       "explanation": "Theo slides, alert_manager hỗ trợ gửi notifications qua: email, Slack, và Mattermost. Edinburgh deployment dùng Mattermost. alert_manager nhận alerts từ Prometheus, route chúng theo rules, và gửi đến các channels phù hợp — có thể route alert khác nhau đến team khác nhau."
@@ -443,10 +443,10 @@
       "level": "intermediate",
       "question": "PromQL hỗ trợ những khả năng nào?",
       "options": [
-        "Vectors, scalars, math operations (BODMAS), và pattern matching",
-        "Chỉ SELECT và WHERE như SQL",
-        "Chỉ sum và average của time-series",
-        "JOIN giữa các time-series databases"
+        "Vectors, scalars, math operations BODMAS, và pattern matching",
+        "Chỉ SELECT và WHERE tương tự SQL truyền thống thôi",
+        "Chỉ sum và average của time-series data mà thôi",
+        "JOIN giữa các time-series databases khác nhau hẳn"
       ],
       "answer": 0,
       "explanation": "PromQL capabilities: 1) Return vectors (time-series) hoặc scalars (single numbers). 2) Math operations — BODMAS, quantiles, basic logic. 3) Pattern matching — select subsets of metrics bằng label matchers (=, !=, =~, !~). Prometheus web UI có built-in PromQL explorer để test queries."
@@ -456,10 +456,10 @@
       "level": "advanced",
       "question": "Tại sao Metrics có ưu điểm về chi phí so với Logs và Traces?",
       "options": [
-        "Metrics dùng compression tốt hơn nên tiết kiệm bandwidth",
-        "Metrics chỉ lưu 1 ngày còn Logs lưu 30 ngày",
-        "Metrics là numeric data — less data to store, faster queries; Logs và Traces đều costly to store and query",
-        "Metrics dùng cloud storage miễn phí"
+        "Metrics dùng compression tốt hơn, tiết kiệm bandwidth",
+        "Metrics chỉ lưu 1 ngày còn Logs lưu 30 ngày theo mặc định",
+        "Metrics là numeric data — ít dữ liệu hơn và query nhanh hơn",
+        "Metrics được lưu trên cloud storage miễn phí hoàn toàn"
       ],
       "answer": 2,
       "explanation": "Metrics pros: less data (chỉ store numbers, không phải full text), faster queries (numeric aggregation nhanh hơn text search). Metrics cons: phải configure up-front — chỉ capture cái bạn biết cần measure. Logs pros: exact detail of what happened. Logs/Traces cons: costly to store (high volume) and query (full-text search chậm)."
@@ -469,10 +469,10 @@
       "level": "advanced",
       "question": "Điểm yếu của Metrics so với Logs là gì và khi nào nên dùng Logs thay vì Metrics?",
       "options": [
-        "Metrics không thể alert — phải dùng Logs để alerting",
-        "Metrics chậm hơn Logs khi query — nên dùng Logs mọi lúc",
-        "Metrics needs to be configured up-front — chỉ capture được những gì đã biết cần measure; Logs phù hợp để debug unexpected behavior",
-        "Metrics chỉ hoạt động với Prometheus, Logs hoạt động với mọi hệ thống"
+        "Metrics không thể alerting — phải dùng Logs để tạo alerts",
+        "Metrics query chậm hơn Logs nên nên dùng Logs thường xuyên hơn",
+        "Metrics cần cấu hình trước — chỉ capture cái đã biết; dùng Logs debug",
+        "Metrics chỉ hoạt động với Prometheus; Logs hoạt động đa nền tảng"
       ],
       "answer": 2,
       "explanation": "Metrics cons: 'needs to be configured up-front' — bạn chỉ biết được những gì bạn đã biết cần measure. Nếu có unexpected issue xảy ra, Logs mới cho thấy 'exactly what process was doing at a given time'. Trong thực tế: Metrics cho alerting và trending, Logs cho debugging chi tiết, Traces cho performance analysis distributed systems."
@@ -482,9 +482,9 @@
       "level": "advanced",
       "question": "Trong Prometheus architecture, tại sao nó được gọi là 'stateful' và điều này tạo ra trade-off gì?",
       "options": [
-        "Stateful vì lưu time-series data local trên disk — dễ deploy nhưng khó scale horizontally; Thanos/Cortex giải quyết vấn đề này",
-        "Stateful chỉ nghĩa là Prometheus lưu config files",
-        "Stateful vì cần database riêng như PostgreSQL để lưu data",
+        "Stateful vì lưu time-series data local — đơn giản nhưng khó scale",
+        "Stateful chỉ nghĩa là Prometheus lưu config files trên disk",
+        "Stateful vì cần external database riêng như PostgreSQL để lưu",
         "Stateful vì dùng persistent cookies trong HTTP requests"
       ],
       "answer": 0,
@@ -495,10 +495,10 @@
       "level": "advanced",
       "question": "Theo slides, monitoring proactive vs reactive khác nhau thế nào và cái nào là mục tiêu?",
       "options": [
-        "Proactive là mục tiêu — phát hiện và alert trước khi outage xảy ra, trước khi user báo cáo",
-        "Reactive là mục tiêu — đợi user báo để có thêm thông tin về vấn đề",
-        "Reactive tốt hơn vì chỉ xử lý vấn đề thực sự xảy ra, không waste resources",
-        "Proactive và reactive ngang nhau — tùy tình huống"
+        "Proactive là mục tiêu — phát hiện và alert trước khi outage xảy ra",
+        "Reactive là mục tiêu — chờ user báo để có đầy đủ thông tin",
+        "Reactive tốt hơn vì chỉ xử lý vấn đề thực sự xảy ra",
+        "Proactive và reactive ngang nhau — tùy tình huống cụ thể"
       ],
       "answer": 0,
       "explanation": "Theo slides: Proactive monitoring = phát hiện vấn đề trước khi user báo. Reactive = chờ user báo rồi mới xử lý. Proactive là mục tiêu vì: outage cost > quality investment cost (lý do #4 monitor), và lý do #3 là 'Fix problems BEFORE customers tell us about them'. Alert khi disk >90% thay vì chờ disk đầy mới xử lý."
@@ -508,9 +508,9 @@
       "level": "advanced",
       "question": "cAdvisor khác node_exporter ở điểm nào về loại metrics được thu thập?",
       "options": [
-        "cAdvisor thu thập cloud provider metrics, node_exporter thu thập on-premise metrics",
-        "cAdvisor chỉ hoạt động với Kubernetes, node_exporter chỉ với Docker",
-        "node_exporter thu thập host-level system metrics; cAdvisor thu thập per-container/per-application fine-grained CPU/memory metrics",
+        "cAdvisor thu thập cloud metrics; node_exporter thu thập on-premise",
+        "cAdvisor chỉ hoạt động với Kubernetes; node_exporter chỉ với Docker",
+        "node_exporter thu thập host-level metrics; cAdvisor thu thập per-container",
         "cAdvisor và node_exporter thu thập hoàn toàn cùng loại metrics"
       ],
       "answer": 2,
@@ -521,10 +521,10 @@
       "level": "advanced",
       "question": "Grafana covers những khía cạnh nào theo slides (chọn bộ đầy đủ nhất)?",
       "options": [
-        "Chỉ visualization và dashboards",
-        "Metrics collection, storage, và visualization",
-        "Dashboards và alerting chỉ",
-        "Monitoring, data types, exploring, dashboards, annotations, alerts, và best practices"
+        "Chỉ visualization và dashboard building mà thôi",
+        "Metrics collection, storage, và visualization mà thôi",
+        "Chỉ dashboards và alerting thôi, không có gì hơn",
+        "Monitoring, dashboards, annotations, alerts, và best practices"
       ],
       "answer": 3,
       "explanation": "Theo slides, Grafana covers: What is monitoring, Types of data (Metrics/Logs/Traces), Exploring data, Building dashboards, Annotations/variables/links, Creating alerts, Best practices for dashboard design. Grafana không chỉ là visualization tool — nó là platform đầy đủ cho observability với alerting, annotations và data exploration."
@@ -534,10 +534,10 @@
       "level": "intermediate",
       "question": "Lý do kinh tế nào trong 6 lý do monitor hệ thống liên quan đến việc PHÒNG NGỪA thay vì xử lý sự cố?",
       "options": [
-        "Make knowledge available to the rest of the organization",
-        "Outage cost is more expensive than investing in quality",
-        "Make decisions on data rather than gut feeling",
-        "Get insights in how the system is being used"
+        "Chia sẻ kiến thức cho toàn bộ tổ chức",
+        "Chi phí outage cao hơn chi phí đầu tư vào chất lượng",
+        "Ra quyết định dựa trên data thay vì cảm tính",
+        "Hiểu được cách hệ thống đang được sử dụng"
       ],
       "answer": 1,
       "explanation": "Lý do #4: 'Outage cost is more expensive than investing in quality' — đây là lý do kinh tế để đầu tư vào monitoring và quality. Chi phí downtime (mất doanh thu, mất khách hàng, reputational damage) thường cao hơn nhiều chi phí đầu tư vào monitoring và testing. Đây là business case cho proactive monitoring."
@@ -547,10 +547,10 @@
       "level": "basic",
       "question": "Định nghĩa thực tế (practical definition) của Prometheus theo slides là gì?",
       "options": [
-        "A distributed, push-based monitoring system for containerized workloads",
-        "An open-source alerting toolkit with no data storage capabilities",
-        "Prometheus is an easy to use, centralised, stateful, pull-based modular monitoring system with several mature supporting projects",
-        "A time-series database with built-in visualization and alerting"
+        "Hệ thống monitoring phân tán push-based cho containerized apps",
+        "Bộ công cụ alerting open-source không có khả năng lưu data",
+        "Hệ thống monitoring pull-based, stateful, centralised với nhiều projects",
+        "Time-series database tích hợp sẵn visualization và alerting"
       ],
       "answer": 2,
       "explanation": "Định nghĩa thực tế theo slides: 'Prometheus is an easy to use, centralised, stateful, pull-based modular monitoring system with several mature supporting projects.' Các từ khóa quan trọng: centralised (tập trung), stateful (lưu state local), pull-based (chủ động scrape), modular (hệ sinh thái nhiều components)."
@@ -560,10 +560,10 @@
       "level": "intermediate",
       "question": "node_exporter thu thập những loại metrics đặc biệt nào ngoài CPU/memory thông thường?",
       "options": [
-        "Cloud provider billing metrics và API rate limits",
+        "Cloud billing metrics và API rate limits của cloud provider",
         "Application-level metrics như HTTP request count và latency",
         "Container CPU/memory per-application và Kubernetes pod metrics",
-        "System entropy, context switching, Numa statistics, và active login sessions"
+        "System entropy, context switching, Numa stats, và active login sessions"
       ],
       "answer": 3,
       "explanation": "node_exporter thu thập nhiều hơn CPU/memory cơ bản. Theo slides: system entropy (quan trọng cho cryptography — nếu entropy thấp, random number generation kém), context switching (chỉ số hiệu suất OS scheduler), Numa statistics (Non-Uniform Memory Access — quan trọng cho multi-socket servers), và active login sessions (bảo mật — ai đang đăng nhập)."
@@ -573,10 +573,10 @@
       "level": "intermediate",
       "question": "Prometheus lưu trữ data ở đâu theo mặc định?",
       "options": [
-        "Distributed storage cluster (Cassandra hoặc InfluxDB)",
-        "Amazon S3 hoặc Google Cloud Storage",
-        "External PostgreSQL database",
-        "Local time-series database trên disk của Prometheus server (không distributed)"
+        "Distributed storage cluster như Cassandra hoặc InfluxDB",
+        "Amazon S3 hoặc Google Cloud Storage mặc định",
+        "External PostgreSQL database riêng biệt hoàn toàn",
+        "Local time-series database trên disk của Prometheus server"
       ],
       "answer": 3,
       "explanation": "Prometheus lưu data trong local time-series database trên disk — đây là lý do Prometheus được gọi là 'stateful'. Không cần external database. Trade-off: setup đơn giản, query nhanh; nhưng không scale horizontally và là single point of failure. Giải pháp cho long-term storage: Thanos hoặc Cortex."
@@ -586,10 +586,10 @@
       "level": "intermediate",
       "question": "blackbox_exporter có nhược điểm (cons) nào quan trọng cần lưu ý?",
       "options": [
-        "Yêu cầu cài đặt agent trên mỗi server được monitor",
-        "Không tích hợp được với Alertmanager",
-        "Floods logs với unauthorized connection attempts và có thể trông như unusual network activity",
-        "Chỉ hỗ trợ HTTP/HTTPS, không kiểm tra được TCP/UDP"
+        "Yêu cầu cài đặt agent riêng trên mỗi server cần monitor",
+        "Không thể tích hợp được với Alertmanager của Prometheus",
+        "Floods logs với connection attempts, trông như unusual activity",
+        "Chỉ hỗ trợ HTTP/HTTPS, không thể kiểm tra được các cổng TCP/UDP"
       ],
       "answer": 2,
       "explanation": "Theo slides, blackbox_exporter cons: floods logs với unauthorized connection attempts (vì liên tục thử mở connections) và có thể trông như unusual network activity — có thể trigger security alerts hoặc IDS/IPS. Pros: easy to setup, understand HTTP responses, run remotely. Cần cân nhắc khi deploy trong môi trường security-sensitive."
@@ -599,7 +599,7 @@
       "level": "intermediate",
       "question": "PromQL trả về những loại kết quả (return types) nào?",
       "options": [
-        "Tables, charts, và raw text",
+        "Tables, charts, và raw text output",
         "Timeseries, events, và aggregations",
         "Instant vector, range vector, scalar, và string",
         "JSON objects, arrays, và strings"
@@ -612,10 +612,10 @@
       "level": "basic",
       "question": "Grafana hỗ trợ những data sources nào?",
       "options": [
-        "Prometheus và InfluxDB only",
-        "Chỉ time-series databases (Prometheus, InfluxDB, TimescaleDB)",
-        "Nhiều data sources: Prometheus, InfluxDB, Elasticsearch, CloudWatch, MySQL, PostgreSQL và nhiều hơn",
-        "Chỉ Prometheus — đây là native data source duy nhất"
+        "Chỉ Prometheus và InfluxDB — hai sources được hỗ trợ",
+        "Chỉ các time-series databases như Prometheus và InfluxDB",
+        "Nhiều data sources: Prometheus, Elasticsearch, CloudWatch, Postgres",
+        "Chỉ Prometheus — native data source duy nhất được Grafana hỗ trợ"
       ],
       "answer": 2,
       "explanation": "Grafana hỗ trợ đa dạng data sources — không chỉ Prometheus. Bao gồm: Prometheus (metrics), InfluxDB (metrics), Elasticsearch (logs), AWS CloudWatch, Azure Monitor, Google Cloud Monitoring, MySQL, PostgreSQL, Loki (logs), Tempo (traces) và hàng trăm community plugins. Đây là điểm mạnh của Grafana — một dashboard tool cho nhiều nguồn dữ liệu khác nhau."
@@ -625,10 +625,10 @@
       "level": "basic",
       "question": "Grafana dashboards có thể được chia sẻ và tái sử dụng như thế nào?",
       "options": [
-        "Dashboard chỉ chia sẻ được qua Grafana Cloud, không được locally",
-        "Dashboard có thể được exported/imported dưới dạng JSON — dễ dàng chia sẻ và version control",
-        "Dashboard được lưu trong database, không thể export",
-        "Chỉ có thể export sang PDF để chia sẻ"
+        "Dashboard chỉ chia sẻ được qua Grafana Cloud platform",
+        "Dashboard có thể export/import JSON để chia sẻ và version control",
+        "Dashboard được lưu trong database, không thể export ra ngoài",
+        "Chỉ có thể export sang PDF để chia sẻ với người khác"
       ],
       "answer": 1,
       "explanation": "Grafana dashboards có thể export/import dưới dạng JSON. Điều này cho phép: version control dashboards trong Git, chia sẻ với cộng đồng (grafana.com/grafana/dashboards có hàng nghìn pre-built dashboards), import dashboard từ cộng đồng (ví dụ: Node Exporter Full dashboard #1860), và backup/restore dashboards."
@@ -638,10 +638,10 @@
       "level": "intermediate",
       "question": "Grafana Annotations dùng để làm gì?",
       "options": [
-        "Annotate alert rules với severity levels",
-        "Gắn metadata tags vào Grafana data sources",
-        "Mark events quan trọng trên graphs — ví dụ: deployments, incidents, config changes",
-        "Thêm comments vào PromQL queries để giải thích logic"
+        "Gắn severity levels vào các alert rules đã được tạo",
+        "Gắn metadata tags vào các Grafana data sources hiện có",
+        "Đánh dấu sự kiện quan trọng trên graphs như deployment, incident",
+        "Thêm comments giải thích vào các PromQL queries logic"
       ],
       "answer": 2,
       "explanation": "Grafana Annotations là cách mark events trên graphs — hiển thị như vertical lines hoặc shaded regions. Ví dụ: đánh dấu thời điểm deployment mới, khi incident xảy ra, hoặc config changes. Giúp correlate giữa events và metric changes: 'tại sao CPU tăng lúc 14:30?' → annotation cho thấy có deployment lúc đó. Có thể thêm manual hoặc từ API."
@@ -651,10 +651,10 @@
       "level": "advanced",
       "question": "Alertmanager trong Prometheus stack có chức năng gì đặc biệt so với chỉ gửi alerts?",
       "options": [
-        "Alertmanager chỉ gửi email, không hỗ trợ các kênh khác",
-        "Alertmanager routes alerts đến các receivers khác nhau dựa trên labels — grouping, inhibition, và silencing",
-        "Alertmanager tự động fix issues khi nhận được alerts",
-        "Alertmanager lưu trữ historical alert data để phân tích"
+        "Alertmanager chỉ hỗ trợ email, không có kênh notification khác",
+        "Alertmanager routes alerts theo labels, grouping, inhibition và silencing",
+        "Alertmanager tự động sửa lỗi khi nhận được alerts từ Prometheus",
+        "Alertmanager lưu historical alert data để phân tích sau này"
       ],
       "answer": 1,
       "explanation": "Alertmanager không chỉ gửi notifications — nó có nhiều tính năng nâng cao: Routing (dựa trên labels gửi đến đúng receiver — critical alerts → PagerDuty, warnings → Slack); Grouping (nhóm nhiều alerts liên quan thành 1 notification); Inhibition (suppress alerts khi alert khác đang active); Silencing (tắt alerts trong maintenance window). Hỗ trợ nhiều receivers: email, Slack, Mattermost, PagerDuty, webhook."
@@ -664,10 +664,10 @@
       "level": "advanced",
       "question": "Sự khác biệt giữa scrape_interval và evaluation_interval trong Prometheus config là gì?",
       "options": [
-        "scrape_interval cấu hình Grafana query interval; evaluation_interval cấu hình Alertmanager check interval",
-        "Cả hai đều có cùng ý nghĩa, chỉ dùng ở các section khác nhau",
-        "scrape_interval chỉ dùng cho node_exporter; evaluation_interval dùng cho tất cả exporters",
-        "scrape_interval là tần suất Prometheus pull metrics từ targets; evaluation_interval là tần suất Prometheus evaluate alert rules"
+        "scrape_interval cấu hình Grafana; evaluation_interval cấu hình Alertmanager",
+        "Cả hai đều có cùng ý nghĩa, dùng ở các section khác nhau trong config",
+        "scrape_interval chỉ cho node_exporter; evaluation_interval cho tất cả exporters",
+        "scrape_interval là tần suất pull metrics; evaluation_interval đánh giá alerts"
       ],
       "answer": 3,
       "explanation": "scrape_interval: tần suất Prometheus pull (scrape) metrics từ các targets (mặc định 1m). evaluation_interval: tần suất Prometheus evaluate các alert rules trong rules files (mặc định 1m). Ví dụ: scrape_interval=15s — Prometheus thu thập metrics mỗi 15 giây; evaluation_interval=30s — kiểm tra alert conditions mỗi 30 giây. Có thể override scrape_interval per target."
@@ -677,10 +677,10 @@
       "level": "advanced",
       "question": "Thanos và Cortex giải quyết vấn đề gì của Prometheus mặc định?",
       "options": [
-        "Thanos và Cortex chỉ là visualization layers thay thế Grafana",
-        "Thanos và Cortex thay thế Prometheus hoàn toàn với architecture tốt hơn",
+        "Thanos và Cortex là visualization layers thay thế Grafana",
+        "Thanos và Cortex thay thế Prometheus với architecture tốt hơn",
         "Thanos dùng cho Kubernetes; Cortex dùng cho bare-metal servers",
-        "Thanos và Cortex cung cấp distributed Prometheus cho long-term storage và high availability — khắc phục giới hạn single-node của Prometheus"
+        "Thanos và Cortex mở rộng Prometheus: long-term storage và HA"
       ],
       "answer": 3,
       "explanation": "Prometheus mặc định là single-node, lưu data local — giới hạn về retention và HA. Thanos (CNCF Incubating) và Cortex giải quyết: Long-term storage (đẩy data lên object storage như S3/GCS), Global query view (query across nhiều Prometheus instances), High availability (multiple replicas), Unlimited retention. Không thay thế Prometheus — chạy kèm để extend capabilities."

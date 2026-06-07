@@ -3,11 +3,11 @@
   "theory": [
     {
       "heading": "Làm việc với Branch",
-      "content": "**Branch** là con trỏ di động trỏ tới một commit — cho phép phát triển song song mà không ảnh hưởng lẫn nhau.\n\n**Xem & tạo branch:**\n- `git branch` — liệt kê local branches, branch hiện tại có dấu `*`\n- `git branch [name]` — tạo branch mới tại HEAD hiện tại\n- `git branch -r` — xem remote tracking branches\n- `git branch -a` — xem cả local lẫn remote branches\n\n**Chuyển branch:**\n- `git checkout [branch]` — chuyển sang branch\n- `git checkout -b [branch]` — tạo và chuyển sang branch mới (một lệnh)\n- `git switch [branch]` — lệnh mới (Git 2.23+), thay thế checkout\n- `git switch -c [branch]` — tạo và switch sang branch mới\n\n**Xóa branch:**\n- `git branch -d [name]` — xóa branch đã merge (safe delete)\n- `git branch -D [name]` — force delete dù chưa merge\n- `git push origin --delete [name]` — xóa branch trên remote\n\n⚠️ NOTE: `git branch -D` xóa cả những commits chưa merge — có thể mất dữ liệu nếu không cẩn thận."
+      "content": "**How Git handles its history:**\n\nMỗi **commit object** có danh sách **parent commits**:\n- **0 parents** → initial commit (commit đầu tiên)\n- **1 parent** → ordinary commit\n- **2+ parents** → result of a **merge** (merge commit)\n→ This is a **Direct Acyclic Graph (DAG)**\n\n**Branch là gì trong Git:**\n- **No formal branch history** — a branch is just a **pointer on the latest commit**\n- Git handles branches and tags in the **same way** internally\n- Khi commit trên branch, pointer tự động di chuyển lên commit mới\n\n**SHA-1 hash (160 bits)** được tính từ:\n- The committed files\n- The meta data (commit message, author name, ...)\n- The hashes of the **parent commits**\n→ A commit id **securely and reliably** identifies its content and all previous revisions\n\n**Xem & tạo branch:**\n- `git branch` — liệt kê local branches, branch hiện tại có dấu `*`\n- `git branch [name]` — tạo branch mới tại HEAD hiện tại\n- `git branch -r` — xem remote tracking branches\n- `git branch -a` — xem cả local lẫn remote\n\n**Tạo branch mới:**\n- `git checkout -b new_branch [starting_point]`\n- `starting_point` có thể là: commit id, tag, branch name — nếu không có, dùng current location\n- Ví dụ: `git checkout -b develop` (tạo từ HEAD hiện tại)\n\n**Chuyển branch:**\n- `git checkout [branch_name]` — switch sang branch\n- `git checkout [-m] branch_name` — thêm `-m` để **merge local changes** vào destination branch\n- ⚠️ NOTE: switch có thể **fail** nếu working copy không clean — phải commit hoặc stash trước\n- `git switch [branch]` / `git switch -c [branch]` — lệnh mới (Git 2.23+)\n\n**Xóa branch:**\n- `git branch -d [name]` — xóa branch đã merge (safe)\n- `git branch -D [name]` — force delete dù chưa merge\n- `git push origin --delete [name]` — xóa branch trên remote\n\n⚠️ NOTE: `git branch -D` xóa cả commits chưa merge — có thể mất dữ liệu."
     },
     {
       "heading": "Merge — Các loại và Conflict",
-      "content": "**Merge** kết hợp thay đổi từ hai branches lại với nhau. Lệnh cơ bản: `git merge [branch]` — merge branch đó vào **branch hiện tại**.\n\n**Các loại merge:**\n- **Fast-forward merge**: xảy ra khi branch hiện tại không có commit mới sau điểm tách — Git chỉ di chuyển con trỏ (pointer), không tạo merge commit\n- **3-way merge**: xảy ra khi cả hai branches đều có commits mới — Git dùng common ancestor + tip A + tip B để tạo merge commit kết hợp\n- `git merge --no-ff` — luôn tạo merge commit dù có thể fast-forward; giúp thấy rõ feature boundaries trong history\n\n**Merge conflict:**\n- Xảy ra khi cùng một dòng bị sửa khác nhau ở cả hai branches\n- Git đánh dấu vùng conflict:\n- `<<<<<<< HEAD` — thay đổi của branch hiện tại\n- `=======` — ranh giới phân tách\n- `>>>>>>> branch-name` — thay đổi của branch đang merge\n\n**Cách giải quyết conflict:**\n1) Sửa thủ công — chọn giữ nội dung nào, xóa các markers\n2) `git add [file]` — đánh dấu file đã được resolve\n3) `git commit` — tạo merge commit hoàn tất (Git tự điền message mặc định)\n\n⚠️ NOTE: Sau khi resolve phải `git add` từng file conflict trước khi `git commit` — bỏ sót file sẽ khiến merge chưa hoàn tất."
+      "content": "**`git merge other_branch`** — merge changes từ other_branch vào **branch hiện tại**.\n\n**Notes about merging (từ GiT for Beginners):**\n- Result of `git merge` is **immediately committed** (unless there is a conflict)\n- The new commit object has **two parents** → the merge history is recorded\n- `git merge` applies only the changes **since the last common ancestor** in the other branch → if branch was already merged previously, only changes since the last merge will be merged\n\n**Các loại merge:**\n- **Fast-forward merge**: branch hiện tại không có commit mới → Git chỉ di chuyển pointer, **không tạo merge commit**\n- **3-way merge**: cả hai branches đều có commits mới → Git dùng common ancestor + tip A + tip B → tạo **merge commit với 2 parents**\n- `git merge --no-ff` — luôn tạo merge commit dù có thể fast-forward → thấy rõ feature boundaries\n\n**Merge conflict:**\n- Xảy ra khi cùng một dòng bị sửa khác nhau ở cả hai branches\n- Git đánh dấu vùng conflict:\n- `<<<<<<< HEAD` — thay đổi của branch hiện tại\n- `=======` — ranh giới phân tách\n- `>>>>>>> branch-name` — thay đổi của branch đang merge\n\n**Cách giải quyết conflict:**\n1) Sửa thủ công — chọn nội dung cần giữ, xóa markers\n2) `git add [file]` — đánh dấu file đã resolved\n3) `git commit` — tạo merge commit (Git tự điền message mặc định)\n\n⚠️ NOTE: Sau khi resolve phải `git add` từng file conflict trước `git commit`."
     },
     {
       "heading": "Rebase — Linear History",
@@ -271,6 +271,46 @@
       "options": ["Chỉ để tìm syntax errors", "Knowledge sharing, catch bugs sớm, enforce code standards, document intent, improve code quality — trước khi merge vào main", "Chỉ để approve nhanh", "Chứng minh code hoạt động"],
       "answer": 1,
       "explanation": "Code review mục tiêu: 1) Catch bugs/logic errors sớm (rẻ hơn fix sau production), 2) Knowledge sharing (team hiểu codebase), 3) Enforce standards (consistent code style), 4) Document decisions (comments = documentation), 5) Improve overall quality."
+    },
+    {
+      "id": 31,
+      "level": "basic",
+      "question": "Một commit object trong Git có bao nhiêu parent khi là merge commit?",
+      "options": ["0 parents", "1 parent", "2+ parents", "Không có parent"],
+      "answer": 2,
+      "explanation": "Slide: commit object có list parent commits — 0 parents = initial commit, 1 parent = ordinary commit, 2+ parents = result of a merge. Merge commit có 2 parents → merge history được ghi lại trong DAG."
+    },
+    {
+      "id": 32,
+      "level": "basic",
+      "question": "Theo GiT for Beginners, branch trong Git thực chất là gì?",
+      "options": ["Một bản copy của toàn bộ repository", "Chỉ là một pointer (con trỏ) trỏ đến latest commit — no formal branch history", "Một folder riêng chứa code", "Một loại tag đặc biệt"],
+      "answer": 1,
+      "explanation": "Slide: 'There is no formal branch history — a branch is just a pointer on the latest commit.' Git handles branches and tags in the same way internally. Branch pointer tự động di chuyển khi có commit mới."
+    },
+    {
+      "id": 33,
+      "level": "intermediate",
+      "question": "SHA-1 hash của commit (160 bits) được tính từ những gì?",
+      "options": ["Chỉ nội dung files", "Committed files + meta data (message, author) + hashes of parent commits", "Chỉ commit message và timestamp", "Random value được Git generate"],
+      "answer": 1,
+      "explanation": "Slide: SHA-1 hash computed from: the committed files, the meta data (commit message, author name...), the hashes of the parent commits. → A commit id SECURELY and RELIABLY identifies its content and all previous revisions."
+    },
+    {
+      "id": 34,
+      "level": "intermediate",
+      "question": "'git checkout -b develop' với starting_point có thể nhận giá trị nào?",
+      "options": ["Chỉ tên branch khác", "Commit id, tag, hoặc branch name — nếu không có thì dùng current location", "Chỉ HEAD", "Chỉ tag name"],
+      "answer": 1,
+      "explanation": "Slide: 'starting_point is the starting location of the branch (possibly a commit id, a tag, a branch...). If not present, git will use the current location.' Rất linh hoạt — có thể tạo branch từ bất kỳ điểm nào trong history."
+    },
+    {
+      "id": 35,
+      "level": "intermediate",
+      "question": "git merge chỉ apply những thay đổi nào từ branch khác?",
+      "options": ["Tất cả commits của branch đó từ đầu", "Chỉ những thay đổi kể từ last common ancestor — nếu đã merge trước đó, chỉ merge những gì mới từ lần merge cuối", "Chỉ commit mới nhất", "Tất cả commits trừ initial commit"],
+      "answer": 1,
+      "explanation": "Slide: 'git merge applies only the changes since the last common ancestor in the other branch → if the branch was already merged previously, then only the changes since the last merge will be merged.' Tránh merge duplicate."
     }
   ]
 }

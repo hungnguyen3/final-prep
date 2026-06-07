@@ -24,6 +24,18 @@
     {
       "heading": "Playbooks — Cấu trúc và Ví dụ",
       "content": "**Azure Pipelines YAML** — cấu trúc pipeline as code.\n\n**Top-level keys:**\n- `trigger` — branch nào trigger pipeline (ví dụ: `- main`)\n- `pool` — agent pool để chạy (ví dụ: `vmImage: ubuntu-latest`)\n- `variables` — define biến dùng trong pipeline\n- `stages` → `jobs` → `steps` — hierarchy chính\n\n**Hierarchy:**\n```\nPipeline\n  └── Stage (nhóm logic, ví dụ: Build, Test, Deploy)\n        └── Job (chạy trên 1 agent)\n              └── Step (task hoặc script cụ thể)\n```\n\n**Step types:**\n- `task` — dùng built-in task (ví dụ: `DotNetCoreCLI@2`, `PublishBuildArtifacts@1`)\n- `script` — chạy inline bash/cmd script\n- `checkout` — clone repo (`checkout: self`)\n\n**Ví dụ cấu trúc cơ bản:**\n```yaml\ntrigger:\n  - main\npool:\n  vmImage: ubuntu-latest\nsteps:\n  - script: echo \"Hello World\"\n  - task: DotNetCoreCLI@2\n    inputs:\n      command: build\n```\n\n⚠️ NOTE: YAML pipeline được lưu trong repo → **version controlled**, reviewable qua PR"
+    },
+    {
+      "heading": "Azure Pipelines — Key Concepts: Trigger, Stage, Job, Step, Task, Artifact",
+      "content": "**Core concepts of Azure Pipelines:**\n\n- **Trigger**: tells a pipeline when to run (e.g., on a push to a branch)\n- **Pipeline**: made up of one or more stages; can deploy to one or more environments\n- **Stage**: a way of organizing jobs in a pipeline; each stage can have one or more jobs\n- **Job**: runs on one agent (a job can also be agentless); each agent runs a job containing one or more steps\n- **Step**: the smallest building block of a pipeline — can be a task or a script\n- **Task**: a pre-packaged script that performs an action (e.g., invoking a REST API, publishing a build artifact)\n- **Artifact**: a collection of files or packages published by a run; made available to subsequent tasks for distribution or deployment\n- **Agent**: computing infrastructure with installed agent software that runs one job at a time (e.g., Microsoft-hosted Ubuntu agent)\n\n**Hierarchy summary:**\n```\nPipeline\n  └── Stage\n        └── Job (runs on one Agent)\n              └── Step (Task or Script)\n```\n\n⚠️ NOTE: Artifact is published by a run and consumed by later stages/pipelines for deployment"
+    },
+    {
+      "heading": "Types of Pipeline & Continuous Integration/Delivery",
+      "content": "**Two types of Azure Pipeline:**\n\n1) **Build Pipeline** — compiles code, runs tests, produces build artifacts\n2) **Release Pipeline** — takes build artifacts and deploys them to one or more environments\n\n**Azure Pipelines UI menu sections:** Pipelines, Environments, Releases, Library, Task groups, Deployment groups\n\n**Continuous Integration (CI):**\n- Practice used by development teams to simplify testing and building of code\n- Catches bugs early in the development cycle\n- Automated tests and builds run on a schedule or whenever code is pushed\n- Produces artifacts used by CD release pipelines for automatic deployments\n\n**Continuous Delivery (CD):**\n- Process by which code is built, tested, and deployed to one or more test and production stages\n- Deploying and testing in multiple stages helps drive quality\n- Monitoring and alerting systems run constantly to drive visibility into the entire CD process\n- Ensures errors are caught often and early\n\n⚠️ NOTE: CI produces artifacts → CD consumes those artifacts to deploy. Together they form a CI/CD pipeline."
+    },
+    {
+      "heading": "Approvals & Environment",
+      "content": "**Approvals:**\n- Define a set of validations required before a deployment runs\n- Manual approval is a common check performed to control deployments to production environments\n- When checks are configured on an environment, pipelines will stop before starting a stage until all checks are completed successfully\n\n**Environment:**\n- A collection of resources where you deploy your application\n- Can contain VMs, containers, web apps, or any service hosting the application\n- A pipeline might deploy the app to one or more environments after build is completed and tests are run\n\n**Deployment:**\n- **Classic pipelines**: deployment = action of running tasks for one stage (automated tests, deploying artifacts)\n- **YAML pipelines**: deployment job = collection of steps run sequentially against an environment\n- Deployment strategies available: **run once**, **rolling**, and **canary**\n\n⚠️ NOTE: Approvals act as gates — the pipeline cannot proceed to the next stage until all configured checks (e.g., manual approval) pass"
     }
   ],
   "questions": [
@@ -186,6 +198,58 @@
       ],
       "answer": 1,
       "explanation": "service module với state: restarted sẽ LUÔN restart service (stop + start), bất kể service đang ở trạng thái nào. Khác với state: started (chỉ start nếu đang stopped) và state: reloaded (reload config mà không restart). Thường dùng sau khi deploy config mới."
+    },
+    {
+      "id": 16,
+      "level": "basic",
+      "question": "Trong Azure Pipelines, 'Task' là gì?",
+      "options": [
+        "Một file YAML định nghĩa toàn bộ pipeline",
+        "Một pre-packaged script thực hiện một hành động cụ thể (ví dụ: gọi REST API, publish build artifact)",
+        "Một máy chủ chạy pipeline jobs",
+        "Tập hợp các files được publish sau khi pipeline chạy"
+      ],
+      "answer": 1,
+      "explanation": "Task trong Azure Pipelines là một pre-packaged script thực hiện một hành động cụ thể — ví dụ: invoking a REST API, publishing a build artifact, running dotnet build. Task là thành phần nhỏ hơn Step (một step có thể là task hoặc script)."
+    },
+    {
+      "id": 17,
+      "level": "basic",
+      "question": "Trong Azure Pipelines, 'Artifact' là gì?",
+      "options": [
+        "Agent dùng để chạy jobs",
+        "Một stage trong pipeline deploy lên production",
+        "Collection of files or packages published by a run, made available to subsequent tasks for distribution or deployment",
+        "File cấu hình YAML của pipeline"
+      ],
+      "answer": 2,
+      "explanation": "Artifact là collection of files or packages được publish bởi một pipeline run. Sau khi được publish, artifact có thể được sử dụng bởi các tasks tiếp theo hoặc release pipelines để phân phối hoặc triển khai ứng dụng."
+    },
+    {
+      "id": 18,
+      "level": "intermediate",
+      "question": "Continuous Integration (CI) trong Azure Pipelines được mô tả đúng nhất là:",
+      "options": [
+        "Quy trình triển khai code lên production tự động mà không cần kiểm thử",
+        "Practice giúp đơn giản hóa testing và building của code; bắt bugs sớm; tự động chạy tests và builds khi code được push; tạo ra artifacts dùng bởi CD pipelines",
+        "Quy trình review code thủ công trước khi merge",
+        "Công cụ quản lý phiên bản source code"
+      ],
+      "answer": 1,
+      "explanation": "CI (Continuous Integration) là practice dùng để simplify testing và building của code. Mục tiêu: catches bugs early in the development cycle. Hoạt động: automated tests và builds chạy theo lịch hoặc mỗi khi code được push. Output: produces artifacts được CD release pipelines dùng để deploy tự động."
+    },
+    {
+      "id": 19,
+      "level": "intermediate",
+      "question": "Trong Azure Pipelines, Approvals hoạt động như thế nào?",
+      "options": [
+        "Approvals tự động approve tất cả deployments mà không cần xác nhận",
+        "Approvals chỉ áp dụng cho Build Pipelines, không áp dụng cho Release Pipelines",
+        "Khi checks được cấu hình trên một environment, pipeline sẽ dừng trước khi bắt đầu một stage cho đến khi tất cả checks hoàn thành thành công",
+        "Approvals chỉ dùng để gửi thông báo email, không chặn pipeline"
+      ],
+      "answer": 2,
+      "explanation": "Approvals định nghĩa một tập validations cần thiết trước khi một deployment chạy. Manual approval là check phổ biến để kiểm soát deployments lên production. Khi checks được cấu hình trên một environment, pipeline sẽ DỪNG trước khi bắt đầu stage đó — cho đến khi tất cả checks hoàn thành thành công."
     }
   ]
 }

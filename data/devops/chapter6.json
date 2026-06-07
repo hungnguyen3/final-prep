@@ -26,6 +26,10 @@
       "content": "**1) Parallel Jobs / Matrix Strategy:**\n- Chạy nhiều jobs song song trên nhiều environments\n- Ví dụ: test trên JDK 8, 11, 17 cùng lúc\n- Cú pháp: `strategy: { matrix: { java-version: [8, 11, 17] } }`\n\n**2) Caching Dependencies:**\n- Dùng `actions/cache@v4` để cache `~/.m2/repository` (Maven)\n- `key` dựa trên `runner.os` + `hashFiles('**/pom.xml')`\n- Cache tự **invalidate** khi `pom.xml` thay đổi\n\n**3) Notifications:**\n- Gửi Slack notification sau build\n- Dùng action `8398a7/action-slack@v3`\n- Cần `SLACK_WEBHOOK_URL` từ secrets\n\n**4) `needs` keyword:**\n- Khai báo **dependency giữa jobs**\n- Job B chỉ chạy sau khi Job A hoàn thành thành công"
     },
     {
+      "heading": "Full CI/CD Pipeline — Spring Boot Integration Test",
+      "content": "**Integration Test Workflow** — ví dụ từ slide:\n\n**Trigger:** `on: pull_request: branches: [master]` — chạy khi có PR nhắm vào branch master\n\n**Environment secrets (env):**\n- `BASE_URL`, `MONGO_DB`, `JWT_SECRETS`, `MONGO_URI` — lấy từ `${{ secrets.* }}`\n\n**Steps:**\n1. **Checkout code** — `uses: actions/checkout@v2`\n2. **Test if secrets are set** — kiểm tra biến môi trường tồn tại trước khi build\n3. **Setup JDK 21** — `uses: actions/setup-java@v4` với `java-version: '21'`, `distribution: temurin`\n4. **Cache Maven dependencies** — `uses: actions/cache@v4` với `path: ~/.m2/repository`, key dựa trên `runner.os` + `hashFiles('**/pom.xml')`\n5. **Build app** — `run: mvn clean package -DskipTests` (compile, không chạy tests)\n6. **Run Maven tests** — `run: mvn clean test`\n7. **Check for successful build** — kiểm tra kết quả build trước khi kết thúc workflow\n\n**Lưu ý:** Distribution `temurin` là OpenJDK distribution từ Eclipse Adoptium — phổ biến, free, và được hỗ trợ tốt bởi `actions/setup-java`."
+    },
+    {
       "heading": "Continuous Deployment với GitHub Actions",
       "content": "Sau khi CI pass, setup CD để **auto-deploy**.\n\n**Deploy to Docker Hub:**\n1) `docker login` với `${{ secrets.DOCKER_PASSWORD }}`\n2) `docker build -t username/app .`\n3) `docker push username/app`\n\n**Deploy to Heroku:**\n- Dùng action `akhileshns/heroku-deploy@v3`\n- Cần: `heroku_api_key`, `heroku_app_name`\n\n**Deploy to AWS Elastic Beanstalk:**\n1) `eb init -p java-17 app-name --region us-west-2`\n2) `eb deploy`\n\n**Multi-stage Dockerfile:**\n- **Stage 1 (build):** dùng `maven:3.9.7` — compile và tạo JAR\n- **Stage 2 (runtime):** dùng `openjdk:21` — chỉ copy JAR từ stage 1\n- Lợi ích: **image nhỏ gọn hơn** — không chứa Maven, source code, hay build tools"
     }
@@ -194,6 +198,45 @@
       ],
       "answer": 1,
       "explanation": "Deploy lên AWS Elastic Beanstalk: eb init -p java-17 spring-boot-app --region us-west-2 (khởi tạo EB environment với Java 17 platform tại region us-west-2), sau đó eb deploy để deploy version mới."
+    },
+    {
+      "id": 19,
+      "level": "basic",
+      "question": "CI/CD mang lại những Key Benefits nào?",
+      "options": [
+        "Tăng số lượng developer, giảm chi phí server, loại bỏ testing, tăng tốc networking",
+        "Faster Delivery (tự động hóa deployment), Higher Code Quality (automated tests), Reduced Errors (ít manual intervention), Continuous Feedback (phát hiện bugs nhanh)",
+        "Chỉ áp dụng cho Java, yêu cầu Docker, cần cloud environment, không hỗ trợ monorepo",
+        "Auto-scaling, load balancing, database migration, API versioning"
+      ],
+      "answer": 1,
+      "explanation": "CI/CD có 4 key benefits: Faster Delivery — automates testing và deployment, speeding up release process; Higher Code Quality — automated tests ensure code works as expected; Reduced Errors — less manual intervention means fewer mistakes in production; Continuous Feedback — developers can identify bugs and issues quickly."
+    },
+    {
+      "id": 20,
+      "level": "basic",
+      "question": "'runs-on: ubuntu-latest' trong GitHub Actions workflow có nghĩa là gì?",
+      "options": [
+        "Workflow chỉ được phép chạy trên Ubuntu servers",
+        "Developer phải cài Ubuntu để chạy workflow",
+        "Job sẽ được thực thi trên GitHub-hosted runner với môi trường Ubuntu mới nhất",
+        "Container Docker sẽ dùng Ubuntu làm base image"
+      ],
+      "answer": 2,
+      "explanation": "runs-on chỉ định runner environment cho job. 'ubuntu-latest' = GitHub-hosted runner chạy Ubuntu phiên bản mới nhất. GitHub cung cấp free hosted runners với predefined environments: ubuntu-latest, windows-latest, macos-latest — developer không cần quản lý infrastructure."
+    },
+    {
+      "id": 21,
+      "level": "intermediate",
+      "question": "Matrix strategy với 'java-version: [8, 11, 17]' trong GitHub Actions sẽ tạo ra bao nhiêu job instances và chạy như thế nào?",
+      "options": [
+        "1 job chạy tuần tự qua từng JDK version",
+        "3 job instances chạy song song, mỗi job test với một JDK version khác nhau (8, 11, 17)",
+        "3 job instances chạy tuần tự theo thứ tự 8 → 11 → 17",
+        "Chỉ chạy với JDK version mới nhất trong danh sách (17)"
+      ],
+      "answer": 1,
+      "explanation": "Matrix strategy: strategy: { matrix: { java-version: [8, 11, 17] } } — GitHub Actions tự động tạo 3 job instances chạy song song, mỗi job dùng một JDK version khác nhau. Biến matrix được dùng trong step: java-version: ${{ matrix.java-version }}. Giúp đảm bảo code tương thích với nhiều JDK versions cùng lúc."
     }
   ]
 }

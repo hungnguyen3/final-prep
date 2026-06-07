@@ -15,7 +15,15 @@
     },
     {
       "heading": "Docker Commands cơ bản",
-      "content": "**Docker Commands cơ bản:**\n\n**Version & Info:**\n- `docker version` — xem version của client và daemon\n- `docker info` — thông tin hệ thống Docker\n\n**Images:**\n- `docker pull [image]` — pull image từ Docker Hub (ví dụ: `docker pull ubuntu`)\n- `docker images` — list tất cả images đang có local\n- `docker rmi [image]` — xóa image\n\n**Containers — Run:**\n- `docker run [image]` — tạo và chạy container từ image\n- `docker run -d [image]` — chạy **detached** (background)\n- `docker run -p 8080:80 [image]` — **port mapping** `host:container`\n- `docker run -it [image] bash` — chạy interactive với terminal\n\n**Containers — Manage:**\n- `docker ps` — list **running** containers\n- `docker ps -a` — list **tất cả** containers (kể cả stopped)\n- `docker stop [container]` — dừng container đang chạy\n- `docker rm [container]` — xóa container\n- `docker logs [container]` — xem logs của container\n- `docker exec -it [container] bash` — vào shell trong container **đang chạy**\n\n**Cài đặt Docker:**\n- Windows 10 Pro/Enterprise: dùng **Hyper-V** với Linux VM nhỏ\n- Windows 7/8/8.1: **Docker Toolbox** — chạy Linux VM trong VirtualBox\n- Online thử nghiệm: `labs.play-with-docker.com`"
+      "content": "**Docker Commands cơ bản:**\n\n**Command format:**\n- Cú pháp: `docker <command> <sub-command>` (ví dụ: `docker image ls`, `docker container run`)\n\n**Version & Info:**\n- `docker version` — xem version của client và daemon\n- `docker info` — hiển thị **system-wide info**: số containers (running/paused/stopped), số images, server version, storage driver, network plugins\n- **Docker home directory:** `/var/lib/docker` — nơi lưu trữ tất cả images, containers, volumes, networks information\n\n**Images:**\n- `docker pull [image]` — pull image từ Docker Hub (ví dụ: `docker pull ubuntu`)\n- `docker image ls` (= `docker images`) — list images với các cột: **REPOSITORY, TAG, IMAGE ID, CREATED, SIZE**\n- `docker image --help` — hiển thị tất cả image subcommands: build, history, import, inspect, ls, prune, pull, push, rm, save, tag\n- `docker rmi [image]` — xóa image\n\n**Containers — Run:**\n- `docker run [image]` — tạo và chạy container từ image (chạy **foreground**, terminal attached — exit terminal thì container bị kill)\n- `docker container run nginx` — **các bước xảy ra:**\n  1. Docker tìm image trong **local image cache**\n  2. Nếu không có → tìm trong **remote image repository** (Docker Hub by default)\n  3. Download phiên bản mới nhất (`nginx:latest` by default)\n  4. Tạo **container mới** từ image đó\n  5. Container được gắn vào **network**, nhận **virtual IP** trong private network (default bridge network)\n  6. Mở **ports** để phục vụ requests\n  7. Khởi chạy process được chỉ định trong **CMD** của Dockerfile\n- `docker run --detach nginx` (= `docker run -d nginx`) — chạy **background** (detached mode)\n- `docker run --detach -p 8080:80 nginx` — port mapping **host:container**\n- `docker run --detach -p 8080:80 --name webhost nginx` — **named container**\n- `docker run -it [image] bash` — chạy interactive với terminal\n\n**Containers — Manage:**\n- `docker ps` — list **running** containers\n- `docker ps -a` — list **tất cả** containers (kể cả stopped)\n- `docker container stop <id>` — dừng container đang chạy\n- `docker start <id>` — khởi động lại stopped container\n- `docker container kill <id>` — kill container ngay lập tức\n- `docker container rm <name>` — xóa container\n- `docker container logs <name>` — xem logs; `docker container logs -f <name>` — **follow logs** (realtime)\n- `docker exec -it [container] bash` — vào shell trong container **đang chạy**\n- `docker top <container>` — list **processes** đang chạy trong container\n- `docker container stats <container>` — xem **CPU và memory usage** của container\n- `docker container run -it --name ubuntu bash` — interactive mode (`-i` = interactive/STD_IN, `-t` = terminal/STD_OUT)\n- `docker container inspect <id>` — xem **config và metadata** của container dưới dạng **JSON array**\n- `docker container inspect --format '{{.NetworkSettings.IPAddress}}' <id>` — lấy **IP address** của container\n\n**Cài đặt Docker:**\n- Windows 10 Pro/Enterprise: dùng **Hyper-V** với Linux VM nhỏ\n- Windows 7/8/8.1: **Docker Toolbox** — chạy Linux VM trong VirtualBox\n- Online thử nghiệm: `labs.play-with-docker.com`"
+    },
+    {
+      "heading": "Docker Image, Container & Union File System",
+      "content": "**Docker Image:**\n- **Read-only template** dùng để tạo Docker containers\n- Chứa application binaries và dependencies\n- Lưu trữ trong **Docker Registry**\n- Nhiều containers có thể được tạo từ **cùng một image**\n- Các thay đổi trong container **KHÔNG được lưu** vào image theo mặc định\n\n**Docker Container:**\n- **Running instance** của một Docker image\n- Chứa toàn bộ package cần thiết để chạy application\n- Mỗi service chạy với **dependencies riêng** trong các container riêng biệt\n\n**Union File System (UFS) & Copy-on-Write (COW):**\n- Docker image là **read-only template** — không thể sửa trực tiếp\n- Khi container cần **thay đổi một file** từ read-only image, nó **copy file đó lên layer read-write riêng** của container — đây gọi là cơ chế **Copy-on-Write (COW)**\n- Các file mới/đã sửa được **'committed' thành layer mới**\n- `docker history` — xem tất cả các layers của image\n\n**Cấu trúc layers (từ dưới lên):**\n1. **bootfs** — kernel, cgroups, namespace, device mapper\n2. **Base Image** (ví dụ: Ubuntu)\n3. Add emacs\n4. Add Apache\n5. **Writeable Container** (layer trên cùng, chỉ tồn tại khi container chạy)"
+    },
+    {
+      "heading": "Docker Registry",
+      "content": "**Docker Registry:**\n- Hệ thống **storage và distribution** cho Docker images\n- Được tổ chức thành **Docker repositories** — mỗi repository lưu tất cả versions của một image cụ thể\n- Mặc định, Docker engine tương tác với **DockerHub** (Docker's public registry instance)\n\n**Image naming:**\n- Format: `username/image-name` (ví dụ: `docker pull ubuntu:19.10` để pull tag cụ thể)\n\n**Private Registry:**\n- Có thể chạy **on-premise private repositories** (ví dụ: **Harbor**)\n\n**Cloud Provider Registries:**\n- **Amazon Elastic Container Registry (ECR)** — AWS\n- **Google Container Registry** — Google Cloud\n- **Azure Container Registry (ACR)** — Microsoft Azure"
     },
     {
       "heading": "Container Orchestration — Kubernetes & Docker Swarm",
@@ -225,6 +233,58 @@
       ],
       "answer": 1,
       "explanation": "Theo bảng so sánh trong slide: Docker Swarm 'Highly scalable & scales 5x faster than Kubernetes'. Tuy nhiên Swarm không có auto-scaling (phải scale thủ công), trong khi Kubernetes có auto-scaling built-in."
+    },
+    {
+      "id": 19,
+      "level": "basic",
+      "question": "Sự khác biệt chính giữa Docker Image và Docker Container là gì?",
+      "options": [
+        "Image là running instance; Container là read-only template",
+        "Image là read-only template dùng để tạo containers; Container là running instance của một image",
+        "Image và Container là cùng một thứ, chỉ khác tên",
+        "Container là file lưu trữ trên registry; Image là process đang chạy"
+      ],
+      "answer": 1,
+      "explanation": "Docker Image là read-only template chứa application binaries và dependencies — dùng để tạo containers, lưu trên Docker Registry. Docker Container là running instance của image — chứa toàn bộ package cần để chạy app. Nhiều containers có thể được tạo từ cùng một image, nhưng thay đổi trong container không lưu vào image theo mặc định."
+    },
+    {
+      "id": 20,
+      "level": "intermediate",
+      "question": "Copy-on-Write (COW) trong Docker Union File System hoạt động như thế nào?",
+      "options": [
+        "Mỗi lần chạy container, Docker tạo một bản copy hoàn toàn mới của image",
+        "Docker image là read-only; khi container cần thay đổi một file, nó copy file đó lên layer read-write riêng của container — chỉ ghi khi cần thay đổi",
+        "Docker ghi trực tiếp vào image gốc mỗi khi container thay đổi file",
+        "COW có nghĩa là tất cả containers phải dùng chung một writable layer"
+      ],
+      "answer": 1,
+      "explanation": "Copy-on-Write (COW) là cơ chế của Docker Union File System: Image luôn là read-only. Khi container cần thay đổi một file từ image, nó KHÔNG sửa image trực tiếp — thay vào đó, nó copy file lên layer read-write riêng của container và sửa tại đó. File mới/đã sửa được committed thành layer mới. Lệnh 'docker history' hiển thị tất cả layers. Cấu trúc từ dưới lên: bootfs → Base Image → các layers thêm → Writeable Container."
+    },
+    {
+      "id": 21,
+      "level": "intermediate",
+      "question": "Khi chạy lệnh 'docker container run nginx', Docker thực hiện các bước theo thứ tự nào?",
+      "options": [
+        "Pull image từ Docker Hub → tạo container → tìm image local → gán IP → mở ports → khởi chạy process",
+        "Tìm image trong local cache → nếu không có thì pull từ Docker Hub → tạo container → gán virtual IP trong private network → mở ports → khởi chạy process theo CMD trong Dockerfile",
+        "Tạo container trống → pull image → copy image vào container → gán IP → chạy app",
+        "Kết nối Docker Hub → pull image → tạo container → gán IP → chạy process"
+      ],
+      "answer": 1,
+      "explanation": "Khi chạy 'docker container run nginx', các bước theo thứ tự: 1) Tìm image 'nginx' trong local image cache; 2) Nếu không có → tìm trong remote image repository (Docker Hub by default); 3) Download nginx:latest; 4) Tạo container mới từ image; 5) Container được gắn vào network, nhận virtual IP trong private network (default bridge network); 6) Mở ports để phục vụ requests; 7) Khởi chạy process được chỉ định trong CMD của Dockerfile."
+    },
+    {
+      "id": 22,
+      "level": "basic",
+      "question": "Lệnh 'docker container inspect <id>' dùng để làm gì?",
+      "options": [
+        "Xem danh sách tất cả containers đang chạy",
+        "Xem config và metadata của container dưới dạng JSON array — bao gồm network settings, volumes, environment variables",
+        "Kiểm tra trạng thái health của container",
+        "Xem logs của container trong realtime"
+      ],
+      "answer": 1,
+      "explanation": "'docker container inspect <id>' trả về config và metadata của container dưới dạng JSON array. Có thể dùng --format để lấy thông tin cụ thể, ví dụ: 'docker container inspect --format \"{{.NetworkSettings.IPAddress}}\" <id>' để lấy IP address của container."
     }
   ]
 }

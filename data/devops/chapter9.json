@@ -28,6 +28,18 @@
     {
       "heading": "IaC Tools Comparison — Ansible, Chef, Puppet, Boto",
       "content": "**Configuration Management Tools** (Ansible, Chef, Puppet, SaltStack):\n- Được tạo chủ yếu để **configure servers** và install software\n- **Không phải** tool cho infrastructure provisioning\n\n⚠️ NOTE: \"Don't try to mix configuration management and resource orchestration.\"\n\n**Approaches:**\n- **Declarative:** `Puppet`, `Salt` — khai báo desired state\n- **Imperative:** `Ansible`, `Chef` — khai báo steps để đạt state\n\n**Languages:**\n- `Chef` → Ruby\n- `Puppet` → JSON-like / Ruby DSL\n- `Ansible` → YAML / Python\n\n**Low-level alternatives (Boto, fog, apache-libcloud):**\n- Low-level API access, focused on specific cloud providers\n- Error-prone, tedious, requires many human-hours, slow to evolve\n\n**Terraform vs Ansible — best used together:**\n- `Terraform` = **infrastructure provisioning** (tạo VMs, networks, databases)\n- `Ansible` = **configuration management** (configure những gì đã tạo)\n- Flow: Terraform tạo infra → Ansible configure"
+    },
+    {
+      "heading": "Terraform Variables — 3 loại",
+      "content": "**Variable definition:** a symbolic name associated with a value and whose associated value may be changed.\n\nVariables in Terraform are a great way to define centrally controlled reusable values. The information is saved independently from the deployment plans, making values easy to read and edit from a single file.\n\n**3 types of Terraform Variables:**\n\n1) **Input Variables** — serve as parameters for a Terraform module/code, allowing aspects to be customized without altering source code; allows modules to be shared between different configurations.\n   - When declared in **root module** → set values using CLI options and environment variables\n   - When declared in **child modules** → calling module should pass values in module block\n\n2) **Output Values** — like return values; expose specific values for use by other modules or to display after apply\n\n3) **Local Values** — assign a name to an expression for reuse within a module"
+    },
+    {
+      "heading": "Terraform Input Variable Types & Precedence",
+      "content": "**Input Variable Types:** String, Number, List, Map, Boolean, Set, Object, Tuple\n\n**Variable block has 5 optional arguments:**\n- `default` — makes variable optional (e.g., `default = \"10.0.0.0/16\"`)\n- `type` — specifies accepted value types\n- `description` — input variable documentation\n- `validation` — validation rules in addition to type constraints\n- `sensitive` — limits Terraform UI output when variable is used in configuration\n\n**Recommendation:** always set `description` and `type`, set `default` when practical. Terraform does **NOT** support unassigned variables.\n\n**Variable Precedence (highest → lowest):**\n1. Command line (`-var='my_var=value'`)\n2. `*.auto.tfvars.*` files (dedicated files for assigning values)\n3. `terraform.tfvars.json`\n4. `terraform.tfvars`\n5. Environment variables (`TF_VAR_<variable>` pattern — easy to set/see/change)\n6. `variables.tf` (good for non-sensitive values and defaults)\n\n**Additional:** Interactive (Terraform asks for required values not provided), Module invocation"
+    },
+    {
+      "heading": "Terraform Variable Examples",
+      "content": "**String variable:**\n```hcl\nvariable \"reponame\" {\n  type        = string\n  description = \"Name of the ECR repository\"\n  default     = \"day3-broad\"\n}\n```\nReference: `name = \"${var.reponame}\"`\n\n**Number variable:**\n```hcl\nvariable \"numofusers\" {\n  type        = number\n  description = \"Number of IAM users to create\"\n  default     = 3\n}\n```\nReference: `count = \"${var.numofusers}\"`\n\n**List variable:**\n```hcl\nvariable \"users\" {\n  type    = list\n  default = [\"root\", \"user1\", \"user2\"]\n}\n```\nReference: `name = \"${var.users[0]}\"`"
     }
   ],
   "questions": [
@@ -216,6 +228,58 @@
       ],
       "answer": 1,
       "explanation": "Từ comparison: 'Terraform provides a command named plan, which gives a very detailed overview of what will be modified if you apply your blueprint.' CloudFormation có Change Sets nhưng ít granular hơn. terraform plan hiển thị chính xác từng resource sẽ create/update/delete."
+    },
+    {
+      "id": 18,
+      "level": "basic",
+      "question": "Terraform có 3 loại Variables. Đâu là 3 loại đó?",
+      "options": [
+        "Global, Local, Module",
+        "Static, Dynamic, Computed",
+        "Input Variables, Output Values, Local Values",
+        "String, Number, Boolean"
+      ],
+      "answer": 2,
+      "explanation": "3 loại Terraform Variables: 1) Input Variables — serve as parameters for a module, allowing customization without altering source code; 2) Output Values — like return values, expose specific values for other modules or display after apply; 3) Local Values — assign a name to an expression for reuse within a module."
+    },
+    {
+      "id": 19,
+      "level": "intermediate",
+      "question": "Trong Terraform Variable Precedence, nguồn nào có độ ưu tiên CAO NHẤT?",
+      "options": [
+        "terraform.tfvars file",
+        "Environment variables (TF_VAR_<variable>)",
+        "Command line flag (-var='my_var=value')",
+        "variables.tf default values"
+      ],
+      "answer": 2,
+      "explanation": "Variable Precedence từ cao xuống thấp: 1) Command line (-var='my_var=value') — CAO NHẤT, 2) *.auto.tfvars.* files, 3) terraform.tfvars.json, 4) terraform.tfvars, 5) Environment variables (TF_VAR_), 6) variables.tf defaults — THẤP NHẤT. Command line luôn override mọi nguồn khác."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "Argument 'sensitive' trong Terraform variable block có tác dụng gì?",
+      "options": [
+        "Mã hóa giá trị biến trong state file",
+        "Cho phép biến nhận nhiều giá trị cùng lúc",
+        "Limits Terraform UI output khi biến được dùng trong configuration — ẩn giá trị khỏi terminal logs",
+        "Đánh dấu biến là bắt buộc phải có giá trị"
+      ],
+      "answer": 2,
+      "explanation": "'sensitive = true' limits Terraform UI output khi variable được sử dụng trong configuration — giá trị sẽ không được hiển thị trong terminal logs/plan output. Dùng cho passwords, API keys, tokens. Lưu ý: giá trị vẫn được lưu trong state file, không tự động mã hóa."
+    },
+    {
+      "id": 21,
+      "level": "intermediate",
+      "question": "Input Variables trong Terraform: khi nào dùng CLI options vs module block để set values?",
+      "options": [
+        "CLI options cho cả root và child modules",
+        "Module block cho cả root và child modules",
+        "Root module → set values bằng CLI options/environment variables; Child modules → calling module passes values trong module block",
+        "Không có sự khác biệt — cả hai cách đều dùng được cho bất kỳ module nào"
+      ],
+      "answer": 2,
+      "explanation": "Input Variables serve as parameters allowing customization without altering source code. Quy tắc: khi declared trong ROOT module → set values qua CLI (-var flag) hoặc environment variables (TF_VAR_). Khi declared trong CHILD modules → calling module phải pass values trong module block. Đây là cách Terraform modules được shared giữa different configurations."
     }
   ]
 }

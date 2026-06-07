@@ -2,6 +2,10 @@
   "title": "Chương 10: Monitoring — Prometheus & Grafana",
   "theory": [
     {
+      "heading": "Why do we Monitor? — Monitoring vs Observability",
+      "content": "**Famous quote (Baron Schwartz):**\n> \"Monitoring tells you whether the system works. Observability lets you ask **why** it's not working.\"\n\n**6 reasons why we monitor:**\n1. Make sure the system works as intended\n2. Get insights in how the system is being used\n3. Fix problems **BEFORE** customers tell us about them\n4. Outage cost is more expensive than investing in quality\n5. Make knowledge available to the rest of the organization\n6. Make decisions on **data** rather than gut feeling\n\n**Monitoring is changing:**\n- Infrastructure is becoming more **dynamic** — servers are becoming **cattle**, rather than **pets**\n- Teams are deploying changes **several times a day** (less up-front testing)\n- Monitoring tools need to keep up"
+    },
+    {
       "heading": "Prometheus là gì?",
       "content": "**Official definition:**\n\"Prometheus is an open-source systems monitoring and alerting toolkit with an active ecosystem.\"\n\n**Practical definition:**\n\"Prometheus is an easy to use, **centralised**, **stateful**, **pull-based** modular monitoring system with several mature supporting projects.\"\n\n**Key characteristics:**\n- **Pull-based** — Prometheus chủ động scrape metrics từ targets (không phải push-based)\n- **Stateful** — lưu data local trên Prometheus server\n- **Centralised** — tập trung vào một Prometheus server\n- **Ecosystem mạnh:** `Grafana` (visualization), `Alertmanager`, nhiều exporters\n\n**Technical details:**\n- Viết bằng **Go (Golang)** — statically compiled\n- No 3rd party libraries — chỉ cần grab binary và run\n- No `yum install` dependencies"
     },
@@ -22,8 +26,12 @@
       "content": "**`cAdvisor`** (by Google) — records và exports metrics của **containers** và **cgroups**.\n- Dùng được cho **Docker** và normal **systemd services**\n- Fine-grained **Memory/CPU usage per application**\n\n**Prometheus full capabilities:**\n- Realtime monitoring multiple servers\n- Monitoring/alerting services\n- Granular monitoring containers\n- Tiered Historical data\n- Track **bất kỳ numerical data** qua HTTP: server metrics, radiation levels, temperature, disk seek time...\n\n**Monitoring approaches:**\n- **Black-box monitoring** — test từ bên ngoài: \"Is service responding?\"\n- **White-box monitoring** — monitor internals: \"How is it performing?\"\n\n**Monitoring strategy:**\n- **Proactive** — phát hiện vấn đề trước khi user báo\n- **Reactive** — chờ user báo rồi mới xử lý\n\n⚠️ NOTE: Proactive monitoring là mục tiêu — alert trước khi outage xảy ra."
     },
     {
-      "heading": "3 Loại dữ liệu Monitoring",
-      "content": "**3 pillars of observability:**\n\n1) **Metrics** (Prometheus, InfluxDB)\n- Numerical data theo thời gian — CPU usage, request count, error rate\n- Query với **PromQL**\n\n2) **Logs** (ELK Stack, Loki)\n- Text-based event records — application logs, system logs\n- Dùng để **investigate root cause**\n\n3) **Traces** (Jaeger, Zipkin)\n- Theo dõi request qua **distributed system**\n- Hiểu behavior trong microservices\n\n**Full stack monitoring = kết hợp cả 3:**\n- Metrics → detect anomalies\n- Logs → investigate root cause\n- Traces → understand distributed behavior\n\n**Prometheus chuyên về Metrics** — mạnh nhất cho time-series numerical data và alerting based on thresholds."
+      "heading": "3 Loại dữ liệu Monitoring — Black-box vs White-box",
+      "content": "**Black-box monitoring:** \"poke it with a stick\" — test từ **outside** (is it responding?)\n**White-box monitoring:** \"have it tell you how it's doing\" — process reports its own **internal state**\n\n**3 types of data extracted from a running process:**\n\n1) **Metrics** — numeric data for easy aggregation\n- **Pros:** lets you see trends and patterns, less data, faster queries\n- **Cons:** needs to be configured up-front\n\n2) **Logs** — textual data for understanding what happened\n- **Pros:** lets you see exactly what process was doing at a given time\n- **Cons:** costly to store and query\n\n3) **Traces** — execution paths for individual requests\n- **Pros:** lets you see path a request took through system and where time was spent\n- **Cons:** costly to store and query\n\n**CNCF Landscape:**\n- **Monitoring:** Prometheus (CNCF Graduated), Thanos (CNCF Incubating), Grafana, Datadog, Nagios, Zabbix...\n- **Logging:** Fluentd (CNCF Graduated), Elastic, Grafana Loki...\n- **Tracing:** Jaeger (CNCF Graduated), OpenTracing (CNCF Incubating), Zipkin..."
+    },
+    {
+      "heading": "Grafana — Dashboard & Features",
+      "content": "**What Grafana covers:**\n- What is monitoring\n- Types of data (Metrics / Logs / Traces)\n- Exploring data\n- Building dashboards\n- Annotations, variables, links\n- Creating alerts\n- Best practices for dashboard design\n\n**Setup (Grafana tutorial environment):**\n1. Install Docker and Docker Engine\n2. `git clone grafana/tutorial-environment`\n3. `cd tutorial-environment`\n4. `docker-compose up -d`\n\n**Architecture:**\n- **Grafana** — visualization layer\n- **Prometheus** — data store (time-series metrics)\n- **node_exporter** — collects system metrics from the host"
     }
   ],
   "questions": [
@@ -186,6 +194,58 @@
       ],
       "answer": 1,
       "explanation": "3 pillars of observability: 1) Metrics — numerical time-series data (Prometheus, InfluxDB). 2) Logs — text-based events (ELK Stack, Loki). 3) Traces — distributed request tracing (Jaeger, Zipkin). Prometheus chuyên về Metrics — mạnh nhất cho time-series data và alerting based on thresholds."
+    },
+    {
+      "id": 16,
+      "level": "basic",
+      "question": "Baron Schwartz nói gì về sự khác biệt giữa Monitoring và Observability?",
+      "options": [
+        "Monitoring và Observability là hai từ đồng nghĩa",
+        "Monitoring là tập con của Observability — không có sự khác biệt thực sự",
+        "\"Monitoring tells you whether the system works. Observability lets you ask why it's not working.\"",
+        "Observability là cũ — Monitoring là khái niệm mới hơn"
+      ],
+      "answer": 2,
+      "explanation": "Baron Schwartz phân biệt rõ: Monitoring cho biết hệ thống có hoạt động không (yes/no), còn Observability cho phép bạn hỏi TẠI SAO nó không hoạt động — giúp điều tra root cause thay vì chỉ biết có vấn đề."
+    },
+    {
+      "id": 17,
+      "level": "intermediate",
+      "question": "Theo slides, có bao nhiêu lý do để monitor hệ thống và đâu là lý do kinh tế quan trọng nhất?",
+      "options": [
+        "3 lý do — để detect bugs sớm hơn",
+        "5 lý do — để giảm downtime",
+        "6 lý do — bao gồm 'Outage cost is more expensive than investing in quality'",
+        "4 lý do — để làm hài lòng khách hàng"
+      ],
+      "answer": 2,
+      "explanation": "6 lý do: 1) Đảm bảo hệ thống hoạt động đúng. 2) Hiểu hệ thống đang được dùng thế nào. 3) Fix vấn đề TRƯỚC khi khách hàng báo. 4) Chi phí outage tốn hơn đầu tư vào chất lượng. 5) Chia sẻ kiến thức cho cả tổ chức. 6) Ra quyết định dựa trên data thay vì cảm tính."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "So sánh pros/cons của Metrics, Logs và Traces — loại nào rẻ nhất để lưu trữ và query?",
+      "options": [
+        "Logs — vì text nhỏ hơn binary",
+        "Traces — vì chỉ track critical path",
+        "Metrics — less data, faster queries; còn Logs và Traces đều costly to store and query",
+        "Cả 3 đều có chi phí tương đương"
+      ],
+      "answer": 2,
+      "explanation": "Metrics: Pros — lets you see trends/patterns, less data, faster queries. Cons — needs to be configured up-front. Logs: Pros — lets you see exactly what process was doing at a given time. Cons — costly to store and query. Traces: Pros — lets you see path a request took and where time was spent. Cons — costly to store and query. Metrics rẻ nhất vì là numeric data, dễ aggregate."
+    },
+    {
+      "id": 19,
+      "level": "intermediate",
+      "question": "Câu nói 'servers are becoming cattle, rather than pets' trong monitoring có nghĩa là gì?",
+      "options": [
+        "Servers cần được chăm sóc kỹ như thú cưng",
+        "Infrastructure đang trở nên dynamic hơn — servers có thể bị replace bất kỳ lúc nào, không phải duy nhất và không thể thay thế",
+        "Servers đang giảm chi phí như gia súc được nuôi hàng loạt",
+        "Monitoring không còn cần thiết vì servers tự quản lý"
+      ],
+      "answer": 1,
+      "explanation": "\"Cattle not pets\" là metaphor quan trọng trong DevOps: Pets = servers truyền thống được đặt tên, chăm sóc kỹ, khó thay thế. Cattle = servers trong cloud/container era — có thể tạo/xóa hàng loạt, interchangeable. Điều này buộc monitoring tools phải dynamic hơn, không thể hardcode server names, teams deploy nhiều lần/ngày với ít testing up-front hơn."
     }
   ]
 }

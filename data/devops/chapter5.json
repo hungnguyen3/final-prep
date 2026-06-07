@@ -3,7 +3,7 @@
   "theory": [
     {
       "heading": "Jenkins là gì? Lịch sử",
-      "content": "**Jenkins** là một **open-source automation server** viết bằng **Java**.\n- Dùng để tự động hóa các phần của software development: **building**, **testing**, **deploying**\n- Một trong những **CI/CD tools phổ biến nhất** hiện nay\n- Được duy trì bởi một large community\n\n**Lịch sử:**\n1) Ban đầu phát triển với tên **Hudson** tại **Sun Microsystems** năm **2004**\n2) Năm **2011**, Jenkins ra đời sau tranh chấp giữa **Oracle** và cộng đồng open-source Hudson\n3) Từ đó Jenkins trở thành **go-to tool** cho CI/CD"
+      "content": "**Jenkins** là một **open-source automation server** viết bằng **Java**.\n- Dùng để tự động hóa các phần của software development: **building**, **testing**, **deploying**\n- **Facilitates CI/CD** — tích hợp liên tục và triển khai liên tục\n- Một trong những **CI/CD tools phổ biến nhất** hiện nay\n- Được duy trì bởi một **large community**, trở thành **go-to tool** cho CI/CD\n\n**Lịch sử:**\n1) Ban đầu phát triển với tên **Hudson** tại **Sun Microsystems** năm **2004**\n2) Năm **2011**, Jenkins ra đời sau tranh chấp giữa **Oracle** và cộng đồng open-source Hudson\n3) Từ đó Jenkins trở thành **go-to tool** cho CI/CD nhờ cộng đồng lớn mạnh duy trì và phát triển"
     },
     {
       "heading": "Key Concepts: Pipeline, Job, Build",
@@ -19,15 +19,15 @@
     },
     {
       "heading": "Cài đặt Jenkins — Prerequisites & Setup",
-      "content": "**Prerequisites:**\n- **Java (JDK 17)** được khuyến nghị — Jenkins chạy trên Java\n- Truy cập qua web browser\n- Chạy được trên local machine, server, hoặc cloud\n\n**Cài đặt trên Linux Ubuntu/Debian:**\n1) Thêm Jenkins repository\n2) Chạy `sudo apt-get install jenkins`\n3) Chạy `sudo systemctl start jenkins`\n\n**Sau khi cài đặt:**\n- Jenkins chạy tại `http://localhost:8080`\n\n**Initial setup:**\n1) Nhập initial admin password từ `/var/lib/jenkins/secrets/initialAdminPassword`\n2) Hoàn thành setup wizard\n3) Cài recommended plugins"
+      "content": "**Prerequisites:**\n- **Java (JDK 17)** — Jenkins chạy trên Java, JDK 17 được khuyến nghị\n- **Web Browser** — Jenkins được truy cập qua web interface\n- **Server** — có thể chạy trên local machine, server, hoặc cloud\n\n**Cài đặt trên Linux Ubuntu/Debian:**\n```\nsudo wget -O /usr/share/keyrings/jenkins-keyring.asc \\\n  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key\necho \"deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]\" \\\n  https://pkg.jenkins.io/debian-stable binary/ \\\n  | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null\nsudo apt-get update && sudo apt-get install jenkins\nsudo systemctl start jenkins\n```\n\n**Sau khi cài đặt:**\n- Jenkins chạy tại `http://localhost:8080`\n\n**Initial setup:**\n1) Nhập initial admin password từ `/var/lib/jenkins/secrets/initialAdminPassword`\n2) Hoàn thành setup wizard\n3) Cài **recommended plugins**"
     },
     {
       "heading": "Freestyle Project — Tạo Job cơ bản",
-      "content": "**Freestyle Project** là loại Jenkins job **đơn giản nhất** — cho phép định nghĩa một chuỗi build steps.\n\n**Các bước tạo Freestyle Project:**\n1) Click **'New Item'** và chọn **'Freestyle Project'**\n2) Định nghĩa **Source Code Management (SCM)** — ví dụ Git với repository URL và credentials\n3) Định nghĩa **Build Triggers:**\n- Manually\n- Periodically (cron)\n- **Poll SCM** — Jenkins kiểm tra repo theo lịch\n- **Webhooks** — GitHub/Bitbucket gửi webhook event\n- Build after other projects\n4) Thêm **Build Steps:** invoke shell command, run Maven build\n5) Định nghĩa **Post-Build Actions:** send notifications, archive artifacts"
+      "content": "**Freestyle Project** là loại Jenkins job **đơn giản nhất** — cho phép định nghĩa một chuỗi build steps.\n\n**Các bước tạo Freestyle Project:**\n1) Click **'New Item'** và chọn **'Freestyle Project'**\n2) Định nghĩa **Source Code Management (SCM)** — ví dụ Git với repository URL và credentials\n3) Định nghĩa **Build Triggers** (các tùy chọn trong slide UI):\n- **Trigger builds remotely** — trigger từ scripts bên ngoài qua API\n- **Build after other projects are built** — chờ project khác build xong\n- **Build periodically** — theo lịch cron (chạy định kỳ dù có thay đổi hay không)\n- **GitHub hook trigger for GITScm polling** — GitHub webhook kích hoạt Jenkins poll SCM\n- **Poll SCM** — Jenkins kiểm tra repo theo cron schedule, chỉ build nếu có thay đổi\n4) Thêm **Build Steps:**\n- Executing shell command (invoke shell script)\n- Running Maven build\n5) Định nghĩa **Post-Build Actions:**\n- Sending notifications (e-mail notification với checkbox **'Send e-mail for every unstable build'**)\n- Archiving artifacts (lưu JAR/WAR files)"
     },
     {
       "heading": "Jenkins Pipeline & Jenkinsfile",
-      "content": "**Jenkins Pipelines** là scripted workflows cho nhiều control và flexibility hơn Freestyle Projects.\n\n**Jenkinsfile:**\n- Text file chứa pipeline definition\n- Được lưu trong **root của repository** (Pipeline as Code)\n\n**Hai loại pipeline:**\n- **Declarative Pipeline** — simpler, structured, dùng `pipeline {}` syntax\n- **Scripted Pipeline** — dùng Groovy syntax nâng cao, linh hoạt hơn\n\n**Ví dụ Declarative:**\n```\npipeline {\n  agent any\n  stages {\n    stage('Build') { steps { sh 'mvn clean package' } }\n    stage('Test')  { steps { sh 'mvn test' } }\n    stage('Deploy'){ steps { sh 'scp target/*.jar user@server:/path' } }\n  }\n}\n```\n\n**Pipeline sections quan trọng:**\n- `agent` — nơi chạy pipeline\n- `environment` — biến môi trường\n- `tools` — Maven, JDK version\n- `stages` — các stage của pipeline\n- `post` — actions sau khi hoàn thành (success/failure)"
+      "content": "**Jenkins Pipelines** là scripted workflows cho nhiều control và flexibility hơn Freestyle Projects.\n\n**Jenkinsfile:**\n- Text file chứa pipeline definition\n- Được lưu trong **root của repository** (Pipeline as Code)\n\n**Hai loại pipeline:**\n- **Declarative Pipeline** — simpler, structured, dùng `pipeline {}` syntax\n- **Scripted Pipeline** — dùng Groovy syntax nâng cao, linh hoạt hơn\n\n**Ví dụ Declarative Pipeline (từ slide):**\n```\npipeline {\n    agent any\n    stages {\n        stage('Build') { steps { echo 'Building...'; sh 'mvn clean package' } }\n        stage('Test')  { steps { echo 'Testing...';  sh 'mvn test' } }\n        stage('Deploy'){ steps { echo 'Deploying...'; sh 'scp target/*.jar user@server:/path/to/deploy' } }\n    }\n}\n```\n\n**Pipeline sections quan trọng:**\n- `agent` — nơi chạy pipeline\n- `environment` — biến môi trường\n- `tools` — Maven, JDK version\n- `stages` — các stage của pipeline\n- `post` — actions sau khi hoàn thành (success/failure)"
     },
     {
       "heading": "Build Triggers & Webhooks cho GitHub",
@@ -36,6 +36,10 @@
     {
       "heading": "Complete CI/CD Pipeline với Jenkins + Docker",
       "content": "**Workflow hoàn chỉnh (Jenkins + Docker):**\n1) **Checkout** — pull code từ GitHub\n2) **Test** — chạy `mvn clean test` — nếu tests pass mới tiếp tục\n3) **Package** — `mvn clean package` tạo JAR/WAR file\n4) **Build Docker Image** — chỉ build nếu tests pass\n- Dùng `when` condition: `currentBuild.resultIsBetterOrEqualTo('SUCCESS')`\n5) **Deploy to Server** — push Docker image lên DockerHub, SSH vào server và chạy image mới\n6) **Post / Notify** — gửi Slack notification (xanh nếu success, đỏ nếu failure)\n\n**Jenkins và Docker:**\n- Build Docker images **within Jenkins**\n- Deploy apps dùng Docker containers\n- Có thể run Jenkins **inside Docker container** (Jenkins-in-Docker)\n\n**Yêu cầu setup:**\n- Cài **Docker Pipeline Plugin**\n- Cấu hình **DockerHub credentials** trong Jenkins credentials store\n- Cấu hình **SSH keys** trong Jenkins credentials store"
+    },
+    {
+      "heading": "CI/CD với Jenkins — Basic Pipeline",
+      "content": "**CI (Continuous Integration) với Jenkins:**\n- Jenkins enables CI bằng cách **tự động chạy builds và tests** mỗi khi code được push lên version control\n- Phát hiện lỗi sớm — developer nhận feedback ngay sau khi commit\n\n**CD (Continuous Delivery/Deployment):**\n- Tự động deploy lên staging/production **nếu build và tests thành công**\n- Giảm thiểu rủi ro deployment thủ công\n\n**Basic CI/CD Workflow với Jenkins:**\n\n1) **Build:**\n- Jenkins pull code từ GitHub\n- Chạy build tool (Maven/Gradle)\n- Lưu artifacts (JAR/WAR files)\n\n2) **Test:**\n- Jenkins chạy unit tests\n- Jenkins chạy integration tests (sử dụng JUnit)\n- Nếu test fail → thông báo developer, không tiến hành deploy\n\n3) **Deploy:**\n- Nếu tests pass → deploy lên production hoặc staging environment\n- Có thể deploy tự động (Continuous Deployment) hoặc chờ approval (Continuous Delivery)"
     }
   ],
   "questions": [
@@ -258,6 +262,45 @@
       ],
       "answer": 1,
       "explanation": "Quy trình: 1) Cài Slack Notification Plugin. 2) Tạo Slack Webhook (Slack > Apps > Custom Integrations > Jenkins CI). 3) Lưu workspace credentials vào Jenkins. 4) Dùng slackSend() trong post section: slackSend(channel: '#channel', color: 'good'/'danger', message: 'Build successful/failed')."
+    },
+    {
+      "id": 21,
+      "level": "basic",
+      "question": "Jenkins CI cho phép làm gì khi developer push code lên version control?",
+      "options": [
+        "Tự động gửi email thông báo cho tất cả thành viên team",
+        "Tự động chạy builds và tests để phát hiện lỗi sớm",
+        "Tự động merge pull request vào main branch",
+        "Tự động cập nhật tài liệu dự án"
+      ],
+      "answer": 1,
+      "explanation": "Jenkins enables CI bằng cách tự động chạy automated builds và tests mỗi khi code được push lên version control. Điều này giúp phát hiện lỗi sớm và developer nhận feedback ngay sau khi commit."
+    },
+    {
+      "id": 22,
+      "level": "intermediate",
+      "question": "Sự khác biệt chính giữa Poll SCM và Webhooks khi trigger Jenkins build là gì?",
+      "options": [
+        "Poll SCM chỉ dùng được với GitHub, Webhooks dùng được với mọi SCM",
+        "Poll SCM: Jenkins định kỳ kiểm tra repo (tốn tài nguyên); Webhooks: SCM chủ động notify Jenkins ngay khi có push (real-time, hiệu quả hơn)",
+        "Poll SCM nhanh hơn Webhooks vì không cần network round-trip",
+        "Không có sự khác biệt, cả hai đều trigger build trong real-time"
+      ],
+      "answer": 1,
+      "explanation": "Poll SCM: Jenkins định kỳ (theo cron schedule) hỏi repository 'có gì mới không?' — tốn tài nguyên vì phải liên tục kiểm tra dù không có thay đổi. Webhooks: GitHub/Bitbucket chủ động gửi POST request đến Jenkins ngay khi có push event — real-time và hiệu quả hơn vì Jenkins chỉ hoạt động khi thực sự có thay đổi."
+    },
+    {
+      "id": 23,
+      "level": "advanced",
+      "question": "Trong multi-stage Dockerfile với 'FROM maven AS build' và 'FROM openjdk', mục đích chính là gì?",
+      "options": [
+        "Chạy hai ứng dụng song song trong cùng một container",
+        "Tách biệt môi trường build (Maven) và runtime (JRE) để tạo image nhỏ hơn — chỉ copy artifact từ build stage sang runtime stage",
+        "Đảm bảo Maven và OpenJDK có cùng phiên bản",
+        "Cho phép Jenkins build trên nhiều OS khác nhau đồng thời"
+      ],
+      "answer": 1,
+      "explanation": "Multi-stage Dockerfile dùng 'FROM maven AS build' để compile code và tạo JAR/WAR (build stage có đầy đủ Maven, source code), sau đó 'FROM openjdk' chỉ copy artifact (COPY --from=build) vào runtime image gọn nhẹ. Kết quả: image production chỉ chứa JRE + artifact, không chứa Maven hay source code — nhỏ hơn, bảo mật hơn, deploy nhanh hơn."
     }
   ]
 }

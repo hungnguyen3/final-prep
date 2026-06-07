@@ -35,63 +35,103 @@
       "id": 1,
       "level": "basic",
       "question": "Lệnh nào khởi tạo Git repository mới trong thư mục hiện tại?",
-      "options": ["git start", "git init", "git create", "git new"],
-      "answer": 1,
+      "options": [
+        "git start",
+        "git create",
+        "git new",
+        "git init"
+      ],
+      "answer": 3,
       "explanation": "'git init' tạo repository Git mới — tạo folder .git ẩn chứa toàn bộ metadata (objects, refs, config). Đây là lệnh đầu tiên khi bắt đầu project mới với Git."
     },
     {
       "id": 2,
       "level": "basic",
       "question": "Lệnh nào sao chép repository từ remote về máy local?",
-      "options": ["git copy [URL]", "git clone [URL]", "git download [URL]", "git fetch [URL]"],
-      "answer": 1,
+      "options": [
+        "git download [URL]",
+        "git copy [URL]",
+        "git fetch [URL]",
+        "git clone [URL]"
+      ],
+      "answer": 3,
       "explanation": "'git clone [URL]' tạo bản copy đầy đủ của repository — bao gồm toàn bộ history và tất cả branches. Tự động tạo remote 'origin' trỏ về URL gốc."
     },
     {
       "id": 3,
       "level": "basic",
       "question": "Lệnh nào thêm file vào Staging Area?",
-      "options": ["git stage [file]", "git add [file]", "git commit [file]", "git push [file]"],
-      "answer": 1,
+      "options": [
+        "git commit [file]",
+        "git push [file]",
+        "git stage [file]",
+        "git add [file]"
+      ],
+      "answer": 3,
       "explanation": "'git add [file]' đưa file vào Staging Area — chuẩn bị cho lần commit tiếp theo. 'git add .' thêm tất cả thay đổi. 'git add -p' cho phép stage từng phần (hunk) của file."
     },
     {
       "id": 4,
       "level": "basic",
       "question": "Lệnh 'git commit -m \"message\"' làm gì?",
-      "options": ["Push code lên remote", "Tạo commit mới với message mô tả thay đổi vào local repository", "Tạo branch mới", "Merge hai branches"],
-      "answer": 1,
+      "options": [
+        "Push code lên remote",
+        "Merge hai branches",
+        "Tạo branch mới",
+        "Tạo commit mới với message mô tả thay đổi vào local repository"
+      ],
+      "answer": 3,
       "explanation": "'git commit -m' tạo snapshot (commit) mới với message mô tả — lưu vĩnh viễn vào local repository. Commit message quan trọng để hiểu lý do thay đổi sau này."
     },
     {
       "id": 5,
       "level": "basic",
       "question": "Lệnh 'git status' cho biết điều gì?",
-      "options": ["Lịch sử tất cả commits", "Trạng thái hiện tại: file đã staged, chưa staged, untracked", "Remote repository URL", "Danh sách tất cả branches"],
-      "answer": 1,
+      "options": [
+        "Danh sách tất cả branches",
+        "Lịch sử tất cả commits",
+        "Remote repository URL",
+        "Trạng thái hiện tại: file đã staged, chưa staged, untracked"
+      ],
+      "answer": 3,
       "explanation": "'git status' hiển thị: staged changes (xanh lá — sẵn sàng commit), unstaged changes (đỏ — đã modify nhưng chưa add), untracked files (chưa được Git track). Lệnh cơ bản nhất để kiểm tra trạng thái."
     },
     {
       "id": 6,
       "level": "basic",
       "question": "Lệnh 'git push' làm gì?",
-      "options": ["Tải code từ remote về local", "Đẩy commits từ local repository lên remote repository", "Tạo commit mới", "Merge branch vào main"],
-      "answer": 1,
+      "options": [
+        "Tải code từ remote về local",
+        "Merge branch vào main",
+        "Đẩy commits từ local repository lên remote repository",
+        "Tạo commit mới"
+      ],
+      "answer": 2,
       "explanation": "'git push' upload commits từ local lên remote repository (GitHub, GitLab...). Lần đầu push branch mới: 'git push -u origin [branch]' để set upstream tracking."
     },
     {
       "id": 7,
       "level": "basic",
       "question": "Lệnh 'git pull' làm gì?",
-      "options": ["Chỉ tải metadata từ remote", "Tải thay đổi từ remote VÀ merge vào branch hiện tại (= git fetch + git merge)", "Tạo pull request trên GitHub", "Xóa remote branch"],
-      "answer": 1,
+      "options": [
+        "Xóa remote branch",
+        "Chỉ tải metadata từ remote",
+        "Tải thay đổi từ remote VÀ merge vào branch hiện tại (= git fetch + git merge)",
+        "Tạo pull request trên GitHub"
+      ],
+      "answer": 2,
       "explanation": "'git pull' = git fetch + git merge. Tải thay đổi từ remote về và merge ngay vào branch hiện tại. 'git pull --rebase' để rebase thay vì merge — giữ history tuyến tính hơn."
     },
     {
       "id": 8,
       "level": "basic",
       "question": "Lệnh 'git log' hiển thị gì?",
-      "options": ["Trạng thái của working directory", "Lịch sử tất cả commits: hash, author, date, message", "Danh sách remote repositories", "Sự khác biệt giữa files"],
+      "options": [
+        "Sự khác biệt giữa files",
+        "Lịch sử tất cả commits: hash, author, date, message",
+        "Trạng thái của working directory",
+        "Danh sách remote repositories"
+      ],
       "answer": 1,
       "explanation": "'git log' liệt kê toàn bộ commit history: SHA-1 hash, tác giả, ngày giờ, commit message. 'git log --oneline' xem dạng ngắn gọn. 'git log --graph' hiển thị branch structure."
     },
@@ -99,39 +139,64 @@
       "id": 9,
       "level": "basic",
       "question": "Lệnh 'git diff [file]' hiển thị điều gì?",
-      "options": ["Lịch sử thay đổi của file", "Sự khác biệt giữa working directory và staging area", "Ai đã sửa file đó", "Danh sách commits ảnh hưởng file đó"],
-      "answer": 1,
+      "options": [
+        "Sự khác biệt giữa working directory và staging area",
+        "Lịch sử thay đổi của file",
+        "Danh sách commits ảnh hưởng file đó",
+        "Ai đã sửa file đó"
+      ],
+      "answer": 0,
       "explanation": "'git diff [file]' so sánh working directory với staging area — hiển thị những dòng nào đã thay đổi (+ thêm vào, - xóa đi) nhưng chưa được staged. 'git diff --staged' so sánh staged vs last commit."
     },
     {
       "id": 10,
       "level": "basic",
       "question": "Lệnh 'git remote -v' cho biết gì?",
-      "options": ["Version của Git đang dùng", "Danh sách tất cả remote repositories và URL fetch/push", "Verbose log của remote operations", "Validate remote connection"],
-      "answer": 1,
+      "options": [
+        "Danh sách tất cả remote repositories và URL fetch/push",
+        "Version của Git đang dùng",
+        "Validate remote connection",
+        "Verbose log của remote operations"
+      ],
+      "answer": 0,
       "explanation": "'git remote -v' liệt kê tất cả remotes với URL: thường thấy 'origin' với fetch URL và push URL. Hữu ích để kiểm tra đang kết nối với remote nào."
     },
     {
       "id": 11,
       "level": "basic",
       "question": "git stash có tác dụng gì?",
-      "options": ["Xóa thay đổi vĩnh viễn", "Lưu tạm thời thay đổi chưa commit, working directory trở về clean", "Tạo commit tạm thời", "Archive project"],
-      "answer": 1,
+      "options": [
+        "Lưu tạm thời thay đổi chưa commit, working directory trở về clean",
+        "Archive project",
+        "Xóa thay đổi vĩnh viễn",
+        "Tạo commit tạm thời"
+      ],
+      "answer": 0,
       "explanation": "'git stash' đẩy thay đổi hiện tại vào stack tạm thời — working directory trở về clean. Hữu ích khi cần switch branch gấp. 'git stash pop' lấy lại, 'git stash list' xem danh sách."
     },
     {
       "id": 12,
       "level": "basic",
       "question": "Lệnh 'git revert [commit]' làm gì?",
-      "options": ["Xóa commit khỏi history", "Tạo commit MỚI đảo ngược thay đổi của commit được chỉ định — không xóa history", "Rollback về commit đó", "Unstage tất cả thay đổi"],
-      "answer": 1,
+      "options": [
+        "Unstage tất cả thay đổi",
+        "Xóa commit khỏi history",
+        "Tạo commit MỚI đảo ngược thay đổi của commit được chỉ định — không xóa history",
+        "Rollback về commit đó"
+      ],
+      "answer": 2,
       "explanation": "'git revert' tạo một commit mới có nội dung ngược lại với commit được chỉ định — history được giữ nguyên. An toàn hơn 'git reset --hard' khi code đã được push vì không rewrite history."
     },
     {
       "id": 13,
       "level": "basic",
       "question": "Lệnh 'git blame [file]' cho biết gì?",
-      "options": ["File nào đang gây lỗi", "Ai sửa từng dòng của file và commit nào", "Blame list của project", "Lỗi syntax trong file"],
+      "options": [
+        "Blame list của project",
+        "Ai sửa từng dòng của file và commit nào",
+        "File nào đang gây lỗi",
+        "Lỗi syntax trong file"
+      ],
       "answer": 1,
       "explanation": "'git blame [file]' hiển thị mỗi dòng kèm tác giả và commit đã sửa dòng đó. Rất hữu ích để truy tìm ai thêm một đoạn code cụ thể và khi nào."
     },
@@ -139,15 +204,25 @@
       "id": 14,
       "level": "basic",
       "question": "Lệnh 'git cherry-pick [commit]' làm gì?",
-      "options": ["Chọn branch để merge", "Áp dụng một commit cụ thể vào branch hiện tại mà không merge toàn bộ branch", "Xóa commit được chọn", "Tạo tag từ commit"],
-      "answer": 1,
+      "options": [
+        "Áp dụng một commit cụ thể vào branch hiện tại mà không merge toàn bộ branch",
+        "Chọn branch để merge",
+        "Xóa commit được chọn",
+        "Tạo tag từ commit"
+      ],
+      "answer": 0,
       "explanation": "'git cherry-pick [hash]' lấy đúng một commit từ branch/history khác và áp dụng vào branch hiện tại. Hữu ích khi chỉ cần một specific fix từ branch khác mà không muốn merge cả branch."
     },
     {
       "id": 15,
       "level": "basic",
       "question": "Lệnh 'git fetch' khác 'git pull' ở điểm gì?",
-      "options": ["fetch nhanh hơn pull", "fetch chỉ tải về không merge; pull = fetch + merge", "fetch chỉ dùng được với origin", "Không có sự khác biệt"],
+      "options": [
+        "fetch nhanh hơn pull",
+        "fetch chỉ tải về không merge; pull = fetch + merge",
+        "fetch chỉ dùng được với origin",
+        "Không có sự khác biệt"
+      ],
       "answer": 1,
       "explanation": "'git fetch' tải thay đổi từ remote về local tracking branches (origin/main...) nhưng KHÔNG tự merge vào branch đang làm việc. Cho phép review trước khi merge. 'git pull' tự động merge sau khi fetch."
     },
@@ -156,9 +231,9 @@
       "level": "intermediate",
       "question": "Sự khác biệt giữa 'git reset --soft', '--mixed', và '--hard HEAD~1' là gì?",
       "options": [
-        "Chúng giống nhau",
-        "--soft: undo commit, giữ staged; --mixed: undo commit, unstage nhưng giữ files; --hard: undo commit VÀ xóa thay đổi",
         "--hard an toàn nhất; --soft nguy hiểm nhất",
+        "--soft: undo commit, giữ staged; --mixed: undo commit, unstage nhưng giữ files; --hard: undo commit VÀ xóa thay đổi",
+        "Chúng giống nhau",
         "--mixed xóa files; --soft giữ tất cả; --hard chỉ unstage"
       ],
       "answer": 1,
@@ -168,8 +243,13 @@
       "id": 17,
       "level": "intermediate",
       "question": "Lệnh 'git add -p [file]' làm gì?",
-      "options": ["Add file với priority cao", "Patch mode — chọn từng hunk (đoạn thay đổi) để stage thay vì stage toàn bộ file", "Add tất cả files trong thư mục", "Add và push cùng lúc"],
-      "answer": 1,
+      "options": [
+        "Add tất cả files trong thư mục",
+        "Add file với priority cao",
+        "Patch mode — chọn từng hunk (đoạn thay đổi) để stage thay vì stage toàn bộ file",
+        "Add và push cùng lúc"
+      ],
+      "answer": 2,
       "explanation": "'git add -p' (patch/interactive mode) hiển thị từng hunk (đoạn thay đổi) và hỏi y/n để stage. Hữu ích khi muốn tách thành nhiều commits nhỏ từ nhiều thay đổi trong cùng file."
     },
     {
@@ -177,27 +257,37 @@
       "level": "intermediate",
       "question": "Tại sao 'git revert' an toàn hơn 'git reset --hard' khi làm việc nhóm?",
       "options": [
-        "revert nhanh hơn",
         "revert tạo commit mới không xóa history; reset --hard xóa commits — nếu đã push sẽ gây conflict cho người khác",
+        "revert nhanh hơn",
         "reset --hard không hoạt động với remote",
         "revert yêu cầu approval"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "git revert: tạo commit mới đảo ngược → history không bị thay đổi → safe khi đã push. git reset --hard: xóa commits khỏi history → nếu đã push, người khác đã pull sẽ có diverged history → cần force push → nguy hiểm."
     },
     {
       "id": 19,
       "level": "intermediate",
       "question": "Lệnh 'git log --oneline --graph' hiển thị gì?",
-      "options": ["Log dạng JSON", "Lịch sử commit ngắn gọn kết hợp với branch structure dạng ASCII graph", "Chỉ hiển thị merge commits", "Hiển thị files thay đổi trong mỗi commit"],
-      "answer": 1,
+      "options": [
+        "Lịch sử commit ngắn gọn kết hợp với branch structure dạng ASCII graph",
+        "Hiển thị files thay đổi trong mỗi commit",
+        "Chỉ hiển thị merge commits",
+        "Log dạng JSON"
+      ],
+      "answer": 0,
       "explanation": "'git log --oneline' = mỗi commit một dòng (short hash + message). '--graph' thêm ASCII art hiển thị branch và merge structure. Rất hữu ích để hiểu project history trực quan."
     },
     {
       "id": 20,
       "level": "intermediate",
       "question": "Lệnh 'git rebase -i HEAD~3' cho phép làm gì?",
-      "options": ["Rebase 3 remote branches", "Interactive rebase — chỉnh sửa, gộp, xóa, đổi thứ tự 3 commits gần nhất", "Xem 3 commits gần nhất", "Tạo 3 branches từ HEAD"],
+      "options": [
+        "Tạo 3 branches từ HEAD",
+        "Interactive rebase — chỉnh sửa, gộp, xóa, đổi thứ tự 3 commits gần nhất",
+        "Xem 3 commits gần nhất",
+        "Rebase 3 remote branches"
+      ],
       "answer": 1,
       "explanation": "'git rebase -i HEAD~3' mở interactive editor cho 3 commits gần nhất. Có thể: pick (giữ), squash/fixup (gộp), reword (đổi message), edit (sửa nội dung), drop (xóa). Dùng để clean up history trước khi push."
     },
@@ -205,15 +295,25 @@
       "id": 21,
       "level": "intermediate",
       "question": "Lệnh 'git merge --squash [branch]' có tác dụng gì?",
-      "options": ["Merge không tạo merge commit", "Gộp tất cả commits của branch thành một commit duy nhất trước khi merge", "Squash conflicts", "Merge và delete branch"],
-      "answer": 1,
+      "options": [
+        "Squash conflicts",
+        "Merge và delete branch",
+        "Gộp tất cả commits của branch thành một commit duy nhất trước khi merge",
+        "Merge không tạo merge commit"
+      ],
+      "answer": 2,
       "explanation": "'git merge --squash' gộp tất cả commits của branch thành một staged change — bạn cần git commit thêm. Giúp giữ history clean: thay vì 10 commits nhỏ, chỉ có 1 commit rõ ràng trên main."
     },
     {
       "id": 22,
       "level": "intermediate",
       "question": "git bisect dùng để làm gì?",
-      "options": ["Chia đôi branch", "Tìm commit gây ra bug bằng binary search trên commit history", "So sánh hai branches", "Split một commit thành hai"],
+      "options": [
+        "Split một commit thành hai",
+        "Tìm commit gây ra bug bằng binary search trên commit history",
+        "So sánh hai branches",
+        "Chia đôi branch"
+      ],
       "answer": 1,
       "explanation": "'git bisect' dùng binary search trên history: start → mark good commit → mark bad commit → Git checkout commit ở giữa → test → mark good/bad → lặp lại → tìm chính xác commit đầu tiên gây bug. Rất hiệu quả với history dài."
     },
@@ -221,7 +321,12 @@
       "id": 23,
       "level": "intermediate",
       "question": "Lệnh 'git pull --rebase' khác 'git pull' như thế nào?",
-      "options": ["Không có sự khác biệt", "git pull --rebase: fetch + rebase thay vì merge → history tuyến tính, không tạo merge commit", "git pull --rebase nhanh hơn", "--rebase chỉ dùng được với squash"],
+      "options": [
+        "git pull --rebase nhanh hơn",
+        "git pull --rebase: fetch + rebase thay vì merge → history tuyến tính, không tạo merge commit",
+        "--rebase chỉ dùng được với squash",
+        "Không có sự khác biệt"
+      ],
       "answer": 1,
       "explanation": "'git pull' thông thường tạo merge commit khi có diverged history. 'git pull --rebase' áp dụng local commits lên đầu remote commits → history tuyến tính hơn, không có merge commit. Thường được cấu hình làm default."
     },
@@ -229,15 +334,25 @@
       "id": 24,
       "level": "intermediate",
       "question": "Lệnh 'git show [commit]' hiển thị gì?",
-      "options": ["Danh sách tất cả commits", "Chi tiết của một commit: metadata + diff (những gì thay đổi)", "Show branches của commit đó", "Hiển thị commit trên GitHub"],
-      "answer": 1,
+      "options": [
+        "Chi tiết của một commit: metadata + diff (những gì thay đổi)",
+        "Hiển thị commit trên GitHub",
+        "Show branches của commit đó",
+        "Danh sách tất cả commits"
+      ],
+      "answer": 0,
       "explanation": "'git show [hash]' hiển thị đầy đủ thông tin commit: author, date, message VÀ diff (patch) — những dòng nào được thêm/xóa. Hữu ích để review một commit cụ thể."
     },
     {
       "id": 25,
       "level": "intermediate",
       "question": "Lệnh 'git restore --staged [file]' làm gì?",
-      "options": ["Restore file từ remote", "Unstage file — đưa ra khỏi staging area nhưng giữ thay đổi trong working directory", "Delete file từ repository", "Restore file về phiên bản commit cũ"],
+      "options": [
+        "Restore file về phiên bản commit cũ",
+        "Unstage file — đưa ra khỏi staging area nhưng giữ thay đổi trong working directory",
+        "Delete file từ repository",
+        "Restore file từ remote"
+      ],
       "answer": 1,
       "explanation": "'git restore --staged [file]' (Git 2.23+) unstage file — tương đương 'git reset [file]'. Đưa file ra khỏi staging area về working directory nhưng không mất thay đổi."
     },
@@ -246,36 +361,51 @@
       "level": "advanced",
       "question": "Khi nào NÊN dùng 'git rebase' và khi nào KHÔNG nên?",
       "options": [
-        "Luôn dùng rebase thay merge",
-        "NÊN: feature branch local chưa push; KHÔNG NÊN: branch đã push public vì rewrite history gây conflict cho người khác",
         "Không bao giờ dùng rebase",
-        "Chỉ dùng rebase trên main branch"
+        "Luôn dùng rebase thay merge",
+        "Chỉ dùng rebase trên main branch",
+        "NÊN: feature branch local chưa push; KHÔNG NÊN: branch đã push public vì rewrite history gây conflict cho người khác"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Golden rule của rebase: không rebase public branches đã được push. Rebase rewrites commit hashes → người khác đã pull sẽ có diverged history. NÊN dùng: local feature branch trước khi push. KHÔNG NÊN: main, develop, hay bất kỳ shared branch nào."
     },
     {
       "id": 27,
       "level": "advanced",
       "question": "Lệnh nào dùng để xem và phục hồi commits đã bị mất sau git reset --hard?",
-      "options": ["git log --deleted", "git reflog — xem log tất cả thay đổi HEAD, sau đó git checkout [hash] để phục hồi", "git recover", "git history --all"],
-      "answer": 1,
+      "options": [
+        "git log --deleted",
+        "git recover",
+        "git history --all",
+        "git reflog — xem log tất cả thay đổi HEAD, sau đó git checkout [hash] để phục hồi"
+      ],
+      "answer": 3,
       "explanation": "'git reflog' ghi lại mọi thay đổi của HEAD — kể cả sau reset --hard hay rebase làm mất commits. Tìm hash của commit bị mất → 'git checkout -b recovery [hash]' hoặc 'git reset --hard [hash]' để phục hồi."
     },
     {
       "id": 28,
       "level": "advanced",
       "question": "git submodule cho phép làm gì?",
-      "options": ["Module hóa code trong project", "Nhúng một Git repository vào bên trong repository khác — dùng khi cần code từ repo khác", "Tạo sub-branches", "Package manager cho Git"],
-      "answer": 1,
+      "options": [
+        "Tạo sub-branches",
+        "Module hóa code trong project",
+        "Package manager cho Git",
+        "Nhúng một Git repository vào bên trong repository khác — dùng khi cần code từ repo khác"
+      ],
+      "answer": 3,
       "explanation": "'git submodule' cho phép include một Git repo vào trong repo khác như một dependency. Submodule có own git history, own commits. 'git submodule foreach [command]' chạy lệnh trong tất cả submodules."
     },
     {
       "id": 29,
       "level": "advanced",
       "question": "Lệnh 'git filter-branch' dùng để làm gì?",
-      "options": ["Filter branches theo tên", "Rewrite Git history bằng cách áp dụng filters — dùng để remove sensitive data từ history", "Filter commits theo author", "Xóa empty branches"],
-      "answer": 1,
+      "options": [
+        "Xóa empty branches",
+        "Filter branches theo tên",
+        "Filter commits theo author",
+        "Rewrite Git history bằng cách áp dụng filters — dùng để remove sensitive data từ history"
+      ],
+      "answer": 3,
       "explanation": "'git filter-branch' cho phép rewrite toàn bộ Git history bằng cách apply filters. Dùng khi cần xóa file sensitive (credentials, large files) đã commit vào history. Cảnh báo: thay đổi tất cả commit hashes."
     },
     {
@@ -284,34 +414,49 @@
       "question": "Sự khác biệt giữa 'git commit -am' và 'git add . && git commit -m' là gì?",
       "options": [
         "Không có sự khác biệt",
-        "git commit -am: chỉ stage và commit tracked files đã modified; git add . cũng stage untracked files mới",
         "git commit -am nhanh hơn",
-        "-am commit với amend"
+        "-am commit với amend",
+        "git commit -am: chỉ stage và commit tracked files đã modified; git add . cũng stage untracked files mới"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "'git commit -am' = tắt tắt: add tất cả tracked (đã theo dõi) files đã modified + commit. NHƯNG: không stage untracked files (file mới chưa từng được git add). 'git add .' stage CẢ untracked files. Cần lưu ý điểm này."
     },
     {
       "id": 31,
       "level": "basic",
       "question": "Theo Guidelines for Committing, nội dung commit message nên tập trung vào điều gì?",
-      "options": ["Liệt kê tất cả files đã thay đổi", "Mô tả RATIONALE (lý do tại sao) đằng sau thay đổi — often more important than the change itself", "Chỉ cần ghi tên developer", "Mô tả chi tiết từng dòng code thay đổi"],
-      "answer": 1,
+      "options": [
+        "Chỉ cần ghi tên developer",
+        "Mô tả chi tiết từng dòng code thay đổi",
+        "Liệt kê tất cả files đã thay đổi",
+        "Mô tả RATIONALE (lý do tại sao) đằng sau thay đổi — often more important than the change itself"
+      ],
+      "answer": 3,
       "explanation": "Slide GiT for Beginners: 'In commit messages, describe the rationale behind your changes — it is often more important than the change itself.' Code đã nói lên CÁI GÌ, chỉ commit message mới giải thích TẠI SAO."
     },
     {
       "id": 32,
       "level": "basic",
       "question": "Loại file nào KHÔNG nên lưu vào Git repository?",
-      "options": ["Source files (.c, .java, .py)", "Generated/compiled files (.o, .class, .jar, .exe, .pdf)", "Makefile và build scripts", "README và documentation"],
-      "answer": 1,
+      "options": [
+        "Source files (.c, .java, .py)",
+        "Makefile và build scripts",
+        "README và documentation",
+        "Generated/compiled files (.o, .class, .jar, .exe, .pdf)"
+      ],
+      "answer": 3,
       "explanation": "Slide: KHÔNG lưu generated files (.o, .a, .so, .dll, .class, .jar, .exe...) vì chúng được sinh ra từ source code, mỗi người build ra file khác nhau → unnecessary conflicts. Dùng .gitignore để loại trừ."
     },
     {
       "id": 33,
       "level": "intermediate",
       "question": "Cherry-pick trong Git giải quyết vấn đề gì?",
-      "options": ["Merge toàn bộ branch", "Khi không muốn merge tất cả commits — có thể áp dụng từng commit riêng lẻ vào branch hiện tại", "Chọn files để stage", "Pick best practice từ codebase"],
+      "options": [
+        "Pick best practice từ codebase",
+        "Khi không muốn merge tất cả commits — có thể áp dụng từng commit riêng lẻ vào branch hiện tại",
+        "Merge toàn bộ branch",
+        "Chọn files để stage"
+      ],
       "answer": 1,
       "explanation": "Slide: 'It may not be desirable to merge all the commits into the other branch (e.g. a bug may need a different fix) → it is possible to apply each commit individually.' Cherry-pick cho phép chọn đúng commit cần thiết."
     },
@@ -319,17 +464,222 @@
       "id": 34,
       "level": "intermediate",
       "question": "Git sử dụng loại history layout nào?",
-      "options": ["Tree (merges not recorded)", "Direct Acyclic Graph (DAG) — ghi lại cả merge commits", "Linear list", "Hash map"],
-      "answer": 1,
+      "options": [
+        "Hash map",
+        "Tree (merges not recorded)",
+        "Direct Acyclic Graph (DAG) — ghi lại cả merge commits",
+        "Linear list"
+      ],
+      "answer": 2,
       "explanation": "Slide Taxonomy: History layout có 2 loại: Tree (merges not recorded) và Direct Acyclic Graph. Git dùng DAG — mỗi commit có thể có nhiều parent (merge commit có 2 parents), cho phép ghi lại đầy đủ lịch sử merge."
     },
     {
       "id": 35,
       "level": "advanced",
       "question": "Git sử dụng chiến lược nào để tối ưu storage thay vì delta compression?",
-      "options": ["Delta encoding giống SVN", "Object packing — pack multiple objects together", "File compression (.gz)", "Deduplication at block level"],
-      "answer": 1,
+      "options": [
+        "Object packing — pack multiple objects together",
+        "Deduplication at block level",
+        "Delta encoding giống SVN",
+        "File compression (.gz)"
+      ],
+      "answer": 0,
       "explanation": "Slide: 'Most VC tools use delta compression to optimise space (except Git which uses object packing instead).' Git lưu objects (blobs, trees, commits, tags) và pack chúng lại. Đây là một trong các Git Design Choices."
+    },
+    {
+      "id": 36,
+      "level": "basic",
+      "question": "Lệnh 'git init' tạo ra thứ gì trong thư mục hiện tại?",
+      "options": [
+        "Remote connection đến GitHub",
+        "File .gitconfig trong home directory",
+        "File .gitignore mặc định",
+        "Thư mục ẩn .git chứa toàn bộ metadata: objects, refs, config, hooks"
+      ],
+      "answer": 3,
+      "explanation": "'git init' tạo folder .git ẩn — đây là nơi chứa toàn bộ repository: objects (blobs, trees, commits, tags), refs (branch/tag pointers), config, hooks. Xóa folder .git = xóa toàn bộ Git history của project."
+    },
+    {
+      "id": 37,
+      "level": "basic",
+      "question": "git clone --depth 1 [URL] có tác dụng gì và khi nào nên dùng?",
+      "options": [
+        "Clone chỉ 1 file",
+        "Shallow clone — chỉ tải commit mới nhất, tiết kiệm dung lượng và thời gian; dùng cho CI/CD hay khi không cần full history",
+        "Clone chỉ branch đầu tiên",
+        "Clone vào thư mục depth=1"
+      ],
+      "answer": 1,
+      "explanation": "'git clone --depth 1' (shallow clone) chỉ tải commit mới nhất thay vì toàn bộ history. Tiết kiệm đáng kể bandwidth và disk space. Thường dùng trong CI pipelines, Docker builds, hay khi chỉ cần code hiện tại không cần history."
+    },
+    {
+      "id": 38,
+      "level": "intermediate",
+      "question": "git commit --amend dùng để làm gì và khi nào nên dùng?",
+      "options": [
+        "Tạo commit mới từ staged changes",
+        "Sửa commit gần nhất — thay đổi message hoặc thêm staged changes vào; dùng trước khi push",
+        "Merge commit từ branch khác",
+        "Amend = cherry-pick commit trước"
+      ],
+      "answer": 1,
+      "explanation": "'git commit --amend' sửa commit gần nhất: đổi message, thêm file bị quên. '--amend --no-edit' thêm staged changes mà không đổi message. Quan trọng: chỉ dùng trước khi push — nếu đã push lên shared branch, amend sẽ rewrite history và cần force push."
+    },
+    {
+      "id": 39,
+      "level": "intermediate",
+      "question": "Sự khác biệt giữa 'git diff HEAD' và 'git diff --staged' là gì?",
+      "options": [
+        "git diff HEAD: so sánh working copy với repository (tất cả thay đổi); git diff --staged: chỉ so sánh staged area với repository",
+        "Chúng giống nhau hoàn toàn",
+        "git diff HEAD chỉ xem file đã xóa",
+        "git diff --staged so sánh với remote"
+      ],
+      "answer": 0,
+      "explanation": "Theo mô hình 3 vùng: git diff (không có HEAD) = working copy vs index (unstaged changes). git diff --staged = index vs repository (những gì sẽ được commit). git diff HEAD = working copy vs repository (tất cả thay đổi, cả staged lẫn unstaged)."
+    },
+    {
+      "id": 40,
+      "level": "basic",
+      "question": "Lệnh 'git log --author=\"Tên\"' dùng để làm gì?",
+      "options": [
+        "Filter lịch sử commit — chỉ hiển thị commits của tác giả cụ thể",
+        "Đổi tên author của commit",
+        "Add author vào commit hiện tại",
+        "Xem thông tin author của HEAD"
+      ],
+      "answer": 0,
+      "explanation": "'git log --author=\"Tên\"' lọc commit history để chỉ hiện commits của tác giả đó. Hỗ trợ partial match và regex. Có thể kết hợp: 'git log --author=\"Tên\" --since=\"2024-01-01\" --oneline' để tìm commits của người đó trong khoảng thời gian."
+    },
+    {
+      "id": 41,
+      "level": "intermediate",
+      "question": "Lệnh 'git log -p' hiển thị gì thêm so với 'git log' thông thường?",
+      "options": [
+        "Filter theo patch version",
+        "Hiển thị số lượng file thay đổi",
+        "Hiển thị tên người review",
+        "Hiển thị đầy đủ diff (patch) của mỗi commit — từng dòng được thêm/xóa"
+      ],
+      "answer": 3,
+      "explanation": "'git log -p' (hoặc '--patch') hiển thị commit metadata kèm full diff — giống như xem 'git show' cho mỗi commit. Hữu ích khi muốn xem chi tiết thay đổi nào trong lịch sử mà không cần chạy git show từng cái. Có thể kết hợp với filter: 'git log -p --author=\"Tên\" -- file.py'."
+    },
+    {
+      "id": 42,
+      "level": "intermediate",
+      "question": "Lệnh 'git log A..B' hiển thị những commits nào?",
+      "options": [
+        "Commits giữa hai tag A và B",
+        "Commits chung giữa A và B",
+        "Commits có trong B nhưng KHÔNG có trong A — commits mà B có thêm so với A",
+        "Toàn bộ history từ A đến B"
+      ],
+      "answer": 2,
+      "explanation": "'git log A..B' = \"what's in B that's not in A\" — hiển thị commits reachable từ B nhưng không từ A. Ví dụ: 'git log main..feature' hiển thị commits trong feature branch chưa được merge vào main. Rất hữu ích khi review pull request."
+    },
+    {
+      "id": 43,
+      "level": "basic",
+      "question": "Lệnh 'git stash -u' khác 'git stash' thông thường như thế nào?",
+      "options": [
+        "Stash chỉ unstaged changes",
+        "Update stash hiện tại",
+        "Stash với undo (u = undo)",
+        "Stash cả untracked files (file mới chưa được git add bao giờ), không chỉ tracked files"
+      ],
+      "answer": 3,
+      "explanation": "'git stash' mặc định chỉ stash tracked files (modified và staged). 'git stash -u' (--include-untracked) cũng stash cả untracked files — những file mới tạo chưa từng được git add. Dùng khi muốn working directory hoàn toàn clean kể cả file mới."
+    },
+    {
+      "id": 44,
+      "level": "intermediate",
+      "question": "Sự khác biệt giữa 'git stash apply' và 'git stash pop' là gì?",
+      "options": [
+        "pop chỉ hoạt động với stash@{0}",
+        "apply: áp dụng stash nhưng GIỮ trong stack; pop: áp dụng stash và XÓA khỏi stack",
+        "Không có sự khác biệt",
+        "apply nhanh hơn pop"
+      ],
+      "answer": 1,
+      "explanation": "'git stash pop' = apply + drop: áp dụng stash gần nhất và xóa nó khỏi stack. 'git stash apply stash@{N}' áp dụng stash nhưng giữ nguyên trong stack — hữu ích khi muốn apply stash lên nhiều branches hoặc muốn giữ backup."
+    },
+    {
+      "id": 45,
+      "level": "advanced",
+      "question": "Lệnh 'git cherry-pick --no-commit [hash]' làm gì khác so với cherry-pick thông thường?",
+      "options": [
+        "Cherry-pick nhiều commits cùng lúc",
+        "Cherry-pick không cần commit message",
+        "Không có sự khác biệt",
+        "Áp dụng thay đổi vào working directory và staging area nhưng CHƯA tạo commit — cho phép chỉnh sửa trước khi commit"
+      ],
+      "answer": 3,
+      "explanation": "'git cherry-pick --no-commit' (hoặc -n) áp dụng thay đổi của commit vào staging area nhưng không tự động tạo commit. Hữu ích khi muốn gộp thay đổi từ nhiều commits rồi tạo một commit duy nhất, hoặc muốn chỉnh sửa thêm trước khi commit."
+    },
+    {
+      "id": 46,
+      "level": "advanced",
+      "question": "Trong quá trình 'git rebase', khi xảy ra conflict, có những lựa chọn nào để tiếp tục?",
+      "options": [
+        "Sau khi resolve conflict: git rebase --continue; hủy hoàn toàn: git rebase --abort; bỏ qua commit đang conflict: git rebase --skip",
+        "git rebase --force để bỏ qua tất cả conflicts",
+        "git merge --continue để tiếp tục",
+        "Chỉ có thể abort"
+      ],
+      "answer": 0,
+      "explanation": "Khi rebase gặp conflict: (1) resolve conflict thủ công → git add → git rebase --continue để tiếp tục; (2) git rebase --abort để hủy hoàn toàn, branch trở về trạng thái trước khi rebase; (3) git rebase --skip để bỏ qua commit đang gây conflict (hiếm dùng)."
+    },
+    {
+      "id": 47,
+      "level": "advanced",
+      "question": "git reflog giúp phục hồi commits bị mất như thế nào?",
+      "options": [
+        "Chỉ hoạt động trong 24 giờ",
+        "Ghi lại mọi thay đổi của HEAD kể cả sau reset/rebase — tìm hash commit bị mất rồi checkout hoặc reset để phục hồi",
+        "Reflog yêu cầu remote backup",
+        "Tự động phục hồi commits mất đi"
+      ],
+      "answer": 1,
+      "explanation": "git reflog ghi lại mọi vị trí HEAD đã trỏ qua — kể cả sau git reset --hard, rebase, hay checkout. Để phục hồi: 'git reflog' tìm hash của commit bị mất → 'git checkout -b recovery abc1234' tạo branch từ đó. Reflog giữ dữ liệu mặc định 90 ngày."
+    },
+    {
+      "id": 48,
+      "level": "intermediate",
+      "question": "Workflow đầy đủ của 'git bisect' để tìm commit gây bug là gì?",
+      "options": [
+        "git bisect init → git bisect search → git bisect done",
+        "git bisect start → git bisect bad → git bisect good [hash] → test → mark good/bad → lặp lại → git bisect reset",
+        "git log --bisect → git checkout → test",
+        "git bisect find-bug → git bisect run tests"
+      ],
+      "answer": 1,
+      "explanation": "Git bisect binary search workflow: 1) git bisect start; 2) git bisect bad (HEAD hiện tại có bug); 3) git bisect good [hash-cũ-không-bug]; 4) Git checkout commit ở giữa → test; 5) git bisect good hoặc git bisect bad; 6) Lặp lại O(log N) lần; 7) Git thông báo commit đầu tiên có bug; 8) git bisect reset để kết thúc."
+    },
+    {
+      "id": 49,
+      "level": "intermediate",
+      "question": "git merge --squash [branch] tạo ra kết quả gì?",
+      "options": [
+        "Tự động squash và commit ngay",
+        "Gộp tất cả commits của branch thành một set staged changes — bạn phải tự git commit để tạo một commit duy nhất",
+        "Squash commits trong branch hiện tại",
+        "Merge với squash merge commit"
+      ],
+      "answer": 1,
+      "explanation": "'git merge --squash feature' gộp tất cả thay đổi của feature branch thành staged changes nhưng KHÔNG tự tạo commit và KHÔNG tạo merge commit. Bạn phải chạy 'git commit -m \"Merge feature X\"' để tạo một commit clean. Giúp giữ main branch history gọn gàng."
+    },
+    {
+      "id": 50,
+      "level": "advanced",
+      "question": "Git sử dụng 'object packing' thay vì delta compression — điều này có nghĩa gì?",
+      "options": [
+        "Git dùng binary diff giữa các phiên bản",
+        "Git nhóm nhiều objects (blobs, trees, commits) vào pack files — tối ưu storage khác với SVN/CVS dùng delta encoding",
+        "Packing chỉ xảy ra khi push lên remote",
+        "Git compress từng file riêng lẻ bằng zlib"
+      ],
+      "answer": 1,
+      "explanation": "Slide: 'Most VC tools use delta compression to optimise space (except Git which uses object packing instead).' Git lưu mỗi phiên bản file như full snapshot (blob object), không phải diff so với phiên bản trước. Khi pack: Git nhóm nhiều loose objects vào pack file và áp dụng delta compression trong pack — kết hợp cả hai approaches. 'git gc' kích hoạt garbage collection và packing."
     }
   ]
 }

@@ -31,47 +31,77 @@
       "id": 1,
       "level": "basic",
       "question": "GitOps dựa trên 3 trụ cột nào?",
-      "options": ["Docker, K8s, Terraform", "IaC/Config as Code + Collaboration qua PR + CI/CD pipelines", "Git, GitHub, Jenkins", "Monitoring, Logging, Alerting"],
-      "answer": 1,
+      "options": [
+        "Docker, K8s, Terraform",
+        "Monitoring, Logging, Alerting",
+        "Git, GitHub, Jenkins",
+        "IaC/Config as Code + Collaboration qua PR + CI/CD pipelines"
+      ],
+      "answer": 3,
       "explanation": "3 trụ cột GitOps: 1) Infrastructure/Configuration as Code (lưu trong Git), 2) Collaboration + change mechanism (code review, PR), 3) CI/CD pipelines (CI: automated tests, CD: automated deployment)."
     },
     {
       "id": 2,
       "level": "basic",
       "question": "ArgoCD sử dụng model nào để deploy?",
-      "options": ["Push model — CI/CD system push vào cluster", "Pull model — controller trong cluster tự pull từ Git", "Manual model — admin apply thủ công", "Event model — webhook trigger"],
-      "answer": 1,
+      "options": [
+        "Event model — webhook trigger",
+        "Manual model — admin apply thủ công",
+        "Push model — CI/CD system push vào cluster",
+        "Pull model — controller trong cluster tự pull từ Git"
+      ],
+      "answer": 3,
       "explanation": "ArgoCD dùng Pull model: controller chạy bên trong K8s cluster, tự pull thay đổi từ Git repo về, sau đó sync cluster state. Không cần mở inbound connection từ ngoài vào cluster."
     },
     {
       "id": 3,
       "level": "basic",
       "question": "ArgoCD có phải là CI tool không?",
-      "options": ["Có, ArgoCD làm cả CI và CD", "Không — ArgoCD là CD tool thuần túy, CI do GitLab CI/GitHub Actions đảm nhiệm", "Có, ArgoCD build Docker images", "Không, ArgoCD chỉ monitoring"],
-      "answer": 1,
+      "options": [
+        "Không, ArgoCD chỉ monitoring",
+        "Có, ArgoCD làm cả CI và CD",
+        "Có, ArgoCD build Docker images",
+        "Không — ArgoCD là CD tool thuần túy, CI do GitLab CI/GitHub Actions đảm nhiệm"
+      ],
+      "answer": 3,
       "explanation": "ArgoCD là CD (Continuous Delivery) tool, KHÔNG phải CI. CI (Build, Unit Tests, Build Docker Image, Publish Registry) do GitLab CI, GitHub Actions, Azure Pipelines xử lý. ArgoCD chỉ nhận từ registry và deploy lên K8s."
     },
     {
       "id": 4,
       "level": "basic",
       "question": "Trong ArgoCD, 'Sync' có nghĩa là gì?",
-      "options": ["Đồng bộ code giữa developers", "Quá trình làm Actual State (cluster) = Desired State (Git)", "Sync data giữa databases", "Update ArgoCD version"],
-      "answer": 1,
+      "options": [
+        "Đồng bộ code giữa developers",
+        "Sync data giữa databases",
+        "Update ArgoCD version",
+        "Quá trình làm Actual State (cluster) = Desired State (Git)"
+      ],
+      "answer": 3,
       "explanation": "Sync: ArgoCD áp dụng thay đổi từ Git (desired state) vào cluster để cluster state khớp với Git. OutOfSync: khi cluster khác Git. Synced: khi cluster đúng như Git mô tả."
     },
     {
       "id": 5,
       "level": "basic",
       "question": "ArgoCD tự động Refresh bao lâu một lần?",
-      "options": ["Mỗi 1 phút", "Mỗi 3 phút", "Mỗi 10 phút", "Mỗi 30 giây"],
-      "answer": 1,
+      "options": [
+        "Mỗi 10 phút",
+        "Mỗi 1 phút",
+        "Mỗi 30 giây",
+        "Mỗi 3 phút"
+      ],
+      "answer": 3,
       "explanation": "ArgoCD tự động refresh và so sánh Git vs live cluster state mỗi 3 phút để phát hiện OutOfSync. Có thể trigger manual refresh hoặc cấu hình webhook để refresh ngay khi có commit."
     },
     {
       "id": 6,
       "level": "basic",
       "question": "ArgoCD Application định nghĩa điều gì?",
-      "options": ["Chỉ tên và version app", "Source (Git repo + path chứa manifests) và Destination (cluster + namespace)", "Docker image và resource limits", "CI pipeline steps"],
+      "options": [
+        "CI pipeline steps",
+        "Source (Git repo + path chứa manifests) và Destination (cluster + namespace)",
+        "Chỉ tên và version app",
+        "Docker image và resource limits"
+      ],
       "answer": 1,
       "explanation": "ArgoCD Application (CRD) định nghĩa: Source = Git repo URL + path chứa K8s manifests; Destination = target cluster và namespace. ArgoCD sẽ sync source → destination."
     },
@@ -79,15 +109,25 @@
       "id": 7,
       "level": "basic",
       "question": "ArgoCD hỗ trợ những loại source nào cho Application?",
-      "options": ["Chỉ YAML files", "Helm charts, Kustomize, Directory of YAML files, Jsonnet", "Docker Compose và Helm", "Terraform và Ansible"],
-      "answer": 1,
+      "options": [
+        "Helm charts, Kustomize, Directory of YAML files, Jsonnet",
+        "Terraform và Ansible",
+        "Chỉ YAML files",
+        "Docker Compose và Helm"
+      ],
+      "answer": 0,
       "explanation": "Repo Server của ArgoCD hỗ trợ generate K8s manifests từ: Helm charts, Kustomize application, Directory of plain YAML files, Jsonnet. Sau khi generate → Application Controller apply vào cluster."
     },
     {
       "id": 8,
       "level": "basic",
       "question": "Vấn đề TRƯỚC khi dùng GitOps là gì?",
-      "options": ["Code quá phức tạp", "Manually creating/configuring resources → cannot reproduce same infrastructure", "Quá nhiều developers", "CI/CD tools không tương thích"],
+      "options": [
+        "Code quá phức tạp",
+        "Manually creating/configuring resources → cannot reproduce same infrastructure",
+        "CI/CD tools không tương thích",
+        "Quá nhiều developers"
+      ],
       "answer": 1,
       "explanation": "Slide: 'Before GitOps — Manually creating/configuring resources → You cannot reproduce the same infrastructure or environments.' Khi config thủ công qua UI, không có document, không thể tái tạo chính xác môi trường."
     },
@@ -95,7 +135,12 @@
       "id": 9,
       "level": "basic",
       "question": "Bad practice nào cần tránh trong GitOps?",
-      "options": ["Lưu IaC trong Git", "IaC trong Git nhưng apply thủ công không qua CI/CD", "Dùng Helm charts", "Dùng Pull Requests"],
+      "options": [
+        "Lưu IaC trong Git",
+        "IaC trong Git nhưng apply thủ công không qua CI/CD",
+        "Dùng Pull Requests",
+        "Dùng Helm charts"
+      ],
       "answer": 1,
       "explanation": "Slide: 'Bad practices — IaC in git but applied manually without CI/CD.' Lưu IaC trong Git là tốt, nhưng nếu vẫn apply thủ công thì mất đi lợi ích automation và reproducibility của GitOps."
     },
@@ -103,31 +148,51 @@
       "id": 10,
       "level": "basic",
       "question": "Traditional CD Push Model có security concern gì?",
-      "options": ["Quá nhiều automated tests", "Phải grant access/kubeconfig cho CI/CD system và open connectivity từ CI/CD vào cluster", "Không support Kubernetes", "Chậm hơn Pull Model"],
-      "answer": 1,
+      "options": [
+        "Phải grant access/kubeconfig cho CI/CD system và open connectivity từ CI/CD vào cluster",
+        "Chậm hơn Pull Model",
+        "Quá nhiều automated tests",
+        "Không support Kubernetes"
+      ],
+      "answer": 0,
       "explanation": "Slide: Push Model — cần 'Grant access in CICD system to apply deployments into k8s cluster (Configure kubeconfig)', 'Open connectivity between CICD systems and k8s cluster = security concern'. Nhiều systems có cluster access = nhiều attack vectors."
     },
     {
       "id": 11,
       "level": "intermediate",
       "question": "3 components chính của ArgoCD là gì?",
-      "options": ["CI Server, CD Server, Monitor Server", "API/Web Server, Repo Server, Application Controller", "Git Server, K8s Server, Deploy Server", "Auth Server, Build Server, Deploy Server"],
-      "answer": 1,
+      "options": [
+        "API/Web Server, Repo Server, Application Controller",
+        "CI Server, CD Server, Monitor Server",
+        "Auth Server, Build Server, Deploy Server",
+        "Git Server, K8s Server, Deploy Server"
+      ],
+      "answer": 0,
       "explanation": "3 core components: 1) API/Web Server (gRPC/REST, expose UI/CLI/API). 2) Repo Server (clone git, generate K8s manifests từ Helm/Kustomize/YAML). 3) Application Controller (monitor cluster, compare state, detect OutOfSync, apply changes)."
     },
     {
       "id": 12,
       "level": "intermediate",
       "question": "Repo Server trong ArgoCD làm gì?",
-      "options": ["Lưu trữ Git repository", "Clone git repo và generate K8s manifests từ Helm/Kustomize/YAML/Jsonnet", "Monitor cluster state", "Handle authentication"],
-      "answer": 1,
+      "options": [
+        "Lưu trữ Git repository",
+        "Monitor cluster state",
+        "Clone git repo và generate K8s manifests từ Helm/Kustomize/YAML/Jsonnet",
+        "Handle authentication"
+      ],
+      "answer": 2,
       "explanation": "Repo Server là internal service: clone Git repository, generate K8s manifests từ source tools (Helm render, Kustomize build, YAML directory, Jsonnet). Kết quả manifests được Application Controller dùng để sync cluster."
     },
     {
       "id": 13,
       "level": "intermediate",
       "question": "Application Controller làm gì khi phát hiện OutOfSync?",
-      "options": ["Gửi email thông báo", "Continuously monitor, so sánh live vs desired state, detect OutOfSync, apply corrective actions (nếu auto-sync bật), invoke lifecycle hooks", "Restart tất cả pods", "Rollback về version trước"],
+      "options": [
+        "Gửi email thông báo",
+        "Continuously monitor, so sánh live vs desired state, detect OutOfSync, apply corrective actions (nếu auto-sync bật), invoke lifecycle hooks",
+        "Restart tất cả pods",
+        "Rollback về version trước"
+      ],
       "answer": 1,
       "explanation": "Application Controller là Kubernetes controller chạy control loop: liên tục so sánh live state (cluster) với desired state (Git). Khi OutOfSync: có thể tự động apply (auto-sync) hoặc cần manual sync. Invoke hooks (PreSync, Sync, PostSync)."
     },
@@ -135,15 +200,25 @@
       "id": 14,
       "level": "intermediate",
       "question": "ArgoCD Project dùng để làm gì?",
-      "options": ["Tạo K8s Namespace", "Nhóm logic Applications, kiểm soát trusted repos, allowed clusters/namespaces cho multi-team setup", "Quản lý Docker registry", "Define CI pipelines"],
-      "answer": 1,
+      "options": [
+        "Quản lý Docker registry",
+        "Tạo K8s Namespace",
+        "Nhóm logic Applications, kiểm soát trusted repos, allowed clusters/namespaces cho multi-team setup",
+        "Define CI pipelines"
+      ],
+      "answer": 2,
       "explanation": "ArgoCD Project: logical grouping cho Applications. Hữu ích khi nhiều teams dùng chung ArgoCD: giới hạn team A chỉ deploy vào cluster/namespace của họ, từ repos được allowed. Provide isolation giữa teams."
     },
     {
       "id": 15,
       "level": "intermediate",
       "question": "Desired State và Actual State trong ArgoCD là gì?",
-      "options": ["Config trong ArgoCD UI vs config trong YAML", "Desired State = trạng thái mô tả trong Git; Actual State = trạng thái thực tế đang chạy trong cluster", "Target version vs current version", "Staging config vs production config"],
+      "options": [
+        "Config trong ArgoCD UI vs config trong YAML",
+        "Desired State = trạng thái mô tả trong Git; Actual State = trạng thái thực tế đang chạy trong cluster",
+        "Target version vs current version",
+        "Staging config vs production config"
+      ],
       "answer": 1,
       "explanation": "Desired State: những gì được định nghĩa trong Git repo (K8s manifests). Actual State: những gì thực tế đang chạy trong K8s cluster. Khi Desired ≠ Actual → OutOfSync. ArgoCD Sync = làm Actual = Desired."
     },
@@ -151,7 +226,12 @@
       "id": 16,
       "level": "intermediate",
       "question": "Tại sao GitOps giúp Security tốt hơn Traditional CD?",
-      "options": ["Git tự động mã hóa credentials", "Developers không cần cluster credentials — chỉ CD system (ArgoCD trong cluster) có permission, giảm attack surface", "GitOps tự động scan vulnerabilities", "GitOps chỉ dùng private repos"],
+      "options": [
+        "Git tự động mã hóa credentials",
+        "Developers không cần cluster credentials — chỉ CD system (ArgoCD trong cluster) có permission, giảm attack surface",
+        "GitOps tự động scan vulnerabilities",
+        "GitOps chỉ dùng private repos"
+      ],
       "answer": 1,
       "explanation": "Slide: 'Improved Security — developers KHÔNG có cluster permission, chỉ CD system có permission.' Với GitOps: developer chỉ push code lên Git. ArgoCD controller (trong cluster) tự pull và deploy. Ít systems cần cluster access = ít attack surface."
     },
@@ -159,7 +239,12 @@
       "id": 17,
       "level": "intermediate",
       "question": "Lifecycle hooks trong ArgoCD (PreSync, Sync, PostSync) dùng để làm gì?",
-      "options": ["Hooks cho Git events", "Chạy K8s Jobs tại các giai đoạn khác nhau: PreSync (trước sync), Sync (trong khi), PostSync (sau khi thành công), SyncFail (khi thất bại)", "Notify developers", "Scale cluster"],
+      "options": [
+        "Hooks cho Git events",
+        "Chạy K8s Jobs tại các giai đoạn khác nhau: PreSync (trước sync), Sync (trong khi), PostSync (sau khi thành công), SyncFail (khi thất bại)",
+        "Notify developers",
+        "Scale cluster"
+      ],
       "answer": 1,
       "explanation": "ArgoCD lifecycle hooks: PreSync (database migration trước deploy), Sync (chạy cùng lúc với sync), PostSync (smoke tests sau khi deploy thành công), SyncFail (cleanup khi sync fail). Implement bằng K8s Jobs với annotation argocd.argoproj.io/hook."
     },
@@ -167,7 +252,12 @@
       "id": 18,
       "level": "intermediate",
       "question": "ArgoCD High Availability setup yêu cầu gì và cho môi trường nào?",
-      "options": ["1 worker node, dev/testing", "Ít nhất 3 worker nodes, production", "5+ worker nodes, enterprise only", "Không yêu cầu số nodes cụ thể"],
+      "options": [
+        "1 worker node, dev/testing",
+        "Ít nhất 3 worker nodes, production",
+        "5+ worker nodes, enterprise only",
+        "Không yêu cầu số nodes cụ thể"
+      ],
       "answer": 1,
       "explanation": "ArgoCD HA (High Availability) setup yêu cầu ít nhất 3 worker nodes — recommended cho production. Non-HA setup: phù hợp dev/testing/evaluation. Light/Core installation: chỉ core components, không có Web UI (dùng cho admin-only setups)."
     },
@@ -175,23 +265,38 @@
       "id": 19,
       "level": "intermediate",
       "question": "ApplicationSet Controller trong ArgoCD dùng để làm gì?",
-      "options": ["Set config cho application", "Tự động generate nhiều ArgoCD Applications từ template — ví dụ: deploy cùng app lên nhiều clusters/environments", "Set replicas cho application", "Configure application settings"],
-      "answer": 1,
+      "options": [
+        "Set replicas cho application",
+        "Configure application settings",
+        "Tự động generate nhiều ArgoCD Applications từ template — ví dụ: deploy cùng app lên nhiều clusters/environments",
+        "Set config cho application"
+      ],
+      "answer": 2,
       "explanation": "ApplicationSet Controller tự động generate nhiều ArgoCD Applications từ một template + generators (list, cluster, git directory...). Ví dụ: automatically create Application cho mỗi subfolder trong Git, hoặc mỗi cluster trong fleet."
     },
     {
       "id": 20,
       "level": "intermediate",
       "question": "Khi ArgoCD detect cluster ở trạng thái OutOfSync, điều gì xảy ra?",
-      "options": ["Cluster tự động restart", "ArgoCD có thể: hiển thị OutOfSync status (manual mode) hoặc tự động sync (auto-sync mode) để đưa cluster về desired state", "ArgoCD xóa toàn bộ deployment", "Gửi webhook tới Git"],
-      "answer": 1,
+      "options": [
+        "ArgoCD có thể: hiển thị OutOfSync status (manual mode) hoặc tự động sync (auto-sync mode) để đưa cluster về desired state",
+        "ArgoCD xóa toàn bộ deployment",
+        "Gửi webhook tới Git",
+        "Cluster tự động restart"
+      ],
+      "answer": 0,
       "explanation": "Khi OutOfSync: nếu auto-sync enabled → ArgoCD tự động apply manifests để sync. Nếu manual mode → hiển thị OutOfSync trong UI, cần click 'Sync' thủ công. Health status cũng được report: Healthy, Progressing, Degraded, Suspended, Missing, Unknown."
     },
     {
       "id": 21,
       "level": "advanced",
       "question": "Trong complete GitOps flow với ArgoCD, sau khi CI build Docker image và push lên registry, bước tiếp theo là gì?",
-      "options": ["ArgoCD tự detect image mới", "CI update K8s image tag trong Git config repo → ArgoCD detect thay đổi trong Git → pull và sync cluster", "Developer manual update deployment", "Kubernetes tự pull image mới"],
+      "options": [
+        "Kubernetes tự pull image mới",
+        "CI update K8s image tag trong Git config repo → ArgoCD detect thay đổi trong Git → pull và sync cluster",
+        "Developer manual update deployment",
+        "ArgoCD tự detect image mới"
+      ],
       "answer": 1,
       "explanation": "Complete flow: CI build + push image → CI update image tag trong Git config repo (separate repo thường) → ArgoCD detect Git change (mỗi 3 phút hoặc qua webhook) → pull new manifests → sync K8s cluster với new image tag."
     },
@@ -199,15 +304,25 @@
       "id": 22,
       "level": "advanced",
       "question": "Tại sao nên tách biệt 'App Source Code Repo' và 'K8s Manifest/Config Repo' trong GitOps?",
-      "options": ["Để bảo mật", "Separation of concerns: dev team quản lý app code, ops team quản lý K8s config; CI không trigger khi chỉ update config; rõ ràng Desired State", "Bắt buộc theo GitOps spec", "Để ArgoCD hoạt động"],
-      "answer": 1,
+      "options": [
+        "Separation of concerns: dev team quản lý app code, ops team quản lý K8s config; CI không trigger khi chỉ update config; rõ ràng Desired State",
+        "Để ArgoCD hoạt động",
+        "Bắt buộc theo GitOps spec",
+        "Để bảo mật"
+      ],
+      "answer": 0,
       "explanation": "Best practice: tách App Repo (source code, Dockerfile) và Config Repo (K8s YAML, Helm values). Lý do: 1) Separation of concerns, 2) Config repo chỉ contain K8s manifests = true desired state, 3) Không trigger CI app khi update config, 4) Audit trail rõ ràng hơn."
     },
     {
       "id": 23,
       "level": "advanced",
       "question": "Dex trong ArgoCD architecture dùng để làm gì?",
-      "options": ["Container runtime", "Identity provider / SSO — cho phép integrate với external IdPs như GitHub, GitLab, LDAP, SAML", "Data exchange format", "DNS resolver"],
+      "options": [
+        "Data exchange format",
+        "Identity provider / SSO — cho phép integrate với external IdPs như GitHub, GitLab, LDAP, SAML",
+        "DNS resolver",
+        "Container runtime"
+      ],
       "answer": 1,
       "explanation": "Dex là OpenID Connect identity provider tích hợp trong ArgoCD. Cho phép SSO với: GitHub, GitLab, Google, LDAP, SAML 2.0... Developers login ArgoCD bằng existing identity (GitHub account) thay vì tạo ArgoCD-specific credentials."
     },
@@ -215,7 +330,12 @@
       "id": 24,
       "level": "advanced",
       "question": "Redis trong ArgoCD architecture có vai trò gì?",
-      "options": ["Lưu trữ K8s manifests", "Caching — cache kết quả từ Repo Server và K8s API để tăng performance", "Message queue giữa components", "Lưu ArgoCD config"],
+      "options": [
+        "Message queue giữa components",
+        "Caching — cache kết quả từ Repo Server và K8s API để tăng performance",
+        "Lưu ArgoCD config",
+        "Lưu trữ K8s manifests"
+      ],
       "answer": 1,
       "explanation": "Redis trong ArgoCD dùng làm cache layer: cache git clone results từ Repo Server, cache K8s resource states. Giảm load lên API Server và Git repo. Cũng dùng cho distributed locking giữa multiple ArgoCD instances trong HA setup."
     },
@@ -223,63 +343,103 @@
       "id": 25,
       "level": "advanced",
       "question": "Disaster Recovery với GitOps — tại sao dễ hơn traditional approach?",
-      "options": ["ArgoCD tự backup cluster", "Toàn bộ infrastructure config trong Git → deploy lên cluster mới chỉ cần point ArgoCD vào cùng Git repo", "K8s tự restore sau disaster", "Cloud provider tự handle DR"],
-      "answer": 1,
+      "options": [
+        "ArgoCD tự backup cluster",
+        "K8s tự restore sau disaster",
+        "Cloud provider tự handle DR",
+        "Toàn bộ infrastructure config trong Git → deploy lên cluster mới chỉ cần point ArgoCD vào cùng Git repo"
+      ],
+      "answer": 3,
       "explanation": "Với GitOps: Git là single source of truth cho toàn bộ infrastructure. Khi disaster: spin up new cluster → install ArgoCD → point tới Git config repo → ArgoCD tự sync toàn bộ applications. Traditional: cần restore từ backups, manual recreation của configs."
     },
     {
       "id": 26,
       "level": "advanced",
       "question": "ArgoCD Sync Wave là gì và tại sao cần?",
-      "options": ["Tần số sync của ArgoCD", "Cơ chế kiểm soát thứ tự deploy: group resources vào waves, wave thấp deploy trước — đảm bảo dependencies được tạo trước", "Wave pattern của network traffic", "ArgoCD version waves"],
-      "answer": 1,
+      "options": [
+        "ArgoCD version waves",
+        "Wave pattern của network traffic",
+        "Tần số sync của ArgoCD",
+        "Cơ chế kiểm soát thứ tự deploy: group resources vào waves, wave thấp deploy trước — đảm bảo dependencies được tạo trước"
+      ],
+      "answer": 3,
       "explanation": "Sync waves: annotation argocd.argoproj.io/sync-wave: 'N'. Resources với wave thấp hơn được apply trước và phải healthy trước khi wave tiếp theo bắt đầu. Ví dụ: wave -1 = CRDs, wave 0 = Namespace/RBAC, wave 1 = Database, wave 2 = Application."
     },
     {
       "id": 27,
       "level": "advanced",
       "question": "Multi-cluster deployment với ArgoCD — ArgoCD cần gì để manage external clusters?",
-      "options": ["Deploy ArgoCD trên mỗi cluster", "Register external cluster credentials vào ArgoCD (kubeconfig/service account) — ArgoCD từ one cluster có thể deploy tới nhiều clusters", "Chỉ manage cluster nơi ArgoCD chạy", "Dùng federation K8s"],
-      "answer": 1,
+      "options": [
+        "Chỉ manage cluster nơi ArgoCD chạy",
+        "Dùng federation K8s",
+        "Deploy ArgoCD trên mỗi cluster",
+        "Register external cluster credentials vào ArgoCD (kubeconfig/service account) — ArgoCD từ one cluster có thể deploy tới nhiều clusters"
+      ],
+      "answer": 3,
       "explanation": "ArgoCD có thể manage nhiều K8s clusters: register external cluster với 'argocd cluster add [context]'. ArgoCD lưu credentials của external clusters. Một ArgoCD instance = control plane cho nhiều clusters — 'hub and spoke' model."
     },
     {
       "id": 28,
       "level": "advanced",
       "question": "Khi ArgoCD ở Self-Heal mode, điều gì xảy ra nếu ai đó manual thay đổi K8s resource?",
-      "options": ["Thay đổi được giữ nguyên", "ArgoCD detect drift (OutOfSync) và tự động revert về desired state trong Git — enforce Git as source of truth", "ArgoCD alert nhưng không làm gì", "K8s từ chối manual change"],
-      "answer": 1,
+      "options": [
+        "Thay đổi được giữ nguyên",
+        "K8s từ chối manual change",
+        "ArgoCD alert nhưng không làm gì",
+        "ArgoCD detect drift (OutOfSync) và tự động revert về desired state trong Git — enforce Git as source of truth"
+      ],
+      "answer": 3,
       "explanation": "Với Self-Heal enabled: ArgoCD continuously watch cluster. Khi detect drift (manual kubectl apply, config thay đổi) → tự động sync lại về desired state từ Git. Git = immutable source of truth. Mọi thay đổi phải đi qua Git."
     },
     {
       "id": 29,
       "level": "advanced",
       "question": "ArgoCD App of Apps pattern là gì?",
-      "options": ["Nhiều apps trong một container", "Một ArgoCD Application quản lý nhiều ArgoCD Applications khác — bootstrapping toàn bộ cluster từ một Git commit", "App với nhiều microservices", "Nested Helm charts"],
-      "answer": 1,
+      "options": [
+        "App với nhiều microservices",
+        "Nhiều apps trong một container",
+        "Nested Helm charts",
+        "Một ArgoCD Application quản lý nhiều ArgoCD Applications khác — bootstrapping toàn bộ cluster từ một Git commit"
+      ],
+      "answer": 3,
       "explanation": "App of Apps: tạo một 'root' ArgoCD Application mà source của nó là một Git repo chứa các ArgoCD Application manifests khác. Khi sync root app → tạo tất cả child apps → mỗi child app sync workloads của nó. Elegant way để bootstrap entire cluster."
     },
     {
       "id": 30,
       "level": "advanced",
       "question": "Helm trong context của ArgoCD được dùng như thế nào?",
-      "options": ["Helm thay thế ArgoCD", "ArgoCD sử dụng Repo Server để render Helm charts thành K8s manifests → Application Controller apply manifests vào cluster. Helm là source type, không phải deploy tool", "Helm và ArgoCD không tương thích", "Chỉ dùng được Helm v3"],
-      "answer": 1,
+      "options": [
+        "Helm và ArgoCD không tương thích",
+        "Chỉ dùng được Helm v3",
+        "Helm thay thế ArgoCD",
+        "ArgoCD sử dụng Repo Server để render Helm charts thành K8s manifests → Application Controller apply manifests vào cluster. Helm là source type, không phải deploy tool"
+      ],
+      "answer": 3,
       "explanation": "ArgoCD hỗ trợ Helm như source type: Git repo chứa Helm chart → ArgoCD Repo Server chạy 'helm template' để render thành K8s manifests → Application Controller apply. ArgoCD là deployment tool, Helm là templating tool. Không dùng 'helm install' — ArgoCD apply manifests trực tiếp."
     },
     {
       "id": 31,
       "level": "basic",
       "question": "App Health trong ArgoCD UI có những trạng thái nào?",
-      "options": ["Online / Offline / Error", "Healthy / Degraded / Progressing / Suspended / Missing / Unknown", "Running / Stopped / Pending", "Active / Inactive / Failed"],
-      "answer": 1,
+      "options": [
+        "Active / Inactive / Failed",
+        "Running / Stopped / Pending",
+        "Online / Offline / Error",
+        "Healthy / Degraded / Progressing / Suspended / Missing / Unknown"
+      ],
+      "answer": 3,
       "explanation": "ArgoCD UI hiển thị App Health với 6 trạng thái: Healthy (chạy tốt), Degraded (có vấn đề), Progressing (đang update), Suspended (bị pause), Missing (resource không tồn tại), Unknown (không xác định được)."
     },
     {
       "id": 32,
       "level": "basic",
       "question": "Trong ArgoCD Project, có thể restrict những gì khi nhiều teams dùng chung?",
-      "options": ["Chỉ restrict số lượng Applications", "Trusted git repos, specific clusters/namespaces, và specific resource types (Deployments, StatefulSets...)", "Chỉ restrict namespaces", "Không thể restrict gì"],
+      "options": [
+        "Chỉ restrict số lượng Applications",
+        "Trusted git repos, specific clusters/namespaces, và specific resource types (Deployments, StatefulSets...)",
+        "Không thể restrict gì",
+        "Chỉ restrict namespaces"
+      ],
       "answer": 1,
       "explanation": "ArgoCD Project cho phép restrict: 1) Only allow specific sources (trusted git repos), 2) Apps chỉ được deploy vào specific clusters và namespaces, 3) Only allow specific resources (Deployments, StatefulSets...). Đây là cơ chế multi-tenancy của ArgoCD."
     },
@@ -287,7 +447,12 @@
       "id": 33,
       "level": "intermediate",
       "question": "Application Controller trong ArgoCD communicate với những thành phần nào?",
-      "options": ["Chỉ communicate với Repo Server", "Communicate với Repo Server (get manifests) VÀ k8s API (get actual state) VÀ deploy apps", "Chỉ communicate với k8s API", "Communicate trực tiếp với Git"],
+      "options": [
+        "Chỉ communicate với Repo Server",
+        "Communicate với Repo Server (get manifests) VÀ k8s API (get actual state) VÀ deploy apps",
+        "Communicate trực tiếp với Git",
+        "Chỉ communicate với k8s API"
+      ],
       "answer": 1,
       "explanation": "Slide: Application Controller: 1) Communicate với Repo Server để get generated manifests, 2) Communicate với k8s API để get actual cluster state, 3) Deploy app manifests to destination clusters, 4) Detect OutOfSync và take corrective actions."
     },
@@ -295,17 +460,222 @@
       "id": 34,
       "level": "intermediate",
       "question": "Hai Privilege Options khi cài ArgoCD là gì?",
-      "options": ["Admin và User privileges", "Cluster-admin privileges (deploy vào cluster ArgoCD đang chạy) và Namespace level privileges (không deploy vào cùng cluster)", "Read-only và Write privileges", "Internal và External privileges"],
-      "answer": 1,
+      "options": [
+        "Cluster-admin privileges (deploy vào cluster ArgoCD đang chạy) và Namespace level privileges (không deploy vào cùng cluster)",
+        "Internal và External privileges",
+        "Admin và User privileges",
+        "Read-only và Write privileges"
+      ],
+      "answer": 0,
       "explanation": "Slide: Cluster-admin privileges — ArgoCD có cluster-admin access để deploy vào chính cluster nó chạy. Namespace level privileges — dùng khi không cần ArgoCD deploy applications vào cùng cluster mà ArgoCD runs in."
     },
     {
       "id": 35,
       "level": "intermediate",
       "question": "Light installation 'Core' của ArgoCD phù hợp cho trường hợp nào?",
-      "options": ["Production với high traffic", "Khi ArgoCD chỉ được dùng bởi administrators — UI và API Server không được install cho end users", "Multi-team environments", "Development với nhiều developers"],
-      "answer": 1,
+      "options": [
+        "Development với nhiều developers",
+        "Production với high traffic",
+        "Khi ArgoCD chỉ được dùng bởi administrators — UI và API Server không được install cho end users",
+        "Multi-team environments"
+      ],
+      "answer": 2,
       "explanation": "Slide: Light installation 'Core' — suitable if ArgoCD is used by administrators only. UI and API server is NOT installed for end users. By default installed as Non-HA. Phù hợp khi chỉ cần ArgoCD core functionality không cần Web UI cho end users."
+    },
+    {
+      "id": 36,
+      "level": "basic",
+      "question": "ArgoCD tự động refresh (poll) trạng thái của Git repository theo chu kỳ bao lâu?",
+      "options": [
+        "Mỗi 3 phút (180 giây) theo mặc định",
+        "Mỗi 1 giờ",
+        "Mỗi 30 giây",
+        "Mỗi 10 phút"
+      ],
+      "answer": 0,
+      "explanation": "ArgoCD Repo Server poll Git repository mỗi 3 phút (mặc định) để phát hiện thay đổi mới. Có thể giảm xuống bằng cách config 'timeout.reconciliation' hoặc dùng Git webhook để trigger refresh ngay lập tức khi có push (cách tốt hơn cho production). Giá trị mặc định 3 phút là balance giữa freshness và rate limiting."
+    },
+    {
+      "id": 37,
+      "level": "intermediate",
+      "question": "Sự khác biệt giữa ArgoCD Auto-Sync mode và Manual Sync mode là gì?",
+      "options": [
+        "Auto-Sync: ArgoCD tự động apply changes từ Git vào cluster khi phát hiện OutOfSync; Manual Sync: chỉ apply khi người dùng chủ động click Sync hoặc chạy CLI",
+        "Auto-Sync chỉ hoạt động với Helm charts",
+        "Hai mode hoàn toàn giống nhau, chỉ khác tên",
+        "Manual Sync nhanh hơn Auto-Sync"
+      ],
+      "answer": 0,
+      "explanation": "Manual Sync (mặc định): ArgoCD phát hiện OutOfSync và hiển thị UI, nhưng không tự apply — người dùng phải chủ động trigger sync. Auto-Sync: ArgoCD tự động chạy 'argocd app sync' khi phát hiện Git có thay đổi. Phù hợp với GitOps thuần túy nhưng cần cẩn thận — thường kết hợp với self-heal và automated pruning."
+    },
+    {
+      "id": 38,
+      "level": "intermediate",
+      "question": "ArgoCD Self-Heal mode bảo vệ cluster như thế nào?",
+      "options": [
+        "Self-Heal phát hiện khi ai đó thay đổi cluster state ngoài Git (kubectl apply/edit trực tiếp) và tự động revert về đúng trạng thái Git — enforcing Git as single source of truth",
+        "Self-Heal tự động fix lỗi trong Git repository",
+        "Self-Heal backup cluster state mỗi giờ",
+        "Self-Heal chỉ hoạt động khi ArgoCD bị crash"
+      ],
+      "answer": 0,
+      "explanation": "Self-Heal là cơ chế quan trọng trong GitOps: khi ai đó thay đổi cluster trực tiếp bằng kubectl (bypass GitOps), ArgoCD phát hiện OutOfSync và tự động revert về trạng thái được định nghĩa trong Git. Ví dụ: ai đó scale Deployment lên 10 replicas bằng kubectl, Self-Heal sẽ scale lại về đúng giá trị trong Git manifest. Cần bật cùng với Auto-Sync."
+    },
+    {
+      "id": 39,
+      "level": "advanced",
+      "question": "ArgoCD Sync Waves được dùng để làm gì và cách sử dụng như thế nào?",
+      "options": [
+        "Sync Waves cho phép kiểm soát thứ tự deploy các resources — annotate resource với 'argocd.argoproj.io/sync-wave: \"N\"', wave thấp hơn deploy trước, ArgoCD chờ resource healthy trước khi chuyển sang wave tiếp theo",
+        "Sync Waves là tên của Auto-Sync feature",
+        "Sync Waves là cách đặt tên branch trong GitOps",
+        "Sync Waves chỉ dùng được với Helm charts"
+      ],
+      "answer": 0,
+      "explanation": "Sync Waves giải quyết dependency ordering khi deploy: ví dụ CRD phải được tạo trước Custom Resources, Database trước Application. Annotation: 'argocd.argoproj.io/sync-wave: \"0\"' cho CRDs, '\"1\"' cho Database, '\"2\"' cho App. Giá trị âm cũng hợp lệ (chạy trước wave 0). ArgoCD đợi tất cả resources trong wave N trở thành Healthy/Synced trước khi bắt đầu wave N+1."
+    },
+    {
+      "id": 40,
+      "level": "advanced",
+      "question": "App of Apps pattern trong ArgoCD là gì và giải quyết vấn đề gì?",
+      "options": [
+        "App of Apps là pattern để tạo nhiều clusters",
+        "App of Apps là tên của ArgoCD UI dashboard",
+        "Một ArgoCD Application quản lý nhiều Application khác — root app trỏ đến Git folder chứa Application manifests, tự động tạo/sync child apps. Giải quyết việc quản lý nhiều applications theo GitOps",
+        "App of Apps chỉ hoạt động với ApplicationSet"
+      ],
+      "answer": 2,
+      "explanation": "App of Apps: tạo một 'root' Application trỏ đến Git directory chứa Application YAML files. Khi thêm Application YAML mới vào Git folder đó, root app detect và tạo child application tự động. Lợi ích: bootstrap toàn bộ cluster từ một Application duy nhất, manage all apps as code in Git, không cần click UI tạo từng app. Precursor của ApplicationSet — giải pháp đơn giản hơn."
+    },
+    {
+      "id": 41,
+      "level": "intermediate",
+      "question": "ApplicationSet Controller trong ArgoCD có mục đích gì?",
+      "options": [
+        "Tự động tạo nhiều ArgoCD Applications từ một template — ví dụ: deploy cùng app vào nhiều clusters, hoặc tạo app cho mỗi branch/PR tự động",
+        "Quản lý Helm repositories",
+        "Thay thế Application Controller",
+        "Monitor cluster health"
+      ],
+      "answer": 2,
+      "explanation": "ApplicationSet Controller cho phép define một ApplicationSet resource với template và generators. Generators: List (từ danh sách cố định), Cluster (tất cả clusters đăng ký), Git (từ folders/files trong Git), Matrix (kết hợp generators), PullRequest (từ open PRs). Ví dụ: tạo Application cho mỗi cluster trong fleet, hoặc preview environment cho mỗi PR tự động."
+    },
+    {
+      "id": 42,
+      "level": "advanced",
+      "question": "ArgoCD quản lý multi-cluster như thế nào?",
+      "options": [
+        "ArgoCD chỉ quản lý được 1 cluster duy nhất",
+        "Phải cài ArgoCD riêng cho mỗi cluster",
+        "Dùng federation API của Kubernetes",
+        "Đăng ký external clusters bằng 'argocd cluster add <context>' — ArgoCD lưu kubeconfig credentials, mỗi Application chỉ định destination cluster URL, một ArgoCD instance có thể deploy vào nhiều clusters"
+      ],
+      "answer": 3,
+      "explanation": "ArgoCD hỗ trợ multi-cluster: dùng 'argocd cluster add <kubectl-context>' để đăng ký cluster (lưu ServiceAccount token trong Kubernetes Secret). Mỗi Application có 'destination.server' chỉ định cluster URL (hoặc 'in-cluster' cho cluster ArgoCD chạy). Một ArgoCD instance = control plane quản lý toàn bộ fleet. Application Controller connect tới từng cluster riêng để sync."
+    },
+    {
+      "id": 43,
+      "level": "intermediate",
+      "question": "Dex trong ArgoCD đóng vai trò gì?",
+      "options": [
+        "Dex là OpenID Connect identity provider — cho phép ArgoCD tích hợp SSO với GitHub, GitLab, LDAP, SAML, Google, Microsoft... thay vì quản lý users riêng",
+        "Dex là Helm chart manager",
+        "Dex là database của ArgoCD",
+        "Dex là load balancer cho ArgoCD"
+      ],
+      "answer": 0,
+      "explanation": "Dex (dexidp/dex) là embedded OIDC provider trong ArgoCD. Khi login ArgoCD UI, Dex redirect sang identity provider (GitHub OAuth App, GitLab, LDAP, SAML IdP...) để authenticate. Sau khi authenticate, Dex issue OIDC token cho ArgoCD. Cho phép dùng existing corporate identity (SSO) thay vì tạo ArgoCD-specific accounts. Cấu hình trong argocd-cm ConfigMap."
+    },
+    {
+      "id": 44,
+      "level": "basic",
+      "question": "Redis được dùng để làm gì trong kiến trúc ArgoCD?",
+      "options": [
+        "Redis xử lý Git webhooks",
+        "Redis là in-memory cache — lưu cached application state, generated manifests, cluster resources để giảm tải cho API Server và Repo Server",
+        "Redis là primary database lưu Application state",
+        "Redis quản lý user sessions cho UI"
+      ],
+      "answer": 1,
+      "explanation": "Redis trong ArgoCD là caching layer: lưu cluster state (để Application Controller không phải liên tục query k8s API), cached rendered manifests (để Repo Server không phải re-render Helm/Kustomize mỗi lần), repository metadata. Giúp cải thiện performance đáng kể. Trong HA mode, Redis chạy dưới dạng Redis Sentinel hoặc Redis Cluster để đảm bảo high availability."
+    },
+    {
+      "id": 45,
+      "level": "advanced",
+      "question": "Tại sao GitOps best practice khuyến nghị tách biệt App Repository và Config Repository?",
+      "options": [
+        "Config repo chỉ dùng cho Helm charts",
+        "App repo chứa source code (trigger CI), Config repo chứa K8s manifests (trigger CD) — tách biệt để: CI không trigger CD không cần thiết, audit trail rõ ràng, khác nhau về access control, tránh commit loops",
+        "App repo không được dùng với ArgoCD",
+        "Không cần tách, dùng một repo là đủ"
+      ],
+      "answer": 1,
+      "explanation": "Tách App Repo (source code + CI) và Config Repo (K8s manifests + CD): (1) Separation of concerns: code change ≠ config change, (2) CI pipeline cập nhật image tag trong Config repo, ArgoCD watch Config repo, (3) Audit trail: mọi deployment change được track qua Git commits trong Config repo, (4) Access control: developers có thể đọc Config repo nhưng chỉ CI/CD có thể write, (5) Tránh chicken-and-egg: không cần build code để deploy."
+    },
+    {
+      "id": 46,
+      "level": "intermediate",
+      "question": "ArgoCD Resource Hooks (PreSync, Sync, PostSync, SyncFail) được dùng như thế nào?",
+      "options": [
+        "Hooks chỉ dùng được với Helm charts",
+        "Hooks thay thế Sync Waves",
+        "Hooks chỉ chạy trong Auto-Sync mode",
+        "Hooks là Kubernetes Jobs/resources được annotate với 'argocd.argoproj.io/hook: PreSync/Sync/PostSync/SyncFail' — chạy tại các giai đoạn khác nhau của sync process cho database migrations, smoke tests, notifications"
+      ],
+      "answer": 3,
+      "explanation": "ArgoCD Resource Hooks: PreSync — chạy trước khi apply manifests (ví dụ: database schema migration, backup), Sync — chạy đồng thời với apply manifests (custom sync logic), PostSync — chạy sau khi tất cả resources Healthy (ví dụ: smoke test, send Slack notification), SyncFail — chạy khi sync thất bại (send alert, rollback). Hooks thường là Kubernetes Jobs, bị delete sau khi chạy xong (hook deletion policy)."
+    },
+    {
+      "id": 47,
+      "level": "intermediate",
+      "question": "Ba Installation Types của ArgoCD là gì và khác nhau như thế nào?",
+      "options": [
+        "Non-HA (mặc định, single instance mỗi component), HA (nhiều replicas, Redis Sentinel, dành cho production), Core (chỉ core components, không có UI/API Server, dành cho admins)",
+        "Community, Professional, Enterprise",
+        "Dev, Staging, Production",
+        "Minimal, Standard, Enterprise"
+      ],
+      "answer": 0,
+      "explanation": "ArgoCD có 3 installation types: (1) Non-HA — install.yaml, single replica cho mỗi component, phù hợp dev/test, (2) HA — install-ha.yaml, multiple replicas cho Application Controller, Repo Server, Redis Sentinel, phù hợp production với high availability, (3) Core — core-install.yaml, chỉ Application Controller và Repo Server, không có UI/API Server/Dex/Redis. Slide đề cập: Non-HA là mặc định, Core phù hợp administrators only."
+    },
+    {
+      "id": 48,
+      "level": "advanced",
+      "question": "Trong GitOps, tại sao 'git revert' được ưa dùng hơn 'git reset' khi rollback trên shared branch?",
+      "options": [
+        "git revert tạo commit mới đảo ngược thay đổi — không rewrite history, an toàn với shared branches. git reset xóa commits khỏi history — gây diverge cho người khác đang based trên đó, vi phạm nguyên tắc GitOps",
+        "Hai lệnh hoàn toàn tương đương trong GitOps context",
+        "git reset được ưa dùng hơn trong GitOps",
+        "git revert chậm hơn nhưng an toàn hơn cho single-developer workflow"
+      ],
+      "answer": 0,
+      "explanation": "GitOps rollback qua git revert: tạo commit mới với nội dung ngược lại, push lên Git → ArgoCD phát hiện change → sync cluster về trạng thái cũ. Toàn bộ audit trail được preserved. git reset --hard sẽ xóa commits khỏi history → nếu push cần --force → vi phạm GitOps immutable history principle → người khác bị conflict. Trong GitOps, mọi change (kể cả rollback) phải là forward commit."
+    },
+    {
+      "id": 49,
+      "level": "advanced",
+      "question": "ArgoCD Repo Server có nhiệm vụ gì trong quá trình sync?",
+      "options": [
+        "Repo Server chỉ xử lý Helm charts",
+        "Repo Server deploy manifests vào cluster",
+        "Repo Server clone Git repository, render manifests từ nguồn (Helm template, Kustomize build, plain YAML), cache kết quả — cung cấp generated manifests cho Application Controller để so sánh và apply",
+        "Repo Server lưu trữ Git credentials và không làm gì khác"
+      ],
+      "answer": 2,
+      "explanation": "Repo Server là stateless service xử lý Git operations: (1) Clone/fetch Git repo (hoặc Helm repo, OCI registry), (2) Render manifests: chạy 'helm template', 'kustomize build', hoặc đọc plain YAML/Jsonnet, (3) Cache rendered manifests vào Redis, (4) Trả về generated manifests cho Application Controller theo request. Repo Server không biết về cluster state — chỉ biết về Git state. Có thể scale horizontally."
+    },
+    {
+      "id": 50,
+      "level": "advanced",
+      "question": "ApplicationSet với PullRequest generator cho phép làm gì trong CI/CD workflow?",
+      "options": [
+        "PullRequest generator tạo PR tự động trên Git",
+        "Tự động tạo preview/ephemeral ArgoCD Application cho mỗi open Pull Request — deploy isolated environment với code của PR để review/test, tự động xóa khi PR được merge hoặc close",
+        "PullRequest generator chỉ hoạt động với GitHub",
+        "PullRequest generator chỉ list các closed PRs"
+      ],
+      "answer": 1,
+      "explanation": "ApplicationSet PullRequest generator watch Git provider API (GitHub, GitLab, Bitbucket) để list open PRs. Với mỗi PR, tự động tạo ArgoCD Application deploy vào namespace riêng (ví dụ: preview-pr-123) với image/config của PR branch đó. Khi PR merge/close, Application tự động bị xóa. Dùng case: preview environments, automated integration testing per PR, demo for reviewers — không cần manual setup."
     }
   ]
 }

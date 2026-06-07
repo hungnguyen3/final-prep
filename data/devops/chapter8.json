@@ -285,6 +285,266 @@
       ],
       "answer": 1,
       "explanation": "'docker container inspect <id>' trả về config và metadata của container dưới dạng JSON array. Có thể dùng --format để lấy thông tin cụ thể, ví dụ: 'docker container inspect --format \"{{.NetworkSettings.IPAddress}}\" <id>' để lấy IP address của container."
+    },
+    {
+      "id": 23,
+      "level": "basic",
+      "question": "Lệnh 'docker info' hiển thị loại thông tin nào?",
+      "options": [
+        "Chỉ version của Docker client và daemon",
+        "Chỉ danh sách các images đang có trên máy",
+        "System-wide info: số containers (running/paused/stopped), số images, server version, storage driver, logging driver, network plugins",
+        "Chỉ trạng thái của Docker Swarm"
+      ],
+      "answer": 2,
+      "explanation": "'docker info' hiển thị system-wide information về Docker installation: số containers đang running/paused/stopped, tổng số images, server version, storage driver, logging driver, swarm state, network plugins. Khác với 'docker version' chỉ cho biết version của client/daemon."
+    },
+    {
+      "id": 24,
+      "level": "basic",
+      "question": "Docker lưu trữ images, containers, volumes và networks ở thư mục nào trên host?",
+      "options": [
+        "/etc/docker",
+        "/home/docker",
+        "/tmp/docker",
+        "/var/lib/docker"
+      ],
+      "answer": 3,
+      "explanation": "Docker home directory là /var/lib/docker — nơi lưu trữ tất cả data của Docker: subdirectories bao gồm containers/, image/, network/, overlay2/ (storage driver layers), volumes/. Đây là nơi Docker Daemon quản lý toàn bộ state của hệ thống."
+    },
+    {
+      "id": 25,
+      "level": "basic",
+      "question": "Lệnh nào dùng để đặt tên cho container khi chạy?",
+      "options": [
+        "docker run --label mycontainer nginx",
+        "docker run --tag mycontainer nginx",
+        "docker run --name mycontainer nginx",
+        "docker run --id mycontainer nginx"
+      ],
+      "answer": 2,
+      "explanation": "Flag '--name' dùng để đặt tên cho container khi chạy: 'docker run --detach -p 8080:80 --name webhost nginx'. Nếu không đặt tên, Docker sẽ tự sinh tên ngẫu nhiên. Tên container dùng được trong các lệnh quản lý như docker stop, docker logs, docker rm."
+    },
+    {
+      "id": 26,
+      "level": "basic",
+      "question": "Lệnh 'docker container logs -f <name>' dùng để làm gì?",
+      "options": [
+        "Xóa logs của container",
+        "Xem logs một lần rồi thoát",
+        "Follow logs của container trong realtime (tương tự tail -f)",
+        "Lưu logs ra file"
+      ],
+      "answer": 2,
+      "explanation": "Flag '-f' (follow) trong 'docker container logs -f <name>' làm cho lệnh hiển thị logs liên tục theo realtime, không thoát — tương tự 'tail -f'. Không có flag '-f', lệnh sẽ chỉ in logs hiện có rồi exit."
+    },
+    {
+      "id": 27,
+      "level": "basic",
+      "question": "Lệnh nào dùng để xem các processes đang chạy bên trong một container?",
+      "options": [
+        "docker ps <container>",
+        "docker container stats <container>",
+        "docker inspect <container>",
+        "docker top <container>"
+      ],
+      "answer": 3,
+      "explanation": "'docker top <container>' liệt kê tất cả processes đang chạy bên trong container — tương tự lệnh 'top' trên Linux nhưng scoped cho container. Khác với 'docker container stats' hiển thị CPU/memory usage realtime."
+    },
+    {
+      "id": 28,
+      "level": "basic",
+      "question": "Điều gì xảy ra khi bạn thoát terminal của một container đang chạy ở foreground mode (không có -d)?",
+      "options": [
+        "Container tiếp tục chạy ở background",
+        "Container bị tạm dừng (paused)",
+        "Container bị kill khi thoát terminal",
+        "Container chuyển sang detached mode tự động"
+      ],
+      "answer": 2,
+      "explanation": "Khi chạy 'docker run [image]' không có flag -d, container chạy ở foreground với terminal attached. Khi thoát terminal, container bị kill. Để tránh điều này, dùng 'docker run -d [image]' (detached mode) — container chạy ở background, không bị ảnh hưởng khi đóng terminal."
+    },
+    {
+      "id": 29,
+      "level": "basic",
+      "question": "Harbor là gì trong hệ sinh thái Docker?",
+      "options": [
+        "Một loại container runtime thay thế Docker",
+        "On-premise private registry — cho phép tổ chức tự host Docker registry",
+        "Một công cụ orchestration như Kubernetes",
+        "Tên của Docker Daemon trên Windows"
+      ],
+      "answer": 1,
+      "explanation": "Harbor là on-premise private Docker registry — cho phép tổ chức tự host registry riêng thay vì dùng Docker Hub công khai. Ngoài Harbor, các cloud providers có registries riêng: AWS ECR, Google Container Registry, Azure ACR. Private registry phù hợp cho production khi cần bảo mật và kiểm soát."
+    },
+    {
+      "id": 30,
+      "level": "intermediate",
+      "question": "Thư mục /var/lib/docker chứa những subdirectory nào liên quan đến containers và storage?",
+      "options": [
+        "apps/, config/, logs/, temp/",
+        "containers/, image/, network/, overlay2/, volumes/",
+        "bin/, lib/, sbin/, usr/",
+        "data/, cache/, registry/, swarm/"
+      ],
+      "answer": 1,
+      "explanation": "/var/lib/docker là Docker home directory, chứa: containers/ (metadata mỗi container), image/ (image data), network/ (network configs), overlay2/ (Union FS layers khi dùng overlay2 storage driver), volumes/ (persistent volumes). Đây là nơi Docker Daemon lưu toàn bộ state."
+    },
+    {
+      "id": 31,
+      "level": "intermediate",
+      "question": "Lệnh 'docker image --help' liệt kê những subcommand nào?",
+      "options": [
+        "start, stop, restart, kill, rm",
+        "run, exec, attach, commit, diff",
+        "build, history, import, inspect, ls, prune, pull, push, rm, save, tag",
+        "create, deploy, scale, update, rollback"
+      ],
+      "answer": 2,
+      "explanation": "Theo theory, 'docker image --help' hiển thị tất cả image subcommands: build (tạo image từ Dockerfile), history (xem layers), import, inspect (xem metadata), ls (list images), prune (xóa unused images), pull (tải từ registry), push (đẩy lên registry), rm (xóa image), save (export ra file), tag (gán tag)."
+    },
+    {
+      "id": 32,
+      "level": "intermediate",
+      "question": "Sự khác biệt giữa 'docker run -d' và 'docker run' (không có -d) là gì?",
+      "options": [
+        "'-d' chạy container với quyền root; không có '-d' thì không có quyền root",
+        "'-d' (detached) chạy container ở background, terminal không bị block; không có '-d' thì chạy foreground, thoát terminal sẽ kill container",
+        "'-d' chạy container với resource limits; không có '-d' thì không giới hạn",
+        "Không có sự khác biệt, '-d' chỉ là alias"
+      ],
+      "answer": 1,
+      "explanation": "'docker run -d' (--detach) chạy container ở background (detached mode) — terminal được trả lại ngay, container tiếp tục chạy dù thoát terminal. 'docker run' không có -d chạy container ở foreground với terminal attached — thoát terminal sẽ kill container. Ví dụ: 'docker run --detach -p 8080:80 nginx'."
+    },
+    {
+      "id": 33,
+      "level": "intermediate",
+      "question": "Lệnh 'docker container stats <container>' cung cấp thông tin gì?",
+      "options": [
+        "Danh sách tất cả containers đang chạy trên host",
+        "Logs của container theo realtime",
+        "CPU và memory usage của container theo realtime",
+        "Network configuration của container"
+      ],
+      "answer": 2,
+      "explanation": "'docker container stats <container>' hiển thị CPU và memory usage của container theo realtime — tương tự 'top' nhưng cho metrics của container. Khác với 'docker top' (list processes), 'docker logs' (application logs), hoặc 'docker inspect' (metadata/config)."
+    },
+    {
+      "id": 34,
+      "level": "intermediate",
+      "question": "Cấu trúc Union File System của Docker image được xếp theo thứ tự nào từ dưới lên trên?",
+      "options": [
+        "Writeable Container → Base Image → bootfs → application layers",
+        "Base Image → bootfs → Add emacs → Add Apache → Writeable Container",
+        "bootfs → Base Image → các layers thêm vào (emacs, Apache...) → Writeable Container",
+        "Writeable Container → các layers → Base Image → bootfs"
+      ],
+      "answer": 2,
+      "explanation": "Cấu trúc Union FS từ dưới lên: 1) bootfs (kernel, cgroups, namespace, device mapper) — layer nền tảng thấp nhất; 2) Base Image (ví dụ Ubuntu); 3) Các layers thêm vào (ví dụ Add emacs, Add Apache); 4) Writeable Container (layer trên cùng, chỉ tồn tại khi container đang chạy). Chỉ Writeable Container là read-write; tất cả layers bên dưới là read-only."
+    },
+    {
+      "id": 35,
+      "level": "intermediate",
+      "question": "Lệnh nào cho phép lấy IP address của một container bằng cách dùng format template?",
+      "options": [
+        "docker container logs --format '{{.NetworkSettings.IPAddress}}' <id>",
+        "docker container inspect --format '{{.NetworkSettings.IPAddress}}' <id>",
+        "docker container stats --format '{{.NetworkSettings.IPAddress}}' <id>",
+        "docker container ip --format '{{.NetworkSettings.IPAddress}}' <id>"
+      ],
+      "answer": 1,
+      "explanation": "'docker container inspect --format '{{.NetworkSettings.IPAddress}}' <id>' sử dụng Go template format để extract chính xác trường IP address từ JSON output của 'docker container inspect'. Đây là cách tiện lợi để lấy thông tin cụ thể mà không cần parse toàn bộ JSON."
+    },
+    {
+      "id": 36,
+      "level": "intermediate",
+      "question": "Docker image naming convention dùng format nào?",
+      "options": [
+        "image-name:version (ví dụ: nginx:1.0)",
+        "username/image-name (ví dụ: library/ubuntu hoặc myuser/myapp)",
+        "registry/namespace/image:tag (chỉ dùng cho private registry)",
+        "image_name__username (dùng dấu gạch chân kép)"
+      ],
+      "answer": 1,
+      "explanation": "Theo theory, Docker image naming format là 'username/image-name'. Ví dụ: 'docker pull ubuntu:19.10' (official image không cần username prefix), hoặc 'myuser/myapp' cho user images. Images trên Docker Hub dùng format này để tổ chức repositories theo user/organization."
+    },
+    {
+      "id": 37,
+      "level": "intermediate",
+      "question": "Docker Registry được tổ chức như thế nào theo repositories?",
+      "options": [
+        "Mỗi image version được lưu trong một registry riêng biệt",
+        "Repository lưu chỉ một version duy nhất của image",
+        "Mỗi repository lưu tất cả versions của một image cụ thể; registry chứa nhiều repositories",
+        "Registry và repository là cùng một khái niệm, chỉ khác tên gọi"
+      ],
+      "answer": 2,
+      "explanation": "Docker Registry được tổ chức thành Docker repositories — mỗi repository lưu tất cả versions của một image cụ thể (ví dụ: repository 'nginx' lưu nginx:1.20, nginx:1.21, nginx:latest...). Registry chứa nhiều repositories. Mặc định, Docker engine tương tác với DockerHub (Docker's public registry instance)."
+    },
+    {
+      "id": 38,
+      "level": "advanced",
+      "question": "API Server trong Kubernetes Master Node đảm nhiệm những vai trò gì?",
+      "options": [
+        "Chỉ expose REST endpoint để kubectl kết nối",
+        "Validate và thực thi REST commands; đảm bảo etcd config khớp với deployed containers; là entry point cho mọi communication trong cluster",
+        "Chỉ quản lý authentication và authorization",
+        "Schedule containers lên worker nodes dựa trên resource availability"
+      ],
+      "answer": 1,
+      "explanation": "API Server là entry point chính của K8s cluster: validate và thực thi REST commands từ kubectl/external tools; đảm bảo config trong etcd khớp với deployed containers trên cluster; mọi communication trong cluster đều phải qua API Server. Không nên nhầm với Scheduler (phân phối workloads) hay Controller Manager (xử lý failures)."
+    },
+    {
+      "id": 39,
+      "level": "advanced",
+      "question": "Kube-proxy trên Worker Node có chức năng gì?",
+      "options": [
+        "Proxy requests từ internet vào Docker Hub",
+        "Giao tiếp với Master Node để nhận Pod Spec",
+        "Route network traffic theo network policies và maintain network rules trên nodes",
+        "Lưu trữ cluster state thay thế ETCD khi ETCD bị lỗi"
+      ],
+      "answer": 2,
+      "explanation": "Kube-proxy là network proxy chạy trên mỗi worker node: route network traffic theo network policies được định nghĩa cho Pods/Services; maintain network rules trên nodes để các Pods có thể communicate với nhau và với services bên ngoài. Khác với Kubelet (agent giao tiếp với Master, quản lý Pods)."
+    },
+    {
+      "id": 40,
+      "level": "advanced",
+      "question": "Lệnh 'docker history <image>' cho biết thông tin gì?",
+      "options": [
+        "Lịch sử các lệnh docker đã chạy trên host",
+        "Tất cả containers đã được tạo từ image đó",
+        "Tất cả các layers của image — mỗi layer tương ứng với một instruction trong Dockerfile",
+        "Lịch sử tag của image theo thời gian"
+      ],
+      "answer": 2,
+      "explanation": "'docker history <image>' hiển thị tất cả các layers tạo nên image đó — mỗi dòng là một layer tương ứng với một instruction trong Dockerfile (FROM, RUN, COPY, ADD...) cùng với size và thời gian tạo. Đây là công cụ quan trọng để debug image size và hiểu Union File System structure."
+    },
+    {
+      "id": 41,
+      "level": "advanced",
+      "question": "K3s sử dụng gì thay thế ETCD để lưu cluster state, và tại sao?",
+      "options": [
+        "MySQL — vì MySQL phổ biến hơn trong môi trường production",
+        "SQLite — vì nhẹ hơn, phù hợp với Edge devices có tài nguyên hạn chế",
+        "Redis — vì Redis có hiệu năng cao hơn ETCD",
+        "PostgreSQL — vì PostgreSQL hỗ trợ SQL queries phức tạp hơn"
+      ],
+      "answer": 1,
+      "explanation": "K3s dùng SQLite thay thế ETCD để giảm memory footprint và complexity — phù hợp với mục tiêu thiết kế của K3s cho Edge devices, IoT, ARM hardware với tài nguyên hạn chế. K3s được packaged as single binary (<100MB memory), dùng containerd thay Docker, inbuilt Traefik ingress. Fully compliant với Kubernetes API."
+    },
+    {
+      "id": 42,
+      "level": "advanced",
+      "question": "Hai lệnh kubectl nào dùng để kiểm tra trạng thái cơ bản của K8s cluster?",
+      "options": [
+        "kubectl status và kubectl health",
+        "kubectl version và kubectl nodes",
+        "kubectl cluster-info và kubectl get nodes",
+        "kubectl describe cluster và kubectl list nodes"
+      ],
+      "answer": 2,
+      "explanation": "Theo theory: 'kubectl cluster-info' — xem thông tin về cluster (địa chỉ API Server, CoreDNS...); 'kubectl get nodes' — liệt kê tất cả nodes trong cluster cùng với status (Ready/NotReady), roles, và version. Đây là hai lệnh cơ bản nhất để verify cluster hoạt động bình thường."
     }
   ]
 }

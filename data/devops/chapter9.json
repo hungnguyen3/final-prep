@@ -47,15 +47,25 @@
       "id": 1,
       "level": "basic",
       "question": "Infrastructure as Code (IaC) được định nghĩa như thế nào?",
-      "options": ["Viết code để tự động hóa testing", "Provisioning infrastructure through software to achieve consistent and predictable environments", "Quản lý source code của ứng dụng", "Tự động hóa deployment của containers"],
-      "answer": 1,
+      "options": [
+        "Provisioning infrastructure through software to achieve consistent and predictable environments",
+        "Viết code để tự động hóa testing",
+        "Quản lý source code của ứng dụng",
+        "Tự động hóa deployment của containers"
+      ],
+      "answer": 0,
       "explanation": "IaC = provisioning infrastructure through software. Mục tiêu: consistent (nhất quán) và predictable (dự đoán được) environments — tránh 'nó chạy trên máy tôi nhưng không chạy trên server'."
     },
     {
       "id": 2,
       "level": "basic",
       "question": "Terraform sử dụng ngôn ngữ cấu hình nào?",
-      "options": ["YAML", "JSON", "HCL (HashiCorp Configuration Language)", "XML"],
+      "options": [
+        "JSON",
+        "XML",
+        "HCL (HashiCorp Configuration Language)",
+        "YAML"
+      ],
       "answer": 2,
       "explanation": "Terraform dùng HCL (HashiCorp Configuration Language) — ngôn ngữ riêng của HashiCorp, dễ đọc hơn JSON/YAML. File Terraform có extension *.tf."
     },
@@ -63,7 +73,12 @@
       "id": 3,
       "level": "basic",
       "question": "Lệnh 'terraform plan' làm gì?",
-      "options": ["Xóa tất cả resources", "Tạo execution plan hiển thị những gì sẽ thay đổi mà không thực sự apply", "Apply các thay đổi lên cloud", "Download providers và plugins"],
+      "options": [
+        "Download providers và plugins",
+        "Tạo execution plan hiển thị những gì sẽ thay đổi mà không thực sự apply",
+        "Apply các thay đổi lên cloud",
+        "Xóa tất cả resources"
+      ],
       "answer": 1,
       "explanation": "'terraform plan' tạo execution plan — cho thấy (+) resources sẽ tạo, (-) sẽ xóa, (~) sẽ update mà không thực sự thực hiện thay đổi. Đây là bước review quan trọng trước khi apply."
     },
@@ -71,23 +86,38 @@
       "id": 4,
       "level": "basic",
       "question": "AWS CloudFormation được release lần đầu vào năm nào và có giá như thế nào?",
-      "options": ["2008, tính phí theo số resources", "2011, free (AWS Managed Service)", "2015, free tier có giới hạn", "2013, chỉ dành cho enterprise"],
-      "answer": 1,
+      "options": [
+        "2013, chỉ dành cho enterprise",
+        "2015, free tier có giới hạn",
+        "2011, free (AWS Managed Service)",
+        "2008, tính phí theo số resources"
+      ],
+      "answer": 2,
       "explanation": "AWS CloudFormation: initial release 2011, là AWS Managed Service, free (không tính phí cho CloudFormation, chỉ tính phí resources được tạo ra)."
     },
     {
       "id": 5,
       "level": "basic",
       "question": "Terraform State file (*.tfstate) dùng để làm gì?",
-      "options": ["Lưu source code của Terraform", "Lưu mapping giữa resources trong config và real-world resources", "Lưu provider credentials", "Cache các lần plan trước đó"],
-      "answer": 1,
+      "options": [
+        "Lưu mapping giữa resources trong config và real-world resources",
+        "Lưu provider credentials",
+        "Cache các lần plan trước đó",
+        "Lưu source code của Terraform"
+      ],
+      "answer": 0,
       "explanation": "Terraform State (*.tfstate) lưu mapping giữa resources được định nghĩa trong *.tf files và actual resources trên cloud. Đây là critical file — Terraform cần nó để biết what already exists và what needs to change."
     },
     {
       "id": 6,
       "level": "basic",
       "question": "Section nào là BẮT BUỘC trong CloudFormation template?",
-      "options": ["Parameters", "Outputs", "Resources", "Conditions"],
+      "options": [
+        "Outputs",
+        "Conditions",
+        "Resources",
+        "Parameters"
+      ],
       "answer": 2,
       "explanation": "Trong CloudFormation template, chỉ có section 'Resources' là bắt buộc — định nghĩa AWS resources cần tạo. Các sections khác (Parameters, Mappings, Conditions, Outputs, Metadata) là optional."
     },
@@ -95,7 +125,12 @@
       "id": 7,
       "level": "basic",
       "question": "Lệnh 'terraform init' làm gì?",
-      "options": ["Apply configuration lên cloud", "Khởi tạo working directory và download providers/plugins cần thiết", "Xóa toàn bộ infrastructure", "Validate syntax của *.tf files"],
+      "options": [
+        "Xóa toàn bộ infrastructure",
+        "Khởi tạo working directory và download providers/plugins cần thiết",
+        "Validate syntax của *.tf files",
+        "Apply configuration lên cloud"
+      ],
       "answer": 1,
       "explanation": "'terraform init' là lệnh đầu tiên cần chạy — khởi tạo working directory, download và install providers (aws, azurerm...) và modules được khai báo trong configuration."
     },
@@ -104,12 +139,12 @@
       "level": "intermediate",
       "question": "5 Core Concepts của IaC là gì?",
       "options": [
-        "Build, Test, Deploy, Monitor, Scale",
         "Defined in code, Stored in source control, Declarative/Imperative, Idempotent & consistent, Push or pull",
+        "Terraform, Ansible, Chef, Puppet, CloudFormation",
         "AWS, Azure, GCP, On-premise, Hybrid",
-        "Terraform, Ansible, Chef, Puppet, CloudFormation"
+        "Build, Test, Deploy, Monitor, Scale"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "5 Core Concepts của IaC: 1) Defined in code, 2) Stored in source control, 3) Declarative or Imperative, 4) Idempotent and consistent (chạy nhiều lần = same result), 5) Push or pull model."
     },
     {
@@ -117,12 +152,12 @@
       "level": "intermediate",
       "question": "Sự khác biệt về Multi-Cloud support giữa Terraform và CloudFormation?",
       "options": [
-        "Cả hai đều multi-cloud",
-        "Terraform: multi-cloud (AWS/Azure/GCP...); CloudFormation: chỉ AWS (locked-in)",
+        "Cả hai đều chỉ hỗ trợ AWS",
         "CloudFormation: multi-cloud; Terraform: chỉ AWS",
-        "Cả hai đều chỉ hỗ trợ AWS"
+        "Cả hai đều multi-cloud",
+        "Terraform: multi-cloud (AWS/Azure/GCP...); CloudFormation: chỉ AWS (locked-in)"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "CloudFormation là AWS-locked-in — chỉ dùng được với AWS. Terraform là multi-cloud: hỗ trợ AWS, Azure, GCP, DigitalOcean, và nhiều providers khác qua plugin architecture. Score MULTI-PLATFORM: Terraform 15/15, CloudFormation 0."
     },
     {
@@ -130,12 +165,12 @@
       "level": "intermediate",
       "question": "Terraform Architecture bao gồm những thành phần nào?",
       "options": [
-        "Client, Server, Database",
-        "Terraform Core ↔ Plugins (Providers + Provisioners) ↔ Upstream APIs, cùng với State file",
+        "Build, Test, Deploy pipeline",
         "Master Node, Worker Node, etcd",
-        "Build, Test, Deploy pipeline"
+        "Client, Server, Database",
+        "Terraform Core ↔ Plugins (Providers + Provisioners) ↔ Upstream APIs, cùng với State file"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Terraform Core giao tiếp với Plugins (Providers + Provisioners) qua RPC. Plugins dùng Golang client library gọi Upstream APIs (AWS/Azure/GCP) qua HTTPS. State file (*.tfstate) track current state."
     },
     {
@@ -144,11 +179,11 @@
       "question": "Trong Terraform, 'terraform destroy' làm gì?",
       "options": [
         "Xóa state file",
-        "Xóa tất cả resources được quản lý bởi Terraform configuration hiện tại",
+        "Uninstall Terraform providers",
         "Reset Terraform về trạng thái ban đầu",
-        "Uninstall Terraform providers"
+        "Xóa tất cả resources được quản lý bởi Terraform configuration hiện tại"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "'terraform destroy' xóa tất cả infrastructure resources được quản lý bởi Terraform working directory hiện tại. Rất hữu ích cho dev/test environments — có thể tear down toàn bộ infra bằng một lệnh."
     },
     {
@@ -156,12 +191,12 @@
       "level": "intermediate",
       "question": "CloudFormation Parameters section dùng để làm gì?",
       "options": [
-        "Define output values sau khi stack tạo xong",
-        "Input values cho template — ví dụ: instance type, environment name",
         "Lưu AWS credentials",
-        "Define điều kiện tạo resource"
+        "Define điều kiện tạo resource",
+        "Define output values sau khi stack tạo xong",
+        "Input values cho template — ví dụ: instance type, environment name"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Parameters section cho phép truyền input values vào CloudFormation template lúc deploy — ví dụ: EC2 instance type, environment (dev/prod), VPC CIDR. Giúp template reusable trong nhiều environments."
     },
     {
@@ -170,11 +205,11 @@
       "question": "Tại sao không nên dùng Ansible/Chef/Puppet để thay thế Terraform?",
       "options": [
         "Ansible/Chef/Puppet không support cloud",
-        "Họ được tạo cho configuration management — đừng mix với resource orchestration; học curve cao nếu dùng cho orchestration",
         "Họ không có open source version",
-        "Họ chỉ support Windows"
+        "Họ chỉ support Windows",
+        "Họ được tạo cho configuration management — đừng mix với resource orchestration; học curve cao nếu dùng cho orchestration"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Ansible, Chef, Puppet được tạo cho configuration management (configure servers, install software). Suggestion từ slides: 'don't try to mix configuration management and resource orchestration.' Dùng Terraform cho provisioning, Ansible cho configuration — kết hợp tốt hơn."
     },
     {
@@ -182,12 +217,12 @@
       "level": "advanced",
       "question": "Sự khác biệt về State Management giữa CloudFormation và Terraform?",
       "options": [
-        "Cả hai đều phải tự quản lý state",
-        "CloudFormation: tự quản lý state (no need to manage state yourself); Terraform: phải tự quản lý state (*.tfstate file)",
+        "Cả hai đều không có state management",
         "Terraform tự quản lý state; CloudFormation phải tự quản lý",
-        "Cả hai đều không có state management"
+        "Cả hai đều phải tự quản lý state",
+        "CloudFormation: tự quản lý state (no need to manage state yourself); Terraform: phải tự quản lý state (*.tfstate file)"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "CloudFormation: managed service, AWS tự quản lý state (không cần lo về state file). Terraform: phải tự quản lý state file (*.tfstate) — có thể lưu local hoặc remote (S3, Terraform Cloud). Corrupted state là một rủi ro với Terraform."
     },
     {
@@ -195,12 +230,12 @@
       "level": "advanced",
       "question": "Trong bảng so sánh ARM vs Terraform vs CloudFormation, Terraform đạt điểm cao nhất ở category nào?",
       "options": [
-        "Error Tracking và Audit",
         "Multi-Platform (15/15) và Configuration Language (12/15)",
-        "Tooling Support và Tracking Capabilities",
-        "Exceptions và Audit"
+        "Exceptions và Audit",
+        "Error Tracking và Audit",
+        "Tooling Support và Tracking Capabilities"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Theo bảng điểm từ slides: MULTI-PLATFORM: Terraform 15/15 (ARM và CloudFormation đều 0). CONFIGURATION LANGUAGE: Terraform 12/15 (cao nhất). MODULARITY: Terraform 12/15 (cao nhất). Đây là điểm mạnh cốt lõi của Terraform."
     },
     {
@@ -210,8 +245,8 @@
       "options": [
         "CloudFormation chỉ import được EC2 instances",
         "CloudFormation KHÔNG thể manage resources được tạo ngoài CloudFormation — trong khi Terraform hỗ trợ import và manage bất kỳ existing resources nào",
-        "CloudFormation import chậm hơn Terraform",
-        "CloudFormation chỉ import được với JSON format"
+        "CloudFormation chỉ import được với JSON format",
+        "CloudFormation import chậm hơn Terraform"
       ],
       "answer": 1,
       "explanation": "Từ comparison table: CloudFormation 'cannot be used to manage resources created outside of CloudFormation.' Terraform hỗ trợ 'terraform import' để import và manage resources được tạo bên ngoài Terraform — rất hữu ích khi migrate existing infrastructure."
@@ -221,12 +256,12 @@
       "level": "advanced",
       "question": "Terraform 'terraform plan' có lợi thế gì so với CloudFormation Change Sets?",
       "options": [
-        "terraform plan nhanh hơn Change Sets",
         "terraform plan cung cấp very detailed overview của EXACTLY những gì sẽ modify — trong khi CloudFormation Change Sets ít detail hơn",
-        "terraform plan tự động apply sau khi review",
-        "Change Sets tốt hơn terraform plan"
+        "terraform plan nhanh hơn Change Sets",
+        "Change Sets tốt hơn terraform plan",
+        "terraform plan tự động apply sau khi review"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Từ comparison: 'Terraform provides a command named plan, which gives a very detailed overview of what will be modified if you apply your blueprint.' CloudFormation có Change Sets nhưng ít granular hơn. terraform plan hiển thị chính xác từng resource sẽ create/update/delete."
     },
     {
@@ -235,11 +270,11 @@
       "question": "Terraform có 3 loại Variables. Đâu là 3 loại đó?",
       "options": [
         "Global, Local, Module",
+        "String, Number, Boolean",
         "Static, Dynamic, Computed",
-        "Input Variables, Output Values, Local Values",
-        "String, Number, Boolean"
+        "Input Variables, Output Values, Local Values"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "3 loại Terraform Variables: 1) Input Variables — serve as parameters for a module, allowing customization without altering source code; 2) Output Values — like return values, expose specific values for other modules or display after apply; 3) Local Values — assign a name to an expression for reuse within a module."
     },
     {
@@ -247,12 +282,12 @@
       "level": "intermediate",
       "question": "Trong Terraform Variable Precedence, nguồn nào có độ ưu tiên CAO NHẤT?",
       "options": [
+        "variables.tf default values",
         "terraform.tfvars file",
         "Environment variables (TF_VAR_<variable>)",
-        "Command line flag (-var='my_var=value')",
-        "variables.tf default values"
+        "Command line flag (-var='my_var=value')"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Variable Precedence từ cao xuống thấp: 1) Command line (-var='my_var=value') — CAO NHẤT, 2) *.auto.tfvars.* files, 3) terraform.tfvars.json, 4) terraform.tfvars, 5) Environment variables (TF_VAR_), 6) variables.tf defaults — THẤP NHẤT. Command line luôn override mọi nguồn khác."
     },
     {
@@ -261,11 +296,11 @@
       "question": "Argument 'sensitive' trong Terraform variable block có tác dụng gì?",
       "options": [
         "Mã hóa giá trị biến trong state file",
+        "Đánh dấu biến là bắt buộc phải có giá trị",
         "Cho phép biến nhận nhiều giá trị cùng lúc",
-        "Limits Terraform UI output khi biến được dùng trong configuration — ẩn giá trị khỏi terminal logs",
-        "Đánh dấu biến là bắt buộc phải có giá trị"
+        "Limits Terraform UI output khi biến được dùng trong configuration — ẩn giá trị khỏi terminal logs"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "'sensitive = true' limits Terraform UI output khi variable được sử dụng trong configuration — giá trị sẽ không được hiển thị trong terminal logs/plan output. Dùng cho passwords, API keys, tokens. Lưu ý: giá trị vẫn được lưu trong state file, không tự động mã hóa."
     },
     {
@@ -273,12 +308,12 @@
       "level": "intermediate",
       "question": "Input Variables trong Terraform: khi nào dùng CLI options vs module block để set values?",
       "options": [
-        "CLI options cho cả root và child modules",
         "Module block cho cả root và child modules",
-        "Root module → set values bằng CLI options/environment variables; Child modules → calling module passes values trong module block",
-        "Không có sự khác biệt — cả hai cách đều dùng được cho bất kỳ module nào"
+        "CLI options cho cả root và child modules",
+        "Không có sự khác biệt — cả hai cách đều dùng được cho bất kỳ module nào",
+        "Root module → set values bằng CLI options/environment variables; Child modules → calling module passes values trong module block"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Input Variables serve as parameters allowing customization without altering source code. Quy tắc: khi declared trong ROOT module → set values qua CLI (-var flag) hoặc environment variables (TF_VAR_). Khi declared trong CHILD modules → calling module phải pass values trong module block. Đây là cách Terraform modules được shared giữa different configurations."
     },
     {
@@ -286,12 +321,12 @@
       "level": "basic",
       "question": "Argument 'default' trong Terraform variable block có tác dụng gì?",
       "options": [
-        "Bắt buộc người dùng phải nhập giá trị",
         "Chỉ cho phép dùng với String type",
         "Làm cho variable trở thành optional — nếu không có giá trị nào được cung cấp thì dùng default",
+        "Bắt buộc người dùng phải nhập giá trị",
         "Giới hạn giá trị chỉ là số nguyên"
       ],
-      "answer": 2,
+      "answer": 1,
       "explanation": "Argument 'default' trong variable block làm cho biến trở thành optional. Nếu không có giá trị nào được cung cấp qua CLI, tfvars, hay environment variable, Terraform sẽ dùng giá trị default. Ví dụ: default = \"10.0.0.0/16\". Khuyến nghị: set default khi practical."
     },
     {
@@ -325,12 +360,12 @@
       "level": "basic",
       "question": "Để tham chiếu đến phần tử đầu tiên của một List variable 'users' trong Terraform, cú pháp nào đúng?",
       "options": [
-        "var.users.first",
         "users[0]",
         "\"${var.users[0]}\"",
+        "var.users.first",
         "var[users][0]"
       ],
-      "answer": 2,
+      "answer": 1,
       "explanation": "List variable được truy cập bằng index notation: \"${var.users[0]}\" cho phần tử đầu tiên. Ví dụ: variable \"users\" { type = list; default = [\"root\", \"user1\", \"user2\"] }. Tham chiếu: name = \"${var.users[0]}\" trả về \"root\"."
     },
     {
@@ -338,12 +373,12 @@
       "level": "basic",
       "question": "File 'terraform.tfvars' dùng để làm gì?",
       "options": [
+        "Dedicated file để gán giá trị cho variables",
         "Lưu Terraform provider credentials",
         "Định nghĩa resource blocks",
-        "Dedicated file để gán giá trị cho variables",
         "Lưu Terraform state"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "terraform.tfvars là dedicated file để gán giá trị cho variables — tách biệt variable values khỏi variable definitions (variables.tf). Ví dụ nội dung: reponame = \"my-ecr-repo\". Terraform tự động load file này. Có thể override bằng *.auto.tfvars hoặc CLI flags."
     },
     {
@@ -377,10 +412,10 @@
       "level": "intermediate",
       "question": "Có bao nhiêu loại Input Variable types trong Terraform?",
       "options": [
-        "3 loại: String, Number, Boolean",
+        "4 loại: String, Integer, Float, Array",
         "5 loại: String, Number, List, Map, Boolean",
         "8 loại: String, Number, List, Map, Boolean, Set, Object, Tuple",
-        "4 loại: String, Integer, Float, Array"
+        "3 loại: String, Number, Boolean"
       ],
       "answer": 2,
       "explanation": "Terraform hỗ trợ 8 Input Variable types: String, Number, List, Map, Boolean, Set, Object, Tuple. Primitive types: String, Number, Boolean. Collection types: List, Map, Set. Structural types: Object, Tuple. Đây là full set của supported types."
@@ -390,10 +425,10 @@
       "level": "intermediate",
       "question": "Pattern TF_VAR_<variable> dùng để làm gì trong Terraform?",
       "options": [
-        "Đặt tên cho Terraform state file",
+        "Định nghĩa provider configuration",
         "Khai báo variable trong code",
         "Set giá trị variable thông qua environment variables",
-        "Định nghĩa provider configuration"
+        "Đặt tên cho Terraform state file"
       ],
       "answer": 2,
       "explanation": "TF_VAR_<variable> là pattern để set Terraform variable values thông qua environment variables của OS. Ví dụ: export TF_VAR_reponame=\"my-repo\" sẽ set biến 'reponame'. Độ ưu tiên thứ 5 (từ cao xuống thấp). Ưu điểm: 'easy to set, see, and change' — không cần sửa file."
@@ -403,12 +438,12 @@
       "level": "intermediate",
       "question": "Output Values trong Terraform là gì và dùng để làm gì?",
       "options": [
-        "Log file của Terraform execution",
-        "Giống return values — expose specific values cho other modules hoặc hiển thị sau khi apply",
+        "Cấu hình provider outputs",
         "Backup của state file",
-        "Cấu hình provider outputs"
+        "Giống return values — expose specific values cho other modules hoặc hiển thị sau khi apply",
+        "Log file của Terraform execution"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "Output Values là một trong 3 loại Terraform variables. Giống như return values: expose specific values từ module để 1) other modules có thể reference, 2) người dùng thấy sau terraform apply. Ví dụ: output instance_ip { value = aws_instance.web.public_ip }."
     },
     {
@@ -416,12 +451,12 @@
       "level": "intermediate",
       "question": "Local Values trong Terraform là gì?",
       "options": [
-        "Variables chỉ dùng được trong local machine, không dùng được trong CI/CD",
         "Assign a name to an expression for reuse within a module",
+        "Variable không có type constraint",
         "Variable được lưu trong local state thay vì remote state",
-        "Variable không có type constraint"
+        "Variables chỉ dùng được trong local machine, không dùng được trong CI/CD"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Local Values (locals) assign a name to an expression for reuse within a module. Giống như local variable trong programming. Khai báo với block 'locals': locals { common_tags = { env = \"prod\" } }. Reference: local.common_tags. Giảm repetition — chỉ thay đổi một chỗ."
     },
     {
@@ -429,12 +464,12 @@
       "level": "intermediate",
       "question": "Terraform Modules là gì và mang lại lợi ích gì?",
       "options": [
-        "Plugin để kết nối Terraform với cloud providers",
-        "Reusable, encapsulated infrastructure components — giúp tái sử dụng và chia sẻ infrastructure code",
+        "Cách để chia nhỏ state file",
         "Tính năng trả phí của Terraform Enterprise",
-        "Cách để chia nhỏ state file"
+        "Reusable, encapsulated infrastructure components — giúp tái sử dụng và chia sẻ infrastructure code",
+        "Plugin để kết nối Terraform với cloud providers"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "Terraform Modules là reusable, encapsulated infrastructure components — tương tự functions trong programming. Modules: 1) Tái sử dụng code, 2) Chia sẻ giữa teams, 3) Đóng gói complexity. So sánh với CloudFormation: Terraform dùng Modules, CloudFormation dùng Nested Stacks. Modules có thể lấy từ Terraform Registry."
     },
     {
@@ -442,10 +477,10 @@
       "level": "intermediate",
       "question": "Number variable trong Terraform được tham chiếu trong resource block như thế nào?",
       "options": [
-        "count = numofusers",
         "count = var[numofusers]",
+        "count = input.numofusers",
         "count = \"${var.numofusers}\"",
-        "count = input.numofusers"
+        "count = numofusers"
       ],
       "answer": 2,
       "explanation": "Number variable được tham chiếu dùng interpolation syntax: count = \"${var.numofusers}\". Ví dụ đầy đủ: variable \"numofusers\" { type = number; default = 3 }. Trong resource: count = \"${var.numofusers}\" — sẽ tạo 3 copies của resource đó."
@@ -455,12 +490,12 @@
       "level": "intermediate",
       "question": "CloudFormation Nested Stacks là gì và tương đương với gì trong Terraform?",
       "options": [
-        "CloudFormation Nested Stacks là cách group tags — tương đương Terraform locals",
-        "CloudFormation Nested Stacks = reusable template components (stack within a stack) — tương đương Terraform Modules",
         "CloudFormation Nested Stacks là cách deploy sang nhiều region — tương đương Terraform workspaces",
-        "CloudFormation Nested Stacks quản lý IAM — tương đương Terraform providers"
+        "CloudFormation Nested Stacks là cách group tags — tương đương Terraform locals",
+        "CloudFormation Nested Stacks quản lý IAM — tương đương Terraform providers",
+        "CloudFormation Nested Stacks = reusable template components (stack within a stack) — tương đương Terraform Modules"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "CloudFormation Nested Stacks cho phép tạo stack bên trong stack — tương tự function calls. Mục đích: reuse common template patterns và reduce complexity. Equivalent với Terraform Modules. Bảng so sánh: CloudFormation dùng 'Nested Stacks' cho modularity, Terraform dùng 'Modules'."
     },
     {
@@ -469,11 +504,11 @@
       "question": "CloudFormation Intrinsic Functions Ref, Fn::GetAtt, Fn::If lần lượt dùng để làm gì?",
       "options": [
         "Ref: xóa resource; Fn::GetAtt: tạo resource; Fn::If: update resource",
-        "Ref: tham chiếu resource/parameter value; Fn::GetAtt: lấy attribute của resource; Fn::If: trả về giá trị dựa trên condition",
         "Ref: import external stack; Fn::GetAtt: get tags; Fn::If: set permissions",
-        "Ref: định nghĩa variable; Fn::GetAtt: set default; Fn::If: validate input"
+        "Ref: định nghĩa variable; Fn::GetAtt: set default; Fn::If: validate input",
+        "Ref: tham chiếu resource/parameter value; Fn::GetAtt: lấy attribute của resource; Fn::If: trả về giá trị dựa trên condition"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "CloudFormation Intrinsic Functions: Ref — tham chiếu đến parameter value hoặc resource ID (ví dụ: !Ref MyBucket trả về bucket name). Fn::GetAtt — lấy attribute của resource (ví dụ: !GetAtt MyBucket.Arn trả về ARN). Fn::If — conditional value dựa trên Conditions section (ví dụ: !If [IsProd, m5.large, t2.micro])."
     },
     {
@@ -481,12 +516,12 @@
       "level": "advanced",
       "question": "CloudFormation Change Sets giải quyết vấn đề gì?",
       "options": [
-        "Tự động rollback khi deploy fail",
-        "Cho phép preview chính xác những thay đổi sẽ xảy ra với stack TRƯỚC KHI apply — tránh surprise destructive changes",
         "Tăng tốc độ deploy bằng cách cache template",
-        "Sync changes giữa nhiều AWS accounts"
+        "Sync changes giữa nhiều AWS accounts",
+        "Tự động rollback khi deploy fail",
+        "Cho phép preview chính xác những thay đổi sẽ xảy ra với stack TRƯỚC KHI apply — tránh surprise destructive changes"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Change Sets (có từ 2016) cho phép xem trước những thay đổi sẽ xảy ra với stack TRƯỚC KHI thực sự apply — tương tự 'terraform plan'. Đặc biệt quan trọng để phát hiện destructive changes (resource replacement) sẽ gây downtime. Workflow: create change set → review → execute nếu OK."
     },
     {
@@ -494,12 +529,12 @@
       "level": "advanced",
       "question": "Terraform workspace dùng để làm gì?",
       "options": [
-        "Quản lý Terraform provider versions",
-        "Chia nhỏ *.tf files thành nhiều directories",
         "Manage multiple state environments từ cùng một configuration — ví dụ: dev, staging, prod",
-        "Lưu trữ sensitive variables an toàn"
+        "Quản lý Terraform provider versions",
+        "Lưu trữ sensitive variables an toàn",
+        "Chia nhỏ *.tf files thành nhiều directories"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "terraform workspace cho phép manage multiple state environments từ cùng một configuration. Ví dụ: terraform workspace new dev tạo workspace riêng với state file riêng. Mỗi workspace có state độc lập — dùng cùng *.tf files nhưng deploy ra dev/staging/prod riêng biệt. Commands: new, list, select, delete."
     },
     {
@@ -507,12 +542,12 @@
       "level": "advanced",
       "question": "Graph Theory được ứng dụng như thế nào trong Terraform?",
       "options": [
-        "Terraform dùng graphs để visualize CloudFormation templates",
-        "Terraform áp dụng Graph Theory để tự tính toán dependency graph — xác định thứ tự tạo/xóa resources và parallelism",
         "Graph Theory dùng để đo hiệu suất của state file operations",
-        "Terraform dùng graphs để detect circular imports trong modules"
+        "Terraform dùng graphs để detect circular imports trong modules",
+        "Terraform dùng graphs để visualize CloudFormation templates",
+        "Terraform áp dụng Graph Theory để tự tính toán dependency graph — xác định thứ tự tạo/xóa resources và parallelism"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Terraform applies Graph Theory to IaC: tự động xây dựng dependency graph từ resource references trong *.tf files. Resources không phụ thuộc nhau có thể được tạo song song (parallelism). Resources phụ thuộc được tạo theo đúng thứ tự. Lệnh 'terraform graph' xuất dot format để visualize. Đây là một điểm mạnh của Terraform."
     },
     {
@@ -520,12 +555,12 @@
       "level": "advanced",
       "question": "Terraform providers (AWS, Azure, GCP) hoạt động theo cơ chế nào?",
       "options": [
-        "Built-in trực tiếp vào Terraform binary",
-        "Được cài thủ công bằng apt/yum",
         "Plugin-based architecture — Terraform Core giao tiếp qua RPC, providers download về khi chạy 'terraform init'",
-        "Providers là các Docker containers chạy song song với Terraform"
+        "Providers là các Docker containers chạy song song với Terraform",
+        "Built-in trực tiếp vào Terraform binary",
+        "Được cài thủ công bằng apt/yum"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "Terraform sử dụng plugin-based architecture cho providers. Terraform Core giao tiếp với providers qua RPC protocol. Khi chạy 'terraform init', Terraform tự download provider plugins (aws, azurerm, google...) từ registry. Mỗi provider dùng Golang client library để gọi cloud APIs qua HTTPS. Architecture: Core ↔ RPC ↔ Plugin ↔ Upstream API."
     },
     {
@@ -533,12 +568,12 @@
       "level": "advanced",
       "question": "Trong HashiCorp Suite, mỗi tool có vai trò gì: Nomad, Vault, Packer, Vagrant, Consul?",
       "options": [
+        "Tất cả đều dùng để provision infrastructure như Terraform",
         "Nomad: provision infra; Vault: build images; Packer: secure secrets; Vagrant: run workloads; Consul: connect services",
-        "Nomad: run workloads; Vault: secure secrets; Packer: build images; Vagrant: provision/dev environments; Consul: connect services",
         "Nomad: connect services; Vault: run workloads; Packer: provision infra; Vagrant: secure secrets; Consul: build images",
-        "Tất cả đều dùng để provision infrastructure như Terraform"
+        "Nomad: run workloads; Vault: secure secrets; Packer: build images; Vagrant: provision/dev environments; Consul: connect services"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "HashiCorp Suite (6 tools): Nomad — run workloads (job scheduler/orchestrator); Vault — secure secrets (secret management, encryption); Terraform — provision infrastructure; Packer — build images (AMI, Docker images); Vagrant — provision dev environments (local VMs); Consul — connect services (service mesh, service discovery). Mỗi tool giải quyết một problem domain riêng."
     }
   ]

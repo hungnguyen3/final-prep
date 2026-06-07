@@ -43,39 +43,64 @@
       "id": 1,
       "level": "basic",
       "question": "Ansible được phát triển bởi công ty nào?",
-      "options": ["HashiCorp", "Red Hat", "Google", "Microsoft"],
-      "answer": 1,
+      "options": [
+        "Google",
+        "HashiCorp",
+        "Red Hat",
+        "Microsoft"
+      ],
+      "answer": 2,
       "explanation": "Ansible được phát triển và maintained bởi Red Hat (subsidiary của IBM). Đây là một open-source automation tool phổ biến nhất trên GitHub."
     },
     {
       "id": 2,
       "level": "basic",
       "question": "Ansible sử dụng giao thức nào để kết nối với Linux hosts?",
-      "options": ["HTTP/HTTPS", "Telnet", "OpenSSH (và WinRM cho Windows)", "RDP"],
-      "answer": 2,
+      "options": [
+        "HTTP/HTTPS",
+        "OpenSSH (và WinRM cho Windows)",
+        "Telnet",
+        "RDP"
+      ],
+      "answer": 1,
       "explanation": "Ansible là AGENTLESS — không cần cài agent trên target hosts. Kết nối qua OpenSSH với Linux/Unix và WinRM (Windows Remote Management) với Windows. Không có agents để exploit hoặc update — more secure."
     },
     {
       "id": 3,
       "level": "basic",
       "question": "Ansible Inventory là gì?",
-      "options": ["File chứa Ansible playbooks", "Collection của hosts (nodes) với associated data và groupings mà Ansible manage", "Danh sách modules đã cài đặt", "Log file của Ansible runs"],
-      "answer": 1,
+      "options": [
+        "Collection của hosts (nodes) với associated data và groupings mà Ansible manage",
+        "Danh sách modules đã cài đặt",
+        "Log file của Ansible runs",
+        "File chứa Ansible playbooks"
+      ],
+      "answer": 0,
       "explanation": "Inventory là collection của hosts (nodes) với associated data và groupings. Chứa: Hosts, Groups, Inventory-specific variables. Có thể là Static (file INI) hoặc Dynamic (từ cloud API, script)."
     },
     {
       "id": 4,
       "level": "basic",
       "question": "Ansible Modules là gì?",
-      "options": ["Plugins để extend Ansible Tower", "Bits of code được transfer đến target system và execute để thỏa mãn task declaration", "File cấu hình Ansible", "Scripts cài đặt Ansible"],
-      "answer": 1,
+      "options": [
+        "Bits of code được transfer đến target system và execute để thỏa mãn task declaration",
+        "File cấu hình Ansible",
+        "Scripts cài đặt Ansible",
+        "Plugins để extend Ansible Tower"
+      ],
+      "answer": 0,
       "explanation": "Modules là bits of code được transfer đến target system và executed. Ansible ships với 900+ modules: apt/yum, copy, file, service, git, template, ping, debug, get_url, synchronize..."
     },
     {
       "id": 5,
       "level": "basic",
       "question": "Ad-Hoc command trong Ansible là gì?",
-      "options": ["Lệnh trong Playbook chạy tuần tự", "Single Ansible task thực thi nhanh mà không cần save thành playbook", "Lệnh cấu hình Ansible Tower", "Plugin để run advanced tasks"],
+      "options": [
+        "Plugin để run advanced tasks",
+        "Single Ansible task thực thi nhanh mà không cần save thành playbook",
+        "Lệnh cấu hình Ansible Tower",
+        "Lệnh trong Playbook chạy tuần tự"
+      ],
       "answer": 1,
       "explanation": "Ad-hoc command là single Ansible task để thực hiện nhanh, nhưng không muốn save lại thành playbook. Ví dụ: ansible all -m ping, ansible web -m command -a 'uptime'."
     },
@@ -83,16 +108,26 @@
       "id": 6,
       "level": "basic",
       "question": "Ansible Tower có thêm tính năng gì so với Ansible cơ bản?",
-      "options": ["Thêm nhiều modules hơn", "Enterprise framework với UI và RESTful API để control, secure, manage Ansible automation", "Hỗ trợ thêm Windows hosts", "Tích hợp sẵn Kubernetes"],
-      "answer": 1,
+      "options": [
+        "Hỗ trợ thêm Windows hosts",
+        "Tích hợp sẵn Kubernetes",
+        "Enterprise framework với UI và RESTful API để control, secure, manage Ansible automation",
+        "Thêm nhiều modules hơn"
+      ],
+      "answer": 2,
       "explanation": "Ansible Tower là enterprise framework on top of Ansible, cung cấp: Web UI để quản lý và chạy playbooks, RESTful API để tích hợp với các tools khác, role-based access control, centralized logging, scheduling."
     },
     {
       "id": 7,
       "level": "basic",
       "question": "Lệnh nào dùng để xem documentation của module 'copy' trong Ansible?",
-      "options": ["ansible --help copy", "ansible-doc copy", "ansible copy --docs", "man ansible-copy"],
-      "answer": 1,
+      "options": [
+        "ansible copy --docs",
+        "man ansible-copy",
+        "ansible-doc copy",
+        "ansible --help copy"
+      ],
+      "answer": 2,
       "explanation": "ansible-doc [module-name] hiển thị documentation cho module đó. 'ansible-doc -l' liệt kê tất cả modules. 'ansible-doc copy' hiển thị synopsis, options, examples cho copy module."
     },
     {
@@ -100,10 +135,10 @@
       "level": "intermediate",
       "question": "Handler Tasks trong Ansible Playbook hoạt động như thế nào?",
       "options": [
-        "Chạy trước tất cả tasks khác",
+        "Chạy song song với tasks thông thường",
         "Chạy ở cuối play khi được notify bởi task khác khi có thay đổi xảy ra",
         "Chạy định kỳ theo lịch",
-        "Chạy song song với tasks thông thường"
+        "Chạy trước tất cả tasks khác"
       ],
       "answer": 1,
       "explanation": "Handlers là special tasks chỉ chạy ở cuối play khi được 'notify' bởi task khác AND có change xảy ra. Ví dụ: task copy config file notifies handler 'restart httpd' — handler chỉ chạy nếu file thực sự thay đổi. Handler chạy một lần dù được notify nhiều lần."
@@ -114,11 +149,11 @@
       "question": "Sự khác biệt giữa module 'command' và 'shell' trong Ansible là gì?",
       "options": [
         "command dùng cho Linux, shell dùng cho Windows",
-        "command: secure và predictable, không dùng shell; shell: thực thi qua /bin/sh cho phép pipes, redirects — dùng cẩn thận",
         "shell nhanh hơn command",
-        "Không có sự khác biệt"
+        "Không có sự khác biệt",
+        "command: secure và predictable, không dùng shell; shell: thực thi qua /bin/sh cho phép pipes, redirects — dùng cẩn thận"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "command: thực thi trực tiếp, most secure và predictable, không support pipes/redirects. shell: thực thi qua /bin/sh — support pipes, environment variables, redirects nhưng kém secure hơn. NOTE: cả hai không có concept of desired state — dùng làm last resort."
     },
     {
@@ -127,11 +162,11 @@
       "question": "Ansible Facts là gì và thu thập như thế nào?",
       "options": [
         "Log files của các lần chạy playbook",
-        "Thông tin về host (IP, OS, hardware) được tự động gather — truy cập bằng 'ansible localhost -m setup'",
+        "Biến được định nghĩa thủ công trong playbook",
         "Danh sách modules đã installed",
-        "Biến được định nghĩa thủ công trong playbook"
+        "Thông tin về host (IP, OS, hardware) được tự động gather — truy cập bằng 'ansible localhost -m setup'"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Facts là bits of information derived from examining host systems — IP address, OS version, memory, CPU, network interfaces... Thu thập bằng setup module: 'ansible localhost -m setup'. Kết quả trả về 'ansible_facts' dictionary. Có thể dùng trong playbook với {{ ansible_default_ipv4.address }}."
     },
     {
@@ -139,12 +174,12 @@
       "level": "intermediate",
       "question": "Trong Static Inventory, section [all:vars] dùng để làm gì?",
       "options": [
-        "Định nghĩa group chứa tất cả hosts",
-        "Định nghĩa variables áp dụng cho TẤT CẢ hosts trong inventory",
+        "Định nghĩa connection type",
         "Import inventory từ file khác",
-        "Định nghĩa connection type"
+        "Định nghĩa group chứa tất cả hosts",
+        "Định nghĩa variables áp dụng cho TẤT CẢ hosts trong inventory"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "[all:vars] trong inventory file định nghĩa variables áp dụng cho tất cả hosts. Ví dụ: ansible_user=vagrant, ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key. Có thể dùng [group_name:vars] cho variables của một group cụ thể."
     },
     {
@@ -152,12 +187,12 @@
       "level": "intermediate",
       "question": "Lệnh ad-hoc 'ansible all -m ping' làm gì?",
       "options": [
-        "Ping network để test latency",
-        "Kiểm tra tất cả inventory hosts có sẵn sàng được manage bởi Ansible không",
         "Restart tất cả services",
-        "Cài ping utility trên tất cả hosts"
+        "Ping network để test latency",
+        "Cài ping utility trên tất cả hosts",
+        "Kiểm tra tất cả inventory hosts có sẵn sàng được manage bởi Ansible không"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "'ansible all -m ping' dùng Ansible ping module (không phải network ICMP ping) để kiểm tra tất cả hosts trong inventory có kết nối được và sẵn sàng nhận Ansible commands không. Trả về SUCCESS nếu OK."
     },
     {
@@ -165,12 +200,12 @@
       "level": "advanced",
       "question": "Tại sao run command modules (command, shell, script, raw) chỉ nên dùng làm 'last resort' trong Ansible?",
       "options": [
+        "Vì chúng chỉ chạy được trên Linux",
         "Vì chúng chậm hơn standard modules",
-        "Vì chúng không có concept of desired state — không idempotent, chạy nhiều lần có thể gây side effects",
         "Vì chúng không support biến",
-        "Vì chúng chỉ chạy được trên Linux"
+        "Vì chúng không có concept of desired state — không idempotent, chạy nhiều lần có thể gây side effects"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Standard modules (yum, copy, service...) có concept of desired state và idempotent — chạy nhiều lần cho same result. Run commands (command, shell...) không có desired state — chạy lại có thể gây duplicate actions, side effects. Ví dụ: 'apt install nginx' chạy nhiều lần = OK; nhưng một script tạo user chạy nhiều lần = error."
     },
     {
@@ -178,12 +213,12 @@
       "level": "advanced",
       "question": "Dynamic Inventory trong Ansible được dùng khi nào?",
       "options": [
-        "Khi inventory file quá lớn",
-        "Khi hosts thay đổi dynamically (cloud VMs, auto-scaling) — inventory được generate tự động từ cloud API hoặc CMDB thay vì file tĩnh",
         "Khi cần chạy playbook faster",
-        "Khi dùng Ansible Tower"
+        "Khi dùng Ansible Tower",
+        "Khi inventory file quá lớn",
+        "Khi hosts thay đổi dynamically (cloud VMs, auto-scaling) — inventory được generate tự động từ cloud API hoặc CMDB thay vì file tĩnh"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Dynamic inventory dùng khi infrastructure thay đổi thường xuyên (cloud environments, auto-scaling groups). Thay vì file INI tĩnh, Ansible gọi script hoặc plugin để lấy danh sách hosts từ AWS EC2, Azure, GCP, vSphere... Inventory luôn up-to-date."
     },
     {
@@ -191,12 +226,12 @@
       "level": "advanced",
       "question": "Trong Ansible Playbook, task dùng 'service' module với 'state: restarted' làm gì?",
       "options": [
-        "Chỉ start service nếu chưa chạy",
-        "Luôn luôn restart service, dù đang chạy hay không",
         "Chỉ restart nếu service đang chạy",
-        "Stop service"
+        "Chỉ start service nếu chưa chạy",
+        "Stop service",
+        "Luôn luôn restart service, dù đang chạy hay không"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "service module với state: restarted sẽ LUÔN restart service (stop + start), bất kể service đang ở trạng thái nào. Khác với state: started (chỉ start nếu đang stopped) và state: reloaded (reload config mà không restart). Thường dùng sau khi deploy config mới."
     },
     {
@@ -204,12 +239,12 @@
       "level": "basic",
       "question": "Trong Azure Pipelines, 'Task' là gì?",
       "options": [
-        "Một file YAML định nghĩa toàn bộ pipeline",
         "Một pre-packaged script thực hiện một hành động cụ thể (ví dụ: gọi REST API, publish build artifact)",
-        "Một máy chủ chạy pipeline jobs",
-        "Tập hợp các files được publish sau khi pipeline chạy"
+        "Tập hợp các files được publish sau khi pipeline chạy",
+        "Một file YAML định nghĩa toàn bộ pipeline",
+        "Một máy chủ chạy pipeline jobs"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Task trong Azure Pipelines là một pre-packaged script thực hiện một hành động cụ thể — ví dụ: invoking a REST API, publishing a build artifact, running dotnet build. Task là thành phần nhỏ hơn Step (một step có thể là task hoặc script)."
     },
     {
@@ -217,12 +252,12 @@
       "level": "basic",
       "question": "Trong Azure Pipelines, 'Artifact' là gì?",
       "options": [
-        "Agent dùng để chạy jobs",
+        "File cấu hình YAML của pipeline",
         "Một stage trong pipeline deploy lên production",
-        "Collection of files or packages published by a run, made available to subsequent tasks for distribution or deployment",
-        "File cấu hình YAML của pipeline"
+        "Agent dùng để chạy jobs",
+        "Collection of files or packages published by a run, made available to subsequent tasks for distribution or deployment"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Artifact là collection of files or packages được publish bởi một pipeline run. Sau khi được publish, artifact có thể được sử dụng bởi các tasks tiếp theo hoặc release pipelines để phân phối hoặc triển khai ứng dụng."
     },
     {
@@ -231,11 +266,11 @@
       "question": "Continuous Integration (CI) trong Azure Pipelines được mô tả đúng nhất là:",
       "options": [
         "Quy trình triển khai code lên production tự động mà không cần kiểm thử",
+        "Công cụ quản lý phiên bản source code",
         "Practice giúp đơn giản hóa testing và building của code; bắt bugs sớm; tự động chạy tests và builds khi code được push; tạo ra artifacts dùng bởi CD pipelines",
-        "Quy trình review code thủ công trước khi merge",
-        "Công cụ quản lý phiên bản source code"
+        "Quy trình review code thủ công trước khi merge"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "CI (Continuous Integration) là practice dùng để simplify testing và building của code. Mục tiêu: catches bugs early in the development cycle. Hoạt động: automated tests và builds chạy theo lịch hoặc mỗi khi code được push. Output: produces artifacts được CD release pipelines dùng để deploy tự động."
     },
     {
@@ -245,10 +280,10 @@
       "options": [
         "Approvals tự động approve tất cả deployments mà không cần xác nhận",
         "Approvals chỉ áp dụng cho Build Pipelines, không áp dụng cho Release Pipelines",
-        "Khi checks được cấu hình trên một environment, pipeline sẽ dừng trước khi bắt đầu một stage cho đến khi tất cả checks hoàn thành thành công",
-        "Approvals chỉ dùng để gửi thông báo email, không chặn pipeline"
+        "Approvals chỉ dùng để gửi thông báo email, không chặn pipeline",
+        "Khi checks được cấu hình trên một environment, pipeline sẽ dừng trước khi bắt đầu một stage cho đến khi tất cả checks hoàn thành thành công"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Approvals định nghĩa một tập validations cần thiết trước khi một deployment chạy. Manual approval là check phổ biến để kiểm soát deployments lên production. Khi checks được cấu hình trên một environment, pipeline sẽ DỪNG trước khi bắt đầu stage đó — cho đến khi tất cả checks hoàn thành thành công."
     },
     {
@@ -256,12 +291,12 @@
       "level": "basic",
       "question": "Azure Boards cung cấp tính năng nào để hỗ trợ Agile planning?",
       "options": [
-        "Source control và code review",
         "Kanban boards, backlogs, và sprint planning để track bugs, user stories, tasks, epics",
-        "CI/CD pipeline automation",
-        "Package management cho npm và NuGet"
+        "Source control và code review",
+        "Package management cho npm và NuGet",
+        "CI/CD pipeline automation"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Azure Boards là service dành cho Work tracking và Agile planning. Cung cấp Kanban boards, backlogs, sprint planning, và khả năng track bugs, user stories, tasks, epics. Còn tích hợp được với GitHub repos."
     },
     {
@@ -270,11 +305,11 @@
       "question": "Azure Repos hỗ trợ những loại source control nào?",
       "options": [
         "Chỉ hỗ trợ SVN (centralized)",
+        "Mercurial và CVS",
         "Chỉ hỗ trợ Git (distributed)",
-        "Git (distributed) và TFVC (centralized), kèm unlimited free private repos",
-        "Mercurial và CVS"
+        "Git (distributed) và TFVC (centralized), kèm unlimited free private repos"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Azure Repos hỗ trợ cả hai loại: Git (distributed version control) và TFVC - Team Foundation Version Control (centralized). Cung cấp pull requests, code review, branch policies, và unlimited free private repos."
     },
     {
@@ -283,11 +318,11 @@
       "question": "Azure Test Plans dùng để làm gì?",
       "options": [
         "Tự động deploy ứng dụng lên cloud",
+        "Host npm và NuGet packages nội bộ",
         "Quản lý source code và pull requests",
-        "Manual và exploratory testing — quản lý test cases, track defects, kết quả test",
-        "Host npm và NuGet packages nội bộ"
+        "Manual và exploratory testing — quản lý test cases, track defects, kết quả test"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Azure Test Plans là service dành cho Manual và Exploratory Testing. Cung cấp: test case management, exploratory testing, track defects, track test results, và tích hợp với CI/CD pipeline."
     },
     {
@@ -295,12 +330,12 @@
       "level": "basic",
       "question": "Azure Artifacts hỗ trợ quản lý những loại package nào?",
       "options": [
-        "Chỉ Docker images",
         "npm, NuGet, Maven, Python, Universal packages",
         "Chỉ NuGet packages",
+        "Chỉ Docker images",
         "RPM và DEB packages cho Linux"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Azure Artifacts là Package Management service hỗ trợ host npm, NuGet, Maven, Python, và Universal packages. Cho phép share packages nội bộ trong organization và tích hợp với Pipelines để publish/consume packages."
     },
     {
@@ -308,8 +343,8 @@
       "level": "basic",
       "question": "URL format của một Azure DevOps Organization là gì?",
       "options": [
-        "https://azure.microsoft.com/{organization}",
         "https://portal.azure.com/{organization}",
+        "https://azure.microsoft.com/{organization}",
         "https://dev.azure.com/{organization}",
         "https://visualstudio.com/{organization}"
       ],
@@ -321,12 +356,12 @@
       "level": "basic",
       "question": "PAT (Personal Access Token) trong Azure DevOps được dùng để làm gì?",
       "options": [
-        "Đây là password mặc định của tài khoản Azure",
         "Token xác thực dùng để cấu hình agents và tích hợp với Azure DevOps API thay vì dùng password",
         "Key để mã hóa source code trong Azure Repos",
+        "Đây là password mặc định của tài khoản Azure",
         "Token dùng để deploy lên Azure cloud"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "PAT (Personal Access Token) là token xác thực được sinh ra từ tài khoản Azure DevOps. Dùng để: cấu hình self-hosted agents (thay password), gọi Azure DevOps REST API, tích hợp với tools bên ngoài. Có thể giới hạn scope và expiry."
     },
     {
@@ -347,12 +382,12 @@
       "level": "intermediate",
       "question": "Điểm khác biệt quan trọng của self-hosted agent so với Microsoft-hosted agent là gì?",
       "options": [
-        "Self-hosted agent nhanh hơn vì được Microsoft quản lý",
-        "Self-hosted agent không hỗ trợ YAML pipelines",
         "Self-hosted agent persist state giữa các runs và có thể access internal network resources",
-        "Self-hosted agent chỉ chạy được trên Windows"
+        "Self-hosted agent không hỗ trợ YAML pipelines",
+        "Self-hosted agent chỉ chạy được trên Windows",
+        "Self-hosted agent nhanh hơn vì được Microsoft quản lý"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "Self-hosted agents PERSIST STATE giữa các runs — dữ liệu không bị xóa sau mỗi job. Điều này hữu ích khi cần cache dependencies, nhưng cần clean up artifacts thủ công. Ngoài ra, self-hosted agents có thể access internal network resources (databases, VPN), có thể cài custom software, và bạn có full control."
     },
     {
@@ -373,12 +408,12 @@
       "level": "intermediate",
       "question": "Sự khác biệt giữa System Capabilities và User-Defined Capabilities của agent là gì?",
       "options": [
-        "System capabilities do admin tự định nghĩa; user-defined capabilities được Azure tự detect",
-        "System capabilities được Azure DevOps tự động phát hiện (OS, installed software); user-defined capabilities do admin tự thêm key-value pairs",
         "Cả hai đều do admin định nghĩa thủ công",
-        "System capabilities chỉ áp dụng cho Microsoft-hosted agents"
+        "System capabilities chỉ áp dụng cho Microsoft-hosted agents",
+        "System capabilities được Azure DevOps tự động phát hiện (OS, installed software); user-defined capabilities do admin tự thêm key-value pairs",
+        "System capabilities do admin tự định nghĩa; user-defined capabilities được Azure tự detect"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "System Capabilities: Azure DevOps tự động phát hiện — OS version, installed software, environment variables (ví dụ: Agent.OS = Windows_NT, java path). Không thể chỉnh sửa thủ công. User-Defined Capabilities: admin tự thêm key-value pairs (ví dụ: SpecialSoftware=true) để route jobs đến agent phù hợp."
     },
     {
@@ -386,12 +421,12 @@
       "level": "intermediate",
       "question": "Sự khác biệt chính giữa Build Pipeline và Release Pipeline trong Azure Pipelines là gì?",
       "options": [
-        "Build Pipeline chạy trên Linux; Release Pipeline chạy trên Windows",
-        "Build Pipeline: biên dịch code, chạy tests, tạo artifacts; Release Pipeline: lấy artifacts và deploy lên các environments",
+        "Build Pipeline dùng YAML; Release Pipeline chỉ dùng GUI",
         "Chúng giống nhau, chỉ khác tên gọi",
-        "Build Pipeline dùng YAML; Release Pipeline chỉ dùng GUI"
+        "Build Pipeline: biên dịch code, chạy tests, tạo artifacts; Release Pipeline: lấy artifacts và deploy lên các environments",
+        "Build Pipeline chạy trên Linux; Release Pipeline chạy trên Windows"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "Build Pipeline (CI): compiles code, runs tests, produces build artifacts. Release Pipeline (CD): takes build artifacts và deploys chúng lên một hoặc nhiều environments. Chúng bổ sung cho nhau trong CI/CD workflow: CI tạo artifacts → CD dùng artifacts để deploy."
     },
     {
@@ -399,12 +434,12 @@
       "level": "intermediate",
       "question": "Trigger trong Azure Pipelines có vai trò gì?",
       "options": [
-        "Trigger định nghĩa số lượng agents chạy song song",
-        "Trigger là agent pool được pipeline sử dụng",
         "Trigger cho pipeline biết KHI NÀO cần chạy (ví dụ: khi có push lên một branch)",
-        "Trigger là bước cuối cùng trong pipeline để notify team"
+        "Trigger là agent pool được pipeline sử dụng",
+        "Trigger là bước cuối cùng trong pipeline để notify team",
+        "Trigger định nghĩa số lượng agents chạy song song"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "Trigger trong Azure Pipelines cho biết KHI NÀO pipeline sẽ chạy. Ví dụ: CI trigger khi có push lên branch 'main'; scheduled trigger chạy theo lịch; PR trigger khi có pull request. Trong YAML: 'trigger: - main' nghĩa là pipeline chạy mỗi khi có commit lên main."
     },
     {
@@ -412,12 +447,12 @@
       "level": "intermediate",
       "question": "Stage trong Azure Pipelines là gì?",
       "options": [
-        "Đơn vị nhỏ nhất trong pipeline, có thể là task hoặc script",
         "Cách tổ chức jobs trong một pipeline; mỗi stage có thể chứa một hoặc nhiều jobs",
         "Máy chủ chạy pipeline jobs",
-        "Collection of files được publish sau khi pipeline chạy"
+        "Collection of files được publish sau khi pipeline chạy",
+        "Đơn vị nhỏ nhất trong pipeline, có thể là task hoặc script"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Stage là cách tổ chức jobs trong pipeline theo nhóm logic — ví dụ: Build stage, Test stage, Deploy-to-Staging stage, Deploy-to-Production stage. Mỗi stage có thể chứa một hoặc nhiều jobs. Stages cho phép tổ chức workflow rõ ràng và có thể cấu hình approval giữa các stages."
     },
     {
@@ -425,10 +460,10 @@
       "level": "basic",
       "question": "Job trong Azure Pipelines có thể chạy ở đâu?",
       "options": [
-        "Job chỉ có thể chạy trên Microsoft-hosted agents",
+        "Job chỉ chạy được trên self-hosted agents",
         "Job luôn chạy trên một agent; không thể chạy không có agent",
         "Job chạy trên một agent, hoặc có thể là agentless job (không cần agent)",
-        "Job chỉ chạy được trên self-hosted agents"
+        "Job chỉ có thể chạy trên Microsoft-hosted agents"
       ],
       "answer": 2,
       "explanation": "Job trong Azure Pipelines thường chạy trên một agent (Microsoft-hosted hoặc self-hosted). Tuy nhiên, job CÓ THỂ là agentless — không cần agent để chạy. Agentless jobs thường dùng cho: manual approvals, wait tasks, invoke REST API, hoặc các operations không cần compute."
@@ -438,12 +473,12 @@
       "level": "advanced",
       "question": "Continuous Delivery (CD) trong Azure Pipelines được mô tả chính xác nhất là:",
       "options": [
-        "Chỉ deploy code lên production mà không cần test",
         "Quy trình code được build, test, và deploy lên một hoặc nhiều test/production stages; monitoring liên tục để đảm bảo chất lượng",
         "Tự động approve tất cả deployments không cần human review",
-        "Chỉ là bước deploy cuối cùng sau khi CI hoàn thành"
+        "Chỉ là bước deploy cuối cùng sau khi CI hoàn thành",
+        "Chỉ deploy code lên production mà không cần test"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "CD (Continuous Delivery) là quy trình code được build, tested, và deployed lên một hoặc nhiều test và production stages. Deploy và test qua nhiều stages giúp drive quality. Monitoring và alerting chạy liên tục để đảm bảo visibility. Mục tiêu: errors được catch often và early. CI tạo artifacts → CD deploy artifacts."
     },
     {
@@ -451,10 +486,10 @@
       "level": "advanced",
       "question": "Library trong Azure Pipelines cung cấp những tính năng gì?",
       "options": [
-        "Library chứa các YAML pipeline templates để reuse",
+        "Library quản lý agent pools và agent capabilities",
         "Library cung cấp variable groups (shared variables) và secure files dùng chung across pipelines",
         "Library là nơi lưu trữ source code của pipeline",
-        "Library quản lý agent pools và agent capabilities"
+        "Library chứa các YAML pipeline templates để reuse"
       ],
       "answer": 1,
       "explanation": "Library trong Azure Pipelines cung cấp: Variable Groups — tập hợp variables (kể cả secrets) dùng chung giữa nhiều pipelines; Secure Files — lưu trữ files nhạy cảm (certificates, SSH keys, provisioning profiles) một cách an toàn. Cả hai đều được chia sẻ across pipelines trong cùng project."
@@ -464,12 +499,12 @@
       "level": "advanced",
       "question": "Task Groups trong Azure Pipelines là gì và mang lại lợi ích gì?",
       "options": [
-        "Task Groups là tên khác của Stage trong YAML pipelines",
-        "Task Groups cho phép đóng gói một chuỗi tasks thành reusable template, dùng lại across nhiều pipelines trong project",
         "Task Groups là cách nhóm agents lại trong một pool",
-        "Task Groups chỉ dùng trong Classic Release pipelines cho deployment"
+        "Task Groups chỉ dùng trong Classic Release pipelines cho deployment",
+        "Task Groups là tên khác của Stage trong YAML pipelines",
+        "Task Groups cho phép đóng gói một chuỗi tasks thành reusable template, dùng lại across nhiều pipelines trong project"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Task Groups (trong Classic pipelines) cho phép đóng gói một chuỗi tasks thành một reusable template. Lợi ích: tránh lặp lại cùng một sequence of tasks trong nhiều pipelines; khi cần update, chỉ cần sửa ở Task Group là tất cả pipelines dùng group đó được cập nhật. Tương đương với 'template' trong YAML pipelines."
     },
     {
@@ -477,12 +512,12 @@
       "level": "advanced",
       "question": "Deployment Groups trong Azure Pipelines khác với Agent Pools như thế nào?",
       "options": [
-        "Deployment Groups và Agent Pools là như nhau, chỉ khác tên",
-        "Deployment Groups là tập hợp các physical/VM machines được tag để deployment; Agent Pools là tập hợp agents cho running pipeline jobs",
         "Deployment Groups chỉ dùng cho cloud deployments; Agent Pools chỉ dùng cho on-premise",
-        "Agent Pools dùng cho YAML pipelines; Deployment Groups dùng cho Classic pipelines"
+        "Deployment Groups và Agent Pools là như nhau, chỉ khác tên",
+        "Agent Pools dùng cho YAML pipelines; Deployment Groups dùng cho Classic pipelines",
+        "Deployment Groups là tập hợp các physical/VM machines được tag để deployment; Agent Pools là tập hợp agents cho running pipeline jobs"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Deployment Groups: tập hợp physical machines hoặc VMs được đăng ký và tag (ví dụ: WebServer, DatabaseServer) dùng để deploy ứng dụng — thường dùng trong Classic Release pipelines. Agent Pools: tập hợp agents để chạy pipeline jobs (build, test, script). Deployment Groups tập trung vào TARGET machines; Agent Pools tập trung vào COMPUTE để chạy jobs."
     },
     {
@@ -490,12 +525,12 @@
       "level": "advanced",
       "question": "Ba deployment strategies có sẵn trong Azure Pipelines YAML deployment jobs là gì?",
       "options": [
-        "Blue-green, A/B testing, shadow",
-        "Run once, rolling, canary",
+        "Incremental, complete, custom",
         "Parallel, sequential, conditional",
-        "Incremental, complete, custom"
+        "Blue-green, A/B testing, shadow",
+        "Run once, rolling, canary"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Azure Pipelines YAML deployment jobs hỗ trợ 3 deployment strategies: Run Once — deploy tất cả instances cùng lúc (đơn giản nhất); Rolling — deploy dần dần theo batches, giảm downtime; Canary — deploy cho một phần nhỏ traffic trước, monitor, rồi mới rollout toàn bộ (giảm rủi ro nhất)."
     },
     {
@@ -503,12 +538,12 @@
       "level": "advanced",
       "question": "Environment trong Azure Pipelines mô tả điều gì, và nó có thể chứa những loại resources nào?",
       "options": [
-        "Environment là file cấu hình .env chứa biến môi trường cho pipeline",
-        "Environment là tập hợp resources nơi bạn deploy ứng dụng — có thể là VMs, containers, web apps, hoặc bất kỳ service nào hosting ứng dụng",
         "Environment chỉ là label dùng để phân biệt staging và production",
-        "Environment là agent pool riêng biệt cho mỗi deployment stage"
+        "Environment là agent pool riêng biệt cho mỗi deployment stage",
+        "Environment là file cấu hình .env chứa biến môi trường cho pipeline",
+        "Environment là tập hợp resources nơi bạn deploy ứng dụng — có thể là VMs, containers, web apps, hoặc bất kỳ service nào hosting ứng dụng"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Environment trong Azure Pipelines là collection of resources nơi ứng dụng được deploy. Có thể chứa: VMs, containers, web apps, hoặc bất kỳ service nào hosting ứng dụng. Một pipeline có thể deploy app lên một hoặc nhiều environments sau khi build và test hoàn thành. Environments còn hỗ trợ cấu hình Approvals và deployment history tracking."
     }
   ]

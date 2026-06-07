@@ -47,7 +47,12 @@
       "id": 1,
       "level": "basic",
       "question": "Jenkins được viết bằng ngôn ngữ lập trình nào?",
-      "options": ["Python", "Java", "Go", "Ruby"],
+      "options": [
+        "Python",
+        "Java",
+        "Go",
+        "Ruby"
+      ],
       "answer": 1,
       "explanation": "Jenkins là open-source automation server viết bằng Java. Do đó Jenkins cần JDK để chạy (JDK 17 được khuyến nghị)."
     },
@@ -55,15 +60,25 @@
       "id": 2,
       "level": "basic",
       "question": "Jenkins có tên gọi ban đầu là gì và được phát triển ở đâu?",
-      "options": ["Travis, tại GitHub", "Hudson, tại Sun Microsystems năm 2004", "CircleCI, tại Atlassian", "Bamboo, tại Oracle"],
-      "answer": 1,
+      "options": [
+        "CircleCI, tại Atlassian",
+        "Travis, tại GitHub",
+        "Hudson, tại Sun Microsystems năm 2004",
+        "Bamboo, tại Oracle"
+      ],
+      "answer": 2,
       "explanation": "Jenkins ban đầu có tên Hudson, được phát triển tại Sun Microsystems năm 2004. Sau tranh chấp giữa Oracle và cộng đồng open-source năm 2011, dự án được fork thành Jenkins."
     },
     {
       "id": 3,
       "level": "basic",
       "question": "Trong Jenkins, 'Build' là gì?",
-      "options": ["Tên của một plugin", "Kết quả của việc thực thi một Job", "Tên của một node", "Loại trigger để bắt đầu pipeline"],
+      "options": [
+        "Tên của một node",
+        "Kết quả của việc thực thi một Job",
+        "Loại trigger để bắt đầu pipeline",
+        "Tên của một plugin"
+      ],
       "answer": 1,
       "explanation": "Build là kết quả của việc thực thi một Job — có thể là compiled code hoặc kết quả chạy automated tests."
     },
@@ -71,15 +86,25 @@
       "id": 4,
       "level": "basic",
       "question": "Sau khi cài đặt, Jenkins chạy tại địa chỉ mặc định nào?",
-      "options": ["http://localhost:3000", "http://localhost:9090", "http://localhost:8080", "http://localhost:8443"],
-      "answer": 2,
+      "options": [
+        "http://localhost:9090",
+        "http://localhost:8080",
+        "http://localhost:8443",
+        "http://localhost:3000"
+      ],
+      "answer": 1,
       "explanation": "Jenkins mặc định chạy tại http://localhost:8080. Khi truy cập lần đầu, sẽ được yêu cầu nhập initial admin password từ /var/lib/jenkins/secrets/initialAdminPassword."
     },
     {
       "id": 5,
       "level": "basic",
       "question": "Initial admin password của Jenkins được lưu ở đâu trên Linux?",
-      "options": ["/etc/jenkins/admin.password", "/home/jenkins/.password", "/var/lib/jenkins/secrets/initialAdminPassword", "/opt/jenkins/config/password.txt"],
+      "options": [
+        "/opt/jenkins/config/password.txt",
+        "/home/jenkins/.password",
+        "/var/lib/jenkins/secrets/initialAdminPassword",
+        "/etc/jenkins/admin.password"
+      ],
       "answer": 2,
       "explanation": "Sau khi cài Jenkins trên Linux, initial admin password được lưu tại /var/lib/jenkins/secrets/initialAdminPassword và cần nhập khi setup lần đầu."
     },
@@ -87,23 +112,38 @@
       "id": 6,
       "level": "basic",
       "question": "Freestyle Project trong Jenkins là gì?",
-      "options": ["Loại job phức tạp nhất dùng Groovy script", "Loại job đơn giản nhất, cho phép định nghĩa chuỗi build steps", "Plugin để tích hợp với GitHub", "Loại agent chạy trên cloud"],
-      "answer": 1,
+      "options": [
+        "Plugin để tích hợp với GitHub",
+        "Loại agent chạy trên cloud",
+        "Loại job đơn giản nhất, cho phép định nghĩa chuỗi build steps",
+        "Loại job phức tạp nhất dùng Groovy script"
+      ],
+      "answer": 2,
       "explanation": "Freestyle Project là loại Jenkins job đơn giản nhất — cho phép định nghĩa một loạt build steps mà Jenkins sẽ thực thi theo thứ tự."
     },
     {
       "id": 7,
       "level": "basic",
       "question": "Jenkinsfile được đặt ở đâu trong project?",
-      "options": ["Trong thư mục /etc/jenkins/", "Trong Jenkins UI, không lưu trong repo", "Trong root của repository", "Trong thư mục .jenkins/ của project"],
-      "answer": 2,
+      "options": [
+        "Trong root của repository",
+        "Trong thư mục .jenkins/ của project",
+        "Trong Jenkins UI, không lưu trong repo",
+        "Trong thư mục /etc/jenkins/"
+      ],
+      "answer": 0,
       "explanation": "Jenkinsfile được đặt trong root của Git repository — đây là 'Pipeline as Code' pattern, cho phép version control pipeline definition cùng với source code."
     },
     {
       "id": 8,
       "level": "basic",
       "question": "Plugin nào cung cấp giao diện UI hiện đại (modern UI) cho Jenkins?",
-      "options": ["Pipeline Plugin", "JUnit Plugin", "Blue Ocean", "GitHub Plugin"],
+      "options": [
+        "GitHub Plugin",
+        "JUnit Plugin",
+        "Blue Ocean",
+        "Pipeline Plugin"
+      ],
       "answer": 2,
       "explanation": "Blue Ocean là plugin cung cấp modern UI cho Jenkins, với giao diện trực quan hơn để xem và quản lý pipelines."
     },
@@ -112,12 +152,12 @@
       "level": "intermediate",
       "question": "Sự khác biệt giữa Declarative Pipeline và Scripted Pipeline trong Jenkins là gì?",
       "options": [
-        "Declarative dùng Python, Scripted dùng Java",
         "Declarative: simpler, structured, dùng pipeline syntax; Scripted: dùng Groovy syntax nâng cao, linh hoạt hơn",
         "Declarative chỉ dùng được với GitHub, Scripted dùng được với mọi SCM",
-        "Không có sự khác biệt, chỉ là 2 tên gọi khác nhau"
+        "Không có sự khác biệt, chỉ là 2 tên gọi khác nhau",
+        "Declarative dùng Python, Scripted dùng Java"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Declarative Pipeline: đơn giản hơn, có cấu trúc rõ ràng với pipeline { } syntax. Scripted Pipeline: dùng Groovy syntax đầy đủ, linh hoạt và powerful hơn nhưng phức tạp hơn."
     },
     {
@@ -125,10 +165,10 @@
       "level": "intermediate",
       "question": "Trong Jenkins master-slave architecture, Master Node có vai trò gì?",
       "options": [
+        "Chỉ lưu trữ artifacts",
         "Thực thi tất cả build jobs",
-        "Lưu trữ Docker images",
         "Xử lý scheduling và orchestration của jobs",
-        "Chỉ lưu trữ artifacts"
+        "Lưu trữ Docker images"
       ],
       "answer": 2,
       "explanation": "Master Node xử lý scheduling (lên lịch) và orchestration (điều phối) của jobs. Agent/Slave Nodes mới là nơi thực thi các build tasks thực sự."
@@ -139,11 +179,11 @@
       "question": "Trong Jenkins, 'Poll SCM' trigger hoạt động như thế nào?",
       "options": [
         "GitHub gửi webhook đến Jenkins mỗi khi có push",
-        "Jenkins định kỳ kiểm tra repository để tìm thay đổi",
+        "Jenkins tự động chạy sau mỗi giờ không quan tâm thay đổi",
         "Developer phải nhấn nút Build thủ công",
-        "Jenkins tự động chạy sau mỗi giờ không quan tâm thay đổi"
+        "Jenkins định kỳ kiểm tra repository để tìm thay đổi"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Poll SCM: Jenkins định kỳ (theo lịch cron) kiểm tra SCM repository để xem có thay đổi mới không. Khác với Webhook — Webhook là GitHub chủ động notify Jenkins ngay khi có push (real-time, hiệu quả hơn)."
     },
     {
@@ -151,12 +191,12 @@
       "level": "intermediate",
       "question": "Để trigger Jenkins pipeline khi code được push lên GitHub, cần cấu hình gì trên GitHub?",
       "options": [
-        "Tạo một GitHub Action",
-        "Thêm Webhook với Payload URL: http://<JENKINS_URL>/github-webhook/ và Content type: application/json",
         "Cài đặt Jenkins plugin trực tiếp trên GitHub",
-        "Tạo một Personal Access Token và nhập vào Jenkins"
+        "Tạo một GitHub Action",
+        "Tạo một Personal Access Token và nhập vào Jenkins",
+        "Thêm Webhook với Payload URL: http://<JENKINS_URL>/github-webhook/ và Content type: application/json"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Trên GitHub repo: Settings > Webhooks > Add webhook. Payload URL: http://<JENKINS_URL>:<PORT>/github-webhook/, Content type: application/json, chọn 'Just the push event'. Khi push xảy ra, GitHub gửi POST request đến Jenkins."
     },
     {
@@ -164,12 +204,12 @@
       "level": "intermediate",
       "question": "Trong Jenkinsfile Declarative Pipeline, section 'post' dùng để làm gì?",
       "options": [
-        "Định nghĩa các biến môi trường",
-        "Định nghĩa actions chạy sau khi pipeline hoàn thành (success, failure, always)",
         "Khai báo tools cần dùng như Maven, JDK",
-        "Định nghĩa nơi pipeline chạy"
+        "Định nghĩa nơi pipeline chạy",
+        "Định nghĩa các biến môi trường",
+        "Định nghĩa actions chạy sau khi pipeline hoàn thành (success, failure, always)"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Section 'post' trong Jenkinsfile định nghĩa các actions được thực thi sau khi pipeline hoàn thành: post { success { ... } failure { ... } always { ... } } — thường dùng để gửi notifications."
     },
     {
@@ -177,12 +217,12 @@
       "level": "intermediate",
       "question": "Trong Jenkinsfile, điều kiện 'when' được dùng để làm gì?",
       "options": [
-        "Xác định thời gian build",
-        "Chỉ thực thi stage nếu điều kiện thỏa mãn — ví dụ: currentBuild.resultIsBetterOrEqualTo('SUCCESS')",
+        "Xác định timeout cho một stage",
         "Khai báo biến môi trường động",
-        "Xác định timeout cho một stage"
+        "Xác định thời gian build",
+        "Chỉ thực thi stage nếu điều kiện thỏa mãn — ví dụ: currentBuild.resultIsBetterOrEqualTo('SUCCESS')"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Directive 'when' trong Declarative Pipeline cho phép chỉ chạy stage nếu điều kiện đúng. Ví dụ: when { expression { return currentBuild.resultIsBetterOrEqualTo('SUCCESS') } } — chỉ build Docker image nếu test pass."
     },
     {
@@ -191,11 +231,11 @@
       "question": "Dynamic agents trong Jenkins là gì?",
       "options": [
         "Agents được cấu hình sẵn trên các máy ảo cố định",
-        "Agents được tạo theo yêu cầu — ví dụ Docker containers hoặc Kubernetes pods",
         "Agents chạy trên Master node",
-        "Agents chỉ dùng được với cloud providers"
+        "Agents chỉ dùng được với cloud providers",
+        "Agents được tạo theo yêu cầu — ví dụ Docker containers hoặc Kubernetes pods"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "Dynamic agents được tạo on-demand khi cần (Docker containers, Kubernetes pods) và bị xóa sau khi job hoàn thành. Khác với Static agents là các máy/VM được cấu hình sẵn và luôn sẵn sàng."
     },
     {
@@ -205,10 +245,10 @@
       "options": [
         "Luôn luôn thực thi, không phụ thuộc vào bước trước",
         "Chỉ khi developer chạy thủ công",
-        "Chỉ khi bước Test thành công — dùng 'when' condition: currentBuild.resultIsBetterOrEqualTo('SUCCESS')",
-        "Chỉ khi push lên branch main"
+        "Chỉ khi push lên branch main",
+        "Chỉ khi bước Test thành công — dùng 'when' condition: currentBuild.resultIsBetterOrEqualTo('SUCCESS')"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Trong Jenkinsfile hoàn chỉnh từ slide, stage 'Build Docker Image' có when condition: expression { return currentBuild.resultIsBetterOrEqualTo('SUCCESS') } — đảm bảo chỉ build Docker image khi tất cả tests đã pass."
     },
     {
@@ -216,12 +256,12 @@
       "level": "advanced",
       "question": "Trong Jenkins pipeline deploy stage, sau khi push Docker image lên DockerHub, bước tiếp theo là gì?",
       "options": [
+        "Rollback về version trước",
         "Tự động scale Kubernetes cluster",
         "SSH vào remote server và pull + run Docker image mới",
-        "Gửi email notification ngay lập tức",
-        "Rollback về version trước"
+        "Gửi email notification ngay lập tức"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "Theo complete CI/CD example trong slide: Deploy stage push Docker image lên DockerHub, sau đó SSH vào remote server (docker login, docker push), server pull image mới và run container. Credentials (SSH key, DockerHub) được lưu trong Jenkins credentials store."
     },
     {
@@ -230,11 +270,11 @@
       "question": "Để build và push Docker images trong Jenkins pipeline, cần cài plugin nào?",
       "options": [
         "GitHub Plugin",
+        "Kubernetes Plugin",
         "Docker Pipeline Plugin",
-        "Blue Ocean Plugin",
-        "Kubernetes Plugin"
+        "Blue Ocean Plugin"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "Docker Pipeline Plugin cho phép Jenkins pipeline build và deploy Docker images. Dùng cú pháp: docker.build('my-app-image') và docker.withRegistry('...', 'credentials') { docker.image('...').push('latest') }."
     },
     {
@@ -242,12 +282,12 @@
       "level": "advanced",
       "question": "Trong Jenkinsfile, section 'environment' dùng để làm gì?",
       "options": [
-        "Khai báo các stage sẽ chạy",
         "Định nghĩa biến môi trường — ví dụ: DOCKER_IMAGE, SLACK_WEBHOOK_URL, credentials",
-        "Xác định Java version cho build",
-        "Cấu hình network cho pipeline"
+        "Cấu hình network cho pipeline",
+        "Khai báo các stage sẽ chạy",
+        "Xác định Java version cho build"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Section 'environment' trong Jenkinsfile khai báo biến môi trường được dùng trong toàn pipeline. Ví dụ: environment { DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-token'); DOCKER_IMAGE = 'username/app'; SLACK_WEBHOOK_URL = credentials('slack') }."
     },
     {
@@ -257,8 +297,8 @@
       "options": [
         "Gửi email thay vì Slack vì Jenkins không hỗ trợ Slack",
         "Cài Slack Notification Plugin, tạo Slack Webhook, lưu credentials vào Jenkins, dùng slackSend() trong pipeline",
-        "Chỉ cần nhập Slack token trực tiếp vào Jenkinsfile",
-        "Slack tự động nhận thông báo từ Jenkins mà không cần cấu hình"
+        "Slack tự động nhận thông báo từ Jenkins mà không cần cấu hình",
+        "Chỉ cần nhập Slack token trực tiếp vào Jenkinsfile"
       ],
       "answer": 1,
       "explanation": "Quy trình: 1) Cài Slack Notification Plugin. 2) Tạo Slack Webhook (Slack > Apps > Custom Integrations > Jenkins CI). 3) Lưu workspace credentials vào Jenkins. 4) Dùng slackSend() trong post section: slackSend(channel: '#channel', color: 'good'/'danger', message: 'Build successful/failed')."
@@ -268,12 +308,12 @@
       "level": "basic",
       "question": "Jenkins CI cho phép làm gì khi developer push code lên version control?",
       "options": [
-        "Tự động gửi email thông báo cho tất cả thành viên team",
         "Tự động chạy builds và tests để phát hiện lỗi sớm",
-        "Tự động merge pull request vào main branch",
-        "Tự động cập nhật tài liệu dự án"
+        "Tự động gửi email thông báo cho tất cả thành viên team",
+        "Tự động cập nhật tài liệu dự án",
+        "Tự động merge pull request vào main branch"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Jenkins enables CI bằng cách tự động chạy automated builds và tests mỗi khi code được push lên version control. Điều này giúp phát hiện lỗi sớm và developer nhận feedback ngay sau khi commit."
     },
     {
@@ -282,11 +322,11 @@
       "question": "Sự khác biệt chính giữa Poll SCM và Webhooks khi trigger Jenkins build là gì?",
       "options": [
         "Poll SCM chỉ dùng được với GitHub, Webhooks dùng được với mọi SCM",
+        "Không có sự khác biệt, cả hai đều trigger build trong real-time",
         "Poll SCM: Jenkins định kỳ kiểm tra repo (tốn tài nguyên); Webhooks: SCM chủ động notify Jenkins ngay khi có push (real-time, hiệu quả hơn)",
-        "Poll SCM nhanh hơn Webhooks vì không cần network round-trip",
-        "Không có sự khác biệt, cả hai đều trigger build trong real-time"
+        "Poll SCM nhanh hơn Webhooks vì không cần network round-trip"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "Poll SCM: Jenkins định kỳ (theo cron schedule) hỏi repository 'có gì mới không?' — tốn tài nguyên vì phải liên tục kiểm tra dù không có thay đổi. Webhooks: GitHub/Bitbucket chủ động gửi POST request đến Jenkins ngay khi có push event — real-time và hiệu quả hơn vì Jenkins chỉ hoạt động khi thực sự có thay đổi."
     },
     {
@@ -294,9 +334,9 @@
       "level": "advanced",
       "question": "Trong multi-stage Dockerfile với 'FROM maven AS build' và 'FROM openjdk', mục đích chính là gì?",
       "options": [
-        "Chạy hai ứng dụng song song trong cùng một container",
-        "Tách biệt môi trường build (Maven) và runtime (JRE) để tạo image nhỏ hơn — chỉ copy artifact từ build stage sang runtime stage",
         "Đảm bảo Maven và OpenJDK có cùng phiên bản",
+        "Tách biệt môi trường build (Maven) và runtime (JRE) để tạo image nhỏ hơn — chỉ copy artifact từ build stage sang runtime stage",
+        "Chạy hai ứng dụng song song trong cùng một container",
         "Cho phép Jenkins build trên nhiều OS khác nhau đồng thời"
       ],
       "answer": 1,
@@ -307,12 +347,12 @@
       "level": "basic",
       "question": "Trong Jenkins, 'Executor' là gì?",
       "options": [
-        "Một loại plugin quản lý build logs",
         "Một loại trigger để bắt đầu pipeline tự động",
         "Slot trên một node dùng để thực thi jobs — cấu hình được số jobs chạy đồng thời",
+        "Một loại plugin quản lý build logs",
         "Tên gọi khác của Jenkins Master Node"
       ],
-      "answer": 2,
+      "answer": 1,
       "explanation": "Executor là các slot trên một node (master hoặc agent) để thực thi jobs. Số lượng executors trên một node quyết định có bao nhiêu jobs có thể chạy đồng thời trên node đó."
     },
     {
@@ -320,9 +360,9 @@
       "level": "basic",
       "question": "Lệnh nào dùng để khởi động Jenkins như một service trên Linux?",
       "options": [
-        "jenkins --start",
         "service jenkins run",
         "java -jar jenkins.war",
+        "jenkins --start",
         "sudo systemctl start jenkins"
       ],
       "answer": 3,
@@ -333,9 +373,9 @@
       "level": "basic",
       "question": "Static agents trong Jenkins khác Dynamic agents ở điểm nào?",
       "options": [
+        "Static agents không cần Jenkins Master để hoạt động",
         "Static agents chỉ dùng được trên Windows, Dynamic agents chỉ dùng được trên Linux",
         "Static agents chạy nhanh hơn vì dùng SSD",
-        "Static agents không cần Jenkins Master để hoạt động",
         "Static agents là các máy/VM được cấu hình sẵn và luôn sẵn sàng; Dynamic agents được tạo on-demand theo nhu cầu"
       ],
       "answer": 3,
@@ -359,12 +399,12 @@
       "level": "basic",
       "question": "JUnit Plugin trong Jenkins dùng để làm gì?",
       "options": [
+        "Tạo Java project mới trong Jenkins",
         "Chạy unit tests thay thế cho Maven",
         "Hiển thị test results từ JUnit trong Jenkins UI sau mỗi build",
-        "Tạo Java project mới trong Jenkins",
         "Kết nối Jenkins với JUnit test server riêng biệt"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "JUnit Plugin parse và hiển thị kết quả test (từ file XML do JUnit/Maven tạo ra) trực tiếp trong Jenkins build page — cho thấy số test passed/failed/skipped và lịch sử test trends."
     },
     {
@@ -372,8 +412,8 @@
       "level": "basic",
       "question": "Git Plugin trong Jenkins có vai trò gì?",
       "options": [
-        "Lưu trữ source code thay thế cho GitHub",
         "Quản lý Git credentials cho tất cả developer",
+        "Lưu trữ source code thay thế cho GitHub",
         "Tích hợp Git làm Source Code Management — cho phép Jenkins clone, fetch, và checkout từ Git repositories",
         "Tự động tạo Git commit khi build thành công"
       ],
@@ -385,12 +425,12 @@
       "level": "basic",
       "question": "Trong cú pháp Poll SCM, ký hiệu 'H/5 * * * *' có nghĩa là gì?",
       "options": [
-        "Chạy lúc 5 giờ sáng mỗi ngày",
+        "Chạy mỗi 5 phút một lần",
         "Chạy vào phút thứ 5 mỗi giờ",
         "Chạy 5 lần mỗi tuần",
-        "Chạy mỗi 5 phút một lần"
+        "Chạy lúc 5 giờ sáng mỗi ngày"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Cú pháp cron trong Jenkins: 'H/5 * * * *' nghĩa là chạy mỗi 5 phút. Ký hiệu H (Hash) giúp Jenkins phân tán thời gian chạy để tránh nhiều jobs cùng chạy đúng lúc. Định dạng: minute hour day month weekday."
     },
     {
@@ -398,12 +438,12 @@
       "level": "intermediate",
       "question": "Trong Declarative Pipeline, section 'tools' dùng để làm gì?",
       "options": [
-        "Khai báo Maven, JDK hoặc Gradle version mà Jenkins sẽ cung cấp cho pipeline",
         "Cài đặt các plugin mới vào Jenkins",
+        "Liệt kê các Docker images cần pull trước khi build",
         "Định nghĩa các shell scripts sẽ được thực thi",
-        "Liệt kê các Docker images cần pull trước khi build"
+        "Khai báo Maven, JDK hoặc Gradle version mà Jenkins sẽ cung cấp cho pipeline"
       ],
-      "answer": 0,
+      "answer": 3,
       "explanation": "Section 'tools' trong Declarative Pipeline khai báo build tools (Maven, JDK, Gradle) mà Jenkins Global Tool Configuration sẽ cung cấp. Ví dụ: tools { maven 'Maven-3.8'; jdk 'JDK-17' } — Jenkins tự động set PATH để pipeline dùng được mvn và java commands."
     },
     {
@@ -411,12 +451,12 @@
       "level": "intermediate",
       "question": "Trong Jenkinsfile, post { always { } } khác post { success { } } như thế nào?",
       "options": [
-        "always chạy nhanh hơn success vì không kiểm tra build status",
-        "always thực thi bất kể pipeline thành công hay thất bại; success chỉ thực thi khi build thành công",
+        "Không có sự khác biệt, chỉ là alias của nhau",
         "always chỉ dùng được ở cuối pipeline; success dùng được trong từng stage",
-        "Không có sự khác biệt, chỉ là alias của nhau"
+        "always thực thi bất kể pipeline thành công hay thất bại; success chỉ thực thi khi build thành công",
+        "always chạy nhanh hơn success vì không kiểm tra build status"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "Trong post section: 'always' chạy sau mỗi build dù thành công hay thất bại (dùng cho cleanup, archiving). 'success' chỉ chạy khi build thành công (dùng để gửi 'Build OK' notification). 'failure' chỉ chạy khi build thất bại (gửi alert)."
     },
     {
@@ -424,12 +464,12 @@
       "level": "intermediate",
       "question": "Để dùng DockerHub credentials trong Jenkins pipeline, quy trình chuẩn là gì?",
       "options": [
-        "Nhúng username/password trực tiếp vào Jenkinsfile dưới dạng plain text",
-        "Tạo file .dockercreds trong root repository và Jenkins tự đọc",
         "DockerHub credentials không cần cấu hình trong Jenkins vì Docker tự xử lý",
-        "Lưu credentials trong Jenkins Credentials Store, sau đó tham chiếu bằng ID trong Jenkinsfile qua environment { } hoặc withCredentials { }"
+        "Tạo file .dockercreds trong root repository và Jenkins tự đọc",
+        "Lưu credentials trong Jenkins Credentials Store, sau đó tham chiếu bằng ID trong Jenkinsfile qua environment { } hoặc withCredentials { }",
+        "Nhúng username/password trực tiếp vào Jenkinsfile dưới dạng plain text"
       ],
-      "answer": 3,
+      "answer": 2,
       "explanation": "Credentials nhạy cảm (DockerHub token, SSH keys) được lưu trong Jenkins Credentials Store (Manage Jenkins > Credentials). Trong Jenkinsfile, tham chiếu bằng ID: environment { DOCKERHUB_CREDENTIALS = credentials('docker-hub-access-token') } — Jenkins inject credentials an toàn mà không expose trong logs hay code."
     },
     {
@@ -437,12 +477,12 @@
       "level": "intermediate",
       "question": "Cú pháp 'docker.withRegistry()' trong Jenkinsfile được dùng để làm gì?",
       "options": [
-        "Khởi động Docker daemon trên agent node",
-        "Tạo Docker network cho containers trong pipeline",
+        "Kiểm tra Docker version trên agent node",
         "Authenticate với Docker registry (DockerHub hoặc private registry) và thực thi các Docker commands trong context đó",
-        "Kiểm tra Docker version trên agent node"
+        "Tạo Docker network cho containers trong pipeline",
+        "Khởi động Docker daemon trên agent node"
       ],
-      "answer": 2,
+      "answer": 1,
       "explanation": "docker.withRegistry('https://registry.hub.docker.com', 'credentialsId') { ... } cung cấp authenticated context để push/pull images. Bên trong block, dùng docker.image('name').push('tag') để push image lên registry đã xác thực."
     },
     {
@@ -450,10 +490,10 @@
       "level": "intermediate",
       "question": "Tại sao trong Jenkinsfile CI/CD thường tách 'mvn clean test' và 'mvn clean package' thành 2 stage riêng?",
       "options": [
-        "Vì Maven không thể chạy cả test và package trong cùng một lệnh",
+        "Vì Jenkins Freestyle Project không hỗ trợ lệnh mvn có nhiều goal",
         "Để tiết kiệm thời gian vì package chạy nhanh hơn test",
         "Để pipeline fail sớm ở stage Test nếu tests không pass, tránh mất thời gian build artifact khi code có lỗi",
-        "Vì Jenkins Freestyle Project không hỗ trợ lệnh mvn có nhiều goal"
+        "Vì Maven không thể chạy cả test và package trong cùng một lệnh"
       ],
       "answer": 2,
       "explanation": "Tách Test và Package thành 2 stage giúp pipeline fail fast: nếu 'mvn clean test' thất bại, Jenkins dừng ngay, không chạy 'mvn clean package' để tránh lãng phí tài nguyên build artifact từ code có lỗi. Stage Test cũng có thể kết hợp với JUnit Plugin để hiển thị test results."
@@ -463,12 +503,12 @@
       "level": "intermediate",
       "question": "Email Extension Plugin trong Jenkins cho phép làm gì hơn so với default email notification?",
       "options": [
-        "Tùy chỉnh nội dung email, người nhận, và điều kiện gửi theo build status (success/failure/unstable/always)",
-        "Gửi email nhanh hơn vì dùng SMTP riêng",
+        "Tích hợp với Slack để chuyển email sang Slack message",
         "Gửi email đến nhiều địa chỉ hơn giới hạn 5 của default plugin",
-        "Tích hợp với Slack để chuyển email sang Slack message"
+        "Tùy chỉnh nội dung email, người nhận, và điều kiện gửi theo build status (success/failure/unstable/always)",
+        "Gửi email nhanh hơn vì dùng SMTP riêng"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Email Extension Plugin (emailext) cung cấp nhiều tùy chọn hơn built-in email: tùy chỉnh subject, body (HTML/text), attachments, danh sách recipients động, và điều kiện gửi chi tiết (chỉ gửi khi failure, khi fixed, khi unstable, v.v.)."
     },
     {
@@ -477,11 +517,11 @@
       "question": "Trong Jenkins pipeline, hàm 'slackSend()' dùng tham số 'color' để làm gì?",
       "options": [
         "Thay đổi màu nền của Jenkins dashboard",
-        "Xác định màu sidebar của Slack message — 'good' (xanh) cho success, 'danger' (đỏ) cho failure",
         "Chọn màu chữ trong nội dung message",
-        "Phân loại độ ưu tiên của notification"
+        "Phân loại độ ưu tiên của notification",
+        "Xác định màu sidebar của Slack message — 'good' (xanh) cho success, 'danger' (đỏ) cho failure"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "slackSend(channel: '#devops', color: 'good', message: 'Build OK') — tham số color xác định màu của thanh bên trái Slack message: 'good' = xanh lá (success), 'danger' = đỏ (failure), 'warning' = vàng. Giúp team nhanh chóng nhận biết trạng thái build."
     },
     {
@@ -489,12 +529,12 @@
       "level": "intermediate",
       "question": "Trong kiến trúc Jenkins master-slave, vai trò của Slave/Agent Node là gì và lợi ích chính khi dùng nhiều agents?",
       "options": [
-        "Agent nodes chỉ lưu trữ artifacts, không thực thi jobs",
-        "Agent nodes quản lý credentials và secrets thay cho Master",
+        "Agent nodes thực thi build jobs; nhiều agents giúp chạy parallel jobs, hỗ trợ nhiều OS/environment khác nhau và giảm tải cho Master",
         "Agent nodes chỉ cần thiết khi Jenkins chạy trên cloud",
-        "Agent nodes thực thi build jobs; nhiều agents giúp chạy parallel jobs, hỗ trợ nhiều OS/environment khác nhau và giảm tải cho Master"
+        "Agent nodes chỉ lưu trữ artifacts, không thực thi jobs",
+        "Agent nodes quản lý credentials và secrets thay cho Master"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Slave/Agent nodes thực thi các build jobs được Master phân công. Lợi ích của nhiều agents: (1) parallel execution — nhiều jobs chạy đồng thời, (2) isolation — mỗi agent có environment riêng (Linux/Windows/macOS), (3) load balancing — phân tán workload, (4) scalability — thêm agent khi cần mà không ảnh hưởng Master."
     },
     {
@@ -502,12 +542,12 @@
       "level": "advanced",
       "question": "Trong Declarative Pipeline, directive 'agent { docker { image \"maven:3.8\" } }' có ý nghĩa gì?",
       "options": [
-        "Chạy toàn bộ pipeline (hoặc stage) bên trong container Docker dùng image 'maven:3.8' được pull từ registry",
-        "Build một Docker image mới tên 'maven:3.8' từ Dockerfile",
         "Deploy ứng dụng vào container maven:3.8 đang chạy",
-        "Yêu cầu Jenkins agent phải cài Maven version 3.8"
+        "Yêu cầu Jenkins agent phải cài Maven version 3.8",
+        "Chạy toàn bộ pipeline (hoặc stage) bên trong container Docker dùng image 'maven:3.8' được pull từ registry",
+        "Build một Docker image mới tên 'maven:3.8' từ Dockerfile"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "agent { docker { image 'maven:3.8' } } chỉ định Jenkins chạy pipeline/stage trong một Docker container được tạo từ image 'maven:3.8'. Jenkins tự động pull image, khởi động container, thực thi các steps bên trong, rồi xóa container sau khi xong — đây là dạng dynamic agent."
     },
     {
@@ -515,12 +555,12 @@
       "level": "advanced",
       "question": "Build artifacts trong Jenkins là gì và lệnh nào trong Jenkinsfile dùng để lưu trữ chúng?",
       "options": [
-        "Artifacts là log files của build; lưu bằng saveLog('**/*.log')",
-        "Artifacts là Docker images; lưu bằng docker.save('image-name')",
         "Artifacts là test reports; lưu bằng junit('**/test-results.xml')",
-        "Artifacts là các file được tạo ra trong quá trình build (JAR/WAR); lưu bằng archiveArtifacts(artifacts: 'target/*.jar')"
+        "Artifacts là các file được tạo ra trong quá trình build (JAR/WAR); lưu bằng archiveArtifacts(artifacts: 'target/*.jar')",
+        "Artifacts là log files của build; lưu bằng saveLog('**/*.log')",
+        "Artifacts là Docker images; lưu bằng docker.save('image-name')"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "Build artifacts là các file output của quá trình build — thường là compiled JAR/WAR files. Trong Jenkinsfile dùng archiveArtifacts(artifacts: 'target/*.jar', fingerprint: true) để Jenkins lưu và expose artifacts qua UI, cho phép download hoặc dùng trong downstream jobs."
     },
     {
@@ -528,12 +568,12 @@
       "level": "advanced",
       "question": "Blue Ocean UI trong Jenkins cung cấp tính năng gì nổi bật so với giao diện Jenkins classic?",
       "options": [
-        "Blue Ocean cho phép chạy Jenkins không cần Java",
-        "Blue Ocean tự động viết Jenkinsfile thay developer",
+        "Blue Ocean cung cấp pipeline visualization trực quan, hiển thị từng stage với trạng thái pass/fail và thời gian thực thi dưới dạng đồ họa",
         "Blue Ocean chỉ hoạt động với GitHub, không hỗ trợ GitLab hay Bitbucket",
-        "Blue Ocean cung cấp pipeline visualization trực quan, hiển thị từng stage với trạng thái pass/fail và thời gian thực thi dưới dạng đồ họa"
+        "Blue Ocean cho phép chạy Jenkins không cần Java",
+        "Blue Ocean tự động viết Jenkinsfile thay developer"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Blue Ocean cung cấp: (1) Pipeline visualization — hiển thị stages dưới dạng flow chart với màu sắc trực quan (xanh = pass, đỏ = fail), (2) Parallel stages visualization, (3) Better log viewer — dễ đọc hơn classic UI, (4) Pipeline editor — tạo/chỉnh Jenkinsfile qua UI. Mục tiêu: developer experience tốt hơn khi theo dõi CI/CD."
     },
     {
@@ -542,9 +582,9 @@
       "question": "Tại sao SSH keys cho remote deployment được lưu trong Jenkins Credentials Store thay vì hardcode trong Jenkinsfile?",
       "options": [
         "Vì Jenkins Credentials Store mã hóa credentials và chỉ inject vào build context, tránh lộ secrets trong source code hay build logs",
-        "Vì SSH keys quá dài để viết trong Jenkinsfile",
         "Vì Jenkins không hỗ trợ SSH trong Jenkinsfile trực tiếp",
-        "Vì hardcode SSH key vào Jenkinsfile giúp pipeline chạy nhanh hơn"
+        "Vì hardcode SSH key vào Jenkinsfile giúp pipeline chạy nhanh hơn",
+        "Vì SSH keys quá dài để viết trong Jenkinsfile"
       ],
       "answer": 0,
       "explanation": "Jenkins Credentials Store mã hóa và bảo vệ secrets (SSH keys, passwords, tokens). Khi dùng withCredentials([sshUserPrivateKey(...)]) trong Jenkinsfile, Jenkins inject credential vào biến môi trường chỉ trong build context và mask chúng trong logs — tránh lộ secrets trong Git history hoặc console output."
@@ -554,12 +594,12 @@
       "level": "advanced",
       "question": "Trong complete CI/CD Jenkinsfile, lệnh 'junit **/target/surefire-reports/*.xml' trong post section làm gì?",
       "options": [
-        "Xóa toàn bộ test report sau khi build",
         "Chạy lại các test đã fail",
-        "Thu thập và publish JUnit test results vào Jenkins để xem trend và chi tiết pass/fail",
-        "Copy test reports lên remote server"
+        "Copy test reports lên remote server",
+        "Xóa toàn bộ test report sau khi build",
+        "Thu thập và publish JUnit test results vào Jenkins để xem trend và chi tiết pass/fail"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "junit '**/target/surefire-reports/*.xml' (dùng với JUnit Plugin) đọc các XML test report do Maven Surefire tạo ra, parse kết quả và publish vào Jenkins build page. Jenkins hiển thị: tổng số tests, số passed/failed/skipped, thời gian chạy và historical trend chart — giúp track test quality theo thời gian."
     }
   ]

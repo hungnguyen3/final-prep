@@ -1,0 +1,287 @@
+{
+  "title": "Chapter 5: Value Function Approximation & Deep Q-Network (DQN)",
+  "theory": [
+    {
+      "heading": "Limitation of Tabular Methods",
+      "content": "Tabular methods store `V(s)` or `Q(s,a)` in a table — one entry per (s,a) pair.\n\n**Problem 1: Large state space** — network routing with many nodes causes exponential growth in the number of states.\n**Problem 2: Continuous states** — channel quality, delay, and bandwidth cannot be enumerated in a table.\n**Problem 3: Memory and computation** — storing `Q(s,a)` for all state-action pairs becomes infeasible.\n\n**Solution:** Approximate `V(s) ≈ V̂(s,w)` or `Q(s,a) ≈ Q̂(s,a,w)` using a **parameterised function** with weight vector **w**."
+    },
+    {
+      "heading": "Value Function Approximation",
+      "content": "Replace the lookup table with a **parameterised function**:\n- `V̂(s,w)` approximates state-value\n- `Q̂(s,a,w)` approximates action-value\n- **w** = weight vector learned during training\n\n**Linear approximation:** `V̂(s,w) = wᵀ φ(s)` where `φ(s)` is the **feature vector** for state s.\n**Neural network approximation:** state s is the input; the output is the value estimate.\n\n**Training objective:** minimise mean squared error between estimated and target values:\n`L(w) = E[(target - V̂(s,w))²]`\n\n**Update rule:** `w ← w + α[target - V̂(s,w)] · ∇_w V̂(s,w)`\n\n**Key advantage:** updating **w** at one state s improves estimates at **similar states** — this is **generalisation**, which tabular methods cannot do."
+    },
+    {
+      "heading": "Deep Q-Network (DQN)",
+      "content": "**DQN** extends Q-learning by using a **deep neural network** to approximate `Q(s,a,θ)`.\n\n- **Input:** state s (e.g., raw pixel observations or feature vectors)\n- **Output:** Q-values for **all actions simultaneously**\n- **Action selection:** `a* = argmax_a Q̂(s,a,θ)`\n\n**Loss function:**\n`L(θ) = E[(y - Q̂(s,a,θ))²]`\nwhere the **target** `y = r + γ · max_{a'} Q̂(s',a',θ⁻)`\n\n**Two key stabilisation techniques:**\n1. **Experience Replay** — store transitions `(s,a,r,s')` in replay buffer **D**; sample random mini-batches to break temporal correlations.\n2. **Target Network θ⁻** — a frozen copy of the main network used to compute targets; updated periodically every C steps to prevent the **moving target problem**."
+    },
+    {
+      "heading": "Experience Replay and Target Network",
+      "content": "**Without stabilisation:** correlated samples cause training instability; moving targets cause oscillation and divergence.\n\n**Experience Replay buffer D:**\n- Stores recent transitions `(s, a, r, s')`\n- Random sampling from D **removes temporal correlations**\n- Allows more efficient reuse of past experience\n- Each transition can be sampled multiple times\n\n**Target Network θ⁻:**\n- A **frozen copy** of the main network θ\n- Used only for computing the target `y = r + γ · max_{a'} Q̂(s',a',θ⁻)`\n- Updated every **C steps** (not every gradient step)\n- Without it: both prediction **and** target change every step → unstable\n\nThese two innovations enabled DQN to achieve **human-level performance** on Atari games."
+    },
+    {
+      "heading": "DQN for Network Routing",
+      "content": "DQN can be applied to **network routing** problems:\n\n- **State:** queue lengths at all nodes, link delays, current traffic demand\n- **Action:** select next-hop node (discrete choice)\n- **Reward:** negative packet delay, or packet delivery confirmation\n\n**DQN advantage over tabular Q-learning:**\n- Handles large and continuous state spaces in networks\n- Generalises across similar network conditions\n\n**DQN limitation:** works only for **discrete action spaces**.\n- `argmax_a Q̂(s,a,θ)` requires evaluating all possible actions\n- Cannot efficiently handle **continuous actions** (e.g., bandwidth allocation, power control)\n\n**For continuous actions in networking:** policy gradient methods (e.g., Actor-Critic) are required instead."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Why do tabular methods fail when the state space is very large?",
+      "options": [
+        "They only work with continuous action spaces",
+        "They need a target network to stabilise learning",
+        "They require storing one entry per state, which becomes infeasible",
+        "They cannot compute reward functions accurately"
+      ],
+      "answer": 2,
+      "explanation": "Tabular methods store one value per (s,a) pair. When the state space grows exponentially (e.g., network routing), storing and updating all entries becomes infeasible in memory and computation."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "What does value function approximation replace in RL?",
+      "options": [
+        "The environment simulator used during training",
+        "The discount factor used in Bellman equations",
+        "The reward signal from the environment",
+        "The lookup table with a parameterised function"
+      ],
+      "answer": 3,
+      "explanation": "Value function approximation replaces the lookup table (one value per state/action) with a parameterised function V̂(s,w) or Q̂(s,a,w), enabling generalisation across similar states."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "In linear value function approximation, what is φ(s)?",
+      "options": [
+        "The feature vector representing the state s",
+        "The learning rate controlling step size",
+        "The weight vector updated during training",
+        "The target value computed from the Bellman equation"
+      ],
+      "answer": 0,
+      "explanation": "In linear approximation V̂(s,w) = wᵀφ(s), the term φ(s) is the feature vector that represents state s in a fixed feature space."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "What is the input and output of a DQN network?",
+      "options": [
+        "Input: action probabilities; Output: selected action",
+        "Input: state s; Output: Q-values for all actions",
+        "Input: weight vector; Output: updated parameters",
+        "Input: reward signal; Output: optimal policy"
+      ],
+      "answer": 1,
+      "explanation": "A DQN takes the current state s as input and outputs Q-values for all discrete actions simultaneously, allowing action selection via argmax."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "How does DQN select an action at state s?",
+      "options": [
+        "By computing argmax_a Q̂(s,a,θ) over all actions",
+        "By averaging Q-values across all available actions",
+        "By following a fixed rule stored in a lookup table",
+        "By sampling from the output probability distribution"
+      ],
+      "answer": 0,
+      "explanation": "DQN selects the action with the highest estimated Q-value: a* = argmax_a Q̂(s,a,θ). This requires evaluating all discrete actions."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "What is the main purpose of experience replay in DQN?",
+      "options": [
+        "To break temporal correlations in training samples",
+        "To increase the learning rate during training",
+        "To reduce the size of the neural network weights",
+        "To compute the target network values faster"
+      ],
+      "answer": 0,
+      "explanation": "Experience replay stores transitions in a buffer and samples randomly from it, breaking the temporal correlations between consecutive training samples that would otherwise destabilise learning."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "What is stored in the DQN replay buffer D?",
+      "options": [
+        "Only the states and their associated rewards",
+        "The neural network weights at each time step",
+        "Target Q-values computed by the frozen network",
+        "Transitions of the form (s, a, r, s') from interactions"
+      ],
+      "answer": 3,
+      "explanation": "The replay buffer D stores experience transitions (s, a, r, s') — state, action, reward, and next state — from the agent's interaction with the environment."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "What is the DQN loss function used to train the main network?",
+      "options": [
+        "`L(θ) = E[(y - Q̂(s,a,θ))²]` where `y = r + γ max_{a'} Q̂(s',a',θ⁻)`",
+        "`L(θ) = E[(r + γV̂(s,w) - Q̂(s,a,θ))²]`",
+        "`L(θ) = E[(G_t - Q̂(s,a,θ))²]` using Monte Carlo returns",
+        "`L(θ) = E[log π(a|s,θ) · Q̂(s,a,θ)]`"
+      ],
+      "answer": 0,
+      "explanation": "The DQN loss is the mean squared error between the predicted Q̂(s,a,θ) and the target y = r + γ max_{a'} Q̂(s',a',θ⁻), where θ⁻ is the frozen target network."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "What is the purpose of the target network θ⁻ in DQN?",
+      "options": [
+        "To provide stable targets by being updated less frequently",
+        "To select exploration actions using epsilon-greedy strategy",
+        "To compute faster gradient updates for the main network",
+        "To store all transitions in the replay buffer memory"
+      ],
+      "answer": 0,
+      "explanation": "The target network θ⁻ is a frozen copy of the main network updated every C steps. It provides stable training targets, preventing the instability caused by both prediction and target changing simultaneously."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "What problem occurs in DQN training if there is no target network?",
+      "options": [
+        "Both prediction and target values shift every step, causing instability",
+        "The feature vector φ(s) fails to represent the state correctly",
+        "The replay buffer fills up and stops accepting new transitions",
+        "The action space collapses to a single dominant action"
+      ],
+      "answer": 0,
+      "explanation": "Without a target network, both Q̂(s,a,θ) and the target y change every gradient step, creating a moving target problem that leads to oscillation and divergence."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "How often is the DQN target network θ⁻ updated?",
+      "options": [
+        "Every C steps by copying weights from the main network",
+        "After every single gradient descent step on the main network",
+        "After every complete episode played by the agent",
+        "Continuously using an exponential moving average update"
+      ],
+      "answer": 0,
+      "explanation": "The target network θ⁻ is updated every C steps (e.g., every 1000 steps) by copying the weights from the main network θ, keeping targets stable between updates."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "What is the key generalisation advantage of function approximation over tabular Q-learning?",
+      "options": [
+        "It allows the agent to act in deterministic environments only",
+        "It removes the need for any reward signal during training",
+        "It stores a separate value for every possible state-action pair",
+        "Updating weights at one state improves estimates at similar states"
+      ],
+      "answer": 3,
+      "explanation": "When function approximation updates weight w at state s, the change propagates to all similar states (via shared weights), enabling generalisation — something impossible with tabular methods."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "Why can DQN handle large state spaces in network routing unlike tabular Q-learning?",
+      "options": [
+        "DQN evaluates each state independently without any memory",
+        "DQN approximates Q-values with a neural network that generalises",
+        "DQN uses a lookup table that is compressed using hashing",
+        "DQN only stores the top 100 most visited states in memory"
+      ],
+      "answer": 1,
+      "explanation": "DQN uses a neural network to approximate Q(s,a,θ), which can generalise to unseen states. This makes it scalable to large or continuous state spaces like those found in network routing."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "In the DQN weight update rule `w ← w + α[target - V̂(s,w)]·∇_w V̂(s,w)`, what does the term `[target - V̂(s,w)]` represent?",
+      "options": [
+        "The TD error — difference between target and current estimate",
+        "The log probability of the action taken at state s",
+        "The action-value gradient used in policy gradient methods",
+        "The discount factor applied to future expected rewards"
+      ],
+      "answer": 0,
+      "explanation": "The term [target - V̂(s,w)] is the temporal-difference (TD) error, representing how far the current estimate is from the target. It drives the weight update toward better estimates."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "What type of action space can DQN handle, and what is its limitation?",
+      "options": [
+        "Both discrete and continuous via separate output heads",
+        "Discrete only; cannot efficiently handle continuous actions",
+        "Continuous only; cannot handle discrete choices at all",
+        "Mixed spaces; but only up to 10 simultaneous actions"
+      ],
+      "answer": 1,
+      "explanation": "DQN selects actions via argmax_a Q̂(s,a,θ), which requires enumerating all actions. This works for discrete action spaces but fails for continuous ones (e.g., power control) where infinitely many actions exist."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "In network routing with DQN, which of the following best describes the reward function?",
+      "options": [
+        "Positive reward for every routing table update made",
+        "Fixed reward of +1 whenever any packet reaches any node",
+        "The difference between current and previous queue lengths",
+        "Negative packet delay or a delivery confirmation signal"
+      ],
+      "answer": 3,
+      "explanation": "In network routing DQN, the reward is typically negative delay (to minimise latency) or a packet delivery confirmation, aligning the agent's objective with network performance goals."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "Why does random sampling from the replay buffer improve DQN training stability?",
+      "options": [
+        "It doubles the effective batch size without extra memory cost",
+        "It prioritises rare transitions that the agent has seen infrequently",
+        "It ensures all transitions have equal reward magnitudes",
+        "It removes temporal correlations that would bias gradient estimates"
+      ],
+      "answer": 3,
+      "explanation": "Consecutive transitions are highly correlated (same episode, similar states). Random sampling from the replay buffer decorrelates the mini-batch, producing more independent, less biased gradient estimates."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "The DQN target uses `max_{a'} Q̂(s',a',θ⁻)` rather than `max_{a'} Q̂(s',a',θ)`. Why?",
+      "options": [
+        "Using θ for targets creates a circular dependency that causes divergence",
+        "θ⁻ is updated more frequently and thus more accurate than θ",
+        "The main network θ cannot evaluate next-state Q-values at all",
+        "θ⁻ uses a larger network architecture for better accuracy"
+      ],
+      "answer": 0,
+      "explanation": "If the same network θ is used for both prediction and target computation, both sides of the loss change every step, creating instability. The frozen θ⁻ decouples them, stabilising training."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "A network engineer argues that for continuous bandwidth allocation, DQN should use finely discretised actions (1000 bins). What is the main problem with this approach?",
+      "options": [
+        "DQN cannot represent bandwidth values as Q-network outputs",
+        "Fine discretisation explodes the action space, making argmax costly and imprecise",
+        "The argmax over 1000 actions is computationally cheap and accurate",
+        "Discretisation introduces no error if the bins are fine enough"
+      ],
+      "answer": 1,
+      "explanation": "Finely discretising continuous actions makes the argmax expensive (many actions to evaluate) and still introduces discretisation error. Policy gradient methods are the proper solution for continuous action spaces."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "Consider a DQN applied to routing where the state includes queue lengths at 50 nodes. Why is this preferable to tabular Q-learning, and what fundamental constraint still applies?",
+      "options": [
+        "Tabular Q-learning also scales to 50-node networks with enough memory",
+        "DQN handles the continuous state via generalisation, but is still limited to discrete next-hop actions",
+        "DQN converts the state to discrete bins, removing all approximation errors",
+        "DQN removes the need for rewards by learning from state transitions alone"
+      ],
+      "answer": 1,
+      "explanation": "DQN generalises across the high-dimensional state space (50 queue lengths) via neural network approximation, which tabular methods cannot handle. However, DQN's argmax still requires discrete actions — it cannot directly output continuous bandwidth or power values."
+    }
+  ]
+}

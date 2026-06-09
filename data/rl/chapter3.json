@@ -1,0 +1,287 @@
+{
+  "title": "Chapter 3: Dynamic Programming & Monte Carlo Methods",
+  "theory": [
+    {
+      "heading": "Two Fundamental Approaches",
+      "content": "**Model-based** (network model known): transition probabilities `P(s'|s,a)` and reward function `r(s,a)` are available → use **Dynamic Programming**.\n**Model-free** (network model unknown): wireless channel statistics unavailable, traffic arrival distribution unknown, environment dynamically changing → learn directly from sampled experience using **Monte Carlo** methods.\n\nSpectrum:\n1) Full Model Available → Dynamic Programming\n2) Monte Carlo\n3) Temporal-Difference\n4) Deep RL\n\nKey insight:\n- DP = bootstrapping + model\n- MC = sampling + no bootstrapping\n- TD = sampling + bootstrapping"
+    },
+    {
+      "heading": "Value Iteration Algorithm",
+      "content": "Solves the **Bellman optimality equation** iteratively. Uses the **contraction mapping theorem** to guarantee convergence.\n\nAlgorithm: start with arbitrary `v_0`, update:\n`v_{k+1}(s) = max_a q_k(s,a)`\nwhere `q_k(s,a) = Σ p(r|s,a)·r + γ Σ p(s'|s,a)·v_k(s')`\n\nTwo steps per iteration:\n- **Policy update**: `π_{k+1}(s) = argmax_a q_k(s,a)` — greedy policy\n- **Value update**: `v_{k+1}(s) = max_a q_k(s,a)`\n\nConverges to optimal value function `v*` and optimal policy `π*` as `k→∞`. Starting value `v_0` can be arbitrary."
+    },
+    {
+      "heading": "Policy Iteration Algorithm",
+      "content": "Alternative to Value Iteration. Two interleaved steps:\n1) **Policy Evaluation**: compute `V^π` for current policy `π` by solving:\n`V^π(s) = Σ_a π(a|s) · q^π(s,a)`\n2) **Policy Improvement**: update `π` to be greedy w.r.t. `V^π`:\n`π'(s) = argmax_a q^π(s,a)`\n\nRepeat until convergence.\n\n- Policy Iteration is often **faster** than Value Iteration (fewer iterations)\n- Both converge to the **optimal policy**\n- Policy Iteration guarantees **monotonic policy improvement** at each step"
+    },
+    {
+      "heading": "Monte Carlo Methods",
+      "content": "**Model-free**: learns from complete episodes of experience. Does NOT require knowledge of transition probabilities.\n\nEstimates value functions by averaging sample returns.\n\n**MC Prediction**: estimate `V^π` by averaging total returns from each state visit.\n- **First-visit MC**: average return after FIRST visit to `s` in each episode\n- **Every-visit MC**: average return after EVERY visit to `s`\n\n**MC Control**: use MC to evaluate policy, then improve greedily.\n\n**Limitation**: must wait until episode ends (terminal state required). Works well for **episodic tasks** only."
+    },
+    {
+      "heading": "Exploration vs Exploitation",
+      "content": "Key challenge in RL: agent must **explore** to find better policies but **exploit** known good actions.\n\n**Epsilon-greedy policy**:\n- With probability `ε`: take random action (explore)\n- With probability `1-ε`: take best known action (exploit)\n\n- `ε`-greedy ensures all state-action pairs are visited (exploration)\n- As learning progresses, `ε` is often **decayed**\n\n**On-policy methods**: learn about the policy being used to make decisions.\n**Off-policy methods**: learn about a different (target) policy while following a behaviour policy."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "What is the key difference between model-based and model-free RL?",
+      "options": [
+        "Model-based knows transition probabilities; model-free learns from experience",
+        "Model-based uses neural networks; model-free uses lookup tables",
+        "Model-based needs more data; model-free needs less data overall",
+        "Model-based is faster to train; model-free is slower to converge"
+      ],
+      "answer": 0,
+      "explanation": "Model-based RL has access to transition probabilities P(s'|s,a) and the reward function, enabling Dynamic Programming. Model-free RL learns directly from sampled experience without knowing the environment model."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Which method should you use when the full environment model (transition probabilities) is known?",
+      "options": [
+        "Temporal-Difference for online bootstrapping",
+        "Deep Reinforcement Learning for function approximation",
+        "Monte Carlo methods for direct sampling",
+        "Dynamic Programming for exact computation"
+      ],
+      "answer": 3,
+      "explanation": "When the full model is available (transition probabilities and reward function known), Dynamic Programming can solve the Bellman equations exactly and efficiently."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "In the epsilon-greedy strategy, what does the agent do with probability ε?",
+      "options": [
+        "Selects the action with the highest Q-value",
+        "Resets the episode to the starting state",
+        "Updates the value function using bootstrapping",
+        "Picks a completely random action to explore"
+      ],
+      "answer": 3,
+      "explanation": "With probability ε, the agent takes a random action (exploration). With probability 1-ε, it takes the greedy best known action (exploitation). This ensures all state-action pairs are eventually visited."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "What does the Value Iteration algorithm start with?",
+      "options": [
+        "The optimal policy computed from prior data",
+        "A fixed epsilon-greedy exploration schedule",
+        "An arbitrary initial value function v_0",
+        "Transition probabilities estimated from samples"
+      ],
+      "answer": 2,
+      "explanation": "Value Iteration begins with an arbitrary value function v_0 (e.g., all zeros). The contraction mapping theorem guarantees convergence to v* regardless of this starting point."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "What does 'bootstrapping' mean in the context of Dynamic Programming?",
+      "options": [
+        "Sampling transitions from the real environment",
+        "Learning from complete episodes without a model",
+        "Updating estimates using other current estimates",
+        "Randomly initializing all value functions to zero"
+      ],
+      "answer": 2,
+      "explanation": "Bootstrapping means updating the value estimate of a state using the current estimated values of successor states, rather than waiting for the actual final return."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "What type of tasks is Monte Carlo best suited for?",
+      "options": [
+        "Continuing tasks with no terminal state",
+        "Tasks where the model is fully specified",
+        "Episodic tasks with a clear terminal state",
+        "Tasks requiring real-time online updates"
+      ],
+      "answer": 2,
+      "explanation": "Monte Carlo methods require complete episodes to compute returns. They work well for episodic tasks (with terminal states) but cannot handle continuing tasks that never end."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "What is a greedy policy with respect to a value function?",
+      "options": [
+        "The policy that selects the action maximizing Q-value",
+        "The policy that uses epsilon for random exploration",
+        "The policy that always chooses a random action",
+        "The policy that minimizes the total number of steps"
+      ],
+      "answer": 0,
+      "explanation": "A greedy policy selects the action that maximizes the action-value: π(s) = argmax_a q(s,a). It exploits current value estimates without any exploration."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "In Value Iteration, what is the update rule for v_{k+1}(s)?",
+      "options": [
+        "`v_{k+1}(s) = max_a q_k(s,a)` (greedy maximum)",
+        "`v_{k+1}(s) = Σ_a π(a|s) · q_k(s,a)` (policy average)",
+        "`v_{k+1}(s) = α·r + (1-α)·v_k(s)` (running average)",
+        "`v_{k+1}(s) = min_a q_k(s,a)` (pessimistic minimum)"
+      ],
+      "answer": 0,
+      "explanation": "Value Iteration updates by taking the maximum over actions: v_{k+1}(s) = max_a q_k(s,a), which directly applies the Bellman optimality equation."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "What are the two interleaved steps in Policy Iteration?",
+      "options": [
+        "Policy Evaluation and Policy Improvement iteratively",
+        "Value Estimation and Action Selection from the table",
+        "Forward Pass and Backward Pass through the MDP",
+        "Exploration Phase and Exploitation Phase alternating"
+      ],
+      "answer": 0,
+      "explanation": "Policy Iteration alternates between Policy Evaluation (computing V^π for the current policy) and Policy Improvement (making the policy greedy w.r.t. V^π) until convergence."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "What is the main limitation of Dynamic Programming methods?",
+      "options": [
+        "They cannot handle discrete state spaces efficiently",
+        "They converge to a local optimum rather than global",
+        "They require complete episodes before any update",
+        "They require a full environment model to compute updates"
+      ],
+      "answer": 3,
+      "explanation": "DP requires knowing the transition probabilities P(s'|s,a) and reward function r(s,a). Without this model, DP cannot be applied — this is the key motivation for model-free methods."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "What is the difference between First-visit MC and Every-visit MC?",
+      "options": [
+        "First-visit only updates terminal states; every-visit updates all states",
+        "First-visit requires a model; every-visit is fully model-free",
+        "First-visit averages only the first return per episode; every-visit averages all returns",
+        "First-visit uses off-policy learning; every-visit uses on-policy learning"
+      ],
+      "answer": 2,
+      "explanation": "First-visit MC averages the return from the FIRST time state s is visited in each episode. Every-visit MC averages the return from ALL visits to s within each episode. Both converge to V^π."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "Why do Monte Carlo methods require waiting until the episode ends?",
+      "options": [
+        "They update the policy only after the model is fully trained",
+        "They need the complete return G_t which includes all future rewards",
+        "They need to compute exact transition probabilities first",
+        "They must synchronize all states before any single update"
+      ],
+      "answer": 1,
+      "explanation": "MC updates use the actual return G_t = r_{t+1} + γr_{t+2} + ... which sums all future rewards in the episode. This total is only known once the terminal state is reached."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "What theorem guarantees that Value Iteration converges to v*?",
+      "options": [
+        "Bellman's Linear Programming Theorem for MDPs",
+        "The Policy Gradient Theorem for parameterized policies",
+        "The Contraction Mapping Theorem for Bellman operator",
+        "The Central Limit Theorem for sampled return averages"
+      ],
+      "answer": 2,
+      "explanation": "The Contraction Mapping Theorem guarantees that the Bellman optimality operator is a contraction (with factor γ < 1), so repeated application converges to the unique fixed point v*."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "What is an on-policy method in reinforcement learning?",
+      "options": [
+        "A method that learns about the policy currently being executed",
+        "A method that learns the value of the greedy policy only",
+        "A method that requires a full model of the environment",
+        "A method that updates all states simultaneously in each step"
+      ],
+      "answer": 0,
+      "explanation": "On-policy methods learn the value function for the same policy that is generating the experience (e.g., ε-greedy SARSA improves the ε-greedy policy it is following)."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Policy Iteration is often faster than Value Iteration because:",
+      "options": [
+        "It skips the policy evaluation step completely each time",
+        "It uses neural networks to approximate value functions",
+        "It converges in fewer iterations due to explicit policy evaluation",
+        "It samples from the environment instead of computing exactly"
+      ],
+      "answer": 2,
+      "explanation": "Policy Iteration performs full policy evaluation before each improvement step. This thorough evaluation leads to larger policy updates, resulting in fewer total iterations to reach the optimal policy."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "In the Value Iteration update, q_k(s,a) = Σ p(r|s,a)·r + γ Σ p(s'|s,a)·v_k(s'). The term γ Σ p(s'|s,a)·v_k(s') represents:",
+      "options": [
+        "The discounted expected future value from next states",
+        "The entropy of the policy over all possible actions",
+        "The immediate expected reward for action a in state s",
+        "The exploration bonus for under-visited state-action pairs"
+      ],
+      "answer": 0,
+      "explanation": "This term is the bootstrapped future value: the discounted (γ) weighted average of v_k values at successor states s', weighted by their transition probabilities. It replaces the true future return with current estimates."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "Why does Monte Carlo fail for continuing (non-episodic) tasks?",
+      "options": [
+        "The return G_t is infinite and never terminates to compute",
+        "Continuous actions are not compatible with MC averaging",
+        "It cannot represent infinite state spaces in memory",
+        "The model is required to estimate transition probabilities"
+      ],
+      "answer": 0,
+      "explanation": "In continuing tasks with no terminal state, the return G_t = Σ_{k=0}^∞ γ^k r_{t+k+1} requires an infinite sum that never reaches a final episode. MC must wait for episode end, which never happens."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "The Policy Improvement Theorem states that if π'(s) = argmax_a q^π(s,a), then:",
+      "options": [
+        "π' is equal to π only when the optimal policy is reached",
+        "V^{π'}(s) = V^π(s) for all states s (stability condition)",
+        "V^{π'}(s) ≤ V^π(s) for at least one state (worst case)",
+        "V^{π'}(s) ≥ V^π(s) for all states s (monotonic improvement)"
+      ],
+      "answer": 3,
+      "explanation": "The Policy Improvement Theorem guarantees V^{π'}(s) ≥ V^π(s) for ALL states s. If V^{π'}(s) = V^π(s), then both satisfy the Bellman optimality equation and both are optimal."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "An off-policy MC method uses a behaviour policy μ and evaluates target policy π. What is the main statistical challenge?",
+      "options": [
+        "Importance sampling ratios can have very high variance",
+        "The target policy must be greedy to guarantee convergence",
+        "Monte Carlo cannot handle more than one policy at a time",
+        "The behaviour policy must be identical to the target policy"
+      ],
+      "answer": 0,
+      "explanation": "Off-policy MC uses importance sampling to correct for the difference between μ and π. The importance sampling ratio ∏(π/μ) can be very large, leading to extremely high variance estimates."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "In a wireless network scheduling problem, why might Monte Carlo be preferred over DP even if an approximate model exists?",
+      "options": [
+        "DP cannot handle reward functions with negative values in networking",
+        "An inaccurate model in DP propagates errors; MC uses real experience instead",
+        "Monte Carlo can exploit GPU parallelism while DP is strictly sequential",
+        "Monte Carlo always converges faster than DP regardless of model quality"
+      ],
+      "answer": 1,
+      "explanation": "If the network model is approximate, DP will compute an optimal policy for the wrong model. MC learns directly from real environment interactions, making it robust to model inaccuracies — especially important in dynamic wireless environments."
+    }
+  ]
+}

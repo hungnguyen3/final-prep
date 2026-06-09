@@ -1,39 +1,287 @@
 {
-  "title": "Chương 1: Giới thiệu Reinforcement Learning",
+  "title": "Chapter 1: RL Fundamentals — Agent, Environment, Policy",
   "theory": [
     {
-      "heading": "Reinforcement Learning là gì?",
-      "content": "RL là một nhánh của Machine Learning, trong đó một agent học cách hành động trong môi trường để tối đa hóa phần thưởng tích lũy theo thời gian."
+      "heading": "What is Reinforcement Learning?",
+      "content": "RL is modelled as interaction between **agent** and **environment**. The agent makes decisions (**actions**) based on observations (**states**) and receives feedback (**rewards**). Goal: learn a **policy** to maximise cumulative rewards.\n\nRL differs from supervised learning: no labelled data — the agent learns from **trial-and-error**.\n\nThree types of ML:\n- **Supervised learning**: learns from labelled data\n- **Unsupervised learning**: finds patterns in unlabelled data\n- **Reinforcement learning**: learns from interaction with an environment\n\nApplications: network routing, robotics, game playing, resource management."
     },
     {
-      "heading": "Các thành phần cơ bản",
-      "content": "Agent, Environment, State (trạng thái), Action (hành động), Reward (phần thưởng), Policy (chính sách)."
+      "heading": "Agent and Environment",
+      "content": "**Agent** = decision-making entity.\n- Examples: network router, robotic controller\n\n**Environment** = everything external that reacts to the agent's actions and provides feedback.\n- Examples: network topology, wireless channel\n\nTogether they form a **closed feedback loop**:\n1) Agent observes current state `s`\n2) Agent selects action `a`\n3) Environment transitions to new state `s'`\n4) Environment returns reward `r` and new state `s'` to agent\n5) Cycle repeats"
+    },
+    {
+      "heading": "State, Action, and Reward",
+      "content": "**State** `s`: a snapshot of the environment at a given time.\n- Example: current network congestion status\n\n**Action** `a`: the decision the agent makes that affects the environment.\n- Example: choosing the next hop in a network\n\n**Reward** `r`: immediate scalar feedback based on the outcome.\n- Example: negative reward proportional to network delay: `r = -1 × delay`\n- Example: `r = -10` for packet loss\n\nGood **state representation** and meaningful **action choices** are critical for effective learning."
+    },
+    {
+      "heading": "Policy and Value Functions",
+      "content": "**Policy** `π`: the agent's strategy — a mapping from states to actions.\n- **Deterministic policy**: fixed action per state — `π(s) = a`\n- **Stochastic policy**: probability distribution over actions — `π(a|s)`\n\nGoal: learn the policy that maximises long-term cumulative rewards.\n\n**State-value function** `V(s)`: expected return starting from state `s` and following policy `π`.\n\n**Action-value function** `Q(s,a)`: expected return when taking action `a` in state `s`, then following policy `π`.\n\nValue functions provide essential guidance for improving decision-making."
+    },
+    {
+      "heading": "Return and Discount Factor",
+      "content": "**Return** `G_t` = sum of future rewards starting at time `t`.\n\n**Discounted return**: `G_t = r_{t+1} + γ·r_{t+2} + γ²·r_{t+3} + ...`\n\n**Discount factor** `γ` (0 ≤ `γ` ≤ 1):\n- `γ = 0`: agent only cares about immediate reward\n- `γ` close to 1: agent values long-term rewards more\n- Typical values: 0.9, 0.95\n\nHelps handle infinite-horizon tasks by ensuring finite return.\n\n**Episodic tasks**: have a terminal state — interaction ends in episodes.\n**Continuing tasks**: no terminal state — discounting ensures finite return."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "Trong RL, 'agent' là gì?",
-      "options": ["Thực thể học và đưa ra quyết định", "Môi trường mà agent hoạt động trong đó", "Phần thưởng nhận được", "Trạng thái hiện tại"],
-      "answer": 0,
-      "explanation": "Agent là thực thể học hỏi và đưa ra các hành động trong môi trường để tối đa hóa phần thưởng."
+      "question": "Which of the following best describes the goal of a Reinforcement Learning agent?",
+      "options": [
+        "Minimise prediction error on a test set",
+        "Classify inputs using labelled training data",
+        "Discover hidden clusters in unlabelled data",
+        "Maximise cumulative rewards over time"
+      ],
+      "answer": 3,
+      "explanation": "The RL agent's goal is to learn a policy that maximises the cumulative (long-term) reward it receives from the environment."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Mục tiêu của agent trong RL là?",
-      "options": ["Tối đa hóa tổng phần thưởng tích lũy", "Tối thiểu hóa số bước hành động", "Khám phá toàn bộ môi trường", "Tìm trạng thái khởi đầu tốt nhất"],
+      "question": "In Reinforcement Learning, what is the role of the 'environment'?",
+      "options": [
+        "To react to actions and provide state and reward",
+        "To supply labelled examples for the agent to train on",
+        "To select the best action at each time step",
+        "To store the agent's learned policy parameters"
+      ],
       "answer": 0,
-      "explanation": "Agent học để tối đa hóa cumulative reward (tổng phần thưởng tích lũy) theo thời gian."
+      "explanation": "The environment receives the agent's action, transitions to a new state, and returns both the new state and a reward signal back to the agent."
     },
     {
       "id": 3,
-      "level": "intermediate",
-      "question": "Policy trong RL là gì?",
-      "options": ["Hàm ánh xạ từ state sang action", "Hàm tính phần thưởng", "Mô hình của môi trường", "Tập hợp tất cả các state"],
+      "level": "basic",
+      "question": "Which type of machine learning learns by interacting with an environment rather than from a fixed dataset?",
+      "options": [
+        "Supervised learning",
+        "Semi-supervised learning",
+        "Reinforcement learning",
+        "Unsupervised learning"
+      ],
+      "answer": 2,
+      "explanation": "Reinforcement learning agents learn through trial-and-error interaction with an environment, receiving reward signals instead of labelled examples."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "What does a 'state' represent in an RL problem?",
+      "options": [
+        "The agent's current cumulative reward total",
+        "The set of all possible actions available",
+        "The scalar feedback signal after each action",
+        "A snapshot of the environment at a given time"
+      ],
+      "answer": 3,
+      "explanation": "A state is a snapshot or representation of the environment at a particular point in time, used by the agent to decide which action to take."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "In a network routing RL problem, which element most naturally corresponds to the 'reward'?",
+      "options": [
+        "The set of all possible routing paths",
+        "The current congestion level of all links",
+        "A negative value proportional to packet delay",
+        "The choice of next hop for a packet"
+      ],
+      "answer": 2,
+      "explanation": "The reward is a scalar feedback signal. In network routing, a natural reward is a negative value proportional to delay (e.g., r = -delay) or a penalty for packet loss."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "What is a 'deterministic policy' in Reinforcement Learning?",
+      "options": [
+        "A policy that maps each state to exactly one action",
+        "A policy that assigns probabilities to each action",
+        "A policy that requires no state information to act",
+        "A policy that maximises reward in one step only"
+      ],
       "answer": 0,
-      "explanation": "Policy (π) là chiến lược của agent: ánh xạ từ mỗi state sang action mà agent sẽ thực hiện."
+      "explanation": "A deterministic policy π(s) = a maps each state directly to a single fixed action, as opposed to a stochastic policy that defines a probability distribution."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "Which of the following is a real-world application of Reinforcement Learning?",
+      "options": [
+        "Labelling images with object categories",
+        "Compressing a dataset for storage efficiency",
+        "Clustering customers by purchase behaviour",
+        "Training a robot arm to grasp objects"
+      ],
+      "answer": 3,
+      "explanation": "Robotics control — such as training a robot arm — is a classic RL application. The robot learns to take actions (joint movements) to maximise a reward (successful grasp)."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "What distinguishes a stochastic policy from a deterministic policy?",
+      "options": [
+        "It ignores state information when choosing actions",
+        "It selects actions based only on immediate reward",
+        "It stores a fixed lookup table of state-action pairs",
+        "It outputs a probability distribution over actions"
+      ],
+      "answer": 3,
+      "explanation": "A stochastic policy π(a|s) defines the probability of selecting action a in state s, enabling exploration and handling partial observability."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "How does the state-value function V(s) differ from the action-value function Q(s,a)?",
+      "options": [
+        "V(s) evaluates a state alone; Q(s,a) evaluates a state-action pair",
+        "V(s) requires knowing the next state; Q(s,a) does not",
+        "V(s) gives immediate reward only; Q(s,a) gives cumulative reward",
+        "V(s) is used for stochastic policies; Q(s,a) for deterministic ones"
+      ],
+      "answer": 0,
+      "explanation": "V(s) is the expected return from state s under policy π. Q(s,a) is the expected return from taking action a in state s and then following π — it conditions on both state and action."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "An agent has discount factor γ = 0. Which reward does it care about most?",
+      "options": [
+        "The average of all future rewards equally",
+        "The reward received at the very last time step",
+        "Rewards discounted exponentially over all steps",
+        "Only the immediate next-step reward"
+      ],
+      "answer": 3,
+      "explanation": "When γ = 0, the discounted return G_t = r_{t+1}, so the agent only considers the immediate reward and ignores all future rewards."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "What is the primary purpose of the discount factor γ in continuing (non-episodic) tasks?",
+      "options": [
+        "To balance the trade-off between exploration and exploitation",
+        "To speed up the convergence of policy gradient updates",
+        "To normalise rewards so they fall between 0 and 1",
+        "To ensure the infinite sum of future rewards remains finite"
+      ],
+      "answer": 3,
+      "explanation": "In continuing tasks with no terminal state, the sum of rewards could be infinite. The discount factor γ < 1 ensures the geometric series converges to a finite return."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "An episode ends when the agent reaches a terminal state. This type of task is called:",
+      "options": [
+        "A continuing task with infinite horizon",
+        "A discounted task with γ close to zero",
+        "An episodic task with a terminal state",
+        "A stationary task with fixed reward signals"
+      ],
+      "answer": 2,
+      "explanation": "Episodic tasks have a natural end point — a terminal state — after which the environment resets for a new episode. Continuing tasks have no such end."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "In the agent-environment interaction loop, what does the agent send TO the environment at each time step?",
+      "options": [
+        "An action selected according to its policy",
+        "A value function update for the current state",
+        "The current state and expected future reward",
+        "A reward signal based on the last transition"
+      ],
+      "answer": 0,
+      "explanation": "At each time step the agent observes the state and then sends an action to the environment. The environment then returns the next state and reward."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "Why is exploration important in Reinforcement Learning?",
+      "options": [
+        "It helps the agent discover better actions not yet tried",
+        "It prevents the agent from receiving any negative rewards",
+        "It allows the agent to memorise the full transition table",
+        "It ensures the policy converges to a deterministic one"
+      ],
+      "answer": 0,
+      "explanation": "Without exploration, the agent may exploit only actions known to be decent and never discover better alternatives. Exploration allows it to gather new information about the environment."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Which statement about the closed feedback loop between agent and environment is CORRECT?",
+      "options": [
+        "The environment only sends rewards — states are internal to the agent",
+        "The agent sends rewards and the environment sends actions back",
+        "Both agent and environment update their parameters simultaneously",
+        "The environment sends the next state and reward after each action"
+      ],
+      "answer": 3,
+      "explanation": "In the RL loop: agent takes action → environment transitions to new state s' and emits reward r → agent receives (r, s') and updates its policy."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "An agent has γ = 0.9 and receives rewards r1=1, r2=2, r3=3 before the episode ends. What is the discounted return G_0?",
+      "options": [
+        "4.87",
+        "5.23",
+        "6.00",
+        "4.33"
+      ],
+      "answer": 1,
+      "explanation": "G_0 = r1 + γ·r2 + γ²·r3 = 1 + 0.9×2 + 0.81×3 = 1 + 1.8 + 2.43 = 5.23."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "A value function V^π(s) satisfies a self-consistency condition where its value equals immediate reward plus discounted next-state value. This recursive relationship is known as:",
+      "options": [
+        "The Bellman equation for policy π",
+        "The Monte Carlo backup equation",
+        "The temporal-difference target formula",
+        "The policy gradient theorem"
+      ],
+      "answer": 0,
+      "explanation": "The Bellman equation expresses V^π(s) recursively: the value of a state equals the expected immediate reward plus γ times the expected value of the successor state under policy π."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "Policy improvement guarantees that updating a policy greedily with respect to Q(s,a) will:",
+      "options": [
+        "Produce a policy no worse than the original policy",
+        "Always produce a strictly better policy on every state",
+        "Converge to the optimal policy in a single update step",
+        "Only improve the policy on states with positive rewards"
+      ],
+      "answer": 0,
+      "explanation": "The Policy Improvement Theorem guarantees that the greedy policy π' with respect to Q^π is at least as good as π (V^{π'}(s) ≥ V^π(s) for all s), but not necessarily strictly better on every state."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "Why might reward shaping (adding auxiliary rewards) help an RL agent but also introduce risks?",
+      "options": [
+        "It reduces variance but increases bias in the value function estimate",
+        "It guides the agent faster but can create suboptimal policies if the shaped reward conflicts with the true objective",
+        "It simplifies the state space but makes the policy non-transferable to new environments",
+        "It speeds convergence but may cause the agent to overfit to training episodes"
+      ],
+      "answer": 1,
+      "explanation": "Reward shaping provides denser feedback, accelerating learning. However, if the shaped rewards create a different optimal policy than the true reward, the agent may learn unintended behaviour."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "An agent uses a stochastic policy rather than a deterministic one in a fully observable environment. The most valid reason for this choice is:",
+      "options": [
+        "Stochastic policies guarantee a higher cumulative reward at convergence",
+        "Deterministic policies cannot represent the Q-function accurately",
+        "Stochastic policies provide built-in exploration during training",
+        "Stochastic policies always converge faster than deterministic ones"
+      ],
+      "answer": 2,
+      "explanation": "In a fully observable environment a deterministic policy may be optimal at convergence, but stochastic policies are used during training to balance exploration vs exploitation without a separate ε-greedy mechanism."
     }
   ]
 }

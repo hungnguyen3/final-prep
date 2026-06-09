@@ -1,0 +1,287 @@
+{
+  "title": "Chapter 4: Temporal Difference, SARSA & Q-Learning",
+  "theory": [
+    {
+      "heading": "Limitations and Motivation for TD",
+      "content": "**Dynamic Programming**: requires environment model — transition probabilities must be known → not applicable when model is unavailable.\n**Monte Carlo**: model-free but must wait until episode ends → slow, cannot learn online.\n\nMotivation: need a method that learns **continuously** from partial experience.\n\n**TD learning** combines the best of both:\n- Like **DP**: bootstraps from current estimates (no need to wait for episode end)\n- Like **MC**: model-free (no transition probabilities required)\n\nKey characteristic: **online learning**, incremental updates after EACH step."
+    },
+    {
+      "heading": "TD(0) Learning",
+      "content": "Core idea: update estimate using **immediate reward + estimated future value**.\n\n**TD(0) update rule**:\n`V(s) ← V(s) + α[r + γV(s') - V(s)]`\n\n- **TD target** = `r + γV(s')`\n- **TD error** `δ = r + γV(s') - V(s)`\n- `α` = learning rate `(0 < α ≤ 1)`\n\nCompare to MC:\n- MC target = `G_t` (actual return from episode)\n- TD uses **bootstrap**: replaces future return with current estimate\n\nKey advantages:\n- **Online** (step-by-step updates)\n- Does NOT require episodic tasks\n- **Lower variance** than MC (though introduces bias)"
+    },
+    {
+      "heading": "SARSA — On-Policy TD Control",
+      "content": "**SARSA** = State-Action-Reward-State-Action.\n\n**On-policy**: learns Q-values for the policy currently being followed.\n\n**Update rule**:\n`Q(s,a) ← Q(s,a) + α[r + γQ(s',a') - Q(s,a)]`\n\nUses 5-tuple `(s, a, r, s', a')` — next action `a'` is selected by the **same policy**.\n\n- On-policy means: the policy used to generate experience IS the policy being improved\n- `ε`-greedy SARSA converges to **optimal ε-greedy policy**\n- **Safe exploration**: accounts for exploration cost in value estimates\n- In cliff-walking: SARSA avoids risky paths because it accounts for `ε`-greedy behaviour"
+    },
+    {
+      "heading": "Q-Learning — Off-Policy TD Control",
+      "content": "**Off-policy**: learns optimal Q-values regardless of which policy generates experience.\n\n**Update rule**:\n`Q(s,a) ← Q(s,a) + α[r + γ·max_{a'} Q(s',a') - Q(s,a)]`\n\nKey difference from SARSA: uses **max over next actions** (greedy target).\n\n- **Behaviour policy**: `ε`-greedy (for exploration during training)\n- **Target policy**: greedy / optimal\n- Converges to **optimal Q*** directly\n- Q-Learning is the foundation for **Deep Q-Networks (DQN)**\n\nIn networking: a router can learn **optimal routing** while exploring suboptimal paths during training."
+    },
+    {
+      "heading": "SARSA vs Q-Learning Comparison",
+      "content": "**SARSA (on-policy)**:\n- Conservative, safer during exploration\n- Learns `Q^π` for current ε-greedy policy\n- Target uses actual next action `a'`\n- Sensitive to exploration policy choice\n- Cliff-walking: avoids risky edges (accounts for ε-exploration)\n\n**Q-Learning (off-policy)**:\n- More aggressive, can be dangerous during exploration\n- Learns `Q*` directly, independent of behaviour policy\n- Target uses `max_{a'} Q(s',a')`\n- Cliff-walking: walks near cliff (optimistic about greedy policy)\n\nWhen to use each:\n- **SARSA**: when exploration cost matters (real systems, safety-critical)\n- **Q-Learning**: when you want the optimal policy directly and exploration cost is acceptable"
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "What is the TD error (δ) in TD(0) learning?",
+      "options": [
+        "`δ = max_a Q(s,a) - V(s)` (greedy value gap)",
+        "`δ = α·r + (1-α)·V(s)` (weighted reward average)",
+        "`δ = G_t - V(s)` (return minus current estimate)",
+        "`δ = r + γV(s') - V(s)` (target minus estimate)"
+      ],
+      "answer": 3,
+      "explanation": "The TD error is δ = r + γV(s') - V(s), the difference between the TD target (r + γV(s')) and the current estimate V(s). It drives the update: V(s) ← V(s) + α·δ."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "What is the TD target in TD(0) learning?",
+      "options": [
+        "`Σ_a π(a|s) Q(s,a)` — the expected value under the policy",
+        "`G_t` — the actual total return from the episode",
+        "`max_a Q(s,a)` — the best possible Q-value in state s",
+        "`r + γV(s')` — immediate reward plus discounted next value"
+      ],
+      "answer": 3,
+      "explanation": "The TD target is r + γV(s'): the immediate reward plus the discounted estimate of the next state's value. Unlike MC, it does not require the full episode to be complete."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Why does TD learning NOT require complete episodes?",
+      "options": [
+        "It uses a neural network to predict the final return directly",
+        "It averages rewards over a fixed window of recent timesteps",
+        "It resets episodes early using an artificial terminal signal",
+        "It bootstraps using the current estimate V(s') after each step"
+      ],
+      "answer": 3,
+      "explanation": "TD bootstraps by replacing the unknown future return with the current estimate V(s'). This means an update can happen after each single step without waiting for the episode to end."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "What does SARSA stand for?",
+      "options": [
+        "Sequential-Action-Reward-State-Algorithm update",
+        "State-Action-Return-State-Advantage (5-element tuple)",
+        "State-Action-Reward-State-Action (5-element tuple)",
+        "Sample-Average-Reward-Step-Approximation method"
+      ],
+      "answer": 2,
+      "explanation": "SARSA stands for State-Action-Reward-State-Action, representing the 5-tuple (s, a, r, s', a') used in its update rule: Q(s,a) ← Q(s,a) + α[r + γQ(s',a') - Q(s,a)]."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "What is the key difference between SARSA and Q-Learning?",
+      "options": [
+        "SARSA uses a neural network; Q-Learning uses a table",
+        "SARSA learns faster; Q-Learning requires more episodes",
+        "SARSA uses the actual next action a'; Q-Learning uses max_a' Q(s',a')",
+        "SARSA requires a model; Q-Learning is fully model-free"
+      ],
+      "answer": 2,
+      "explanation": "SARSA uses the actual next action a' chosen by the current policy in its target. Q-Learning uses max_{a'} Q(s',a'), making it off-policy since it always targets the greedy optimal action."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "What does it mean for Q-Learning to be 'off-policy'?",
+      "options": [
+        "It learns the optimal policy regardless of the behaviour policy used",
+        "It cannot be used with epsilon-greedy exploration strategies",
+        "It only learns when the agent behaves randomly all the time",
+        "It requires a separate model to simulate the environment offline"
+      ],
+      "answer": 0,
+      "explanation": "Off-policy means Q-Learning learns about the optimal (greedy) target policy even while the agent follows a different behaviour policy (e.g., ε-greedy). The max operator in the update targets the optimal action."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "Compared to Monte Carlo, what is a key advantage of TD learning?",
+      "options": [
+        "TD does not require a learning rate α to be specified",
+        "TD can update online after each step without episode completion",
+        "TD uses no discount factor γ, keeping rewards simpler",
+        "TD has zero bias because it uses actual observed rewards"
+      ],
+      "answer": 1,
+      "explanation": "TD learning updates after every single step (online), while MC must wait until the episode ends. This makes TD applicable to both episodic and continuing tasks."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "The SARSA update rule is Q(s,a) ← Q(s,a) + α[r + γQ(s',a') - Q(s,a)]. What is Q(s',a') here?",
+      "options": [
+        "The maximum Q-value over all actions in state s'",
+        "The Q-value for the greedy action in the target policy",
+        "The Q-value for the action actually taken next by the policy",
+        "The average Q-value over all actions in next state s'"
+      ],
+      "answer": 2,
+      "explanation": "In SARSA (on-policy), a' is the actual next action selected by the current policy (e.g., ε-greedy). This is what makes SARSA on-policy — it uses the real experience tuple (s, a, r, s', a')."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "The Q-Learning update is Q(s,a) ← Q(s,a) + α[r + γ·max_{a'} Q(s',a') - Q(s,a)]. What does max_{a'} Q(s',a') represent?",
+      "options": [
+        "The best possible future Q-value assuming greedy behaviour",
+        "The Q-value of the action actually taken in the next step",
+        "The expected Q-value under the current ε-greedy policy",
+        "The average Q-value computed over recent experience replay"
+      ],
+      "answer": 0,
+      "explanation": "max_{a'} Q(s',a') is the greedy best Q-value achievable from state s'. By always targeting this maximum, Q-Learning directly estimates Q* regardless of what action was actually taken next."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "What does 'bootstrapping' mean specifically in TD(0)?",
+      "options": [
+        "Initializing all Q-values to zero before training begins",
+        "Waiting for the full return G_t before making any update",
+        "Using the current estimate V(s') to update V(s) immediately",
+        "Sampling multiple trajectories to reduce estimation variance"
+      ],
+      "answer": 2,
+      "explanation": "Bootstrapping in TD means using the current estimate V(s') (a guess) as part of the update target for V(s), rather than waiting for the true return. This introduces bias but enables online learning."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "In the cliff-walking problem, why does SARSA avoid the cliff edge while Q-Learning walks near it?",
+      "options": [
+        "SARSA uses a larger learning rate, making it more cautious overall",
+        "SARSA accounts for ε-greedy exploration risk; Q-Learning assumes greedy behaviour",
+        "Q-Learning cannot represent negative rewards near the cliff edge",
+        "SARSA initializes Q-values to negative infinity near dangerous states"
+      ],
+      "answer": 1,
+      "explanation": "SARSA's on-policy target includes the risk of randomly falling off the cliff during ε-exploration. Q-Learning's max target assumes perfectly greedy behaviour, so it optimistically walks near the cliff."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "What is the role of the learning rate α in TD(0)?",
+      "options": [
+        "It controls the discount of future rewards over time",
+        "It controls how much new estimates override old estimates",
+        "It sets the probability of exploration versus exploitation",
+        "It determines how many steps ahead the agent bootstraps"
+      ],
+      "answer": 1,
+      "explanation": "The learning rate α (0 < α ≤ 1) scales the TD error update. Large α means V(s) updates aggressively toward new targets (fast but unstable); small α gives slow, stable convergence."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "Q-Learning is considered the foundation of Deep Q-Networks (DQN) because:",
+      "options": [
+        "It requires episodic tasks that deep learning handles naturally",
+        "Its Q-table update rule can be approximated by a neural network",
+        "It uses gradient descent, which directly extends to neural networks",
+        "It learns on-policy, making gradient updates straightforward"
+      ],
+      "answer": 1,
+      "explanation": "DQN replaces the Q-table with a neural network that approximates Q(s,a;θ). The same off-policy max-based update rule is used, with the neural network as the function approximator."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "When should you prefer SARSA over Q-Learning in practice?",
+      "options": [
+        "When the environment has very large or continuous state spaces",
+        "When you need the globally optimal policy as quickly as possible",
+        "When the cost of exploration mistakes is high and safety matters",
+        "When you want to learn from stored experience replay buffers"
+      ],
+      "answer": 2,
+      "explanation": "SARSA is on-policy and accounts for exploration in its value estimates. This makes it safer when mistakes during exploration are costly (e.g., physical robots, real network traffic routing)."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "How does TD(0) combine properties of both DP and Monte Carlo?",
+      "options": [
+        "TD evaluates all states simultaneously like DP and like MC in batch",
+        "TD bootstraps like DP and learns model-free from experience like MC",
+        "TD uses a model like DP but also samples full returns like MC",
+        "TD requires a model like DP but waits for episodes to end like MC"
+      ],
+      "answer": 1,
+      "explanation": "TD combines DP's bootstrapping (update from estimated next-state value, no need for full return) with MC's model-free property (learns from real transitions, no transition probabilities needed)."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "For Q-Learning to converge to Q*, which condition on the learning rate α is required?",
+      "options": [
+        "α must be constant and large to ensure rapid convergence",
+        "α must decay exponentially faster than the reward signal",
+        "Σ α_t = ∞ and Σ α_t² < ∞ (Robbins-Monro conditions)",
+        "α must equal γ at every timestep for Bellman consistency"
+      ],
+      "answer": 2,
+      "explanation": "The Robbins-Monro stochastic approximation conditions require Σ α_t = ∞ (steps large enough to correct any initial bias) and Σ α_t² < ∞ (steps small enough to converge). Constant α guarantees tracking but not convergence."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "In a network routing application, how could Q-Learning be applied?",
+      "options": [
+        "State = router + queue; action = next-hop selection; reward = delivery success",
+        "State = link bandwidth; action = packet size; reward = throughput gained",
+        "State = TCP window; action = congestion window multiplier; reward = RTT",
+        "State = IP header flags; action = routing table size; reward = memory saved"
+      ],
+      "answer": 0,
+      "explanation": "In routing, the state captures the current router and queue lengths, the action selects the next hop for a packet, and the reward reflects successful delivery or low latency. Q-Learning finds the optimal routing policy."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "Why does SARSA with ε-greedy converge to the optimal ε-greedy policy rather than the true optimal policy?",
+      "options": [
+        "On-policy SARSA includes exploration probability ε in its target, so it optimizes for ε-greedy",
+        "The 5-tuple update introduces correlations that prevent optimal convergence",
+        "SARSA's learning rate decay prevents it from reaching zero error in the limit",
+        "SARSA uses a biased estimator that cannot represent deterministic policies"
+      ],
+      "answer": 0,
+      "explanation": "Since SARSA is on-policy, it evaluates and improves the same ε-greedy policy it is following. Its Q-values reflect the expected return under ε-greedy (not greedy), so it converges to Q^{ε-greedy}, not Q*."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "What is the relationship between the TD error δ and the gradient update in Q-Learning?",
+      "options": [
+        "δ equals the full gradient of the expected return w.r.t. parameters θ",
+        "δ is squared and minimized using standard stochastic gradient descent",
+        "δ is used as a pseudo-gradient to update Q toward the Bellman target",
+        "δ is multiplied by γ to form the gradient of the Bellman residual loss"
+      ],
+      "answer": 2,
+      "explanation": "In tabular Q-Learning, δ = r + γ·max Q(s',a') - Q(s,a) acts as a pseudo-gradient signal. The update Q(s,a) ← Q(s,a) + α·δ moves Q toward the Bellman target, but it is NOT a true gradient because the target is treated as fixed."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "Consider two agents in a dynamic wireless network: Agent A uses SARSA, Agent B uses Q-Learning. Which statement best describes their long-run behaviour?",
+      "options": [
+        "Agent B learns a conservative policy due to the max operator penalising variance",
+        "Both agents converge to identical policies since the environment is the same",
+        "Agent A converges to Q* faster because it stays on the optimal path from the start",
+        "Agent A finds a safer policy accounting for channel noise during exploration; Agent B converges to the theoretically optimal but exploration-blind policy"
+      ],
+      "answer": 3,
+      "explanation": "In a noisy wireless network, SARSA (on-policy) learns Q^π that accounts for random exploration errors, yielding a safer practical policy. Q-Learning converges to Q* (optimal if greedy), but this policy may perform poorly during actual deployment if exploration causes costly mistakes."
+    }
+  ]
+}

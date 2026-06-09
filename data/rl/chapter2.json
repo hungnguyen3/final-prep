@@ -1,0 +1,287 @@
+{
+  "title": "Chapter 2: Markov Decision Process (MDP)",
+  "theory": [
+    {
+      "heading": "What is an MDP?",
+      "content": "**MDP (Markov Decision Process)** = a framework for modelling decision-making in fully observable, stochastic environments.\n\nKey assumption: **Markov Property** — the future depends only on the current state and action, NOT the full history.\n\nMDPs allow us to:\n- Model the environment's response to actions\n- Quantify success through rewards\n- Optimise policies using value functions\n\nMDPs form the **foundation for most RL algorithms** and formalise sequential decision-making under uncertainty.\n\nReal-world applications: networking (adaptive routing, load balancing), robotics, finance, games."
+    },
+    {
+      "heading": "MDP Formal Definition: (S, A, P, R, γ)",
+      "content": "An MDP is defined by the tuple **(S, A, P, R, γ)**:\n\n- `S` = set of possible states (finite or continuous)\n- `A` = set of possible actions\n- `P` = **transition probability function** `P(s'|s,a)` — probability of transitioning to state `s'` given current state `s` and action `a`\n- `R` = **reward function** `r(s,a)` — expected reward after taking action `a` in state `s` (can also be written `r(s,a,s')`)\n- `γ` = discount factor (0 ≤ `γ` ≤ 1)\n\nDrone delivery example:\n- `S` = grid positions\n- `A` = movement directions (up, down, left, right)\n- `P` = uncertain wind disturbance\n- `R` = −1 per step, +10 on successful delivery\n- `γ` = 0.9"
+    },
+    {
+      "heading": "The Markov Property",
+      "content": "**Core assumption of MDP**: the next state depends only on the current state and action — NOT the full history.\n\nMathematical form:\n`p(s',r|s,a) = Pr{S_t=s', R_t=r | S_{t-1}=s, A_{t-1}=a}`\n\nThe future is **conditionally independent** of the past given the present.\n\nAll information needed to predict the next state is contained in the current state. This simplifies learning and planning enormously.\n\n**Sum property**: `ΣΣ p(s',r|s,a) = 1` for all `s`, `a` — probabilities over all next states and rewards must sum to 1.\n\nWithout the Markov property, the agent would need to remember the **entire history** of states and actions to make optimal decisions."
+    },
+    {
+      "heading": "Policies: Deterministic vs Stochastic",
+      "content": "**Deterministic policy**: `π(s) = a` — maps each state to exactly one action.\n\n**Stochastic policy**: `π(a|s)` = probability of taking action `a` in state `s`.\n\nStochastic policies are useful for:\n- **Exploration**: trying different actions to gather information\n- **Games**: where predictability is disadvantageous\n- **Partially observable environments**: where uncertainty about the true state persists\n\n**Optimal policy** `π*`: achieves maximum expected return from every state.\n\nA policy induces a value function: `V^π(s)` = expected cumulative reward when starting from state `s` and following policy `π` thereafter."
+    },
+    {
+      "heading": "Bellman Equation",
+      "content": "The **Bellman equation** expresses the value function recursively.\n\n**State-value (Bellman evaluation equation)**:\n`V^π(s) = Σ_a π(a|s) Σ_{s',r} p(s',r|s,a)[r + γ·V^π(s')]`\n\n**Action-value**:\n`Q^π(s,a) = Σ_{s',r} p(s',r|s,a)[r + γ·Σ_{a'} π(a'|s')·Q^π(s',a')]`\n\n**Key insight**: value of current state = immediate reward + discounted value of next state.\n\nThis **recursive structure** is the basis for all RL algorithms (policy evaluation, Q-learning, TD learning).\n\n**Bellman Optimality Equation**:\n`V*(s) = max_a Σ_{s',r} p(s',r|s,a)[r + γ·V*(s')]`\n\nThe optimal value function satisfies this equation — it picks the best action at every state."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "What does the acronym MDP stand for in Reinforcement Learning?",
+      "options": [
+        "Model-Driven Policy learning",
+        "Maximum Decision Pathway",
+        "Multi-step Dynamic Programming",
+        "Markov Decision Process"
+      ],
+      "answer": 3,
+      "explanation": "MDP stands for Markov Decision Process — the standard mathematical framework for modelling sequential decision-making under uncertainty in RL."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Which of the following is NOT one of the five components in the formal MDP tuple (S, A, P, R, γ)?",
+      "options": [
+        "Set of possible states S",
+        "Learning rate α for parameter updates",
+        "Discount factor γ for future rewards",
+        "Transition probability function P"
+      ],
+      "answer": 1,
+      "explanation": "The MDP is defined by (S, A, P, R, γ). The learning rate α is a hyperparameter of the RL algorithm, not a component of the MDP itself."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "What does the transition function P(s'|s,a) represent in an MDP?",
+      "options": [
+        "The discount applied to the reward at the next state",
+        "The optimal action to take in state s to reach s'",
+        "The expected reward after action a in state s",
+        "The probability of moving to state s' from s by action a"
+      ],
+      "answer": 3,
+      "explanation": "P(s'|s,a) is the transition probability — the likelihood that the environment moves from state s to state s' when the agent takes action a."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "The Markov Property states that the future depends only on:",
+      "options": [
+        "The full history of all previous states and actions",
+        "The cumulative reward received so far in the episode",
+        "The current state and action, not the full history",
+        "The last two states and the most recent action"
+      ],
+      "answer": 2,
+      "explanation": "The Markov Property states that p(s',r|s,a) is fully determined by the current state s and action a — the full history provides no additional predictive information."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "In the drone delivery MDP example, what does the reward function R assign?",
+      "options": [
+        "R = 0 for every step and +100 at the terminal state",
+        "R = +1 per step and −10 for missing the target",
+        "R = −5 per step and +5 on reaching any grid cell",
+        "R = −1 per step and +10 on successful delivery"
+      ],
+      "answer": 3,
+      "explanation": "In the example, the reward is −1 per time step (to encourage efficiency) and +10 upon successful delivery, guiding the agent to deliver quickly."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "What is required for a task to be modelled as an MDP?",
+      "options": [
+        "The state space must be finite and the action space discrete",
+        "The environment must be deterministic with no randomness",
+        "The agent must be fully observable and the Markov Property must hold",
+        "The reward function must always be positive and bounded"
+      ],
+      "answer": 2,
+      "explanation": "MDPs assume full observability (the agent sees the true state) and that the Markov Property holds. Stochastic environments are allowed — full determinism is not required."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "What is a 'policy' in the context of an MDP?",
+      "options": [
+        "A function that maps states or state-action pairs to expected returns",
+        "The discount factor applied to future reward values",
+        "The environment's rule for transitioning between states",
+        "A strategy that maps states to actions or action probabilities"
+      ],
+      "answer": 3,
+      "explanation": "A policy π defines the agent's behaviour — it maps states to actions (deterministic) or to probability distributions over actions (stochastic)."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Why does the Markov Property simplify learning and planning in MDPs?",
+      "options": [
+        "It removes the need for a reward function in the model",
+        "It ensures the value function converges in a single iteration",
+        "It guarantees that the optimal policy is always deterministic",
+        "It allows the agent to decide based on current state alone, not full history"
+      ],
+      "answer": 3,
+      "explanation": "Because future transitions depend only on the current state, the agent does not need to track history. This dramatically reduces the complexity of learning and planning algorithms."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "In an MDP, for a given state s and action a, the transition probabilities P(s'|s,a) over all possible next states s' must:",
+      "options": [
+        "Sum to exactly 1",
+        "Sum to the discount factor γ",
+        "Sum to the expected immediate reward r(s,a)",
+        "Be uniformly distributed across all states"
+      ],
+      "answer": 0,
+      "explanation": "For any fixed (s,a), the probabilities P(s'|s,a) form a valid probability distribution over successor states and must sum to 1."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "Which of the following scenarios would VIOLATE the Markov Property?",
+      "options": [
+        "A robot that can fully observe its joint angles and velocities",
+        "A grid world where each cell has a fixed reward value",
+        "A network router that can observe the current queue length of all links",
+        "A card game where the agent's best move depends on cards played previously"
+      ],
+      "answer": 3,
+      "explanation": "In a card game where previously played cards affect optimal decisions, the current observation (current hand) is insufficient — the history matters. This violates the Markov Property."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "The Bellman equation for V^π(s) says the value of state s equals:",
+      "options": [
+        "The immediate reward r(s,a) only, ignoring future states",
+        "The sum of all future rewards without any discounting factor",
+        "The maximum action-value Q(s,a) across all actions",
+        "The expected immediate reward plus γ times expected next-state value"
+      ],
+      "answer": 3,
+      "explanation": "The Bellman evaluation equation: V^π(s) = Σ_a π(a|s) Σ p(s',r|s,a)[r + γ·V^π(s')]. It decomposes the value into immediate reward plus discounted value of successor states."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "How does the Bellman Optimality Equation differ from the Bellman Evaluation Equation?",
+      "options": [
+        "Optimality uses the average over all actions; evaluation uses the max",
+        "Optimality applies only to stochastic policies; evaluation to deterministic ones",
+        "Optimality uses γ=1; evaluation uses γ < 1 for finite return",
+        "Optimality takes the max over actions; evaluation averages over policy π"
+      ],
+      "answer": 3,
+      "explanation": "The Bellman Evaluation Equation averages over actions weighted by policy π. The Bellman Optimality Equation replaces this average with a max over actions: V*(s) = max_a Σ p(s',r|s,a)[r + γ·V*(s')]."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "What is the difference between r(s,a) and r(s,a,s') as reward function formulations?",
+      "options": [
+        "r(s,a) is the expected reward over next states; r(s,a,s') conditions on the specific next state",
+        "r(s,a) includes the discount factor; r(s,a,s') does not",
+        "r(s,a) is used for deterministic environments; r(s,a,s') for stochastic ones",
+        "r(s,a) is only used in episodic tasks; r(s,a,s') in continuing tasks"
+      ],
+      "answer": 0,
+      "explanation": "r(s,a) averages the reward expectation over all possible next states given (s,a). r(s,a,s') is more fine-grained — the reward depends on which specific next state s' is reached."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "Policy evaluation in an MDP refers to:",
+      "options": [
+        "Estimating the transition probabilities P(s'|s,a) from data",
+        "Finding the policy that maximises the value function",
+        "Updating the policy greedily with respect to Q(s,a)",
+        "Computing the value function V^π for a given fixed policy π"
+      ],
+      "answer": 3,
+      "explanation": "Policy evaluation (prediction) computes V^π — how good each state is under a fixed policy π — typically by iteratively applying the Bellman evaluation equation."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Why are stochastic policies sometimes preferred over deterministic policies in MDPs?",
+      "options": [
+        "They require fewer state transitions to evaluate completely",
+        "They always achieve higher cumulative reward at convergence",
+        "They enable exploration and handle environments where randomness is beneficial",
+        "They eliminate the need for a transition probability model"
+      ],
+      "answer": 2,
+      "explanation": "Stochastic policies allow exploration (trying different actions) and are useful in adversarial or partially observable settings where a predictable deterministic policy can be exploited."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "In a grid-world MDP with 4 states and 2 actions, the transition function P must satisfy which condition for EVERY (s,a) pair?",
+      "options": [
+        "Σ_{s,a} P(s'|s,a) = 1 for each s'",
+        "P(s'|s,a) ≥ 0.25 for every reachable s'",
+        "Σ_{s'} P(s'|s,a) = 1 for all s and a",
+        "Σ_{s'} P(s'|s,a) = γ for all s and a"
+      ],
+      "answer": 2,
+      "explanation": "For each fixed (s,a), P(s'|s,a) is a probability distribution over next states s', so it must sum to 1. It does NOT need to be uniform — some transitions can have probability 0."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "The optimal value function V*(s) and the optimal policy π* are related by:",
+      "options": [
+        "π*(s) = argmin_a Σ P(s'|s,a)·V*(s') for all states s",
+        "π*(s) = V*(s) / max_a r(s,a) for all states s",
+        "π*(s) = argmax_a Q*(s,a) for all states s",
+        "π*(s) = V*(s) − γ·max_{s'} V*(s') for all states s"
+      ],
+      "answer": 2,
+      "explanation": "The optimal policy is greedy with respect to Q*: π*(s) = argmax_a Q*(s,a). Equivalently, it selects the action that maximises r(s,a) + γ·Σ P(s'|s,a)·V*(s')."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "Policy iteration alternates between policy evaluation and policy improvement. Why is convergence guaranteed for finite MDPs?",
+      "options": [
+        "Each improvement step strictly decreases the value function",
+        "Stochastic policies always dominate deterministic ones in finite MDPs",
+        "The number of deterministic policies is finite and improvement never worsens the policy",
+        "The Bellman equation has a unique solution only when γ = 0"
+      ],
+      "answer": 2,
+      "explanation": "There are finitely many deterministic policies. Each policy improvement step produces a policy at least as good as the current one (Policy Improvement Theorem), so the algorithm must terminate at the optimal policy."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "A robot in a partially observable environment where sensor noise prevents observing the true state would violate which MDP assumption?",
+      "options": [
+        "The transition function must be stationary over time",
+        "The reward function must depend only on state and action",
+        "The agent must have full observability of the true state",
+        "The discount factor must be strictly less than 1"
+      ],
+      "answer": 2,
+      "explanation": "MDPs assume full observability — the agent directly observes the true state. When the true state is hidden (partial observability), a POMDP (Partially Observable MDP) is required instead."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "In a tabular MDP, the Bellman evaluation equation is applied iteratively (V_{k+1}(s) ← ...). What is the convergence guarantee?",
+      "options": [
+        "It converges to V* regardless of the initial policy",
+        "It converges in exactly |S| iterations for any finite state space",
+        "It converges only if the policy π is deterministic",
+        "It converges to V^π in the limit if γ < 1 or the task is episodic"
+      ],
+      "answer": 3,
+      "explanation": "Iterative policy evaluation converges to the true value function V^π for any policy π, provided γ < 1 (or the task is episodic), by the contraction mapping theorem."
+    }
+  ]
+}

@@ -1,8 +1,13 @@
 {
   "id": "rl",
-  "title": "RL",
-  "description": "Reinforcement Learning — Học tăng cường",
+  "title": "Reinforcement Learning",
+  "description": "RL for Networked Systems — MDP, Dynamic Programming, TD Learning, DQN, Policy Gradient",
   "chapters": [
-    { "id": 1, "title": "Giới thiệu Reinforcement Learning" }
+    { "id": 1, "title": "RL Fundamentals — Agent, Environment, Policy" },
+    { "id": 2, "title": "Markov Decision Process (MDP)" },
+    { "id": 3, "title": "Dynamic Programming & Monte Carlo" },
+    { "id": 4, "title": "Temporal Difference, SARSA & Q-Learning" },
+    { "id": 5, "title": "Value Function Approximation & DQN" },
+    { "id": 6, "title": "Policy Gradient & Actor-Critic Methods" }
   ]
 }

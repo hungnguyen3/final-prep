@@ -1,0 +1,287 @@
+{
+  "title": "Chapter 6: Policy Gradient & Actor-Critic Methods",
+  "theory": [
+    {
+      "heading": "Beyond DQN — Why Policy-Based Methods",
+      "content": "**DQN limitation:** action selection uses `a* = argmax_a Q̂(s,a,θ)` — requires evaluating all possible actions.\n\n**Problem:** a continuous action space contains infinitely many actions, making argmax computation infeasible.\n\n**Examples in networked systems needing continuous actions:**\n- **Power control** — transmit power in dBm\n- **Bandwidth allocation** — fraction of total capacity\n- **Computation offloading ratio** — proportion of task sent to edge server\n\n**Solution:** learn a **policy directly** `π(a|s,θ)` that outputs an action without requiring argmax.\n\n**Key shift:** from *value estimation* → *action generation*. Policy-based methods naturally handle both discrete and continuous action spaces."
+    },
+    {
+      "heading": "Direct Policy Learning",
+      "content": "Instead of learning `Q(s,a)`, learn the **policy directly**: `π(a|s,θ)`\n\n- **θ** = neural network parameters (the policy is parameterised by θ)\n- **Input:** state s\n- **Output:** action probabilities (discrete) or continuous action values\n\n**Tabular policy:** stores `π(a|s)` as a table with one entry per (s,a) pair.\n**Function policy:** `π(a|s,θ)` computed by a neural network — cannot modify entries directly.\n\n**Learning = adjusting parameters θ** via gradient ascent.\n\nExample output for 3 discrete actions:\n`π(a|s) = [0.1, 0.7, 0.2]` — the agent picks action 2 most often.\n\n**Critical difference from tabular:** parameters θ are shared across all states, enabling generalisation."
+    },
+    {
+      "heading": "Policy Gradient Methods",
+      "content": "**Objective:** maximise expected cumulative reward:\n`J(θ) = E_π[G_t]`\n\n**Gradient ascent on J(θ):**\n`θ ← θ + α · ∇_θ J(θ)`\n\n**Policy Gradient Theorem:**\n`∇_θ J(θ) = E_π[ ∇_θ log π(a|s,θ) · Q^π(s,a) ]`\n\n- **Score function:** `∇_θ log π(a|s,θ)` — gradient of log-probability\n- **Intuition:** increase the probability of actions that lead to **high returns**, decrease probability of actions with **low returns**\n\n**Advantages:**\n- Works for both discrete and continuous actions\n- Directly optimises the performance objective\n\n**Challenge:** high variance in gradient estimates because `G_t` or `Q^π(s,a)` can vary greatly."
+    },
+    {
+      "heading": "REINFORCE Algorithm (Monte Carlo Policy Gradient)",
+      "content": "**REINFORCE** uses actual Monte Carlo returns `G_t` to estimate the policy gradient.\n\n**Update rule:**\n`θ ← θ + α · G_t · ∇_θ log π(A_t|S_t,θ)`\n\n**Algorithm:**\n1. Generate a complete episode following policy `π_θ`\n2. For each time step t, compute `G_t` (sum of discounted future rewards)\n3. Update θ using the gradient\n\n**Key property:** **unbiased** gradient estimate (uses true return).\n**Limitation:** **high variance** — `G_t` is a noisy sum of many random rewards.\n\n**Baseline trick** to reduce variance (without adding bias):\n`θ ← θ + α · (G_t - b(s_t)) · ∇_θ log π(A_t|S_t,θ)`\n\nCommon baseline: `b(s) = V(s)` — the state-value function. When `b(s) = V(s)`, the term `(G_t - V(s))` is the **advantage**."
+    },
+    {
+      "heading": "Actor-Critic Methods",
+      "content": "**Actor-Critic** combines value-based and policy-based approaches.\n\n- **Actor:** parameterised policy `π(a|s,θ)` — decides *which action to take*\n- **Critic:** value function `V(s,w)` or `Q(s,a,w)` — evaluates *how good the action was*\n\n**TD error (advantage estimate):**\n`δ = r + γV(s',w) - V(s,w)`\n\n**Update rules:**\n- Actor: `θ ← θ + α_θ · δ · ∇_θ log π(a|s,θ)`\n- Critic: `w ← w + α_w · δ · ∇_w V(s,w)`\n\n**Advantages over REINFORCE:**\n- **Lower variance** — uses TD error δ instead of full Monte Carlo return G_t\n- **Online updates** — can update after each step, not just end of episode\n\n**Advantage function:** `A(s,a) = Q(s,a) - V(s)` — how much better action a is compared to average.\n\n**A3C (Asynchronous Advantage Actor-Critic):** uses `A(s,a) ≈ δ` as the advantage. Applications include bandwidth allocation and power control in networks."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Why does DQN fail for continuous action spaces like bandwidth allocation?",
+      "options": [
+        "argmax over infinitely many actions is computationally infeasible",
+        "DQN cannot use neural networks with more than one output",
+        "DQN requires a discrete reward signal to function correctly",
+        "DQN cannot represent real-valued states in its input layer"
+      ],
+      "answer": 0,
+      "explanation": "DQN selects actions via argmax_a Q̂(s,a,θ), which enumerates all actions. Continuous spaces have infinitely many actions, making this argmax impossible to compute exactly."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "What does a parameterised policy π(a|s,θ) output for a discrete action problem?",
+      "options": [
+        "A single scalar Q-value for the chosen action only",
+        "The gradient of the log-likelihood of each state",
+        "The TD error for updating the critic network weights",
+        "A probability distribution over all available actions"
+      ],
+      "answer": 3,
+      "explanation": "A parameterised policy π(a|s,θ) outputs a probability distribution over actions (e.g., [0.1, 0.7, 0.2]) for discrete problems. For continuous problems it outputs action values directly."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "What is the optimisation objective J(θ) in policy gradient methods?",
+      "options": [
+        "Maximise the entropy of the action probability distribution",
+        "Minimise mean squared error between predicted and target Q-values",
+        "Minimise the variance of the TD error across all transitions",
+        "Maximise the expected cumulative reward under policy π_θ"
+      ],
+      "answer": 3,
+      "explanation": "The objective J(θ) = E_π[G_t] represents the expected cumulative reward. Policy gradient methods perform gradient ascent on J(θ) to find the best policy parameters θ."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "In the REINFORCE update rule θ ← θ + α·G_t·∇_θ log π(A_t|S_t,θ), what is G_t?",
+      "options": [
+        "The advantage of action A_t relative to the average action",
+        "The TD error computed from the next state's value estimate",
+        "The actual return — sum of discounted rewards from step t",
+        "The gradient of the Q-function with respect to the action"
+      ],
+      "answer": 2,
+      "explanation": "G_t is the actual Monte Carlo return: the sum of discounted rewards from time step t to the end of the episode. REINFORCE uses this real return as an unbiased but noisy gradient estimate."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "What is the role of the Actor in an Actor-Critic method?",
+      "options": [
+        "Computing the TD error used to update all network weights",
+        "Storing past transitions in a replay buffer for later training",
+        "Selecting actions by maintaining a parameterised policy π(a|s,θ)",
+        "Evaluating how good the current state is using a value function"
+      ],
+      "answer": 2,
+      "explanation": "The Actor maintains the parameterised policy π(a|s,θ) and is responsible for selecting actions. It is updated using the feedback (TD error) provided by the Critic."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "What is the role of the Critic in an Actor-Critic method?",
+      "options": [
+        "Generating action probabilities for the current state input",
+        "Evaluating the quality of states or actions via a value function",
+        "Storing the full episode trajectory for Monte Carlo updates",
+        "Computing argmax over all discrete actions at each step"
+      ],
+      "answer": 1,
+      "explanation": "The Critic evaluates how good a state or action is by maintaining a value function V(s,w) or Q(s,a,w). Its evaluation (TD error) guides the Actor's policy updates."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "Why are policy gradient methods suitable for power control in wireless networks?",
+      "options": [
+        "Power control only needs a value function, not a direct policy",
+        "Power control requires discrete actions that argmax can enumerate",
+        "Policy methods use lookup tables that scale to all power levels",
+        "Power values are continuous — policy methods output them directly"
+      ],
+      "answer": 3,
+      "explanation": "Power control involves choosing continuous transmit power values. Policy gradient methods output continuous actions directly via π(a|s,θ) without requiring argmax over all possibilities."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "According to the Policy Gradient Theorem, the gradient ∇_θ J(θ) equals:",
+      "options": [
+        "`E_π[ ∇_θ log π(a|s,θ) · Q^π(s,a) ]`",
+        "`E_π[ ∇_θ Q̂(s,a,θ) · log π(a|s,θ) ]`",
+        "`E_π[ ∇_θ J(θ) · δ · log π(a|s,θ) ]`",
+        "`E_π[ ∇_θ V(s,w) · π(a|s,θ) ]`"
+      ],
+      "answer": 0,
+      "explanation": "The Policy Gradient Theorem states: ∇_θ J(θ) = E_π[∇_θ log π(a|s,θ) · Q^π(s,a)]. The score function ∇_θ log π is multiplied by the action-value Q^π to determine update direction."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "What is the main limitation of the REINFORCE algorithm?",
+      "options": [
+        "It requires a target network to prevent moving target problems",
+        "It cannot handle any discrete action spaces effectively",
+        "It produces high-variance gradient estimates using Monte Carlo returns",
+        "It produces biased gradient estimates due to bootstrapping"
+      ],
+      "answer": 2,
+      "explanation": "REINFORCE produces unbiased but high-variance gradient estimates because G_t is the sum of many random future rewards. This variance slows learning and requires many episodes to converge."
+    },
+    {
+      "id": 10,
+      "level": "intermediate",
+      "question": "How does subtracting a baseline b(s) from G_t help REINFORCE?",
+      "options": [
+        "It converts the Monte Carlo update into a TD-based update rule",
+        "It introduces a small bias that speeds up convergence significantly",
+        "It reduces gradient variance without adding bias to the estimate",
+        "It prevents the log π term from becoming numerically unstable"
+      ],
+      "answer": 2,
+      "explanation": "Subtracting baseline b(s) from G_t reduces the variance of the gradient estimate without adding bias (because the baseline is independent of action a). This is a key variance reduction technique."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "What is the TD error δ used in Actor-Critic, and why is it useful as an advantage estimate?",
+      "options": [
+        "`δ = G_t - V(s,w)` — exact advantage using full Monte Carlo return",
+        "`δ = Q(s,a,w) - π(a|s,θ)` — difference between value and policy output",
+        "`δ = r + γV(s',w) - V(s,w)` — one-step advantage using bootstrapping",
+        "`δ = max_a Q(s,a,w) - V(s,w)` — gap between best and average action"
+      ],
+      "answer": 2,
+      "explanation": "The TD error δ = r + γV(s',w) - V(s,w) is a one-step estimate of the advantage A(s,a) = Q(s,a) - V(s). It requires only one step of reward, reducing variance compared to full Monte Carlo returns."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "The advantage function A(s,a) = Q(s,a) - V(s) measures what?",
+      "options": [
+        "The probability that action a is the greedy action at state s",
+        "The difference in Q-values between the Actor and Critic networks",
+        "How much better state s is compared to the starting state s_0",
+        "How much better action a is compared to the average action at s"
+      ],
+      "answer": 3,
+      "explanation": "A(s,a) = Q(s,a) - V(s) measures the advantage of taking action a versus the average action at state s. Positive advantage means a is better than average; negative means worse."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "Why can Actor-Critic perform online (per-step) updates while REINFORCE cannot?",
+      "options": [
+        "Actor-Critic uses TD error δ, not full episode returns G_t",
+        "Actor-Critic maintains two separate replay buffers per network",
+        "Actor-Critic uses a replay buffer that enables immediate sampling",
+        "REINFORCE requires a target network that Actor-Critic avoids"
+      ],
+      "answer": 0,
+      "explanation": "REINFORCE requires G_t, which is only known at the end of an episode. Actor-Critic uses the TD error δ = r + γV(s',w) - V(s,w), computable after each step, enabling online updates."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "In Actor-Critic, the Actor update rule is θ ← θ + α_θ·δ·∇_θ log π(a|s,θ). What happens when δ > 0?",
+      "options": [
+        "The probability of action a at state s is increased by gradient ascent",
+        "The probability of action a at state s is decreased by gradient descent",
+        "The Critic's value estimate V(s,w) is updated downward toward the target",
+        "The learning rate α_θ is multiplied by δ to accelerate convergence"
+      ],
+      "answer": 0,
+      "explanation": "When δ > 0, the action a yielded more reward than expected (positive advantage). The update increases ∇_θ log π(a|s,θ), raising the probability of taking action a in state s again."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Which of the following best distinguishes value-based methods (like DQN) from policy-based methods?",
+      "options": [
+        "Value-based methods cannot handle any form of stochastic environment",
+        "Value-based methods use neural networks; policy-based methods use tables only",
+        "Policy-based methods learn a direct mapping from states to actions or probabilities",
+        "Policy-based methods require a replay buffer while value-based methods do not"
+      ],
+      "answer": 2,
+      "explanation": "Policy-based methods directly parameterise π(a|s,θ) and optimise it via gradient ascent. Value-based methods (DQN) learn Q(s,a,θ) and derive policy implicitly via argmax. The key distinction is whether the policy is explicitly represented."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "REINFORCE updates θ ← θ + α·(G_t - V(s_t))·∇_θ log π(A_t|S_t,θ). Why is V(s_t) chosen as the baseline?",
+      "options": [
+        "V(s_t) acts as a normalisation constant that bounds the score function gradient",
+        "V(s_t) ensures the policy update is always in the same direction as the TD error",
+        "V(s_t) is the only baseline that makes the gradient biased toward high-reward actions",
+        "V(s_t) is independent of action a_t, so it reduces variance without adding gradient bias"
+      ],
+      "answer": 3,
+      "explanation": "The baseline b(s) must be independent of action a to avoid adding bias. V(s) depends only on state s, not on the specific action taken, so subtracting it reduces variance while keeping the gradient estimate unbiased."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "A3C uses the advantage A(s,a) ≈ δ = r + γV(s') - V(s) instead of Q(s,a) - V(s). What is the practical benefit of this approximation?",
+      "options": [
+        "It provides an exact advantage value with zero estimation error",
+        "It replaces the Critic with a simpler policy lookup table structure",
+        "It eliminates the need for the Actor network entirely in A3C",
+        "It allows advantage estimation from a single-step TD error without a Q-network"
+      ],
+      "answer": 3,
+      "explanation": "Computing A(s,a) = Q(s,a) - V(s) exactly would require a separate Q-network. Using δ = r + γV(s') - V(s) approximates this advantage with only a V-function, simplifying the architecture while maintaining low variance."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "For computation offloading in an edge computing network, why is Actor-Critic preferred over DQN?",
+      "options": [
+        "Actor-Critic avoids function approximation, making it more stable than DQN",
+        "The offloading ratio is a continuous value; Actor-Critic handles continuous actions natively",
+        "DQN cannot model multi-hop network paths while Actor-Critic can",
+        "Actor-Critic uses tabular policies that are more interpretable than neural networks"
+      ],
+      "answer": 1,
+      "explanation": "The computation offloading ratio (fraction of task offloaded) is a continuous value in [0,1]. DQN cannot efficiently enumerate all continuous actions, while Actor-Critic outputs continuous action values directly via π(a|s,θ)."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "The score function ∇_θ log π(a|s,θ) is central to policy gradient updates. What is its intuitive meaning?",
+      "options": [
+        "It penalises actions whose Q-value is below the average value V(s)",
+        "It computes the expected future reward from taking action a at state s",
+        "It points in the direction that most increases the probability of action a",
+        "It measures how much the state-value V(s) changes with respect to θ"
+      ],
+      "answer": 2,
+      "explanation": "∇_θ log π(a|s,θ) is the gradient of the log-probability of taking action a. It points in the direction in parameter space that most increases the probability of action a being selected at state s."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "Compare REINFORCE and Actor-Critic on bias-variance trade-off. Which statement is correct?",
+      "options": [
+        "Actor-Critic is unbiased and always lower variance than REINFORCE",
+        "Both methods have identical bias and variance by the policy gradient theorem",
+        "REINFORCE is unbiased but high-variance; Actor-Critic has lower variance but introduces bias via bootstrapping",
+        "REINFORCE has lower variance but higher bias than Actor-Critic"
+      ],
+      "answer": 2,
+      "explanation": "REINFORCE uses exact Monte Carlo returns G_t (unbiased, but high variance). Actor-Critic uses TD bootstrapping δ = r + γV(s') - V(s), which introduces a small bias (due to the approximate V function) but dramatically reduces variance, enabling more stable and efficient learning."
+    }
+  ]
+}

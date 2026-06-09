@@ -1,287 +1,287 @@
 {
-  "title": "Chapter 5: Value Function Approximation & Deep Q-Network (DQN)",
+  "title": "Chương 5: Xấp Xỉ Hàm Giá Trị & Deep Q-Network (DQN)",
   "theory": [
     {
-      "heading": "Limitation of Tabular Methods",
-      "content": "Tabular methods store `V(s)` or `Q(s,a)` in a table — one entry per (s,a) pair.\n\n**Problem 1: Large state space** — network routing with many nodes causes exponential growth in the number of states.\n**Problem 2: Continuous states** — channel quality, delay, and bandwidth cannot be enumerated in a table.\n**Problem 3: Memory and computation** — storing `Q(s,a)` for all state-action pairs becomes infeasible.\n\n**Solution:** Approximate `V(s) ≈ V̂(s,w)` or `Q(s,a) ≈ Q̂(s,a,w)` using a **parameterised function** with weight vector **w**."
+      "heading": "Hạn Chế Của Phương Pháp Bảng",
+      "content": "Phương pháp bảng lưu `V(s)` hoặc `Q(s,a)` trong một bảng — mỗi cặp (s,a) một ô.\n\n**Vấn đề 1: Không gian trạng thái lớn** — định tuyến mạng với nhiều nút gây bùng nổ số lượng trạng thái theo hàm mũ.\n**Vấn đề 2: Trạng thái liên tục** — chất lượng kênh, độ trễ và băng thông không thể liệt kê trong bảng.\n**Vấn đề 3: Bộ nhớ và tính toán** — lưu `Q(s,a)` cho mọi cặp trạng thái-hành động trở nên không khả thi.\n\n**Giải pháp:** Xấp xỉ `V(s) ≈ V̂(s,w)` hoặc `Q(s,a) ≈ Q̂(s,a,w)` bằng một **hàm có tham số** với vector trọng số **w**."
     },
     {
-      "heading": "Value Function Approximation",
-      "content": "Replace the lookup table with a **parameterised function**:\n- `V̂(s,w)` approximates state-value\n- `Q̂(s,a,w)` approximates action-value\n- **w** = weight vector learned during training\n\n**Linear approximation:** `V̂(s,w) = wᵀ φ(s)` where `φ(s)` is the **feature vector** for state s.\n**Neural network approximation:** state s is the input; the output is the value estimate.\n\n**Training objective:** minimise mean squared error between estimated and target values:\n`L(w) = E[(target - V̂(s,w))²]`\n\n**Update rule:** `w ← w + α[target - V̂(s,w)] · ∇_w V̂(s,w)`\n\n**Key advantage:** updating **w** at one state s improves estimates at **similar states** — this is **generalisation**, which tabular methods cannot do."
+      "heading": "Xấp Xỉ Hàm Giá Trị",
+      "content": "Thay bảng tra cứu bằng một **hàm có tham số**:\n- `V̂(s,w)` xấp xỉ giá trị trạng thái\n- `Q̂(s,a,w)` xấp xỉ giá trị hành động\n- **w** = vector trọng số được học trong quá trình huấn luyện\n\n**Xấp xỉ tuyến tính:** `V̂(s,w) = wᵀ φ(s)` trong đó `φ(s)` là **vector đặc trưng** của trạng thái s.\n**Xấp xỉ neural network:** trạng thái s là đầu vào; đầu ra là ước tính giá trị.\n\n**Mục tiêu huấn luyện:** tối thiểu hóa sai số bình phương trung bình giữa giá trị ước tính và giá trị mục tiêu:\n`L(w) = E[(target - V̂(s,w))²]`\n\n**Quy tắc cập nhật:** `w ← w + α[target - V̂(s,w)] · ∇_w V̂(s,w)`\n\n**Ưu điểm then chốt:** cập nhật **w** tại một trạng thái s cải thiện ước tính tại **các trạng thái tương tự** — đây là **khái quát hóa**, điều mà phương pháp bảng không thể làm."
     },
     {
       "heading": "Deep Q-Network (DQN)",
-      "content": "**DQN** extends Q-learning by using a **deep neural network** to approximate `Q(s,a,θ)`.\n\n- **Input:** state s (e.g., raw pixel observations or feature vectors)\n- **Output:** Q-values for **all actions simultaneously**\n- **Action selection:** `a* = argmax_a Q̂(s,a,θ)`\n\n**Loss function:**\n`L(θ) = E[(y - Q̂(s,a,θ))²]`\nwhere the **target** `y = r + γ · max_{a'} Q̂(s',a',θ⁻)`\n\n**Two key stabilisation techniques:**\n1. **Experience Replay** — store transitions `(s,a,r,s')` in replay buffer **D**; sample random mini-batches to break temporal correlations.\n2. **Target Network θ⁻** — a frozen copy of the main network used to compute targets; updated periodically every C steps to prevent the **moving target problem**."
+      "content": "**DQN** mở rộng Q-learning bằng cách dùng một **deep neural network** để xấp xỉ `Q(s,a,θ)`.\n\n- **Đầu vào:** trạng thái s (ví dụ: quan sát pixel thô hoặc vector đặc trưng)\n- **Đầu ra:** Q-value cho **tất cả hành động cùng lúc**\n- **Chọn hành động:** `a* = argmax_a Q̂(s,a,θ)`\n\n**Hàm mất mát:**\n`L(θ) = E[(y - Q̂(s,a,θ))²]`\ntrong đó **mục tiêu** `y = r + γ · max_{a'} Q̂(s',a',θ⁻)`\n\n**Hai kỹ thuật ổn định hóa then chốt:**\n1. **Experience Replay** — lưu các chuyển tiếp `(s,a,r,s')` vào replay buffer **D**; lấy mẫu mini-batch ngẫu nhiên để phá vỡ tương quan thời gian.\n2. **Target Network θ⁻** — bản sao đóng băng của mạng chính dùng để tính mục tiêu; cập nhật định kỳ mỗi C bước để tránh **vấn đề mục tiêu di chuyển**."
     },
     {
-      "heading": "Experience Replay and Target Network",
-      "content": "**Without stabilisation:** correlated samples cause training instability; moving targets cause oscillation and divergence.\n\n**Experience Replay buffer D:**\n- Stores recent transitions `(s, a, r, s')`\n- Random sampling from D **removes temporal correlations**\n- Allows more efficient reuse of past experience\n- Each transition can be sampled multiple times\n\n**Target Network θ⁻:**\n- A **frozen copy** of the main network θ\n- Used only for computing the target `y = r + γ · max_{a'} Q̂(s',a',θ⁻)`\n- Updated every **C steps** (not every gradient step)\n- Without it: both prediction **and** target change every step → unstable\n\nThese two innovations enabled DQN to achieve **human-level performance** on Atari games."
+      "heading": "Experience Replay và Target Network",
+      "content": "**Không có ổn định hóa:** các mẫu tương quan gây bất ổn định khi huấn luyện; mục tiêu di chuyển gây dao động và phân kỳ.\n\n**Replay buffer D (Experience Replay):**\n- Lưu các chuyển tiếp gần đây `(s, a, r, s')`\n- Lấy mẫu ngẫu nhiên từ D **loại bỏ tương quan thời gian**\n- Cho phép tái sử dụng kinh nghiệm quá khứ hiệu quả hơn\n- Mỗi chuyển tiếp có thể được lấy mẫu nhiều lần\n\n**Target Network θ⁻:**\n- Một **bản sao đóng băng** của mạng chính θ\n- Chỉ dùng để tính mục tiêu `y = r + γ · max_{a'} Q̂(s',a',θ⁻)`\n- Cập nhật mỗi **C bước** (không phải mỗi bước gradient)\n- Không có nó: cả dự đoán **lẫn** mục tiêu đều thay đổi mỗi bước → bất ổn định\n\nHai cải tiến này giúp DQN đạt được **hiệu suất ngang tầm con người** trong các trò chơi Atari."
     },
     {
-      "heading": "DQN for Network Routing",
-      "content": "DQN can be applied to **network routing** problems:\n\n- **State:** queue lengths at all nodes, link delays, current traffic demand\n- **Action:** select next-hop node (discrete choice)\n- **Reward:** negative packet delay, or packet delivery confirmation\n\n**DQN advantage over tabular Q-learning:**\n- Handles large and continuous state spaces in networks\n- Generalises across similar network conditions\n\n**DQN limitation:** works only for **discrete action spaces**.\n- `argmax_a Q̂(s,a,θ)` requires evaluating all possible actions\n- Cannot efficiently handle **continuous actions** (e.g., bandwidth allocation, power control)\n\n**For continuous actions in networking:** policy gradient methods (e.g., Actor-Critic) are required instead."
+      "heading": "DQN Cho Định Tuyến Mạng",
+      "content": "DQN có thể áp dụng cho bài toán **định tuyến mạng**:\n\n- **Trạng thái:** độ dài hàng đợi tại tất cả các nút, độ trễ liên kết, nhu cầu lưu lượng hiện tại\n- **Hành động:** chọn nút chặng tiếp theo (lựa chọn rời rạc)\n- **Phần thưởng:** độ trễ gói tin âm, hoặc xác nhận giao hàng thành công\n\n**Ưu điểm của DQN so với Q-learning bảng:**\n- Xử lý được không gian trạng thái lớn và liên tục trong mạng\n- Khái quát hóa qua các điều kiện mạng tương tự\n\n**Hạn chế của DQN:** chỉ hoạt động với **không gian hành động rời rạc**.\n- `argmax_a Q̂(s,a,θ)` yêu cầu đánh giá tất cả các hành động có thể\n- Không thể xử lý hiệu quả **hành động liên tục** (ví dụ: phân bổ băng thông, kiểm soát công suất)\n\n**Cho hành động liên tục trong mạng:** cần dùng các phương pháp policy gradient (ví dụ: Actor-Critic) thay thế."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "Why do tabular methods fail when the state space is very large?",
+      "question": "Tại sao phương pháp bảng thất bại khi không gian trạng thái rất lớn?",
       "options": [
-        "They only work with continuous action spaces",
-        "They need a target network to stabilise learning",
-        "They require storing one entry per state, which becomes infeasible",
-        "They cannot compute reward functions accurately"
+        "Chúng chỉ hoạt động với không gian hành động liên tục",
+        "Chúng cần target network để ổn định quá trình học",
+        "Chúng yêu cầu lưu một ô cho mỗi trạng thái, trở nên không khả thi",
+        "Chúng không thể tính toán hàm phần thưởng chính xác"
       ],
       "answer": 2,
-      "explanation": "Tabular methods store one value per (s,a) pair. When the state space grows exponentially (e.g., network routing), storing and updating all entries becomes infeasible in memory and computation."
+      "explanation": "Phương pháp bảng lưu một giá trị cho mỗi cặp (s,a). Khi không gian trạng thái tăng theo hàm mũ (ví dụ: định tuyến mạng), việc lưu trữ và cập nhật tất cả các ô trở nên không khả thi về bộ nhớ và tính toán."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "What does value function approximation replace in RL?",
+      "question": "Xấp xỉ hàm giá trị thay thế điều gì trong RL?",
       "options": [
-        "The environment simulator used during training",
-        "The discount factor used in Bellman equations",
-        "The reward signal from the environment",
-        "The lookup table with a parameterised function"
+        "Bộ mô phỏng môi trường được dùng trong quá trình huấn luyện",
+        "Hệ số chiết khấu dùng trong phương trình Bellman",
+        "Tín hiệu phần thưởng từ môi trường",
+        "Bảng tra cứu bằng một hàm có tham số"
       ],
       "answer": 3,
-      "explanation": "Value function approximation replaces the lookup table (one value per state/action) with a parameterised function V̂(s,w) or Q̂(s,a,w), enabling generalisation across similar states."
+      "explanation": "Xấp xỉ hàm giá trị thay thế bảng tra cứu (một giá trị mỗi trạng thái/hành động) bằng hàm có tham số V̂(s,w) hoặc Q̂(s,a,w), cho phép khái quát hóa qua các trạng thái tương tự."
     },
     {
       "id": 3,
       "level": "basic",
-      "question": "In linear value function approximation, what is φ(s)?",
+      "question": "Trong xấp xỉ hàm giá trị tuyến tính, φ(s) là gì?",
       "options": [
-        "The feature vector representing the state s",
-        "The learning rate controlling step size",
-        "The weight vector updated during training",
-        "The target value computed from the Bellman equation"
+        "Vector đặc trưng biểu diễn trạng thái s",
+        "Tốc độ học kiểm soát kích thước bước",
+        "Vector trọng số được cập nhật trong huấn luyện",
+        "Giá trị mục tiêu tính từ phương trình Bellman"
       ],
       "answer": 0,
-      "explanation": "In linear approximation V̂(s,w) = wᵀφ(s), the term φ(s) is the feature vector that represents state s in a fixed feature space."
+      "explanation": "Trong xấp xỉ tuyến tính V̂(s,w) = wᵀφ(s), φ(s) là vector đặc trưng biểu diễn trạng thái s trong một không gian đặc trưng cố định."
     },
     {
       "id": 4,
       "level": "basic",
-      "question": "What is the input and output of a DQN network?",
+      "question": "Đầu vào và đầu ra của mạng DQN là gì?",
       "options": [
-        "Input: action probabilities; Output: selected action",
-        "Input: state s; Output: Q-values for all actions",
-        "Input: weight vector; Output: updated parameters",
-        "Input: reward signal; Output: optimal policy"
+        "Đầu vào: xác suất hành động; Đầu ra: hành động được chọn",
+        "Đầu vào: trạng thái s; Đầu ra: Q-value cho tất cả hành động",
+        "Đầu vào: vector trọng số; Đầu ra: tham số đã cập nhật",
+        "Đầu vào: tín hiệu phần thưởng; Đầu ra: chính sách tối ưu"
       ],
       "answer": 1,
-      "explanation": "A DQN takes the current state s as input and outputs Q-values for all discrete actions simultaneously, allowing action selection via argmax."
+      "explanation": "Một DQN nhận trạng thái hiện tại s làm đầu vào và xuất Q-value cho tất cả các hành động rời rạc cùng lúc, cho phép chọn hành động qua argmax."
     },
     {
       "id": 5,
       "level": "basic",
-      "question": "How does DQN select an action at state s?",
+      "question": "DQN chọn hành động tại trạng thái s như thế nào?",
       "options": [
-        "By computing argmax_a Q̂(s,a,θ) over all actions",
-        "By averaging Q-values across all available actions",
-        "By following a fixed rule stored in a lookup table",
-        "By sampling from the output probability distribution"
+        "Bằng cách tính argmax_a Q̂(s,a,θ) trên tất cả hành động",
+        "Bằng cách lấy trung bình Q-value trên tất cả hành động có thể",
+        "Bằng cách theo một quy tắc cố định lưu trong bảng tra cứu",
+        "Bằng cách lấy mẫu từ phân phối xác suất đầu ra"
       ],
       "answer": 0,
-      "explanation": "DQN selects the action with the highest estimated Q-value: a* = argmax_a Q̂(s,a,θ). This requires evaluating all discrete actions."
+      "explanation": "DQN chọn hành động có Q-value ước tính cao nhất: a* = argmax_a Q̂(s,a,θ). Điều này yêu cầu đánh giá tất cả các hành động rời rạc."
     },
     {
       "id": 6,
       "level": "basic",
-      "question": "What is the main purpose of experience replay in DQN?",
+      "question": "Mục đích chính của experience replay trong DQN là gì?",
       "options": [
-        "To break temporal correlations in training samples",
-        "To increase the learning rate during training",
-        "To reduce the size of the neural network weights",
-        "To compute the target network values faster"
+        "Phá vỡ tương quan thời gian trong các mẫu huấn luyện",
+        "Tăng tốc độ học trong quá trình huấn luyện",
+        "Giảm kích thước trọng số của neural network",
+        "Tính toán giá trị target network nhanh hơn"
       ],
       "answer": 0,
-      "explanation": "Experience replay stores transitions in a buffer and samples randomly from it, breaking the temporal correlations between consecutive training samples that would otherwise destabilise learning."
+      "explanation": "Experience replay lưu các chuyển tiếp vào buffer và lấy mẫu ngẫu nhiên từ đó, phá vỡ tương quan thời gian giữa các mẫu huấn luyện liên tiếp mà nếu không sẽ làm mất ổn định quá trình học."
     },
     {
       "id": 7,
       "level": "basic",
-      "question": "What is stored in the DQN replay buffer D?",
+      "question": "Replay buffer D trong DQN lưu trữ gì?",
       "options": [
-        "Only the states and their associated rewards",
-        "The neural network weights at each time step",
-        "Target Q-values computed by the frozen network",
-        "Transitions of the form (s, a, r, s') from interactions"
+        "Chỉ các trạng thái và phần thưởng tương ứng của chúng",
+        "Trọng số neural network tại mỗi bước thời gian",
+        "Q-value mục tiêu tính bởi mạng đóng băng",
+        "Các chuyển tiếp dạng (s, a, r, s') từ quá trình tương tác"
       ],
       "answer": 3,
-      "explanation": "The replay buffer D stores experience transitions (s, a, r, s') — state, action, reward, and next state — from the agent's interaction with the environment."
+      "explanation": "Replay buffer D lưu các chuyển tiếp kinh nghiệm (s, a, r, s') — trạng thái, hành động, phần thưởng và trạng thái tiếp theo — từ quá trình tương tác của tác nhân với môi trường."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "What is the DQN loss function used to train the main network?",
+      "question": "Hàm mất mát DQN dùng để huấn luyện mạng chính là gì?",
       "options": [
-        "`L(θ) = E[(y - Q̂(s,a,θ))²]` where `y = r + γ max_{a'} Q̂(s',a',θ⁻)`",
+        "`L(θ) = E[(y - Q̂(s,a,θ))²]` với `y = r + γ max_{a'} Q̂(s',a',θ⁻)`",
         "`L(θ) = E[(r + γV̂(s,w) - Q̂(s,a,θ))²]`",
-        "`L(θ) = E[(G_t - Q̂(s,a,θ))²]` using Monte Carlo returns",
+        "`L(θ) = E[(G_t - Q̂(s,a,θ))²]` dùng lợi nhuận Monte Carlo",
         "`L(θ) = E[log π(a|s,θ) · Q̂(s,a,θ)]`"
       ],
       "answer": 0,
-      "explanation": "The DQN loss is the mean squared error between the predicted Q̂(s,a,θ) and the target y = r + γ max_{a'} Q̂(s',a',θ⁻), where θ⁻ is the frozen target network."
+      "explanation": "Hàm mất mát DQN là sai số bình phương trung bình giữa Q̂(s,a,θ) dự đoán và mục tiêu y = r + γ max_{a'} Q̂(s',a',θ⁻), trong đó θ⁻ là target network đóng băng."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "What is the purpose of the target network θ⁻ in DQN?",
+      "question": "Mục đích của target network θ⁻ trong DQN là gì?",
       "options": [
-        "To provide stable targets by being updated less frequently",
-        "To select exploration actions using epsilon-greedy strategy",
-        "To compute faster gradient updates for the main network",
-        "To store all transitions in the replay buffer memory"
+        "Cung cấp mục tiêu ổn định bằng cách cập nhật ít thường xuyên hơn",
+        "Chọn hành động khám phá bằng chiến lược epsilon-greedy",
+        "Tính toán cập nhật gradient nhanh hơn cho mạng chính",
+        "Lưu tất cả chuyển tiếp trong bộ nhớ replay buffer"
       ],
       "answer": 0,
-      "explanation": "The target network θ⁻ is a frozen copy of the main network updated every C steps. It provides stable training targets, preventing the instability caused by both prediction and target changing simultaneously."
+      "explanation": "Target network θ⁻ là bản sao đóng băng của mạng chính được cập nhật mỗi C bước. Nó cung cấp mục tiêu huấn luyện ổn định, ngăn chặn bất ổn định gây ra khi cả dự đoán lẫn mục tiêu đều thay đổi đồng thời."
     },
     {
       "id": 10,
       "level": "intermediate",
-      "question": "What problem occurs in DQN training if there is no target network?",
+      "question": "Vấn đề gì xảy ra trong huấn luyện DQN nếu không có target network?",
       "options": [
-        "Both prediction and target values shift every step, causing instability",
-        "The feature vector φ(s) fails to represent the state correctly",
-        "The replay buffer fills up and stops accepting new transitions",
-        "The action space collapses to a single dominant action"
+        "Cả giá trị dự đoán và mục tiêu đều dịch chuyển mỗi bước, gây bất ổn định",
+        "Vector đặc trưng φ(s) không thể biểu diễn đúng trạng thái",
+        "Replay buffer đầy và ngừng nhận chuyển tiếp mới",
+        "Không gian hành động thu hẹp về một hành động duy nhất"
       ],
       "answer": 0,
-      "explanation": "Without a target network, both Q̂(s,a,θ) and the target y change every gradient step, creating a moving target problem that leads to oscillation and divergence."
+      "explanation": "Không có target network, cả Q̂(s,a,θ) và mục tiêu y đều thay đổi mỗi bước gradient, tạo ra vấn đề mục tiêu di chuyển dẫn đến dao động và phân kỳ."
     },
     {
       "id": 11,
       "level": "intermediate",
-      "question": "How often is the DQN target network θ⁻ updated?",
+      "question": "Target network θ⁻ của DQN được cập nhật bao lâu một lần?",
       "options": [
-        "Every C steps by copying weights from the main network",
-        "After every single gradient descent step on the main network",
-        "After every complete episode played by the agent",
-        "Continuously using an exponential moving average update"
+        "Mỗi C bước bằng cách sao chép trọng số từ mạng chính",
+        "Sau mỗi bước gradient descent trên mạng chính",
+        "Sau mỗi episode hoàn chỉnh mà tác nhân chơi",
+        "Liên tục bằng cách cập nhật trung bình động hàm mũ"
       ],
       "answer": 0,
-      "explanation": "The target network θ⁻ is updated every C steps (e.g., every 1000 steps) by copying the weights from the main network θ, keeping targets stable between updates."
+      "explanation": "Target network θ⁻ được cập nhật mỗi C bước (ví dụ: mỗi 1000 bước) bằng cách sao chép trọng số từ mạng chính θ, giữ mục tiêu ổn định giữa các lần cập nhật."
     },
     {
       "id": 12,
       "level": "intermediate",
-      "question": "What is the key generalisation advantage of function approximation over tabular Q-learning?",
+      "question": "Ưu điểm khái quát hóa then chốt của xấp xỉ hàm so với Q-learning bảng là gì?",
       "options": [
-        "It allows the agent to act in deterministic environments only",
-        "It removes the need for any reward signal during training",
-        "It stores a separate value for every possible state-action pair",
-        "Updating weights at one state improves estimates at similar states"
+        "Nó cho phép tác nhân hoạt động chỉ trong môi trường tất định",
+        "Nó loại bỏ nhu cầu về tín hiệu phần thưởng trong huấn luyện",
+        "Nó lưu một giá trị riêng cho mỗi cặp trạng thái-hành động có thể",
+        "Cập nhật trọng số tại một trạng thái cải thiện ước tính tại các trạng thái tương tự"
       ],
       "answer": 3,
-      "explanation": "When function approximation updates weight w at state s, the change propagates to all similar states (via shared weights), enabling generalisation — something impossible with tabular methods."
+      "explanation": "Khi xấp xỉ hàm cập nhật trọng số w tại trạng thái s, sự thay đổi lan truyền đến tất cả các trạng thái tương tự (qua trọng số dùng chung), cho phép khái quát hóa — điều không thể với phương pháp bảng."
     },
     {
       "id": 13,
       "level": "intermediate",
-      "question": "Why can DQN handle large state spaces in network routing unlike tabular Q-learning?",
+      "question": "Tại sao DQN xử lý được không gian trạng thái lớn trong định tuyến mạng khác với Q-learning bảng?",
       "options": [
-        "DQN evaluates each state independently without any memory",
-        "DQN approximates Q-values with a neural network that generalises",
-        "DQN uses a lookup table that is compressed using hashing",
-        "DQN only stores the top 100 most visited states in memory"
+        "DQN đánh giá từng trạng thái độc lập không cần bộ nhớ",
+        "DQN xấp xỉ Q-value bằng neural network có khả năng khái quát hóa",
+        "DQN dùng bảng tra cứu được nén bằng hashing",
+        "DQN chỉ lưu 100 trạng thái được thăm nhiều nhất trong bộ nhớ"
       ],
       "answer": 1,
-      "explanation": "DQN uses a neural network to approximate Q(s,a,θ), which can generalise to unseen states. This makes it scalable to large or continuous state spaces like those found in network routing."
+      "explanation": "DQN dùng neural network để xấp xỉ Q(s,a,θ), có thể khái quát hóa đến các trạng thái chưa thấy. Điều này giúp nó có thể mở rộng đến không gian trạng thái lớn hoặc liên tục như trong định tuyến mạng."
     },
     {
       "id": 14,
       "level": "intermediate",
-      "question": "In the DQN weight update rule `w ← w + α[target - V̂(s,w)]·∇_w V̂(s,w)`, what does the term `[target - V̂(s,w)]` represent?",
+      "question": "Trong quy tắc cập nhật trọng số DQN `w ← w + α[target - V̂(s,w)]·∇_w V̂(s,w)`, số hạng `[target - V̂(s,w)]` biểu diễn điều gì?",
       "options": [
-        "The TD error — difference between target and current estimate",
-        "The log probability of the action taken at state s",
-        "The action-value gradient used in policy gradient methods",
-        "The discount factor applied to future expected rewards"
+        "Sai số TD — chênh lệch giữa mục tiêu và ước tính hiện tại",
+        "Log xác suất của hành động được thực hiện tại trạng thái s",
+        "Gradient giá trị hành động dùng trong phương pháp policy gradient",
+        "Hệ số chiết khấu áp dụng cho phần thưởng tương lai kỳ vọng"
       ],
       "answer": 0,
-      "explanation": "The term [target - V̂(s,w)] is the temporal-difference (TD) error, representing how far the current estimate is from the target. It drives the weight update toward better estimates."
+      "explanation": "Số hạng [target - V̂(s,w)] là sai số temporal-difference (TD), biểu diễn mức độ chênh lệch của ước tính hiện tại so với mục tiêu. Nó điều khiển cập nhật trọng số hướng đến ước tính tốt hơn."
     },
     {
       "id": 15,
       "level": "intermediate",
-      "question": "What type of action space can DQN handle, and what is its limitation?",
+      "question": "DQN xử lý được loại không gian hành động nào và hạn chế của nó là gì?",
       "options": [
-        "Both discrete and continuous via separate output heads",
-        "Discrete only; cannot efficiently handle continuous actions",
-        "Continuous only; cannot handle discrete choices at all",
-        "Mixed spaces; but only up to 10 simultaneous actions"
+        "Cả rời rạc lẫn liên tục thông qua các đầu ra riêng biệt",
+        "Chỉ rời rạc; không thể xử lý hiệu quả hành động liên tục",
+        "Chỉ liên tục; không thể xử lý các lựa chọn rời rạc",
+        "Không gian hỗn hợp; nhưng chỉ đến 10 hành động đồng thời"
       ],
       "answer": 1,
-      "explanation": "DQN selects actions via argmax_a Q̂(s,a,θ), which requires enumerating all actions. This works for discrete action spaces but fails for continuous ones (e.g., power control) where infinitely many actions exist."
+      "explanation": "DQN chọn hành động qua argmax_a Q̂(s,a,θ), yêu cầu liệt kê tất cả hành động. Điều này hoạt động cho không gian hành động rời rạc nhưng thất bại với hành động liên tục (ví dụ: kiểm soát công suất) khi có vô số hành động."
     },
     {
       "id": 16,
       "level": "advanced",
-      "question": "In network routing with DQN, which of the following best describes the reward function?",
+      "question": "Trong định tuyến mạng với DQN, phương án nào mô tả tốt nhất hàm phần thưởng?",
       "options": [
-        "Positive reward for every routing table update made",
-        "Fixed reward of +1 whenever any packet reaches any node",
-        "The difference between current and previous queue lengths",
-        "Negative packet delay or a delivery confirmation signal"
+        "Phần thưởng dương cho mỗi lần cập nhật bảng định tuyến",
+        "Phần thưởng cố định +1 khi bất kỳ gói tin đến bất kỳ nút nào",
+        "Chênh lệch giữa độ dài hàng đợi hiện tại và trước đó",
+        "Độ trễ gói tin âm hoặc tín hiệu xác nhận giao hàng thành công"
       ],
       "answer": 3,
-      "explanation": "In network routing DQN, the reward is typically negative delay (to minimise latency) or a packet delivery confirmation, aligning the agent's objective with network performance goals."
+      "explanation": "Trong DQN định tuyến mạng, phần thưởng thường là độ trễ âm (để tối thiểu hóa độ trễ) hoặc xác nhận giao gói tin, căn chỉnh mục tiêu của tác nhân với hiệu suất mạng."
     },
     {
       "id": 17,
       "level": "advanced",
-      "question": "Why does random sampling from the replay buffer improve DQN training stability?",
+      "question": "Tại sao lấy mẫu ngẫu nhiên từ replay buffer cải thiện tính ổn định huấn luyện DQN?",
       "options": [
-        "It doubles the effective batch size without extra memory cost",
-        "It prioritises rare transitions that the agent has seen infrequently",
-        "It ensures all transitions have equal reward magnitudes",
-        "It removes temporal correlations that would bias gradient estimates"
+        "Nó tăng gấp đôi kích thước batch hiệu quả mà không tốn thêm bộ nhớ",
+        "Nó ưu tiên các chuyển tiếp hiếm mà tác nhân ít gặp",
+        "Nó đảm bảo tất cả chuyển tiếp có cùng độ lớn phần thưởng",
+        "Nó loại bỏ tương quan thời gian làm lệch ước tính gradient"
       ],
       "answer": 3,
-      "explanation": "Consecutive transitions are highly correlated (same episode, similar states). Random sampling from the replay buffer decorrelates the mini-batch, producing more independent, less biased gradient estimates."
+      "explanation": "Các chuyển tiếp liên tiếp có tương quan cao (cùng episode, trạng thái tương tự). Lấy mẫu ngẫu nhiên từ replay buffer tách tương quan trong mini-batch, tạo ra ước tính gradient độc lập hơn, ít lệch hơn."
     },
     {
       "id": 18,
       "level": "advanced",
-      "question": "The DQN target uses `max_{a'} Q̂(s',a',θ⁻)` rather than `max_{a'} Q̂(s',a',θ)`. Why?",
+      "question": "Mục tiêu DQN dùng `max_{a'} Q̂(s',a',θ⁻)` thay vì `max_{a'} Q̂(s',a',θ)`. Tại sao?",
       "options": [
-        "Using θ for targets creates a circular dependency that causes divergence",
-        "θ⁻ is updated more frequently and thus more accurate than θ",
-        "The main network θ cannot evaluate next-state Q-values at all",
-        "θ⁻ uses a larger network architecture for better accuracy"
+        "Dùng θ cho mục tiêu tạo ra phụ thuộc vòng tròn gây phân kỳ",
+        "θ⁻ được cập nhật thường xuyên hơn và do đó chính xác hơn θ",
+        "Mạng chính θ không thể đánh giá Q-value trạng thái tiếp theo",
+        "θ⁻ dùng kiến trúc mạng lớn hơn để đạt độ chính xác cao hơn"
       ],
       "answer": 0,
-      "explanation": "If the same network θ is used for both prediction and target computation, both sides of the loss change every step, creating instability. The frozen θ⁻ decouples them, stabilising training."
+      "explanation": "Nếu cùng mạng θ được dùng cho cả dự đoán lẫn tính mục tiêu, cả hai vế của hàm mất mát đều thay đổi mỗi bước, gây bất ổn định. θ⁻ đóng băng tách rời chúng, ổn định hóa quá trình huấn luyện."
     },
     {
       "id": 19,
       "level": "advanced",
-      "question": "A network engineer argues that for continuous bandwidth allocation, DQN should use finely discretised actions (1000 bins). What is the main problem with this approach?",
+      "question": "Một kỹ sư mạng lập luận rằng với phân bổ băng thông liên tục, DQN nên dùng hành động rời rạc hóa mịn (1000 bins). Vấn đề chính của cách này là gì?",
       "options": [
-        "DQN cannot represent bandwidth values as Q-network outputs",
-        "Fine discretisation explodes the action space, making argmax costly and imprecise",
-        "The argmax over 1000 actions is computationally cheap and accurate",
-        "Discretisation introduces no error if the bins are fine enough"
+        "DQN không thể biểu diễn giá trị băng thông là đầu ra Q-network",
+        "Rời rạc hóa mịn làm bùng nổ không gian hành động, khiến argmax tốn kém và kém chính xác",
+        "argmax trên 1000 hành động có chi phí tính toán thấp và chính xác",
+        "Rời rạc hóa không gây sai số nếu các bin đủ mịn"
       ],
       "answer": 1,
-      "explanation": "Finely discretising continuous actions makes the argmax expensive (many actions to evaluate) and still introduces discretisation error. Policy gradient methods are the proper solution for continuous action spaces."
+      "explanation": "Rời rạc hóa mịn hành động liên tục làm argmax tốn kém (nhiều hành động cần đánh giá) và vẫn gây ra sai số rời rạc hóa. Phương pháp policy gradient là giải pháp thích hợp cho không gian hành động liên tục."
     },
     {
       "id": 20,
       "level": "advanced",
-      "question": "Consider a DQN applied to routing where the state includes queue lengths at 50 nodes. Why is this preferable to tabular Q-learning, and what fundamental constraint still applies?",
+      "question": "Xét DQN áp dụng cho định tuyến khi trạng thái gồm độ dài hàng đợi tại 50 nút. Tại sao điều này tốt hơn Q-learning bảng và ràng buộc cơ bản nào vẫn còn tồn tại?",
       "options": [
-        "Tabular Q-learning also scales to 50-node networks with enough memory",
-        "DQN handles the continuous state via generalisation, but is still limited to discrete next-hop actions",
-        "DQN converts the state to discrete bins, removing all approximation errors",
-        "DQN removes the need for rewards by learning from state transitions alone"
+        "Q-learning bảng cũng mở rộng đến mạng 50 nút nếu đủ bộ nhớ",
+        "DQN xử lý trạng thái liên tục qua khái quát hóa, nhưng vẫn bị giới hạn hành động chặng tiếp theo rời rạc",
+        "DQN chuyển đổi trạng thái thành bins rời rạc, loại bỏ mọi sai số xấp xỉ",
+        "DQN loại bỏ nhu cầu về phần thưởng bằng cách học từ chuyển tiếp trạng thái"
       ],
       "answer": 1,
-      "explanation": "DQN generalises across the high-dimensional state space (50 queue lengths) via neural network approximation, which tabular methods cannot handle. However, DQN's argmax still requires discrete actions — it cannot directly output continuous bandwidth or power values."
+      "explanation": "DQN khái quát hóa qua không gian trạng thái nhiều chiều (50 độ dài hàng đợi) qua xấp xỉ neural network, điều mà phương pháp bảng không thể xử lý. Tuy nhiên, argmax của DQN vẫn yêu cầu hành động rời rạc — không thể xuất trực tiếp băng thông hoặc công suất liên tục."
     }
   ]
 }

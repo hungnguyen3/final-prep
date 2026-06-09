@@ -1,287 +1,287 @@
 {
-  "title": "Chapter 3: Dynamic Programming & Monte Carlo Methods",
+  "title": "Chương 3: Dynamic Programming & Monte Carlo Methods",
   "theory": [
     {
-      "heading": "Two Fundamental Approaches",
-      "content": "**Model-based** (network model known): transition probabilities `P(s'|s,a)` and reward function `r(s,a)` are available → use **Dynamic Programming**.\n**Model-free** (network model unknown): wireless channel statistics unavailable, traffic arrival distribution unknown, environment dynamically changing → learn directly from sampled experience using **Monte Carlo** methods.\n\nSpectrum:\n1) Full Model Available → Dynamic Programming\n2) Monte Carlo\n3) Temporal-Difference\n4) Deep RL\n\nKey insight:\n- DP = bootstrapping + model\n- MC = sampling + no bootstrapping\n- TD = sampling + bootstrapping"
+      "heading": "Hai Phương Pháp Cơ Bản",
+      "content": "**Dựa trên mô hình** (mô hình mạng đã biết): xác suất chuyển trạng thái `P(s'|s,a)` và hàm phần thưởng `r(s,a)` đã có → dùng **Dynamic Programming**.\n**Không cần mô hình** (mô hình mạng chưa biết): thống kê kênh truyền không có, phân phối lưu lượng không rõ, môi trường thay đổi động → học trực tiếp từ kinh nghiệm lấy mẫu dùng phương pháp **Monte Carlo**.\n\nPhổ phương pháp:\n1) Mô hình đầy đủ → Dynamic Programming\n2) Monte Carlo\n3) Temporal-Difference\n4) Deep RL\n\nĐiểm mấu chốt:\n- DP = bootstrapping + mô hình\n- MC = lấy mẫu + không bootstrapping\n- TD = lấy mẫu + bootstrapping"
     },
     {
-      "heading": "Value Iteration Algorithm",
-      "content": "Solves the **Bellman optimality equation** iteratively. Uses the **contraction mapping theorem** to guarantee convergence.\n\nAlgorithm: start with arbitrary `v_0`, update:\n`v_{k+1}(s) = max_a q_k(s,a)`\nwhere `q_k(s,a) = Σ p(r|s,a)·r + γ Σ p(s'|s,a)·v_k(s')`\n\nTwo steps per iteration:\n- **Policy update**: `π_{k+1}(s) = argmax_a q_k(s,a)` — greedy policy\n- **Value update**: `v_{k+1}(s) = max_a q_k(s,a)`\n\nConverges to optimal value function `v*` and optimal policy `π*` as `k→∞`. Starting value `v_0` can be arbitrary."
+      "heading": "Thuật Toán Value Iteration",
+      "content": "Giải **phương trình tối ưu Bellman** theo vòng lặp. Dùng **định lý ánh xạ co** để đảm bảo hội tụ.\n\nThuật toán: bắt đầu với `v_0` tùy ý, cập nhật:\n`v_{k+1}(s) = max_a q_k(s,a)`\ntrong đó `q_k(s,a) = Σ p(r|s,a)·r + γ Σ p(s'|s,a)·v_k(s')`\n\nHai bước mỗi vòng lặp:\n- **Cập nhật chính sách**: `π_{k+1}(s) = argmax_a q_k(s,a)` — greedy policy\n- **Cập nhật giá trị**: `v_{k+1}(s) = max_a q_k(s,a)`\n\nHội tụ đến hàm giá trị tối ưu `v*` và chính sách tối ưu `π*` khi `k→∞`. Giá trị khởi đầu `v_0` có thể tùy ý."
     },
     {
-      "heading": "Policy Iteration Algorithm",
-      "content": "Alternative to Value Iteration. Two interleaved steps:\n1) **Policy Evaluation**: compute `V^π` for current policy `π` by solving:\n`V^π(s) = Σ_a π(a|s) · q^π(s,a)`\n2) **Policy Improvement**: update `π` to be greedy w.r.t. `V^π`:\n`π'(s) = argmax_a q^π(s,a)`\n\nRepeat until convergence.\n\n- Policy Iteration is often **faster** than Value Iteration (fewer iterations)\n- Both converge to the **optimal policy**\n- Policy Iteration guarantees **monotonic policy improvement** at each step"
+      "heading": "Thuật Toán Policy Iteration",
+      "content": "Thay thế cho Value Iteration. Hai bước xen kẽ nhau:\n1) **Đánh giá chính sách**: tính `V^π` cho chính sách `π` hiện tại bằng cách giải:\n`V^π(s) = Σ_a π(a|s) · q^π(s,a)`\n2) **Cải thiện chính sách**: cập nhật `π` thành greedy w.r.t. `V^π`:\n`π'(s) = argmax_a q^π(s,a)`\n\nLặp lại đến khi hội tụ.\n\n- Policy Iteration thường **nhanh hơn** Value Iteration (ít vòng lặp hơn)\n- Cả hai đều hội tụ đến **chính sách tối ưu**\n- Policy Iteration đảm bảo **cải thiện chính sách đơn điệu** ở mỗi bước"
     },
     {
-      "heading": "Monte Carlo Methods",
-      "content": "**Model-free**: learns from complete episodes of experience. Does NOT require knowledge of transition probabilities.\n\nEstimates value functions by averaging sample returns.\n\n**MC Prediction**: estimate `V^π` by averaging total returns from each state visit.\n- **First-visit MC**: average return after FIRST visit to `s` in each episode\n- **Every-visit MC**: average return after EVERY visit to `s`\n\n**MC Control**: use MC to evaluate policy, then improve greedily.\n\n**Limitation**: must wait until episode ends (terminal state required). Works well for **episodic tasks** only."
+      "heading": "Phương Pháp Monte Carlo",
+      "content": "**Không cần mô hình**: học từ các tập hoàn chỉnh của kinh nghiệm. KHÔNG cần biết xác suất chuyển trạng thái.\n\nƯớc lượng hàm giá trị bằng cách lấy trung bình các kết quả trả về từ mẫu.\n\n**MC Prediction**: ước lượng `V^π` bằng cách lấy trung bình tổng phần thưởng từ mỗi lần thăm trạng thái.\n- **First-visit MC**: trung bình phần thưởng sau lần ĐẦU TIÊN thăm `s` trong mỗi tập\n- **Every-visit MC**: trung bình phần thưởng sau MỌI lần thăm `s`\n\n**MC Control**: dùng MC để đánh giá chính sách, rồi cải thiện theo greedy.\n\n**Hạn chế**: phải chờ đến khi kết thúc tập (cần trạng thái kết thúc). Chỉ hoạt động tốt với **tác vụ có tập (episodic)**."
     },
     {
-      "heading": "Exploration vs Exploitation",
-      "content": "Key challenge in RL: agent must **explore** to find better policies but **exploit** known good actions.\n\n**Epsilon-greedy policy**:\n- With probability `ε`: take random action (explore)\n- With probability `1-ε`: take best known action (exploit)\n\n- `ε`-greedy ensures all state-action pairs are visited (exploration)\n- As learning progresses, `ε` is often **decayed**\n\n**On-policy methods**: learn about the policy being used to make decisions.\n**Off-policy methods**: learn about a different (target) policy while following a behaviour policy."
+      "heading": "Khám Phá vs Khai Thác",
+      "content": "Thách thức chính trong RL: tác nhân phải **khám phá** để tìm chính sách tốt hơn nhưng **khai thác** hành động tốt đã biết.\n\n**Chính sách epsilon-greedy**:\n- Với xác suất `ε`: thực hiện hành động ngẫu nhiên (khám phá)\n- Với xác suất `1-ε`: thực hiện hành động tốt nhất đã biết (khai thác)\n\n- Chính sách `ε`-greedy đảm bảo tất cả cặp trạng thái-hành động đều được thăm (khám phá)\n- Khi học tiến triển, `ε` thường được **giảm dần**\n\n**Phương pháp on-policy**: học về chính sách đang được dùng để ra quyết định.\n**Phương pháp off-policy**: học về một chính sách (mục tiêu) khác trong khi theo chính sách hành vi."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "What is the key difference between model-based and model-free RL?",
+      "question": "Sự khác biệt cốt lõi giữa RL dựa trên mô hình và RL không cần mô hình là gì?",
       "options": [
-        "Model-based knows transition probabilities; model-free learns from experience",
-        "Model-based uses neural networks; model-free uses lookup tables",
-        "Model-based needs more data; model-free needs less data overall",
-        "Model-based is faster to train; model-free is slower to converge"
+        "Dựa trên mô hình biết xác suất chuyển trạng thái; không cần mô hình học từ kinh nghiệm",
+        "Dựa trên mô hình dùng mạng nơ-ron; không cần mô hình dùng bảng tra cứu",
+        "Dựa trên mô hình cần nhiều dữ liệu hơn; không cần mô hình cần ít dữ liệu hơn",
+        "Dựa trên mô hình huấn luyện nhanh hơn; không cần mô hình hội tụ chậm hơn"
       ],
       "answer": 0,
-      "explanation": "Model-based RL has access to transition probabilities P(s'|s,a) and the reward function, enabling Dynamic Programming. Model-free RL learns directly from sampled experience without knowing the environment model."
+      "explanation": "RL dựa trên mô hình có xác suất chuyển trạng thái P(s'|s,a) và hàm phần thưởng, cho phép dùng Dynamic Programming. RL không cần mô hình học trực tiếp từ kinh nghiệm lấy mẫu mà không cần biết mô hình môi trường."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Which method should you use when the full environment model (transition probabilities) is known?",
+      "question": "Nên dùng phương pháp nào khi biết đầy đủ mô hình môi trường (xác suất chuyển trạng thái)?",
       "options": [
-        "Temporal-Difference for online bootstrapping",
-        "Deep Reinforcement Learning for function approximation",
-        "Monte Carlo methods for direct sampling",
-        "Dynamic Programming for exact computation"
+        "Temporal-Difference để bootstrapping trực tuyến",
+        "Deep Reinforcement Learning để xấp xỉ hàm",
+        "Monte Carlo để lấy mẫu trực tiếp từ môi trường",
+        "Dynamic Programming để tính toán chính xác và hiệu quả"
       ],
       "answer": 3,
-      "explanation": "When the full model is available (transition probabilities and reward function known), Dynamic Programming can solve the Bellman equations exactly and efficiently."
+      "explanation": "Khi có đầy đủ mô hình (xác suất chuyển trạng thái và hàm phần thưởng đã biết), Dynamic Programming có thể giải các phương trình Bellman một cách chính xác và hiệu quả."
     },
     {
       "id": 3,
       "level": "basic",
-      "question": "In the epsilon-greedy strategy, what does the agent do with probability ε?",
+      "question": "Trong chiến lược epsilon-greedy, tác nhân làm gì với xác suất ε?",
       "options": [
-        "Selects the action with the highest Q-value",
-        "Resets the episode to the starting state",
-        "Updates the value function using bootstrapping",
-        "Picks a completely random action to explore"
+        "Chọn hành động có Q-value cao nhất trong bảng",
+        "Đặt lại tập về trạng thái ban đầu để thử lại",
+        "Cập nhật hàm giá trị bằng phương pháp bootstrapping",
+        "Chọn một hành động hoàn toàn ngẫu nhiên để khám phá"
       ],
       "answer": 3,
-      "explanation": "With probability ε, the agent takes a random action (exploration). With probability 1-ε, it takes the greedy best known action (exploitation). This ensures all state-action pairs are eventually visited."
+      "explanation": "Với xác suất ε, tác nhân thực hiện hành động ngẫu nhiên (khám phá). Với xác suất 1-ε, nó chọn hành động greedy tốt nhất đã biết (khai thác). Điều này đảm bảo tất cả cặp trạng thái-hành động cuối cùng đều được thăm."
     },
     {
       "id": 4,
       "level": "basic",
-      "question": "What does the Value Iteration algorithm start with?",
+      "question": "Thuật toán Value Iteration bắt đầu với điều gì?",
       "options": [
-        "The optimal policy computed from prior data",
-        "A fixed epsilon-greedy exploration schedule",
-        "An arbitrary initial value function v_0",
-        "Transition probabilities estimated from samples"
+        "Chính sách tối ưu được tính từ dữ liệu trước đó",
+        "Lịch trình khám phá epsilon-greedy cố định sẵn",
+        "Hàm giá trị khởi đầu v_0 tùy ý bất kỳ",
+        "Xác suất chuyển trạng thái ước lượng từ mẫu"
       ],
       "answer": 2,
-      "explanation": "Value Iteration begins with an arbitrary value function v_0 (e.g., all zeros). The contraction mapping theorem guarantees convergence to v* regardless of this starting point."
+      "explanation": "Value Iteration bắt đầu với hàm giá trị tùy ý v_0 (ví dụ tất cả bằng 0). Định lý ánh xạ co đảm bảo hội tụ đến v* bất kể điểm khởi đầu này là gì."
     },
     {
       "id": 5,
       "level": "basic",
-      "question": "What does 'bootstrapping' mean in the context of Dynamic Programming?",
+      "question": "Bootstrapping có nghĩa là gì trong ngữ cảnh của Dynamic Programming?",
       "options": [
-        "Sampling transitions from the real environment",
-        "Learning from complete episodes without a model",
-        "Updating estimates using other current estimates",
-        "Randomly initializing all value functions to zero"
+        "Lấy mẫu chuyển trạng thái từ môi trường thực tế",
+        "Học từ các tập hoàn chỉnh mà không cần mô hình",
+        "Cập nhật ước lượng bằng cách dùng các ước lượng hiện tại khác",
+        "Khởi tạo ngẫu nhiên tất cả hàm giá trị về không"
       ],
       "answer": 2,
-      "explanation": "Bootstrapping means updating the value estimate of a state using the current estimated values of successor states, rather than waiting for the actual final return."
+      "explanation": "Bootstrapping có nghĩa là cập nhật ước lượng giá trị của một trạng thái bằng cách dùng các giá trị ước lượng hiện tại của các trạng thái kế tiếp, thay vì chờ kết quả trả về cuối cùng thực sự."
     },
     {
       "id": 6,
       "level": "basic",
-      "question": "What type of tasks is Monte Carlo best suited for?",
+      "question": "Monte Carlo phù hợp nhất với loại tác vụ nào?",
       "options": [
-        "Continuing tasks with no terminal state",
-        "Tasks where the model is fully specified",
-        "Episodic tasks with a clear terminal state",
-        "Tasks requiring real-time online updates"
+        "Tác vụ liên tục không có trạng thái kết thúc",
+        "Tác vụ mà mô hình môi trường được xác định đầy đủ",
+        "Tác vụ có tập (episodic) với trạng thái kết thúc rõ ràng",
+        "Tác vụ cần cập nhật trực tuyến theo thời gian thực"
       ],
       "answer": 2,
-      "explanation": "Monte Carlo methods require complete episodes to compute returns. They work well for episodic tasks (with terminal states) but cannot handle continuing tasks that never end."
+      "explanation": "Phương pháp Monte Carlo yêu cầu các tập hoàn chỉnh để tính phần thưởng tích lũy. Chúng hoạt động tốt với tác vụ có tập (có trạng thái kết thúc) nhưng không thể xử lý tác vụ liên tục không bao giờ kết thúc."
     },
     {
       "id": 7,
       "level": "basic",
-      "question": "What is a greedy policy with respect to a value function?",
+      "question": "Greedy policy theo hàm giá trị là gì?",
       "options": [
-        "The policy that selects the action maximizing Q-value",
-        "The policy that uses epsilon for random exploration",
-        "The policy that always chooses a random action",
-        "The policy that minimizes the total number of steps"
+        "Chính sách chọn hành động tối đa hóa Q-value",
+        "Chính sách dùng epsilon để khám phá ngẫu nhiên",
+        "Chính sách luôn chọn hành động hoàn toàn ngẫu nhiên",
+        "Chính sách tối thiểu hóa tổng số bước cần thực hiện"
       ],
       "answer": 0,
-      "explanation": "A greedy policy selects the action that maximizes the action-value: π(s) = argmax_a q(s,a). It exploits current value estimates without any exploration."
+      "explanation": "Greedy policy chọn hành động tối đa hóa action-value: π(s) = argmax_a q(s,a). Nó khai thác các ước lượng giá trị hiện tại mà không có bất kỳ sự khám phá nào."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "In Value Iteration, what is the update rule for v_{k+1}(s)?",
+      "question": "Trong Value Iteration, quy tắc cập nhật cho v_{k+1}(s) là gì?",
       "options": [
-        "`v_{k+1}(s) = max_a q_k(s,a)` (greedy maximum)",
-        "`v_{k+1}(s) = Σ_a π(a|s) · q_k(s,a)` (policy average)",
-        "`v_{k+1}(s) = α·r + (1-α)·v_k(s)` (running average)",
-        "`v_{k+1}(s) = min_a q_k(s,a)` (pessimistic minimum)"
+        "`v_{k+1}(s) = max_a q_k(s,a)` (tối đa greedy)",
+        "`v_{k+1}(s) = Σ_a π(a|s) · q_k(s,a)` (trung bình theo chính sách)",
+        "`v_{k+1}(s) = α·r + (1-α)·v_k(s)` (trung bình trượt)",
+        "`v_{k+1}(s) = min_a q_k(s,a)` (tối thiểu bi quan)"
       ],
       "answer": 0,
-      "explanation": "Value Iteration updates by taking the maximum over actions: v_{k+1}(s) = max_a q_k(s,a), which directly applies the Bellman optimality equation."
+      "explanation": "Value Iteration cập nhật bằng cách lấy tối đa trên các hành động: v_{k+1}(s) = max_a q_k(s,a), áp dụng trực tiếp phương trình tối ưu Bellman."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "What are the two interleaved steps in Policy Iteration?",
+      "question": "Hai bước xen kẽ trong Policy Iteration là gì?",
       "options": [
-        "Policy Evaluation and Policy Improvement iteratively",
-        "Value Estimation and Action Selection from the table",
-        "Forward Pass and Backward Pass through the MDP",
-        "Exploration Phase and Exploitation Phase alternating"
+        "Policy Evaluation và Policy Improvement lặp xen kẽ nhau",
+        "Ước lượng giá trị và chọn hành động từ bảng tra cứu",
+        "Lượt truyền xuôi và lượt truyền ngược qua MDP",
+        "Giai đoạn khám phá và giai đoạn khai thác xen kẽ nhau"
       ],
       "answer": 0,
-      "explanation": "Policy Iteration alternates between Policy Evaluation (computing V^π for the current policy) and Policy Improvement (making the policy greedy w.r.t. V^π) until convergence."
+      "explanation": "Policy Iteration xen kẽ giữa Policy Evaluation (tính V^π cho chính sách hiện tại) và Policy Improvement (làm cho chính sách greedy w.r.t. V^π) cho đến khi hội tụ."
     },
     {
       "id": 10,
       "level": "intermediate",
-      "question": "What is the main limitation of Dynamic Programming methods?",
+      "question": "Hạn chế chính của các phương pháp Dynamic Programming là gì?",
       "options": [
-        "They cannot handle discrete state spaces efficiently",
-        "They converge to a local optimum rather than global",
-        "They require complete episodes before any update",
-        "They require a full environment model to compute updates"
+        "Chúng không thể xử lý không gian trạng thái rời rạc hiệu quả",
+        "Chúng hội tụ đến cực tiểu cục bộ thay vì toàn cục",
+        "Chúng yêu cầu tập hoàn chỉnh trước khi cập nhật bất kỳ thứ gì",
+        "Chúng yêu cầu mô hình môi trường đầy đủ để tính toán cập nhật"
       ],
       "answer": 3,
-      "explanation": "DP requires knowing the transition probabilities P(s'|s,a) and reward function r(s,a). Without this model, DP cannot be applied — this is the key motivation for model-free methods."
+      "explanation": "DP yêu cầu biết xác suất chuyển trạng thái P(s'|s,a) và hàm phần thưởng r(s,a). Không có mô hình này, DP không thể áp dụng — đây là động lực chính cho các phương pháp không cần mô hình."
     },
     {
       "id": 11,
       "level": "intermediate",
-      "question": "What is the difference between First-visit MC and Every-visit MC?",
+      "question": "Sự khác biệt giữa First-visit MC và Every-visit MC là gì?",
       "options": [
-        "First-visit only updates terminal states; every-visit updates all states",
-        "First-visit requires a model; every-visit is fully model-free",
-        "First-visit averages only the first return per episode; every-visit averages all returns",
-        "First-visit uses off-policy learning; every-visit uses on-policy learning"
+        "First-visit chỉ cập nhật trạng thái kết thúc; every-visit cập nhật mọi trạng thái",
+        "First-visit cần mô hình; every-visit hoàn toàn không cần mô hình",
+        "First-visit trung bình chỉ lần trả về đầu tiên mỗi tập; every-visit trung bình mọi lần",
+        "First-visit dùng học off-policy; every-visit dùng học on-policy"
       ],
       "answer": 2,
-      "explanation": "First-visit MC averages the return from the FIRST time state s is visited in each episode. Every-visit MC averages the return from ALL visits to s within each episode. Both converge to V^π."
+      "explanation": "First-visit MC lấy trung bình phần thưởng từ lần ĐẦU TIÊN thăm trạng thái s trong mỗi tập. Every-visit MC lấy trung bình từ TẤT CẢ các lần thăm s trong mỗi tập. Cả hai đều hội tụ đến V^π."
     },
     {
       "id": 12,
       "level": "intermediate",
-      "question": "Why do Monte Carlo methods require waiting until the episode ends?",
+      "question": "Tại sao phương pháp Monte Carlo phải chờ đến khi kết thúc tập?",
       "options": [
-        "They update the policy only after the model is fully trained",
-        "They need the complete return G_t which includes all future rewards",
-        "They need to compute exact transition probabilities first",
-        "They must synchronize all states before any single update"
+        "Chúng chỉ cập nhật chính sách sau khi mô hình được huấn luyện đầy đủ",
+        "Chúng cần phần thưởng tích lũy G_t bao gồm tất cả phần thưởng tương lai",
+        "Chúng cần tính xác suất chuyển trạng thái chính xác trước tiên",
+        "Chúng phải đồng bộ hóa tất cả trạng thái trước mỗi lần cập nhật"
       ],
       "answer": 1,
-      "explanation": "MC updates use the actual return G_t = r_{t+1} + γr_{t+2} + ... which sums all future rewards in the episode. This total is only known once the terminal state is reached."
+      "explanation": "Cập nhật MC dùng kết quả trả về thực G_t = r_{t+1} + γr_{t+2} + ... tổng tất cả phần thưởng tương lai trong tập. Tổng này chỉ biết khi đạt đến trạng thái kết thúc."
     },
     {
       "id": 13,
       "level": "intermediate",
-      "question": "What theorem guarantees that Value Iteration converges to v*?",
+      "question": "Định lý nào đảm bảo Value Iteration hội tụ đến v*?",
       "options": [
-        "Bellman's Linear Programming Theorem for MDPs",
-        "The Policy Gradient Theorem for parameterized policies",
-        "The Contraction Mapping Theorem for Bellman operator",
-        "The Central Limit Theorem for sampled return averages"
+        "Định lý Lập Trình Tuyến Tính của Bellman cho MDP",
+        "Định lý Policy Gradient cho chính sách có tham số",
+        "Định lý Ánh Xạ Co cho toán tử Bellman",
+        "Định lý Giới Hạn Trung Tâm cho trung bình trả về lấy mẫu"
       ],
       "answer": 2,
-      "explanation": "The Contraction Mapping Theorem guarantees that the Bellman optimality operator is a contraction (with factor γ < 1), so repeated application converges to the unique fixed point v*."
+      "explanation": "Định lý Ánh Xạ Co đảm bảo toán tử tối ưu Bellman là một ánh xạ co (với hệ số γ < 1), nên áp dụng lặp lại hội tụ đến điểm cố định duy nhất v*."
     },
     {
       "id": 14,
       "level": "intermediate",
-      "question": "What is an on-policy method in reinforcement learning?",
+      "question": "Phương pháp on-policy trong học tăng cường là gì?",
       "options": [
-        "A method that learns about the policy currently being executed",
-        "A method that learns the value of the greedy policy only",
-        "A method that requires a full model of the environment",
-        "A method that updates all states simultaneously in each step"
+        "Phương pháp học về chính sách đang được thực thi hiện tại",
+        "Phương pháp chỉ học giá trị của greedy policy mà thôi",
+        "Phương pháp yêu cầu mô hình đầy đủ của môi trường",
+        "Phương pháp cập nhật tất cả trạng thái đồng thời mỗi bước"
       ],
       "answer": 0,
-      "explanation": "On-policy methods learn the value function for the same policy that is generating the experience (e.g., ε-greedy SARSA improves the ε-greedy policy it is following)."
+      "explanation": "Các phương pháp on-policy học hàm giá trị cho cùng chính sách đang tạo ra kinh nghiệm (ví dụ: SARSA với ε-greedy cải thiện chính sách ε-greedy mà nó đang theo)."
     },
     {
       "id": 15,
       "level": "intermediate",
-      "question": "Policy Iteration is often faster than Value Iteration because:",
+      "question": "Policy Iteration thường nhanh hơn Value Iteration vì:",
       "options": [
-        "It skips the policy evaluation step completely each time",
-        "It uses neural networks to approximate value functions",
-        "It converges in fewer iterations due to explicit policy evaluation",
-        "It samples from the environment instead of computing exactly"
+        "Nó bỏ qua bước đánh giá chính sách hoàn toàn mỗi lần",
+        "Nó dùng mạng nơ-ron để xấp xỉ hàm giá trị",
+        "Nó hội tụ trong ít vòng lặp hơn nhờ đánh giá chính sách đầy đủ",
+        "Nó lấy mẫu từ môi trường thay vì tính toán chính xác"
       ],
       "answer": 2,
-      "explanation": "Policy Iteration performs full policy evaluation before each improvement step. This thorough evaluation leads to larger policy updates, resulting in fewer total iterations to reach the optimal policy."
+      "explanation": "Policy Iteration thực hiện đánh giá chính sách đầy đủ trước mỗi bước cải thiện. Việc đánh giá kỹ lưỡng này dẫn đến cập nhật chính sách lớn hơn, dẫn đến ít vòng lặp tổng thể hơn để đạt chính sách tối ưu."
     },
     {
       "id": 16,
       "level": "advanced",
-      "question": "In the Value Iteration update, q_k(s,a) = Σ p(r|s,a)·r + γ Σ p(s'|s,a)·v_k(s'). The term γ Σ p(s'|s,a)·v_k(s') represents:",
+      "question": "Trong cập nhật Value Iteration, q_k(s,a) = Σ p(r|s,a)·r + γ Σ p(s'|s,a)·v_k(s'). Số hạng γ Σ p(s'|s,a)·v_k(s') biểu diễn:",
       "options": [
-        "The discounted expected future value from next states",
-        "The entropy of the policy over all possible actions",
-        "The immediate expected reward for action a in state s",
-        "The exploration bonus for under-visited state-action pairs"
+        "Giá trị tương lai kỳ vọng được chiết khấu từ các trạng thái kế tiếp",
+        "Entropy của chính sách trên tất cả các hành động có thể",
+        "Phần thưởng kỳ vọng ngay lập tức cho hành động a ở trạng thái s",
+        "Điểm thưởng khám phá cho các cặp trạng thái-hành động ít được thăm"
       ],
       "answer": 0,
-      "explanation": "This term is the bootstrapped future value: the discounted (γ) weighted average of v_k values at successor states s', weighted by their transition probabilities. It replaces the true future return with current estimates."
+      "explanation": "Số hạng này là giá trị tương lai bootstrapped: trung bình có trọng số chiết khấu (γ) của các giá trị v_k tại các trạng thái kế tiếp s', có trọng số theo xác suất chuyển trạng thái. Nó thay thế kết quả trả về tương lai thực bằng ước lượng hiện tại."
     },
     {
       "id": 17,
       "level": "advanced",
-      "question": "Why does Monte Carlo fail for continuing (non-episodic) tasks?",
+      "question": "Tại sao Monte Carlo thất bại với tác vụ liên tục (không có tập)?",
       "options": [
-        "The return G_t is infinite and never terminates to compute",
-        "Continuous actions are not compatible with MC averaging",
-        "It cannot represent infinite state spaces in memory",
-        "The model is required to estimate transition probabilities"
+        "Kết quả trả về G_t là vô hạn và không bao giờ kết thúc để tính toán",
+        "Hành động liên tục không tương thích với việc lấy trung bình Monte Carlo",
+        "Không thể biểu diễn không gian trạng thái vô hạn trong bộ nhớ",
+        "Cần mô hình để ước lượng xác suất chuyển trạng thái chính xác"
       ],
       "answer": 0,
-      "explanation": "In continuing tasks with no terminal state, the return G_t = Σ_{k=0}^∞ γ^k r_{t+k+1} requires an infinite sum that never reaches a final episode. MC must wait for episode end, which never happens."
+      "explanation": "Trong tác vụ liên tục không có trạng thái kết thúc, kết quả trả về G_t = Σ_{k=0}^∞ γ^k r_{t+k+1} yêu cầu tổng vô hạn không bao giờ đạt đến cuối tập. MC phải chờ kết thúc tập, điều này không bao giờ xảy ra."
     },
     {
       "id": 18,
       "level": "advanced",
-      "question": "The Policy Improvement Theorem states that if π'(s) = argmax_a q^π(s,a), then:",
+      "question": "Định lý Cải Thiện Chính Sách phát biểu rằng nếu π'(s) = argmax_a q^π(s,a), thì:",
       "options": [
-        "π' is equal to π only when the optimal policy is reached",
-        "V^{π'}(s) = V^π(s) for all states s (stability condition)",
-        "V^{π'}(s) ≤ V^π(s) for at least one state (worst case)",
-        "V^{π'}(s) ≥ V^π(s) for all states s (monotonic improvement)"
+        "π' bằng π chỉ khi chính sách tối ưu đã được đạt đến",
+        "V^{π'}(s) = V^π(s) với mọi trạng thái s (điều kiện ổn định)",
+        "V^{π'}(s) ≤ V^π(s) với ít nhất một trạng thái (trường hợp xấu nhất)",
+        "V^{π'}(s) ≥ V^π(s) với mọi trạng thái s (cải thiện đơn điệu)"
       ],
       "answer": 3,
-      "explanation": "The Policy Improvement Theorem guarantees V^{π'}(s) ≥ V^π(s) for ALL states s. If V^{π'}(s) = V^π(s), then both satisfy the Bellman optimality equation and both are optimal."
+      "explanation": "Định lý Cải Thiện Chính Sách đảm bảo V^{π'}(s) ≥ V^π(s) với MỌI trạng thái s. Nếu V^{π'}(s) = V^π(s), thì cả hai đều thỏa mãn phương trình tối ưu Bellman và cả hai đều là tối ưu."
     },
     {
       "id": 19,
       "level": "advanced",
-      "question": "An off-policy MC method uses a behaviour policy μ and evaluates target policy π. What is the main statistical challenge?",
+      "question": "Phương pháp MC off-policy dùng chính sách hành vi μ và đánh giá chính sách mục tiêu π. Thách thức thống kê chính là gì?",
       "options": [
-        "Importance sampling ratios can have very high variance",
-        "The target policy must be greedy to guarantee convergence",
-        "Monte Carlo cannot handle more than one policy at a time",
-        "The behaviour policy must be identical to the target policy"
+        "Tỷ số lấy mẫu importance sampling có thể có phương sai rất cao",
+        "Chính sách mục tiêu phải là greedy để đảm bảo hội tụ",
+        "Monte Carlo không thể xử lý nhiều hơn một chính sách cùng lúc",
+        "Chính sách hành vi phải giống hệt với chính sách mục tiêu"
       ],
       "answer": 0,
-      "explanation": "Off-policy MC uses importance sampling to correct for the difference between μ and π. The importance sampling ratio ∏(π/μ) can be very large, leading to extremely high variance estimates."
+      "explanation": "MC off-policy dùng importance sampling để hiệu chỉnh sự khác biệt giữa μ và π. Tỷ số importance sampling ∏(π/μ) có thể rất lớn, dẫn đến ước lượng có phương sai cực cao."
     },
     {
       "id": 20,
       "level": "advanced",
-      "question": "In a wireless network scheduling problem, why might Monte Carlo be preferred over DP even if an approximate model exists?",
+      "question": "Trong bài toán lập lịch mạng không dây, tại sao Monte Carlo có thể được ưu tiên hơn DP dù có mô hình xấp xỉ?",
       "options": [
-        "DP cannot handle reward functions with negative values in networking",
-        "An inaccurate model in DP propagates errors; MC uses real experience instead",
-        "Monte Carlo can exploit GPU parallelism while DP is strictly sequential",
-        "Monte Carlo always converges faster than DP regardless of model quality"
+        "DP không thể xử lý hàm phần thưởng có giá trị âm trong mạng",
+        "Mô hình không chính xác trong DP lan truyền sai số; MC dùng kinh nghiệm thực",
+        "Monte Carlo khai thác được GPU song song còn DP hoàn toàn tuần tự",
+        "Monte Carlo luôn hội tụ nhanh hơn DP bất kể chất lượng mô hình"
       ],
       "answer": 1,
-      "explanation": "If the network model is approximate, DP will compute an optimal policy for the wrong model. MC learns directly from real environment interactions, making it robust to model inaccuracies — especially important in dynamic wireless environments."
+      "explanation": "Nếu mô hình mạng là xấp xỉ, DP sẽ tính chính sách tối ưu cho mô hình sai. MC học trực tiếp từ tương tác môi trường thực, khiến nó mạnh hơn trước sự không chính xác của mô hình — đặc biệt quan trọng trong môi trường không dây động."
     }
   ]
 }

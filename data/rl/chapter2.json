@@ -1,32 +1,32 @@
 {
-  "title": "Chapter 2: Markov Decision Process (MDP)",
+  "title": "Chương 2: Markov Decision Process (MDP)",
   "theory": [
     {
-      "heading": "What is an MDP?",
-      "content": "**MDP (Markov Decision Process)** = a framework for modelling decision-making in fully observable, stochastic environments.\n\nKey assumption: **Markov Property** — the future depends only on the current state and action, NOT the full history.\n\nMDPs allow us to:\n- Model the environment's response to actions\n- Quantify success through rewards\n- Optimise policies using value functions\n\nMDPs form the **foundation for most RL algorithms** and formalise sequential decision-making under uncertainty.\n\nReal-world applications: networking (adaptive routing, load balancing), robotics, finance, games."
+      "heading": "MDP là gì?",
+      "content": "**MDP (Markov Decision Process)** = một framework để mô hình hóa việc ra quyết định trong môi trường ngẫu nhiên và quan sát đầy đủ.\n\nGiả định quan trọng: **Markov Property** — tương lai chỉ phụ thuộc vào state và action hiện tại, KHÔNG phải toàn bộ lịch sử.\n\nMDP cho phép chúng ta:\n- Mô hình hóa phản ứng của môi trường với action\n- Định lượng thành công qua reward\n- Tối ưu hóa policy bằng hàm giá trị\n\nMDP là **nền tảng cho hầu hết các thuật toán RL** và hình thức hóa quá trình ra quyết định tuần tự trong bất định.\n\nỨng dụng thực tế: mạng máy tính (định tuyến thích nghi, cân bằng tải), robot, tài chính, trò chơi."
     },
     {
-      "heading": "MDP Formal Definition: (S, A, P, R, γ)",
-      "content": "An MDP is defined by the tuple **(S, A, P, R, γ)**:\n\n- `S` = set of possible states (finite or continuous)\n- `A` = set of possible actions\n- `P` = **transition probability function** `P(s'|s,a)` — probability of transitioning to state `s'` given current state `s` and action `a`\n- `R` = **reward function** `r(s,a)` — expected reward after taking action `a` in state `s` (can also be written `r(s,a,s')`)\n- `γ` = discount factor (0 ≤ `γ` ≤ 1)\n\nDrone delivery example:\n- `S` = grid positions\n- `A` = movement directions (up, down, left, right)\n- `P` = uncertain wind disturbance\n- `R` = −1 per step, +10 on successful delivery\n- `γ` = 0.9"
+      "heading": "Định nghĩa chính thức MDP: (S, A, P, R, γ)",
+      "content": "Một MDP được xác định bởi bộ tuple **(S, A, P, R, γ)**:\n\n- `S` = tập hợp các state có thể (hữu hạn hoặc liên tục)\n- `A` = tập hợp các action có thể\n- `P` = **hàm xác suất chuyển tiếp** `P(s'|s,a)` — xác suất chuyển sang state `s'` khi đang ở state `s` và thực hiện action `a`\n- `R` = **hàm reward** `r(s,a)` — reward kỳ vọng khi thực hiện action `a` tại state `s` (cũng có thể viết là `r(s,a,s')`)\n- `γ` = hệ số chiết khấu (0 ≤ `γ` ≤ 1)\n\nVí dụ drone giao hàng:\n- `S` = các vị trí trên lưới\n- `A` = các hướng di chuyển (lên, xuống, trái, phải)\n- `P` = nhiễu gió ngẫu nhiên\n- `R` = −1 mỗi bước, +10 khi giao hàng thành công\n- `γ` = 0.9"
     },
     {
-      "heading": "The Markov Property",
-      "content": "**Core assumption of MDP**: the next state depends only on the current state and action — NOT the full history.\n\nMathematical form:\n`p(s',r|s,a) = Pr{S_t=s', R_t=r | S_{t-1}=s, A_{t-1}=a}`\n\nThe future is **conditionally independent** of the past given the present.\n\nAll information needed to predict the next state is contained in the current state. This simplifies learning and planning enormously.\n\n**Sum property**: `ΣΣ p(s',r|s,a) = 1` for all `s`, `a` — probabilities over all next states and rewards must sum to 1.\n\nWithout the Markov property, the agent would need to remember the **entire history** of states and actions to make optimal decisions."
+      "heading": "Markov Property",
+      "content": "**Giả định cốt lõi của MDP**: state tiếp theo chỉ phụ thuộc vào state và action hiện tại — KHÔNG phải toàn bộ lịch sử.\n\nDạng toán học:\n`p(s',r|s,a) = Pr{S_t=s', R_t=r | S_{t-1}=s, A_{t-1}=a}`\n\nTương lai **độc lập có điều kiện** với quá khứ khi biết hiện tại.\n\nTất cả thông tin cần thiết để dự đoán state tiếp theo đều chứa trong state hiện tại. Điều này đơn giản hóa đáng kể việc học và lập kế hoạch.\n\n**Tính chất tổng**: `ΣΣ p(s',r|s,a) = 1` với mọi `s`, `a` — xác suất trên tất cả state tiếp theo và reward phải tổng bằng 1.\n\nNếu không có Markov property, agent cần nhớ **toàn bộ lịch sử** state và action để đưa ra quyết định tối ưu."
     },
     {
-      "heading": "Policies: Deterministic vs Stochastic",
-      "content": "**Deterministic policy**: `π(s) = a` — maps each state to exactly one action.\n\n**Stochastic policy**: `π(a|s)` = probability of taking action `a` in state `s`.\n\nStochastic policies are useful for:\n- **Exploration**: trying different actions to gather information\n- **Games**: where predictability is disadvantageous\n- **Partially observable environments**: where uncertainty about the true state persists\n\n**Optimal policy** `π*`: achieves maximum expected return from every state.\n\nA policy induces a value function: `V^π(s)` = expected cumulative reward when starting from state `s` and following policy `π` thereafter."
+      "heading": "Policy: Deterministic và Stochastic",
+      "content": "**Deterministic policy**: `π(s) = a` — ánh xạ mỗi state đến đúng một action.\n\n**Stochastic policy**: `π(a|s)` = xác suất thực hiện action `a` tại state `s`.\n\nStochastic policy hữu ích cho:\n- **Khám phá**: thử các action khác nhau để thu thập thông tin\n- **Trò chơi**: nơi mà tính có thể đoán trước là bất lợi\n- **Môi trường quan sát một phần**: khi sự không chắc chắn về state thật vẫn còn\n\n**Optimal policy** `π*`: đạt return kỳ vọng tối đa từ mọi state.\n\nMột policy tạo ra hàm giá trị: `V^π(s)` = reward tích lũy kỳ vọng khi bắt đầu từ state `s` và tuân theo policy `π` về sau."
     },
     {
       "heading": "Bellman Equation",
-      "content": "The **Bellman equation** expresses the value function recursively.\n\n**State-value (Bellman evaluation equation)**:\n`V^π(s) = Σ_a π(a|s) Σ_{s',r} p(s',r|s,a)[r + γ·V^π(s')]`\n\n**Action-value**:\n`Q^π(s,a) = Σ_{s',r} p(s',r|s,a)[r + γ·Σ_{a'} π(a'|s')·Q^π(s',a')]`\n\n**Key insight**: value of current state = immediate reward + discounted value of next state.\n\nThis **recursive structure** is the basis for all RL algorithms (policy evaluation, Q-learning, TD learning).\n\n**Bellman Optimality Equation**:\n`V*(s) = max_a Σ_{s',r} p(s',r|s,a)[r + γ·V*(s')]`\n\nThe optimal value function satisfies this equation — it picks the best action at every state."
+      "content": "**Bellman equation** biểu diễn hàm giá trị theo cách đệ quy.\n\n**Giá trị state (phương trình đánh giá Bellman)**:\n`V^π(s) = Σ_a π(a|s) Σ_{s',r} p(s',r|s,a)[r + γ·V^π(s')]`\n\n**Giá trị action**:\n`Q^π(s,a) = Σ_{s',r} p(s',r|s,a)[r + γ·Σ_{a'} π(a'|s')·Q^π(s',a')]`\n\n**Ý tưởng cốt lõi**: giá trị state hiện tại = reward tức thì + giá trị state tiếp theo được chiết khấu.\n\n**Cấu trúc đệ quy** này là nền tảng cho mọi thuật toán RL (đánh giá policy, Q-learning, TD learning).\n\n**Bellman Optimality Equation**:\n`V*(s) = max_a Σ_{s',r} p(s',r|s,a)[r + γ·V*(s')]`\n\nHàm giá trị tối ưu thỏa mãn phương trình này — nó chọn action tốt nhất ở mọi state."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "What does the acronym MDP stand for in Reinforcement Learning?",
+      "question": "Chữ viết tắt MDP trong Reinforcement Learning là viết tắt của gì?",
       "options": [
         "Model-Driven Policy learning",
         "Maximum Decision Pathway",
@@ -34,254 +34,254 @@
         "Markov Decision Process"
       ],
       "answer": 3,
-      "explanation": "MDP stands for Markov Decision Process — the standard mathematical framework for modelling sequential decision-making under uncertainty in RL."
+      "explanation": "MDP là viết tắt của Markov Decision Process — framework toán học chuẩn để mô hình hóa việc ra quyết định tuần tự trong điều kiện bất định của RL."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Which of the following is NOT one of the five components in the formal MDP tuple (S, A, P, R, γ)?",
+      "question": "Thành phần nào sau đây KHÔNG thuộc bộ tuple MDP chính thức (S, A, P, R, γ)?",
       "options": [
-        "Set of possible states S",
-        "Learning rate α for parameter updates",
-        "Discount factor γ for future rewards",
-        "Transition probability function P"
+        "Tập hợp các state có thể S",
+        "Learning rate α cho cập nhật tham số",
+        "Discount factor γ cho reward tương lai",
+        "Hàm xác suất chuyển tiếp P"
       ],
       "answer": 1,
-      "explanation": "The MDP is defined by (S, A, P, R, γ). The learning rate α is a hyperparameter of the RL algorithm, not a component of the MDP itself."
+      "explanation": "MDP được định nghĩa bởi (S, A, P, R, γ). Learning rate α là siêu tham số của thuật toán RL, không phải thành phần của MDP."
     },
     {
       "id": 3,
       "level": "basic",
-      "question": "What does the transition function P(s'|s,a) represent in an MDP?",
+      "question": "Hàm chuyển tiếp P(s'|s,a) trong MDP đại diện cho điều gì?",
       "options": [
-        "The discount applied to the reward at the next state",
-        "The optimal action to take in state s to reach s'",
-        "The expected reward after action a in state s",
-        "The probability of moving to state s' from s by action a"
+        "Chiết khấu áp dụng cho reward ở state tiếp theo",
+        "Action tối ưu cần thực hiện ở state s để đến s'",
+        "Reward kỳ vọng sau action a tại state s",
+        "Xác suất chuyển sang state s' từ s bằng action a"
       ],
       "answer": 3,
-      "explanation": "P(s'|s,a) is the transition probability — the likelihood that the environment moves from state s to state s' when the agent takes action a."
+      "explanation": "P(s'|s,a) là xác suất chuyển tiếp — khả năng môi trường di chuyển từ state s đến state s' khi agent thực hiện action a."
     },
     {
       "id": 4,
       "level": "basic",
-      "question": "The Markov Property states that the future depends only on:",
+      "question": "Markov Property phát biểu rằng tương lai chỉ phụ thuộc vào:",
       "options": [
-        "The full history of all previous states and actions",
-        "The cumulative reward received so far in the episode",
-        "The current state and action, not the full history",
-        "The last two states and the most recent action"
+        "Toàn bộ lịch sử các state và action trước đó",
+        "Tổng reward tích lũy nhận được trong episode",
+        "State và action hiện tại, không phải toàn bộ lịch sử",
+        "Hai state gần nhất và action gần nhất"
       ],
       "answer": 2,
-      "explanation": "The Markov Property states that p(s',r|s,a) is fully determined by the current state s and action a — the full history provides no additional predictive information."
+      "explanation": "Markov Property phát biểu rằng p(s',r|s,a) được xác định hoàn toàn bởi state s và action a hiện tại — toàn bộ lịch sử không cung cấp thêm thông tin dự đoán."
     },
     {
       "id": 5,
       "level": "basic",
-      "question": "In the drone delivery MDP example, what does the reward function R assign?",
+      "question": "Trong ví dụ MDP drone giao hàng, hàm reward R gán như thế nào?",
       "options": [
-        "R = 0 for every step and +100 at the terminal state",
-        "R = +1 per step and −10 for missing the target",
-        "R = −5 per step and +5 on reaching any grid cell",
-        "R = −1 per step and +10 on successful delivery"
+        "R = 0 mỗi bước và +100 tại state kết thúc",
+        "R = +1 mỗi bước và −10 khi trượt mục tiêu",
+        "R = −5 mỗi bước và +5 khi đến bất kỳ ô nào",
+        "R = −1 mỗi bước và +10 khi giao hàng thành công"
       ],
       "answer": 3,
-      "explanation": "In the example, the reward is −1 per time step (to encourage efficiency) and +10 upon successful delivery, guiding the agent to deliver quickly."
+      "explanation": "Trong ví dụ, reward là −1 mỗi bước thời gian (để khuyến khích hiệu quả) và +10 khi giao hàng thành công, hướng dẫn agent giao hàng nhanh chóng."
     },
     {
       "id": 6,
       "level": "basic",
-      "question": "What is required for a task to be modelled as an MDP?",
+      "question": "Điều kiện nào cần có để mô hình hóa một tác vụ dưới dạng MDP?",
       "options": [
-        "The state space must be finite and the action space discrete",
-        "The environment must be deterministic with no randomness",
-        "The agent must be fully observable and the Markov Property must hold",
-        "The reward function must always be positive and bounded"
+        "Không gian state phải hữu hạn và không gian action rời rạc",
+        "Môi trường phải tất định và không có yếu tố ngẫu nhiên",
+        "Agent phải quan sát đầy đủ và Markov Property phải thỏa mãn",
+        "Hàm reward phải luôn dương và bị chặn trên"
       ],
       "answer": 2,
-      "explanation": "MDPs assume full observability (the agent sees the true state) and that the Markov Property holds. Stochastic environments are allowed — full determinism is not required."
+      "explanation": "MDP giả định quan sát đầy đủ (agent thấy trạng thái thật) và Markov Property thỏa mãn. Môi trường ngẫu nhiên được chấp nhận — không cần tất định hoàn toàn."
     },
     {
       "id": 7,
       "level": "basic",
-      "question": "What is a 'policy' in the context of an MDP?",
+      "question": "'Policy' trong ngữ cảnh MDP là gì?",
       "options": [
-        "A function that maps states or state-action pairs to expected returns",
-        "The discount factor applied to future reward values",
-        "The environment's rule for transitioning between states",
-        "A strategy that maps states to actions or action probabilities"
+        "Hàm ánh xạ state hoặc cặp state-action sang return kỳ vọng",
+        "Hệ số chiết khấu áp dụng cho giá trị reward tương lai",
+        "Quy tắc của môi trường để chuyển tiếp giữa các state",
+        "Chiến lược ánh xạ state sang action hoặc xác suất action"
       ],
       "answer": 3,
-      "explanation": "A policy π defines the agent's behaviour — it maps states to actions (deterministic) or to probability distributions over actions (stochastic)."
+      "explanation": "Policy π định nghĩa hành vi của agent — ánh xạ state sang action (deterministic) hoặc sang phân phối xác suất trên các action (stochastic)."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "Why does the Markov Property simplify learning and planning in MDPs?",
+      "question": "Tại sao Markov Property đơn giản hóa việc học và lập kế hoạch trong MDP?",
       "options": [
-        "It removes the need for a reward function in the model",
-        "It ensures the value function converges in a single iteration",
-        "It guarantees that the optimal policy is always deterministic",
-        "It allows the agent to decide based on current state alone, not full history"
+        "Nó loại bỏ nhu cầu về hàm reward trong mô hình",
+        "Nó đảm bảo hàm giá trị hội tụ trong một lần lặp",
+        "Nó đảm bảo policy tối ưu luôn là deterministic",
+        "Nó cho phép agent quyết định chỉ dựa trên state hiện tại, không cần lịch sử"
       ],
       "answer": 3,
-      "explanation": "Because future transitions depend only on the current state, the agent does not need to track history. This dramatically reduces the complexity of learning and planning algorithms."
+      "explanation": "Vì chuyển tiếp tương lai chỉ phụ thuộc vào state hiện tại, agent không cần theo dõi lịch sử. Điều này giảm đáng kể độ phức tạp của thuật toán học và lập kế hoạch."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "In an MDP, for a given state s and action a, the transition probabilities P(s'|s,a) over all possible next states s' must:",
+      "question": "Trong MDP, với state s và action a cho trước, xác suất chuyển tiếp P(s'|s,a) trên tất cả state tiếp theo s' phải:",
       "options": [
-        "Sum to exactly 1",
-        "Sum to the discount factor γ",
-        "Sum to the expected immediate reward r(s,a)",
-        "Be uniformly distributed across all states"
+        "Tổng bằng đúng 1",
+        "Tổng bằng discount factor γ",
+        "Tổng bằng reward tức thì kỳ vọng r(s,a)",
+        "Phân bố đều trên tất cả các state"
       ],
       "answer": 0,
-      "explanation": "For any fixed (s,a), the probabilities P(s'|s,a) form a valid probability distribution over successor states and must sum to 1."
+      "explanation": "Với mỗi cặp (s,a) cố định, các xác suất P(s'|s,a) tạo thành phân phối xác suất hợp lệ trên các state kế tiếp và phải tổng bằng 1."
     },
     {
       "id": 10,
       "level": "intermediate",
-      "question": "Which of the following scenarios would VIOLATE the Markov Property?",
+      "question": "Tình huống nào sau đây sẽ VI PHẠM Markov Property?",
       "options": [
-        "A robot that can fully observe its joint angles and velocities",
-        "A grid world where each cell has a fixed reward value",
-        "A network router that can observe the current queue length of all links",
-        "A card game where the agent's best move depends on cards played previously"
+        "Robot có thể quan sát đầy đủ góc và vận tốc khớp",
+        "Thế giới lưới nơi mỗi ô có giá trị reward cố định",
+        "Bộ định tuyến quan sát được độ dài hàng đợi hiện tại của tất cả liên kết",
+        "Trò chơi bài mà nước đi tốt nhất phụ thuộc vào các lá bài đã chơi trước"
       ],
       "answer": 3,
-      "explanation": "In a card game where previously played cards affect optimal decisions, the current observation (current hand) is insufficient — the history matters. This violates the Markov Property."
+      "explanation": "Trong trò chơi bài mà các lá đã chơi ảnh hưởng đến quyết định tối ưu, quan sát hiện tại (tay bài hiện tại) là chưa đủ — lịch sử có vai trò quan trọng. Điều này vi phạm Markov Property."
     },
     {
       "id": 11,
       "level": "intermediate",
-      "question": "The Bellman equation for V^π(s) says the value of state s equals:",
+      "question": "Bellman equation cho V^π(s) phát biểu rằng giá trị của state s bằng:",
       "options": [
-        "The immediate reward r(s,a) only, ignoring future states",
-        "The sum of all future rewards without any discounting factor",
-        "The maximum action-value Q(s,a) across all actions",
-        "The expected immediate reward plus γ times expected next-state value"
+        "Chỉ reward tức thì r(s,a), bỏ qua state tương lai",
+        "Tổng tất cả reward tương lai mà không có hệ số chiết khấu",
+        "Giá trị action Q(s,a) tối đa trên tất cả action",
+        "Reward tức thì kỳ vọng cộng γ nhân giá trị state tiếp theo kỳ vọng"
       ],
       "answer": 3,
-      "explanation": "The Bellman evaluation equation: V^π(s) = Σ_a π(a|s) Σ p(s',r|s,a)[r + γ·V^π(s')]. It decomposes the value into immediate reward plus discounted value of successor states."
+      "explanation": "Phương trình đánh giá Bellman: V^π(s) = Σ_a π(a|s) Σ p(s',r|s,a)[r + γ·V^π(s')]. Nó phân rã giá trị thành reward tức thì cộng với giá trị chiết khấu của các state kế tiếp."
     },
     {
       "id": 12,
       "level": "intermediate",
-      "question": "How does the Bellman Optimality Equation differ from the Bellman Evaluation Equation?",
+      "question": "Bellman Optimality Equation khác Bellman Evaluation Equation như thế nào?",
       "options": [
-        "Optimality uses the average over all actions; evaluation uses the max",
-        "Optimality applies only to stochastic policies; evaluation to deterministic ones",
-        "Optimality uses γ=1; evaluation uses γ < 1 for finite return",
-        "Optimality takes the max over actions; evaluation averages over policy π"
+        "Optimality dùng trung bình trên tất cả action; evaluation dùng max",
+        "Optimality chỉ áp dụng cho stochastic policy; evaluation cho deterministic",
+        "Optimality dùng γ=1; evaluation dùng γ < 1 để có return hữu hạn",
+        "Optimality lấy max trên action; evaluation lấy trung bình theo policy π"
       ],
       "answer": 3,
-      "explanation": "The Bellman Evaluation Equation averages over actions weighted by policy π. The Bellman Optimality Equation replaces this average with a max over actions: V*(s) = max_a Σ p(s',r|s,a)[r + γ·V*(s')]."
+      "explanation": "Bellman Evaluation Equation lấy trung bình trên action có trọng số là policy π. Bellman Optimality Equation thay thế trung bình này bằng max trên action: V*(s) = max_a Σ p(s',r|s,a)[r + γ·V*(s')]."
     },
     {
       "id": 13,
       "level": "intermediate",
-      "question": "What is the difference between r(s,a) and r(s,a,s') as reward function formulations?",
+      "question": "Sự khác biệt giữa r(s,a) và r(s,a,s') với tư cách là dạng hàm reward là gì?",
       "options": [
-        "r(s,a) is the expected reward over next states; r(s,a,s') conditions on the specific next state",
-        "r(s,a) includes the discount factor; r(s,a,s') does not",
-        "r(s,a) is used for deterministic environments; r(s,a,s') for stochastic ones",
-        "r(s,a) is only used in episodic tasks; r(s,a,s') in continuing tasks"
+        "r(s,a) là reward kỳ vọng trên state tiếp theo; r(s,a,s') điều kiện hóa theo state tiếp theo cụ thể",
+        "r(s,a) bao gồm hệ số chiết khấu; r(s,a,s') thì không",
+        "r(s,a) dùng cho môi trường tất định; r(s,a,s') cho môi trường ngẫu nhiên",
+        "r(s,a) chỉ dùng cho episodic task; r(s,a,s') cho continuing task"
       ],
       "answer": 0,
-      "explanation": "r(s,a) averages the reward expectation over all possible next states given (s,a). r(s,a,s') is more fine-grained — the reward depends on which specific next state s' is reached."
+      "explanation": "r(s,a) lấy trung bình kỳ vọng reward trên tất cả state tiếp theo có thể với (s,a). r(s,a,s') chi tiết hơn — reward phụ thuộc vào state tiếp theo cụ thể s' nào được đến."
     },
     {
       "id": 14,
       "level": "intermediate",
-      "question": "Policy evaluation in an MDP refers to:",
+      "question": "Policy evaluation trong MDP đề cập đến:",
       "options": [
-        "Estimating the transition probabilities P(s'|s,a) from data",
-        "Finding the policy that maximises the value function",
-        "Updating the policy greedily with respect to Q(s,a)",
-        "Computing the value function V^π for a given fixed policy π"
+        "Ước lượng xác suất chuyển tiếp P(s'|s,a) từ dữ liệu",
+        "Tìm policy tối đa hóa hàm giá trị",
+        "Cập nhật policy greedy theo Q(s,a)",
+        "Tính hàm giá trị V^π cho một policy π cố định"
       ],
       "answer": 3,
-      "explanation": "Policy evaluation (prediction) computes V^π — how good each state is under a fixed policy π — typically by iteratively applying the Bellman evaluation equation."
+      "explanation": "Policy evaluation (dự đoán) tính V^π — mức độ tốt của mỗi state dưới policy π cố định — thường bằng cách áp dụng lặp đi lặp lại phương trình đánh giá Bellman."
     },
     {
       "id": 15,
       "level": "intermediate",
-      "question": "Why are stochastic policies sometimes preferred over deterministic policies in MDPs?",
+      "question": "Tại sao stochastic policy đôi khi được ưu tiên hơn deterministic policy trong MDP?",
       "options": [
-        "They require fewer state transitions to evaluate completely",
-        "They always achieve higher cumulative reward at convergence",
-        "They enable exploration and handle environments where randomness is beneficial",
-        "They eliminate the need for a transition probability model"
+        "Chúng cần ít chuyển tiếp state hơn để đánh giá hoàn toàn",
+        "Chúng luôn đạt reward tích lũy cao hơn khi hội tụ",
+        "Chúng cho phép khám phá và xử lý môi trường có lợi từ ngẫu nhiên",
+        "Chúng loại bỏ nhu cầu về mô hình xác suất chuyển tiếp"
       ],
       "answer": 2,
-      "explanation": "Stochastic policies allow exploration (trying different actions) and are useful in adversarial or partially observable settings where a predictable deterministic policy can be exploited."
+      "explanation": "Stochastic policy cho phép khám phá (thử các action khác nhau) và hữu ích trong môi trường đối kháng hoặc quan sát một phần nơi deterministic policy có thể đoán trước bị khai thác."
     },
     {
       "id": 16,
       "level": "advanced",
-      "question": "In a grid-world MDP with 4 states and 2 actions, the transition function P must satisfy which condition for EVERY (s,a) pair?",
+      "question": "Trong MDP thế giới lưới với 4 state và 2 action, hàm chuyển tiếp P phải thỏa mãn điều kiện nào với mọi cặp (s,a)?",
       "options": [
-        "Σ_{s,a} P(s'|s,a) = 1 for each s'",
-        "P(s'|s,a) ≥ 0.25 for every reachable s'",
-        "Σ_{s'} P(s'|s,a) = 1 for all s and a",
-        "Σ_{s'} P(s'|s,a) = γ for all s and a"
+        "Σ_{s,a} P(s'|s,a) = 1 với mỗi s'",
+        "P(s'|s,a) ≥ 0.25 với mọi s' có thể đến được",
+        "Σ_{s'} P(s'|s,a) = 1 với mọi s và a",
+        "Σ_{s'} P(s'|s,a) = γ với mọi s và a"
       ],
       "answer": 2,
-      "explanation": "For each fixed (s,a), P(s'|s,a) is a probability distribution over next states s', so it must sum to 1. It does NOT need to be uniform — some transitions can have probability 0."
+      "explanation": "Với mỗi cặp (s,a) cố định, P(s'|s,a) là phân phối xác suất trên các state tiếp theo s', vì vậy phải tổng bằng 1. Không cần phân bố đều — một số chuyển tiếp có thể có xác suất 0."
     },
     {
       "id": 17,
       "level": "advanced",
-      "question": "The optimal value function V*(s) and the optimal policy π* are related by:",
+      "question": "Hàm giá trị tối ưu V*(s) và policy tối ưu π* có mối quan hệ như thế nào?",
       "options": [
-        "π*(s) = argmin_a Σ P(s'|s,a)·V*(s') for all states s",
-        "π*(s) = V*(s) / max_a r(s,a) for all states s",
-        "π*(s) = argmax_a Q*(s,a) for all states s",
-        "π*(s) = V*(s) − γ·max_{s'} V*(s') for all states s"
+        "π*(s) = argmin_a Σ P(s'|s,a)·V*(s') với mọi state s",
+        "π*(s) = V*(s) / max_a r(s,a) với mọi state s",
+        "π*(s) = argmax_a Q*(s,a) với mọi state s",
+        "π*(s) = V*(s) − γ·max_{s'} V*(s') với mọi state s"
       ],
       "answer": 2,
-      "explanation": "The optimal policy is greedy with respect to Q*: π*(s) = argmax_a Q*(s,a). Equivalently, it selects the action that maximises r(s,a) + γ·Σ P(s'|s,a)·V*(s')."
+      "explanation": "Policy tối ưu là greedy theo Q*: π*(s) = argmax_a Q*(s,a). Tương đương, nó chọn action tối đa hóa r(s,a) + γ·Σ P(s'|s,a)·V*(s')."
     },
     {
       "id": 18,
       "level": "advanced",
-      "question": "Policy iteration alternates between policy evaluation and policy improvement. Why is convergence guaranteed for finite MDPs?",
+      "question": "Policy iteration xen kẽ giữa policy evaluation và policy improvement. Tại sao sự hội tụ được đảm bảo cho MDP hữu hạn?",
       "options": [
-        "Each improvement step strictly decreases the value function",
-        "Stochastic policies always dominate deterministic ones in finite MDPs",
-        "The number of deterministic policies is finite and improvement never worsens the policy",
-        "The Bellman equation has a unique solution only when γ = 0"
+        "Mỗi bước improvement làm giảm nghiêm ngặt hàm giá trị",
+        "Stochastic policy luôn thống trị deterministic policy trong MDP hữu hạn",
+        "Số lượng deterministic policy là hữu hạn và improvement không bao giờ làm tệ policy",
+        "Bellman equation có nghiệm duy nhất chỉ khi γ = 0"
       ],
       "answer": 2,
-      "explanation": "There are finitely many deterministic policies. Each policy improvement step produces a policy at least as good as the current one (Policy Improvement Theorem), so the algorithm must terminate at the optimal policy."
+      "explanation": "Có hữu hạn deterministic policy. Mỗi bước policy improvement tạo ra policy ít nhất tốt bằng policy hiện tại (Định lý Policy Improvement), nên thuật toán phải kết thúc tại policy tối ưu."
     },
     {
       "id": 19,
       "level": "advanced",
-      "question": "A robot in a partially observable environment where sensor noise prevents observing the true state would violate which MDP assumption?",
+      "question": "Robot trong môi trường quan sát một phần nơi nhiễu cảm biến ngăn quan sát state thật sẽ vi phạm giả định MDP nào?",
       "options": [
-        "The transition function must be stationary over time",
-        "The reward function must depend only on state and action",
-        "The agent must have full observability of the true state",
-        "The discount factor must be strictly less than 1"
+        "Hàm chuyển tiếp phải cố định theo thời gian",
+        "Hàm reward phải chỉ phụ thuộc vào state và action",
+        "Agent phải có quan sát đầy đủ về state thật",
+        "Discount factor phải nghiêm ngặt nhỏ hơn 1"
       ],
       "answer": 2,
-      "explanation": "MDPs assume full observability — the agent directly observes the true state. When the true state is hidden (partial observability), a POMDP (Partially Observable MDP) is required instead."
+      "explanation": "MDP giả định quan sát đầy đủ — agent trực tiếp quan sát state thật. Khi state thật bị ẩn (quan sát một phần), cần dùng POMDP (Partially Observable MDP) thay thế."
     },
     {
       "id": 20,
       "level": "advanced",
-      "question": "In a tabular MDP, the Bellman evaluation equation is applied iteratively (V_{k+1}(s) ← ...). What is the convergence guarantee?",
+      "question": "Trong MDP dạng bảng, phương trình đánh giá Bellman được áp dụng lặp đi lặp lại (V_{k+1}(s) ← ...). Đảm bảo hội tụ là gì?",
       "options": [
-        "It converges to V* regardless of the initial policy",
-        "It converges in exactly |S| iterations for any finite state space",
-        "It converges only if the policy π is deterministic",
-        "It converges to V^π in the limit if γ < 1 or the task is episodic"
+        "Hội tụ về V* bất kể policy ban đầu",
+        "Hội tụ chính xác sau |S| lần lặp với không gian state hữu hạn bất kỳ",
+        "Chỉ hội tụ nếu policy π là deterministic",
+        "Hội tụ về V^π ở giới hạn nếu γ < 1 hoặc tác vụ là episodic"
       ],
       "answer": 3,
-      "explanation": "Iterative policy evaluation converges to the true value function V^π for any policy π, provided γ < 1 (or the task is episodic), by the contraction mapping theorem."
+      "explanation": "Policy evaluation lặp hội tụ về hàm giá trị thật V^π với mọi policy π, với điều kiện γ < 1 (hoặc tác vụ là episodic), bằng định lý ánh xạ co."
     }
   ]
 }

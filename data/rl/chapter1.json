@@ -1,58 +1,58 @@
 {
-  "title": "Chapter 1: RL Fundamentals — Agent, Environment, Policy",
+  "title": "Chương 1: Nền tảng RL — Agent, Môi trường, Policy",
   "theory": [
     {
-      "heading": "What is Reinforcement Learning?",
-      "content": "RL is modelled as interaction between **agent** and **environment**. The agent makes decisions (**actions**) based on observations (**states**) and receives feedback (**rewards**). Goal: learn a **policy** to maximise cumulative rewards.\n\nRL differs from supervised learning: no labelled data — the agent learns from **trial-and-error**.\n\nThree types of ML:\n- **Supervised learning**: learns from labelled data\n- **Unsupervised learning**: finds patterns in unlabelled data\n- **Reinforcement learning**: learns from interaction with an environment\n\nApplications: network routing, robotics, game playing, resource management."
+      "heading": "Reinforcement Learning là gì?",
+      "content": "RL được mô hình hóa như sự tương tác giữa **agent** và **environment**. Agent đưa ra quyết định (**actions**) dựa trên quan sát (**states**) và nhận phản hồi (**rewards**). Mục tiêu: học một **policy** để tối đa hóa tổng phần thưởng tích lũy.\n\nRL khác với học có giám sát: không có dữ liệu gán nhãn — agent học qua **thử nghiệm và sai sót**.\n\nBa loại học máy:\n- **Supervised learning**: học từ dữ liệu có nhãn\n- **Unsupervised learning**: tìm kiếm mẫu trong dữ liệu không nhãn\n- **Reinforcement learning**: học qua tương tác với môi trường\n\nỨng dụng: định tuyến mạng, robot, chơi game, quản lý tài nguyên."
     },
     {
-      "heading": "Agent and Environment",
-      "content": "**Agent** = decision-making entity.\n- Examples: network router, robotic controller\n\n**Environment** = everything external that reacts to the agent's actions and provides feedback.\n- Examples: network topology, wireless channel\n\nTogether they form a **closed feedback loop**:\n1) Agent observes current state `s`\n2) Agent selects action `a`\n3) Environment transitions to new state `s'`\n4) Environment returns reward `r` and new state `s'` to agent\n5) Cycle repeats"
+      "heading": "Agent và Môi trường",
+      "content": "**Agent** = thực thể ra quyết định.\n- Ví dụ: bộ định tuyến mạng, bộ điều khiển robot\n\n**Environment** = tất cả những gì bên ngoài phản ứng với hành động của agent và cung cấp phản hồi.\n- Ví dụ: cấu trúc mạng, kênh truyền không dây\n\nCùng nhau chúng tạo thành một **vòng phản hồi khép kín**:\n1) Agent quan sát trạng thái hiện tại `s`\n2) Agent chọn hành động `a`\n3) Environment chuyển sang trạng thái mới `s'`\n4) Environment trả về reward `r` và trạng thái mới `s'` cho agent\n5) Chu kỳ lặp lại"
     },
     {
-      "heading": "State, Action, and Reward",
-      "content": "**State** `s`: a snapshot of the environment at a given time.\n- Example: current network congestion status\n\n**Action** `a`: the decision the agent makes that affects the environment.\n- Example: choosing the next hop in a network\n\n**Reward** `r`: immediate scalar feedback based on the outcome.\n- Example: negative reward proportional to network delay: `r = -1 × delay`\n- Example: `r = -10` for packet loss\n\nGood **state representation** and meaningful **action choices** are critical for effective learning."
+      "heading": "State, Action và Reward",
+      "content": "**State** `s`: ảnh chụp môi trường tại một thời điểm nhất định.\n- Ví dụ: tình trạng tắc nghẽn mạng hiện tại\n\n**Action** `a`: quyết định agent thực hiện có ảnh hưởng đến môi trường.\n- Ví dụ: chọn hop tiếp theo trong mạng\n\n**Reward** `r`: phản hồi vô hướng tức thì dựa trên kết quả.\n- Ví dụ: reward âm tỉ lệ với độ trễ mạng: `r = -1 × delay`\n- Ví dụ: `r = -10` khi mất gói tin\n\n**Biểu diễn state** tốt và **lựa chọn action** có ý nghĩa là yếu tố quan trọng để học hiệu quả."
     },
     {
-      "heading": "Policy and Value Functions",
-      "content": "**Policy** `π`: the agent's strategy — a mapping from states to actions.\n- **Deterministic policy**: fixed action per state — `π(s) = a`\n- **Stochastic policy**: probability distribution over actions — `π(a|s)`\n\nGoal: learn the policy that maximises long-term cumulative rewards.\n\n**State-value function** `V(s)`: expected return starting from state `s` and following policy `π`.\n\n**Action-value function** `Q(s,a)`: expected return when taking action `a` in state `s`, then following policy `π`.\n\nValue functions provide essential guidance for improving decision-making."
+      "heading": "Policy và Hàm Giá trị",
+      "content": "**Policy** `π`: chiến lược của agent — ánh xạ từ state sang action.\n- **Deterministic policy**: một action cố định cho mỗi state — `π(s) = a`\n- **Stochastic policy**: phân phối xác suất trên các action — `π(a|s)`\n\nMục tiêu: học policy tối đa hóa tổng phần thưởng tích lũy dài hạn.\n\n**Hàm giá trị state** `V(s)`: kỳ vọng return khi bắt đầu từ state `s` và tuân theo policy `π`.\n\n**Hàm giá trị action** `Q(s,a)`: kỳ vọng return khi thực hiện action `a` tại state `s`, rồi tuân theo policy `π`.\n\nHàm giá trị cung cấp hướng dẫn thiết yếu để cải thiện quá trình ra quyết định."
     },
     {
-      "heading": "Return and Discount Factor",
-      "content": "**Return** `G_t` = sum of future rewards starting at time `t`.\n\n**Discounted return**: `G_t = r_{t+1} + γ·r_{t+2} + γ²·r_{t+3} + ...`\n\n**Discount factor** `γ` (0 ≤ `γ` ≤ 1):\n- `γ = 0`: agent only cares about immediate reward\n- `γ` close to 1: agent values long-term rewards more\n- Typical values: 0.9, 0.95\n\nHelps handle infinite-horizon tasks by ensuring finite return.\n\n**Episodic tasks**: have a terminal state — interaction ends in episodes.\n**Continuing tasks**: no terminal state — discounting ensures finite return."
+      "heading": "Return và Hệ số Chiết khấu",
+      "content": "**Return** `G_t` = tổng các phần thưởng tương lai bắt đầu tại thời điểm `t`.\n\n**Return chiết khấu**: `G_t = r_{t+1} + γ·r_{t+2} + γ²·r_{t+3} + ...`\n\n**Hệ số chiết khấu** `γ` (0 ≤ `γ` ≤ 1):\n- `γ = 0`: agent chỉ quan tâm đến reward tức thì\n- `γ` gần 1: agent coi trọng reward dài hạn hơn\n- Giá trị điển hình: 0.9, 0.95\n\nGiúp xử lý các tác vụ có horizon vô hạn bằng cách đảm bảo return hữu hạn.\n\n**Episodic tasks**: có trạng thái kết thúc — tương tác kết thúc theo từng episode.\n**Continuing tasks**: không có trạng thái kết thúc — chiết khấu đảm bảo return hữu hạn."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "Which of the following best describes the goal of a Reinforcement Learning agent?",
+      "question": "Điều nào sau đây mô tả đúng nhất mục tiêu của một agent trong Reinforcement Learning?",
       "options": [
-        "Minimise prediction error on a test set",
-        "Classify inputs using labelled training data",
-        "Discover hidden clusters in unlabelled data",
-        "Maximise cumulative rewards over time"
+        "Giảm thiểu lỗi dự đoán trên tập kiểm tra",
+        "Phân loại đầu vào bằng dữ liệu huấn luyện có nhãn",
+        "Khám phá các cụm ẩn trong dữ liệu không nhãn",
+        "Tối đa hóa tổng reward tích lũy theo thời gian"
       ],
       "answer": 3,
-      "explanation": "The RL agent's goal is to learn a policy that maximises the cumulative (long-term) reward it receives from the environment."
+      "explanation": "Mục tiêu của agent trong RL là học một policy tối đa hóa reward tích lũy (dài hạn) nhận được từ môi trường."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "In Reinforcement Learning, what is the role of the 'environment'?",
+      "question": "Trong Reinforcement Learning, vai trò của 'environment' là gì?",
       "options": [
-        "To react to actions and provide state and reward",
-        "To supply labelled examples for the agent to train on",
-        "To select the best action at each time step",
-        "To store the agent's learned policy parameters"
+        "Phản ứng với action và cung cấp state cùng reward",
+        "Cung cấp các ví dụ có nhãn để agent huấn luyện",
+        "Chọn action tốt nhất ở mỗi bước thời gian",
+        "Lưu trữ các tham số policy mà agent đã học"
       ],
       "answer": 0,
-      "explanation": "The environment receives the agent's action, transitions to a new state, and returns both the new state and a reward signal back to the agent."
+      "explanation": "Environment nhận action từ agent, chuyển sang trạng thái mới, và trả về cả trạng thái mới lẫn tín hiệu reward cho agent."
     },
     {
       "id": 3,
       "level": "basic",
-      "question": "Which type of machine learning learns by interacting with an environment rather than from a fixed dataset?",
+      "question": "Loại học máy nào học bằng cách tương tác với môi trường thay vì từ tập dữ liệu cố định?",
       "options": [
         "Supervised learning",
         "Semi-supervised learning",
@@ -60,168 +60,168 @@
         "Unsupervised learning"
       ],
       "answer": 2,
-      "explanation": "Reinforcement learning agents learn through trial-and-error interaction with an environment, receiving reward signals instead of labelled examples."
+      "explanation": "Các agent Reinforcement learning học qua tương tác thử-sai với môi trường, nhận tín hiệu reward thay vì các ví dụ có nhãn."
     },
     {
       "id": 4,
       "level": "basic",
-      "question": "What does a 'state' represent in an RL problem?",
+      "question": "'State' đại diện cho điều gì trong một bài toán RL?",
       "options": [
-        "The agent's current cumulative reward total",
-        "The set of all possible actions available",
-        "The scalar feedback signal after each action",
-        "A snapshot of the environment at a given time"
+        "Tổng reward tích lũy hiện tại của agent",
+        "Tập hợp tất cả các action có thể thực hiện",
+        "Tín hiệu phản hồi vô hướng sau mỗi action",
+        "Ảnh chụp của môi trường tại một thời điểm"
       ],
       "answer": 3,
-      "explanation": "A state is a snapshot or representation of the environment at a particular point in time, used by the agent to decide which action to take."
+      "explanation": "State là ảnh chụp hoặc biểu diễn của môi trường tại một thời điểm cụ thể, được agent sử dụng để quyết định action nào cần thực hiện."
     },
     {
       "id": 5,
       "level": "basic",
-      "question": "In a network routing RL problem, which element most naturally corresponds to the 'reward'?",
+      "question": "Trong bài toán RL định tuyến mạng, yếu tố nào tương ứng tự nhiên nhất với 'reward'?",
       "options": [
-        "The set of all possible routing paths",
-        "The current congestion level of all links",
-        "A negative value proportional to packet delay",
-        "The choice of next hop for a packet"
+        "Tập hợp tất cả các đường định tuyến có thể",
+        "Mức độ tắc nghẽn hiện tại của tất cả các liên kết",
+        "Giá trị âm tỉ lệ với độ trễ gói tin",
+        "Lựa chọn hop tiếp theo cho một gói tin"
       ],
       "answer": 2,
-      "explanation": "The reward is a scalar feedback signal. In network routing, a natural reward is a negative value proportional to delay (e.g., r = -delay) or a penalty for packet loss."
+      "explanation": "Reward là tín hiệu phản hồi vô hướng. Trong định tuyến mạng, reward tự nhiên là giá trị âm tỉ lệ với độ trễ (ví dụ: r = -delay) hoặc hình phạt khi mất gói tin."
     },
     {
       "id": 6,
       "level": "basic",
-      "question": "What is a 'deterministic policy' in Reinforcement Learning?",
+      "question": "'Deterministic policy' trong Reinforcement Learning là gì?",
       "options": [
-        "A policy that maps each state to exactly one action",
-        "A policy that assigns probabilities to each action",
-        "A policy that requires no state information to act",
-        "A policy that maximises reward in one step only"
+        "Policy ánh xạ mỗi state đến đúng một action",
+        "Policy gán xác suất cho từng action có thể",
+        "Policy không cần thông tin state để hành động",
+        "Policy tối đa hóa reward chỉ trong một bước"
       ],
       "answer": 0,
-      "explanation": "A deterministic policy π(s) = a maps each state directly to a single fixed action, as opposed to a stochastic policy that defines a probability distribution."
+      "explanation": "Deterministic policy π(s) = a ánh xạ trực tiếp mỗi state đến một action cố định duy nhất, trái với stochastic policy định nghĩa phân phối xác suất."
     },
     {
       "id": 7,
       "level": "basic",
-      "question": "Which of the following is a real-world application of Reinforcement Learning?",
+      "question": "Ứng dụng thực tế nào sau đây thuộc lĩnh vực Reinforcement Learning?",
       "options": [
-        "Labelling images with object categories",
-        "Compressing a dataset for storage efficiency",
-        "Clustering customers by purchase behaviour",
-        "Training a robot arm to grasp objects"
+        "Gán nhãn ảnh theo danh mục đối tượng",
+        "Nén tập dữ liệu để tiết kiệm bộ nhớ",
+        "Phân cụm khách hàng theo hành vi mua sắm",
+        "Huấn luyện cánh tay robot gắp đồ vật"
       ],
       "answer": 3,
-      "explanation": "Robotics control — such as training a robot arm — is a classic RL application. The robot learns to take actions (joint movements) to maximise a reward (successful grasp)."
+      "explanation": "Điều khiển robot — như huấn luyện cánh tay robot — là ứng dụng RL điển hình. Robot học thực hiện action (chuyển động khớp) để tối đa hóa reward (gắp thành công)."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "What distinguishes a stochastic policy from a deterministic policy?",
+      "question": "Điều gì phân biệt stochastic policy với deterministic policy?",
       "options": [
-        "It ignores state information when choosing actions",
-        "It selects actions based only on immediate reward",
-        "It stores a fixed lookup table of state-action pairs",
-        "It outputs a probability distribution over actions"
+        "Stochastic policy bỏ qua thông tin state khi chọn action",
+        "Stochastic policy chọn action chỉ dựa trên reward tức thì",
+        "Stochastic policy lưu bảng tra cứu state-action cố định",
+        "Stochastic policy xuất ra phân phối xác suất trên các action"
       ],
       "answer": 3,
-      "explanation": "A stochastic policy π(a|s) defines the probability of selecting action a in state s, enabling exploration and handling partial observability."
+      "explanation": "Stochastic policy π(a|s) định nghĩa xác suất chọn action a tại state s, cho phép khám phá và xử lý quan sát một phần."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "How does the state-value function V(s) differ from the action-value function Q(s,a)?",
+      "question": "Hàm giá trị state V(s) khác hàm giá trị action Q(s,a) như thế nào?",
       "options": [
-        "V(s) evaluates a state alone; Q(s,a) evaluates a state-action pair",
-        "V(s) requires knowing the next state; Q(s,a) does not",
-        "V(s) gives immediate reward only; Q(s,a) gives cumulative reward",
-        "V(s) is used for stochastic policies; Q(s,a) for deterministic ones"
+        "V(s) đánh giá state đơn thuần; Q(s,a) đánh giá cặp state-action",
+        "V(s) cần biết state tiếp theo; Q(s,a) thì không",
+        "V(s) chỉ cho reward tức thì; Q(s,a) cho reward tích lũy",
+        "V(s) dùng cho stochastic policy; Q(s,a) cho deterministic policy"
       ],
       "answer": 0,
-      "explanation": "V(s) is the expected return from state s under policy π. Q(s,a) is the expected return from taking action a in state s and then following π — it conditions on both state and action."
+      "explanation": "V(s) là return kỳ vọng từ state s theo policy π. Q(s,a) là return kỳ vọng khi thực hiện action a tại state s rồi theo policy π — nó phụ thuộc vào cả state lẫn action."
     },
     {
       "id": 10,
       "level": "intermediate",
-      "question": "An agent has discount factor γ = 0. Which reward does it care about most?",
+      "question": "Agent có hệ số chiết khấu γ = 0. Agent quan tâm nhất đến reward nào?",
       "options": [
-        "The average of all future rewards equally",
-        "The reward received at the very last time step",
-        "Rewards discounted exponentially over all steps",
-        "Only the immediate next-step reward"
+        "Trung bình tất cả reward tương lai một cách đều nhau",
+        "Reward nhận được ở bước thời gian cuối cùng",
+        "Reward được chiết khấu theo hàm mũ qua mọi bước",
+        "Chỉ reward tức thì ở bước tiếp theo"
       ],
       "answer": 3,
-      "explanation": "When γ = 0, the discounted return G_t = r_{t+1}, so the agent only considers the immediate reward and ignores all future rewards."
+      "explanation": "Khi γ = 0, return chiết khấu G_t = r_{t+1}, nên agent chỉ xem xét reward tức thì và bỏ qua mọi reward tương lai."
     },
     {
       "id": 11,
       "level": "intermediate",
-      "question": "What is the primary purpose of the discount factor γ in continuing (non-episodic) tasks?",
+      "question": "Mục đích chính của hệ số chiết khấu γ trong các tác vụ liên tục (không có episode) là gì?",
       "options": [
-        "To balance the trade-off between exploration and exploitation",
-        "To speed up the convergence of policy gradient updates",
-        "To normalise rewards so they fall between 0 and 1",
-        "To ensure the infinite sum of future rewards remains finite"
+        "Cân bằng sự đánh đổi giữa khám phá và khai thác",
+        "Tăng tốc hội tụ của các cập nhật policy gradient",
+        "Chuẩn hóa reward để rơi vào khoảng từ 0 đến 1",
+        "Đảm bảo tổng vô hạn của reward tương lai luôn hữu hạn"
       ],
       "answer": 3,
-      "explanation": "In continuing tasks with no terminal state, the sum of rewards could be infinite. The discount factor γ < 1 ensures the geometric series converges to a finite return."
+      "explanation": "Trong các tác vụ liên tục không có trạng thái kết thúc, tổng reward có thể vô hạn. Hệ số chiết khấu γ < 1 đảm bảo chuỗi hình học hội tụ về return hữu hạn."
     },
     {
       "id": 12,
       "level": "intermediate",
-      "question": "An episode ends when the agent reaches a terminal state. This type of task is called:",
+      "question": "Một episode kết thúc khi agent đến trạng thái kết thúc. Loại tác vụ này được gọi là:",
       "options": [
-        "A continuing task with infinite horizon",
-        "A discounted task with γ close to zero",
-        "An episodic task with a terminal state",
-        "A stationary task with fixed reward signals"
+        "Continuing task với horizon vô hạn",
+        "Discounted task với γ gần bằng 0",
+        "Episodic task có trạng thái kết thúc",
+        "Stationary task với tín hiệu reward cố định"
       ],
       "answer": 2,
-      "explanation": "Episodic tasks have a natural end point — a terminal state — after which the environment resets for a new episode. Continuing tasks have no such end."
+      "explanation": "Episodic task có điểm kết thúc tự nhiên — trạng thái kết thúc — sau đó môi trường reset cho episode mới. Continuing task không có điểm kết thúc như vậy."
     },
     {
       "id": 13,
       "level": "intermediate",
-      "question": "In the agent-environment interaction loop, what does the agent send TO the environment at each time step?",
+      "question": "Trong vòng lặp tương tác agent-environment, agent gửi GÌ đến environment ở mỗi bước thời gian?",
       "options": [
-        "An action selected according to its policy",
-        "A value function update for the current state",
-        "The current state and expected future reward",
-        "A reward signal based on the last transition"
+        "Một action được chọn theo policy của nó",
+        "Một cập nhật hàm giá trị cho state hiện tại",
+        "State hiện tại và reward tương lai kỳ vọng",
+        "Tín hiệu reward dựa trên chuyển tiếp cuối cùng"
       ],
       "answer": 0,
-      "explanation": "At each time step the agent observes the state and then sends an action to the environment. The environment then returns the next state and reward."
+      "explanation": "Ở mỗi bước thời gian, agent quan sát state rồi gửi một action đến environment. Environment sau đó trả về state tiếp theo và reward."
     },
     {
       "id": 14,
       "level": "intermediate",
-      "question": "Why is exploration important in Reinforcement Learning?",
+      "question": "Tại sao khám phá (exploration) quan trọng trong Reinforcement Learning?",
       "options": [
-        "It helps the agent discover better actions not yet tried",
-        "It prevents the agent from receiving any negative rewards",
-        "It allows the agent to memorise the full transition table",
-        "It ensures the policy converges to a deterministic one"
+        "Giúp agent phát hiện các action tốt hơn chưa được thử",
+        "Ngăn agent nhận bất kỳ reward âm nào",
+        "Cho phép agent ghi nhớ toàn bộ bảng chuyển tiếp",
+        "Đảm bảo policy hội tụ thành một deterministic policy"
       ],
       "answer": 0,
-      "explanation": "Without exploration, the agent may exploit only actions known to be decent and never discover better alternatives. Exploration allows it to gather new information about the environment."
+      "explanation": "Nếu không có khám phá, agent có thể chỉ khai thác các action đã biết là tốt và không bao giờ phát hiện ra các lựa chọn tốt hơn. Khám phá cho phép thu thập thông tin mới về môi trường."
     },
     {
       "id": 15,
       "level": "intermediate",
-      "question": "Which statement about the closed feedback loop between agent and environment is CORRECT?",
+      "question": "Phát biểu nào về vòng phản hồi khép kín giữa agent và environment là ĐÚNG?",
       "options": [
-        "The environment only sends rewards — states are internal to the agent",
-        "The agent sends rewards and the environment sends actions back",
-        "Both agent and environment update their parameters simultaneously",
-        "The environment sends the next state and reward after each action"
+        "Environment chỉ gửi reward — state là nội bộ của agent",
+        "Agent gửi reward và environment gửi action ngược lại",
+        "Cả agent và environment cùng cập nhật tham số đồng thời",
+        "Environment gửi state tiếp theo và reward sau mỗi action"
       ],
       "answer": 3,
-      "explanation": "In the RL loop: agent takes action → environment transitions to new state s' and emits reward r → agent receives (r, s') and updates its policy."
+      "explanation": "Trong vòng lặp RL: agent thực hiện action → environment chuyển sang state mới s' và phát ra reward r → agent nhận (r, s') và cập nhật policy."
     },
     {
       "id": 16,
       "level": "advanced",
-      "question": "An agent has γ = 0.9 and receives rewards r1=1, r2=2, r3=3 before the episode ends. What is the discounted return G_0?",
+      "question": "Agent có γ = 0.9 nhận reward r1=1, r2=2, r3=3 trước khi episode kết thúc. Return chiết khấu G_0 là bao nhiêu?",
       "options": [
         "4.87",
         "5.23",
@@ -234,54 +234,54 @@
     {
       "id": 17,
       "level": "advanced",
-      "question": "A value function V^π(s) satisfies a self-consistency condition where its value equals immediate reward plus discounted next-state value. This recursive relationship is known as:",
+      "question": "Hàm giá trị V^π(s) thỏa mãn điều kiện nhất quán: giá trị của nó bằng reward tức thì cộng với giá trị state tiếp theo được chiết khấu. Mối quan hệ đệ quy này được gọi là:",
       "options": [
-        "The Bellman equation for policy π",
-        "The Monte Carlo backup equation",
-        "The temporal-difference target formula",
-        "The policy gradient theorem"
+        "Bellman equation cho policy π",
+        "Phương trình backup Monte Carlo",
+        "Công thức target temporal-difference",
+        "Định lý policy gradient"
       ],
       "answer": 0,
-      "explanation": "The Bellman equation expresses V^π(s) recursively: the value of a state equals the expected immediate reward plus γ times the expected value of the successor state under policy π."
+      "explanation": "Bellman equation biểu diễn V^π(s) theo cách đệ quy: giá trị của một state bằng reward tức thì kỳ vọng cộng với γ nhân giá trị kỳ vọng của state kế tiếp theo policy π."
     },
     {
       "id": 18,
       "level": "advanced",
-      "question": "Policy improvement guarantees that updating a policy greedily with respect to Q(s,a) will:",
+      "question": "Policy improvement đảm bảo rằng cập nhật policy greedy theo Q(s,a) sẽ:",
       "options": [
-        "Produce a policy no worse than the original policy",
-        "Always produce a strictly better policy on every state",
-        "Converge to the optimal policy in a single update step",
-        "Only improve the policy on states with positive rewards"
+        "Tạo ra policy không tệ hơn policy ban đầu",
+        "Luôn tạo ra policy tốt hơn rõ rệt trên mọi state",
+        "Hội tụ về policy tối ưu trong một bước cập nhật",
+        "Chỉ cải thiện policy trên các state có reward dương"
       ],
       "answer": 0,
-      "explanation": "The Policy Improvement Theorem guarantees that the greedy policy π' with respect to Q^π is at least as good as π (V^{π'}(s) ≥ V^π(s) for all s), but not necessarily strictly better on every state."
+      "explanation": "Định lý Policy Improvement đảm bảo rằng policy greedy π' theo Q^π ít nhất tốt bằng π (V^{π'}(s) ≥ V^π(s) với mọi s), nhưng không nhất thiết tốt hơn rõ rệt trên mọi state."
     },
     {
       "id": 19,
       "level": "advanced",
-      "question": "Why might reward shaping (adding auxiliary rewards) help an RL agent but also introduce risks?",
+      "question": "Tại sao reward shaping (thêm reward phụ trợ) có thể giúp agent RL nhưng cũng tiềm ẩn rủi ro?",
       "options": [
-        "It reduces variance but increases bias in the value function estimate",
-        "It guides the agent faster but can create suboptimal policies if the shaped reward conflicts with the true objective",
-        "It simplifies the state space but makes the policy non-transferable to new environments",
-        "It speeds convergence but may cause the agent to overfit to training episodes"
+        "Giảm phương sai nhưng tăng độ lệch trong ước lượng hàm giá trị",
+        "Dẫn dắt agent nhanh hơn nhưng có thể tạo policy không tối ưu nếu reward phụ mâu thuẫn với mục tiêu thật",
+        "Đơn giản hóa không gian state nhưng làm policy không chuyển đổi được sang môi trường mới",
+        "Tăng tốc hội tụ nhưng có thể khiến agent overfitting với episode huấn luyện"
       ],
       "answer": 1,
-      "explanation": "Reward shaping provides denser feedback, accelerating learning. However, if the shaped rewards create a different optimal policy than the true reward, the agent may learn unintended behaviour."
+      "explanation": "Reward shaping cung cấp phản hồi dày đặc hơn, tăng tốc học. Tuy nhiên, nếu reward được định hình tạo ra policy tối ưu khác với reward thật, agent có thể học hành vi ngoài ý muốn."
     },
     {
       "id": 20,
       "level": "advanced",
-      "question": "An agent uses a stochastic policy rather than a deterministic one in a fully observable environment. The most valid reason for this choice is:",
+      "question": "Agent sử dụng stochastic policy thay vì deterministic policy trong môi trường quan sát đầy đủ. Lý do hợp lệ nhất cho lựa chọn này là:",
       "options": [
-        "Stochastic policies guarantee a higher cumulative reward at convergence",
-        "Deterministic policies cannot represent the Q-function accurately",
-        "Stochastic policies provide built-in exploration during training",
-        "Stochastic policies always converge faster than deterministic ones"
+        "Stochastic policy đảm bảo reward tích lũy cao hơn khi hội tụ",
+        "Deterministic policy không thể biểu diễn Q-function chính xác",
+        "Stochastic policy tích hợp sẵn cơ chế khám phá trong huấn luyện",
+        "Stochastic policy luôn hội tụ nhanh hơn deterministic policy"
       ],
       "answer": 2,
-      "explanation": "In a fully observable environment a deterministic policy may be optimal at convergence, but stochastic policies are used during training to balance exploration vs exploitation without a separate ε-greedy mechanism."
+      "explanation": "Trong môi trường quan sát đầy đủ, deterministic policy có thể tối ưu khi hội tụ, nhưng stochastic policy được dùng trong huấn luyện để cân bằng khám phá và khai thác mà không cần cơ chế ε-greedy riêng biệt."
     }
   ]
 }

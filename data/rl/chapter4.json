@@ -29,11 +29,11 @@
       "question": "TD error (δ) trong TD(0) learning là gì?",
       "options": [
         "`δ = max_a Q(s,a) - V(s)` (khoảng cách giá trị greedy)",
-        "`δ = α·r + (1-α)·V(s)` (trung bình phần thưởng có trọng số)",
+        "`δ = r + γV(s') - V(s)` (mục tiêu trừ ước lượng hiện tại)",
         "`δ = G_t - V(s)` (kết quả trả về trừ ước lượng hiện tại)",
-        "`δ = r + γV(s') - V(s)` (mục tiêu trừ ước lượng hiện tại)"
+        "`δ = α·r + (1-α)·V(s)` (trung bình phần thưởng có trọng số)"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "TD error là δ = r + γV(s') - V(s), hiệu giữa TD target (r + γV(s')) và ước lượng hiện tại V(s). Nó điều khiển cập nhật: V(s) ← V(s) + α·δ."
     },
     {
@@ -41,12 +41,12 @@
       "level": "basic",
       "question": "TD target trong TD(0) learning là gì?",
       "options": [
+        "`r + γV(s')` — phần thưởng tức thời cộng giá trị kế tiếp chiết khấu",
         "`Σ_a π(a|s) Q(s,a)` — giá trị kỳ vọng theo chính sách",
-        "`G_t` — kết quả trả về tổng thực tế từ tập",
         "`max_a Q(s,a)` — Q-value tốt nhất có thể ở trạng thái s",
-        "`r + γV(s')` — phần thưởng tức thời cộng giá trị kế tiếp chiết khấu"
+        "`G_t` — kết quả trả về tổng thực tế từ tập"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "TD target là r + γV(s'): phần thưởng tức thời cộng ước lượng chiết khấu của giá trị trạng thái kế tiếp. Khác MC, nó không yêu cầu tập phải hoàn chỉnh."
     },
     {
@@ -55,11 +55,11 @@
       "question": "Tại sao TD learning KHÔNG yêu cầu tập hoàn chỉnh?",
       "options": [
         "Nó dùng mạng nơ-ron để dự đoán trực tiếp kết quả trả về cuối",
-        "Nó lấy trung bình phần thưởng trong cửa sổ bước gần đây cố định",
         "Nó đặt lại tập sớm bằng tín hiệu kết thúc nhân tạo",
-        "Nó bootstrapping dùng ước lượng V(s') hiện tại sau mỗi bước"
+        "Nó bootstrapping dùng ước lượng V(s') hiện tại sau mỗi bước",
+        "Nó lấy trung bình phần thưởng trong cửa sổ bước gần đây cố định"
       ],
-      "answer": 3,
+      "answer": 2,
       "explanation": "TD bootstrapping bằng cách thay thế kết quả trả về tương lai chưa biết bằng ước lượng hiện tại V(s'). Điều này có nghĩa cập nhật có thể xảy ra sau mỗi bước đơn mà không chờ kết thúc tập."
     },
     {
@@ -67,12 +67,12 @@
       "level": "basic",
       "question": "SARSA là viết tắt của gì?",
       "options": [
-        "Sequential-Action-Reward-State-Algorithm (cập nhật tuần tự)",
         "State-Action-Return-State-Advantage (bộ 5 phần tử)",
-        "State-Action-Reward-State-Action (bộ 5 phần tử)",
-        "Sample-Average-Reward-Step-Approximation (phương pháp xấp xỉ)"
+        "Sample-Average-Reward-Step-Approximation (phương pháp xấp xỉ)",
+        "Sequential-Action-Reward-State-Algorithm (cập nhật tuần tự)",
+        "State-Action-Reward-State-Action (bộ 5 phần tử)"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "SARSA là viết tắt của State-Action-Reward-State-Action, biểu diễn bộ 5 (s, a, r, s', a') dùng trong quy tắc cập nhật: Q(s,a) ← Q(s,a) + α[r + γQ(s',a') - Q(s,a)]."
     },
     {
@@ -80,12 +80,12 @@
       "level": "basic",
       "question": "Sự khác biệt chính giữa SARSA và Q-Learning là gì?",
       "options": [
-        "SARSA dùng mạng nơ-ron; Q-Learning dùng bảng tra cứu",
+        "SARSA cần mô hình; Q-Learning hoàn toàn không cần mô hình",
         "SARSA học nhanh hơn; Q-Learning cần nhiều tập hơn",
-        "SARSA dùng hành động thực a'; Q-Learning dùng max_a' Q(s',a')",
-        "SARSA cần mô hình; Q-Learning hoàn toàn không cần mô hình"
+        "SARSA dùng mạng nơ-ron; Q-Learning dùng bảng tra cứu",
+        "SARSA dùng hành động thực a'; Q-Learning dùng max_a' Q(s',a')"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "SARSA dùng hành động thực tiếp theo a' được chọn bởi chính sách hiện tại trong mục tiêu của nó. Q-Learning dùng max_{a'} Q(s',a'), khiến nó off-policy vì luôn nhắm đến hành động greedy tối ưu."
     },
     {
@@ -94,9 +94,9 @@
       "question": "Q-Learning là 'off-policy' có nghĩa là gì?",
       "options": [
         "Nó học chính sách tối ưu bất kể chính sách hành vi được dùng",
+        "Nó cần mô hình riêng để mô phỏng môi trường ngoại tuyến",
         "Nó không thể dùng với chiến lược khám phá epsilon-greedy",
-        "Nó chỉ học khi tác nhân hành xử ngẫu nhiên hoàn toàn",
-        "Nó cần mô hình riêng để mô phỏng môi trường ngoại tuyến"
+        "Nó chỉ học khi tác nhân hành xử ngẫu nhiên hoàn toàn"
       ],
       "answer": 0,
       "explanation": "Off-policy có nghĩa Q-Learning học về chính sách mục tiêu tối ưu (greedy) dù tác nhân theo chính sách hành vi khác (ví dụ ε-greedy). Toán tử max trong cập nhật luôn nhắm đến hành động tối ưu."
@@ -107,11 +107,11 @@
       "question": "So với Monte Carlo, ưu điểm chính của TD learning là gì?",
       "options": [
         "TD không cần chỉ định tốc độ học α",
+        "TD có độ lệch bằng 0 vì dùng phần thưởng quan sát thực tế",
         "TD có thể cập nhật trực tuyến sau mỗi bước mà không cần kết thúc tập",
-        "TD không dùng hệ số chiết khấu γ, giữ phần thưởng đơn giản hơn",
-        "TD có độ lệch bằng 0 vì dùng phần thưởng quan sát thực tế"
+        "TD không dùng hệ số chiết khấu γ, giữ phần thưởng đơn giản hơn"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "TD learning cập nhật sau mỗi bước đơn (trực tuyến), trong khi MC phải chờ đến khi kết thúc tập. Điều này giúp TD áp dụng được cho cả tác vụ có tập và tác vụ liên tục."
     },
     {
@@ -119,12 +119,12 @@
       "level": "intermediate",
       "question": "Quy tắc cập nhật SARSA là Q(s,a) ← Q(s,a) + α[r + γQ(s',a') - Q(s,a)]. Q(s',a') ở đây là gì?",
       "options": [
-        "Q-value tối đa trên tất cả hành động ở trạng thái s'",
+        "Q-value trung bình trên tất cả hành động ở trạng thái kế tiếp s'",
         "Q-value cho hành động greedy trong chính sách mục tiêu",
-        "Q-value cho hành động thực sự được thực hiện tiếp theo bởi chính sách",
-        "Q-value trung bình trên tất cả hành động ở trạng thái kế tiếp s'"
+        "Q-value tối đa trên tất cả hành động ở trạng thái s'",
+        "Q-value cho hành động thực sự được thực hiện tiếp theo bởi chính sách"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Trong SARSA (on-policy), a' là hành động tiếp theo thực sự được chọn bởi chính sách hiện tại (ví dụ ε-greedy). Đây là điều làm SARSA on-policy — nó dùng bộ kinh nghiệm thực (s, a, r, s', a')."
     },
     {
@@ -134,8 +134,8 @@
       "options": [
         "Q-value tương lai tốt nhất có thể giả định hành vi greedy",
         "Q-value của hành động thực sự được thực hiện ở bước kế tiếp",
-        "Q-value kỳ vọng theo chính sách ε-greedy hiện tại",
-        "Q-value trung bình tính từ experience replay gần đây"
+        "Q-value trung bình tính từ experience replay gần đây",
+        "Q-value kỳ vọng theo chính sách ε-greedy hiện tại"
       ],
       "answer": 0,
       "explanation": "max_{a'} Q(s',a') là Q-value greedy tốt nhất có thể đạt được từ trạng thái s'. Bằng cách luôn nhắm đến tối đa này, Q-Learning ước lượng trực tiếp Q* bất kể hành động nào thực sự được thực hiện tiếp theo."
@@ -145,12 +145,12 @@
       "level": "intermediate",
       "question": "Bootstrapping trong TD(0) cụ thể có nghĩa là gì?",
       "options": [
+        "Lấy mẫu nhiều quỹ đạo để giảm phương sai ước lượng",
         "Khởi tạo tất cả Q-value về không trước khi huấn luyện bắt đầu",
         "Chờ đủ kết quả trả về G_t trước khi thực hiện bất kỳ cập nhật nào",
-        "Dùng ước lượng V(s') hiện tại để cập nhật V(s) ngay lập tức",
-        "Lấy mẫu nhiều quỹ đạo để giảm phương sai ước lượng"
+        "Dùng ước lượng V(s') hiện tại để cập nhật V(s) ngay lập tức"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Bootstrapping trong TD có nghĩa dùng ước lượng hiện tại V(s') (một phỏng đoán) như một phần của mục tiêu cập nhật cho V(s), thay vì chờ kết quả trả về thực. Điều này tạo ra độ lệch nhưng cho phép học trực tuyến."
     },
     {
@@ -158,12 +158,12 @@
       "level": "intermediate",
       "question": "Trong bài toán cliff-walking, tại sao SARSA tránh cạnh vách đá còn Q-Learning đi gần đó?",
       "options": [
-        "SARSA dùng tốc độ học lớn hơn, khiến nó thận trọng hơn tổng thể",
         "SARSA tính đến rủi ro khám phá ε-greedy; Q-Learning giả định hành vi greedy",
+        "SARSA dùng tốc độ học lớn hơn, khiến nó thận trọng hơn tổng thể",
         "Q-Learning không thể biểu diễn phần thưởng âm gần cạnh vách đá",
         "SARSA khởi tạo Q-value bằng âm vô cực gần các trạng thái nguy hiểm"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Mục tiêu on-policy của SARSA bao gồm rủi ro ngẫu nhiên rơi xuống vách đá trong ε-exploration. Mục tiêu max của Q-Learning giả định hành vi hoàn toàn greedy, nên nó lạc quan mà đi gần vách đá."
     },
     {
@@ -184,9 +184,9 @@
       "level": "intermediate",
       "question": "Q-Learning được xem là nền tảng của Deep Q-Networks (DQN) vì:",
       "options": [
-        "Nó yêu cầu tác vụ có tập mà deep learning xử lý tự nhiên",
-        "Quy tắc cập nhật Q-table của nó có thể được xấp xỉ bởi mạng nơ-ron",
         "Nó dùng gradient descent, có thể mở rộng trực tiếp sang mạng nơ-ron",
+        "Quy tắc cập nhật Q-table của nó có thể được xấp xỉ bởi mạng nơ-ron",
+        "Nó yêu cầu tác vụ có tập mà deep learning xử lý tự nhiên",
         "Nó học on-policy, làm cho cập nhật gradient đơn giản hơn"
       ],
       "answer": 1,
@@ -197,12 +197,12 @@
       "level": "intermediate",
       "question": "Khi nào nên ưu tiên SARSA hơn Q-Learning trong thực tế?",
       "options": [
+        "Khi chi phí của sai lầm khám phá cao và an toàn quan trọng",
         "Khi môi trường có không gian trạng thái rất lớn hoặc liên tục",
         "Khi cần chính sách tối ưu toàn cục nhanh nhất có thể",
-        "Khi chi phí của sai lầm khám phá cao và an toàn quan trọng",
         "Khi muốn học từ bộ đệm experience replay đã lưu trữ"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "SARSA on-policy và tính đến việc khám phá trong ước lượng giá trị của nó. Điều này làm nó an toàn hơn khi sai lầm lúc khám phá tốn kém (ví dụ robot vật lý, định tuyến lưu lượng mạng thực)."
     },
     {
@@ -210,9 +210,9 @@
       "level": "intermediate",
       "question": "TD(0) kết hợp tính chất của cả DP và Monte Carlo như thế nào?",
       "options": [
-        "TD đánh giá tất cả trạng thái đồng thời như DP và theo lô như MC",
-        "TD bootstrapping như DP và học không cần mô hình từ kinh nghiệm như MC",
         "TD dùng mô hình như DP nhưng cũng lấy mẫu kết quả trả về đầy đủ như MC",
+        "TD bootstrapping như DP và học không cần mô hình từ kinh nghiệm như MC",
+        "TD đánh giá tất cả trạng thái đồng thời như DP và theo lô như MC",
         "TD cần mô hình như DP nhưng chờ kết thúc tập như MC"
       ],
       "answer": 1,
@@ -223,10 +223,10 @@
       "level": "advanced",
       "question": "Để Q-Learning hội tụ đến Q*, điều kiện nào về tốc độ học α là bắt buộc?",
       "options": [
-        "α phải không đổi và lớn để đảm bảo hội tụ nhanh",
+        "α phải bằng γ ở mỗi bước thời gian để nhất quán Bellman",
         "α phải giảm theo hàm mũ nhanh hơn tín hiệu phần thưởng",
         "Σ α_t = ∞ và Σ α_t² < ∞ (điều kiện Robbins-Monro)",
-        "α phải bằng γ ở mỗi bước thời gian để nhất quán Bellman"
+        "α phải không đổi và lớn để đảm bảo hội tụ nhanh"
       ],
       "answer": 2,
       "explanation": "Điều kiện xấp xỉ ngẫu nhiên Robbins-Monro yêu cầu Σ α_t = ∞ (bước đủ lớn để hiệu chỉnh độ lệch ban đầu) và Σ α_t² < ∞ (bước đủ nhỏ để hội tụ). α không đổi đảm bảo theo dõi nhưng không hội tụ."
@@ -249,12 +249,12 @@
       "level": "advanced",
       "question": "Tại sao SARSA với ε-greedy hội tụ đến chính sách ε-greedy tối ưu thay vì chính sách tối ưu thực sự?",
       "options": [
-        "SARSA on-policy bao gồm xác suất khám phá ε trong mục tiêu, nên nó tối ưu hóa cho ε-greedy",
-        "Cập nhật bộ 5 tạo ra tương quan ngăn hội tụ tối ưu",
+        "SARSA dùng ước lượng lệch không thể biểu diễn chính sách tất định",
         "Suy giảm tốc độ học của SARSA ngăn nó đạt sai số bằng 0 ở giới hạn",
-        "SARSA dùng ước lượng lệch không thể biểu diễn chính sách tất định"
+        "Cập nhật bộ 5 tạo ra tương quan ngăn hội tụ tối ưu",
+        "SARSA on-policy bao gồm xác suất khám phá ε trong mục tiêu, nên nó tối ưu hóa cho ε-greedy"
       ],
-      "answer": 0,
+      "answer": 3,
       "explanation": "Vì SARSA on-policy, nó đánh giá và cải thiện cùng chính sách ε-greedy mà nó đang theo. Q-value của nó phản ánh kết quả trả về kỳ vọng theo ε-greedy (không phải greedy), nên nó hội tụ đến Q^{ε-greedy}, không phải Q*."
     },
     {
@@ -262,12 +262,12 @@
       "level": "advanced",
       "question": "Mối quan hệ giữa TD error δ và cập nhật gradient trong Q-Learning là gì?",
       "options": [
-        "δ bằng gradient đầy đủ của kết quả trả về kỳ vọng w.r.t. tham số θ",
-        "δ được bình phương và tối thiểu hóa bằng stochastic gradient descent tiêu chuẩn",
+        "δ được nhân với γ để tạo gradient của Bellman residual loss",
         "δ được dùng như pseudo-gradient để cập nhật Q về phía Bellman target",
-        "δ được nhân với γ để tạo gradient của Bellman residual loss"
+        "δ được bình phương và tối thiểu hóa bằng stochastic gradient descent tiêu chuẩn",
+        "δ bằng gradient đầy đủ của kết quả trả về kỳ vọng w.r.t. tham số θ"
       ],
-      "answer": 2,
+      "answer": 1,
       "explanation": "Trong Q-Learning dạng bảng, δ = r + γ·max Q(s',a') - Q(s,a) hoạt động như tín hiệu pseudo-gradient. Cập nhật Q(s,a) ← Q(s,a) + α·δ di chuyển Q về phía Bellman target, nhưng đây KHÔNG phải gradient thực vì mục tiêu được coi là cố định."
     },
     {
@@ -275,13 +275,52 @@
       "level": "advanced",
       "question": "Xét hai tác nhân trong mạng không dây động: Tác nhân A dùng SARSA, Tác nhân B dùng Q-Learning. Phát biểu nào mô tả tốt nhất hành vi dài hạn của chúng?",
       "options": [
-        "Tác nhân B học chính sách thận trọng do toán tử max phạt phương sai",
-        "Cả hai hội tụ đến chính sách giống nhau vì môi trường là như nhau",
+        "Tác nhân A tìm chính sách an toàn hơn tính đến nhiễu kênh khi khám phá; Tác nhân B hội tụ đến chính sách tối ưu lý thuyết nhưng mù với chi phí khám phá",
         "Tác nhân A hội tụ đến Q* nhanh hơn vì ở trên đường tối ưu từ đầu",
-        "Tác nhân A tìm chính sách an toàn hơn tính đến nhiễu kênh khi khám phá; Tác nhân B hội tụ đến chính sách tối ưu lý thuyết nhưng mù với chi phí khám phá"
+        "Cả hai hội tụ đến chính sách giống nhau vì môi trường là như nhau",
+        "Tác nhân B học chính sách thận trọng do toán tử max phạt phương sai"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Trong mạng không dây nhiễu, SARSA (on-policy) học Q^π tính đến lỗi khám phá ngẫu nhiên, cho chính sách thực tế an toàn hơn. Q-Learning hội tụ đến Q* (tối ưu nếu greedy), nhưng chính sách này có thể hoạt động kém khi triển khai thực nếu khám phá gây ra sai lầm tốn kém."
+    },
+    {
+      "id": 21,
+      "level": "basic",
+      "question": "TD error đo lường điều gì trong Temporal-Difference learning?",
+      "options": [
+        "Sự khác biệt giữa ước lượng hiện tại và mục tiêu được cải thiện một bước",
+        "Khoảng cách giữa chính sách hiện tại và chính sách tối ưu",
+        "Tổng phần thưởng tích lũy từ đầu episode đến hiện tại",
+        "Độ lớn của bước cập nhật so với tốc độ học α"
+      ],
+      "answer": 0,
+      "explanation": "TD error δ = r + γV(s') - V(s) đo sự chênh lệch giữa ước lượng V(s) hiện tại và mục tiêu một bước r + γV(s'). Nó cho biết cần hiệu chỉnh ước lượng theo hướng nào và bao nhiêu."
+    },
+    {
+      "id": 22,
+      "level": "intermediate",
+      "question": "SARSA được gọi là on-policy vì:",
+      "options": [
+        "Nó yêu cầu tác vụ có episode để thực hiện cập nhật chính xác",
+        "Policy được dùng để tạo experience là policy đang được cải thiện",
+        "Nó dùng toán tử max để luôn nhắm đến action tốt nhất có thể",
+        "Nó học Q-value tối ưu bất kể chính sách nào đang được thực thi"
+      ],
+      "answer": 1,
+      "explanation": "SARSA on-policy vì chính sách tạo ra kinh nghiệm (ε-greedy) chính là chính sách đang được đánh giá và cải thiện. Hành động a' trong bộ (s,a,r,s',a') được chọn bởi cùng chính sách ε-greedy đó, không phải một chính sách mục tiêu riêng biệt."
+    },
+    {
+      "id": 23,
+      "level": "intermediate",
+      "question": "Tại sao Q-Learning hội tụ đến policy tối ưu bất kể chính sách khám phá được dùng?",
+      "options": [
+        "Vì Q-Learning chỉ hoạt động với chính sách ε-greedy cụ thể đã được chứng minh",
+        "Vì target sử dụng phép max nên độc lập với policy hành vi",
+        "Vì Q-Learning dùng tốc độ học cố định không bị ảnh hưởng bởi chính sách",
+        "Vì Q-Learning yêu cầu khám phá ngẫu nhiên hoàn toàn để bao phủ mọi state"
+      ],
+      "answer": 1,
+      "explanation": "Trong Q-Learning, mục tiêu cập nhật là r + γ·max_{a'} Q(s',a') — luôn lấy giá trị greedy tốt nhất bất kể action nào thực sự được thực hiện. Điều này tách biệt policy học (target) khỏi policy hành vi, nên Q* được ước lượng độc lập với cách khám phá."
     }
   ]
 }

@@ -28,12 +28,12 @@
       "level": "basic",
       "question": "Tại sao DQN thất bại với không gian hành động liên tục như phân bổ băng thông?",
       "options": [
-        "argmax trên vô số hành động là không khả thi về mặt tính toán",
-        "DQN không thể dùng neural network với nhiều hơn một đầu ra",
         "DQN yêu cầu tín hiệu phần thưởng rời rạc để hoạt động đúng",
-        "DQN không thể biểu diễn trạng thái có giá trị thực ở đầu vào"
+        "argmax trên vô số hành động là không khả thi về mặt tính toán",
+        "DQN không thể biểu diễn trạng thái có giá trị thực ở đầu vào",
+        "DQN không thể dùng neural network với nhiều hơn một đầu ra"
       ],
-      "answer": 0,
+      "answer": 1,
       "explanation": "DQN chọn hành động qua argmax_a Q̂(s,a,θ), liệt kê tất cả hành động. Không gian liên tục có vô số hành động, khiến argmax này không thể tính chính xác."
     },
     {
@@ -41,12 +41,12 @@
       "level": "basic",
       "question": "Chính sách có tham số π(a|s,θ) xuất ra gì cho bài toán hành động rời rạc?",
       "options": [
+        "Phân phối xác suất trên tất cả hành động có thể",
         "Một Q-value vô hướng cho hành động được chọn",
-        "Gradient của log-likelihood của mỗi trạng thái",
         "Sai số TD để cập nhật trọng số mạng critic",
-        "Phân phối xác suất trên tất cả hành động có thể"
+        "Gradient của log-likelihood của mỗi trạng thái"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Chính sách có tham số π(a|s,θ) xuất ra phân phối xác suất trên các hành động (ví dụ: [0.1, 0.7, 0.2]) cho bài toán rời rạc. Với bài toán liên tục, nó xuất ra giá trị hành động trực tiếp."
     },
     {
@@ -55,11 +55,11 @@
       "question": "Mục tiêu tối ưu hóa J(θ) trong phương pháp policy gradient là gì?",
       "options": [
         "Tối đa hóa entropy của phân phối xác suất hành động",
+        "Tối đa hóa phần thưởng tích lũy kỳ vọng theo chính sách π_θ",
         "Tối thiểu hóa sai số bình phương trung bình giữa Q-value dự đoán và mục tiêu",
-        "Tối thiểu hóa phương sai của sai số TD trên tất cả chuyển tiếp",
-        "Tối đa hóa phần thưởng tích lũy kỳ vọng theo chính sách π_θ"
+        "Tối thiểu hóa phương sai của sai số TD trên tất cả chuyển tiếp"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "Mục tiêu J(θ) = E_π[G_t] biểu diễn phần thưởng tích lũy kỳ vọng. Phương pháp policy gradient thực hiện gradient ascent trên J(θ) để tìm tham số chính sách tốt nhất θ."
     },
     {
@@ -69,10 +69,10 @@
       "options": [
         "Advantage của hành động A_t so với hành động trung bình",
         "Sai số TD tính từ ước tính giá trị trạng thái tiếp theo",
-        "Lợi nhuận thực tế — tổng phần thưởng chiết khấu từ bước t",
-        "Gradient của hàm Q theo hành động"
+        "Gradient của hàm Q theo hành động",
+        "Lợi nhuận thực tế — tổng phần thưởng chiết khấu từ bước t"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "G_t là lợi nhuận Monte Carlo thực tế: tổng phần thưởng chiết khấu từ bước thời gian t đến cuối episode. REINFORCE dùng lợi nhuận thực này là ước tính gradient không lệch nhưng nhiễu."
     },
     {
@@ -82,10 +82,10 @@
       "options": [
         "Tính sai số TD dùng để cập nhật tất cả trọng số mạng",
         "Lưu các chuyển tiếp quá khứ trong replay buffer để huấn luyện sau",
-        "Chọn hành động bằng cách duy trì chính sách có tham số π(a|s,θ)",
-        "Đánh giá trạng thái hiện tại tốt đến mức nào bằng hàm giá trị"
+        "Đánh giá trạng thái hiện tại tốt đến mức nào bằng hàm giá trị",
+        "Chọn hành động bằng cách duy trì chính sách có tham số π(a|s,θ)"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Actor duy trì chính sách có tham số π(a|s,θ) và chịu trách nhiệm chọn hành động. Nó được cập nhật dùng phản hồi (sai số TD) do Critic cung cấp."
     },
     {
@@ -95,8 +95,8 @@
       "options": [
         "Tạo ra xác suất hành động cho đầu vào trạng thái hiện tại",
         "Đánh giá chất lượng trạng thái hoặc hành động qua hàm giá trị",
-        "Lưu toàn bộ quỹ đạo episode để cập nhật Monte Carlo",
-        "Tính argmax trên tất cả hành động rời rạc tại mỗi bước"
+        "Tính argmax trên tất cả hành động rời rạc tại mỗi bước",
+        "Lưu toàn bộ quỹ đạo episode để cập nhật Monte Carlo"
       ],
       "answer": 1,
       "explanation": "Critic đánh giá trạng thái hoặc hành động tốt đến mức nào bằng cách duy trì hàm giá trị V(s,w) hoặc Q(s,a,w). Đánh giá của nó (sai số TD) hướng dẫn cập nhật chính sách của Actor."
@@ -106,12 +106,12 @@
       "level": "basic",
       "question": "Tại sao phương pháp policy gradient phù hợp cho kiểm soát công suất trong mạng không dây?",
       "options": [
-        "Kiểm soát công suất chỉ cần hàm giá trị, không cần chính sách trực tiếp",
+        "Giá trị công suất liên tục — phương pháp chính sách xuất ra trực tiếp",
         "Kiểm soát công suất cần hành động rời rạc mà argmax có thể liệt kê",
-        "Phương pháp chính sách dùng bảng tra cứu mở rộng đến mọi mức công suất",
-        "Giá trị công suất liên tục — phương pháp chính sách xuất ra trực tiếp"
+        "Kiểm soát công suất chỉ cần hàm giá trị, không cần chính sách trực tiếp",
+        "Phương pháp chính sách dùng bảng tra cứu mở rộng đến mọi mức công suất"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Kiểm soát công suất liên quan đến việc chọn giá trị công suất phát liên tục. Phương pháp policy gradient xuất ra hành động liên tục trực tiếp qua π(a|s,θ) mà không cần argmax trên mọi khả năng."
     },
     {
@@ -119,12 +119,12 @@
       "level": "intermediate",
       "question": "Theo Định lý Policy Gradient, gradient ∇_θ J(θ) bằng:",
       "options": [
-        "`E_π[ ∇_θ log π(a|s,θ) · Q^π(s,a) ]`",
         "`E_π[ ∇_θ Q̂(s,a,θ) · log π(a|s,θ) ]`",
-        "`E_π[ ∇_θ J(θ) · δ · log π(a|s,θ) ]`",
-        "`E_π[ ∇_θ V(s,w) · π(a|s,θ) ]`"
+        "`E_π[ ∇_θ V(s,w) · π(a|s,θ) ]`",
+        "`E_π[ ∇_θ log π(a|s,θ) · Q^π(s,a) ]`",
+        "`E_π[ ∇_θ J(θ) · δ · log π(a|s,θ) ]`"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Định lý Policy Gradient phát biểu: ∇_θ J(θ) = E_π[∇_θ log π(a|s,θ) · Q^π(s,a)]. Score function ∇_θ log π được nhân với giá trị hành động Q^π để xác định hướng cập nhật."
     },
     {
@@ -134,10 +134,10 @@
       "options": [
         "Nó cần target network để tránh vấn đề mục tiêu di chuyển",
         "Nó không thể xử lý hiệu quả bất kỳ không gian hành động rời rạc nào",
-        "Nó tạo ra ước tính gradient có phương sai cao dùng lợi nhuận Monte Carlo",
-        "Nó tạo ra ước tính gradient lệch do bootstrapping"
+        "Nó tạo ra ước tính gradient lệch do bootstrapping",
+        "Nó tạo ra ước tính gradient có phương sai cao dùng lợi nhuận Monte Carlo"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "REINFORCE tạo ra ước tính gradient không lệch nhưng có phương sai cao vì G_t là tổng nhiều phần thưởng tương lai ngẫu nhiên. Phương sai này làm chậm học và cần nhiều episode để hội tụ."
     },
     {
@@ -159,11 +159,11 @@
       "question": "Sai số TD δ trong Actor-Critic là gì, và tại sao nó hữu ích như ước tính advantage?",
       "options": [
         "`δ = G_t - V(s,w)` — advantage chính xác dùng lợi nhuận Monte Carlo đầy đủ",
-        "`δ = Q(s,a,w) - π(a|s,θ)` — chênh lệch giữa giá trị và đầu ra chính sách",
         "`δ = r + γV(s',w) - V(s,w)` — advantage một bước dùng bootstrapping",
+        "`δ = Q(s,a,w) - π(a|s,θ)` — chênh lệch giữa giá trị và đầu ra chính sách",
         "`δ = max_a Q(s,a,w) - V(s,w)` — khoảng cách giữa hành động tốt nhất và trung bình"
       ],
-      "answer": 2,
+      "answer": 1,
       "explanation": "Sai số TD δ = r + γV(s',w) - V(s,w) là ước tính một bước của advantage A(s,a) = Q(s,a) - V(s). Nó chỉ cần một bước phần thưởng, giảm phương sai so với lợi nhuận Monte Carlo đầy đủ."
     },
     {
@@ -171,9 +171,9 @@
       "level": "intermediate",
       "question": "Hàm advantage A(s,a) = Q(s,a) - V(s) đo lường điều gì?",
       "options": [
-        "Xác suất hành động a là hành động tham lam tại trạng thái s",
-        "Chênh lệch Q-value giữa mạng Actor và Critic",
         "Trạng thái s tốt hơn trạng thái xuất phát s_0 bao nhiêu",
+        "Chênh lệch Q-value giữa mạng Actor và Critic",
+        "Xác suất hành động a là hành động tham lam tại trạng thái s",
         "Hành động a tốt hơn hành động trung bình tại s bao nhiêu"
       ],
       "answer": 3,
@@ -184,12 +184,12 @@
       "level": "intermediate",
       "question": "Tại sao Actor-Critic có thể cập nhật trực tuyến (theo từng bước) trong khi REINFORCE không thể?",
       "options": [
-        "Actor-Critic dùng sai số TD δ, không dùng lợi nhuận episode đầy đủ G_t",
         "Actor-Critic duy trì hai replay buffer riêng biệt cho mỗi mạng",
         "Actor-Critic dùng replay buffer cho phép lấy mẫu ngay lập tức",
+        "Actor-Critic dùng sai số TD δ, không dùng lợi nhuận episode đầy đủ G_t",
         "REINFORCE cần target network mà Actor-Critic tránh dùng"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "REINFORCE cần G_t, chỉ biết được ở cuối episode. Actor-Critic dùng sai số TD δ = r + γV(s',w) - V(s,w), tính được sau mỗi bước, cho phép cập nhật trực tuyến."
     },
     {
@@ -210,10 +210,10 @@
       "level": "intermediate",
       "question": "Điều gì phân biệt tốt nhất phương pháp dựa trên giá trị (như DQN) với phương pháp dựa trên chính sách?",
       "options": [
-        "Phương pháp dựa trên giá trị không thể xử lý bất kỳ môi trường ngẫu nhiên nào",
         "Phương pháp dựa trên giá trị dùng neural network; phương pháp chính sách chỉ dùng bảng",
+        "Phương pháp dựa trên chính sách cần replay buffer còn phương pháp giá trị thì không",
         "Phương pháp dựa trên chính sách học ánh xạ trực tiếp từ trạng thái sang hành động hay xác suất",
-        "Phương pháp dựa trên chính sách cần replay buffer còn phương pháp giá trị thì không"
+        "Phương pháp dựa trên giá trị không thể xử lý bất kỳ môi trường ngẫu nhiên nào"
       ],
       "answer": 2,
       "explanation": "Phương pháp dựa trên chính sách tham số hóa trực tiếp π(a|s,θ) và tối ưu hóa qua gradient ascent. Phương pháp dựa trên giá trị (DQN) học Q(s,a,θ) và suy ra chính sách ngầm qua argmax. Điểm khác biệt then chốt là liệu chính sách có được biểu diễn tường minh không."
@@ -223,9 +223,9 @@
       "level": "advanced",
       "question": "REINFORCE cập nhật θ ← θ + α·(G_t - V(s_t))·∇_θ log π(A_t|S_t,θ). Tại sao V(s_t) được chọn làm baseline?",
       "options": [
-        "V(s_t) đóng vai trò hằng số chuẩn hóa giới hạn gradient score function",
         "V(s_t) đảm bảo cập nhật chính sách luôn cùng chiều với sai số TD",
         "V(s_t) là baseline duy nhất làm gradient lệch về phía hành động phần thưởng cao",
+        "V(s_t) đóng vai trò hằng số chuẩn hóa giới hạn gradient score function",
         "V(s_t) độc lập với hành động a_t, nên giảm phương sai mà không thêm lệch gradient"
       ],
       "answer": 3,
@@ -236,12 +236,12 @@
       "level": "advanced",
       "question": "A3C dùng advantage A(s,a) ≈ δ = r + γV(s') - V(s) thay vì Q(s,a) - V(s). Lợi ích thực tế của xấp xỉ này là gì?",
       "options": [
-        "Nó cung cấp giá trị advantage chính xác với sai số ước tính bằng không",
-        "Nó thay thế Critic bằng cấu trúc bảng tra cứu chính sách đơn giản hơn",
         "Nó loại bỏ hoàn toàn nhu cầu về mạng Actor trong A3C",
-        "Nó cho phép ước tính advantage từ sai số TD một bước không cần Q-network"
+        "Nó cho phép ước tính advantage từ sai số TD một bước không cần Q-network",
+        "Nó thay thế Critic bằng cấu trúc bảng tra cứu chính sách đơn giản hơn",
+        "Nó cung cấp giá trị advantage chính xác với sai số ước tính bằng không"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "Tính chính xác A(s,a) = Q(s,a) - V(s) sẽ cần Q-network riêng. Dùng δ = r + γV(s') - V(s) xấp xỉ advantage này chỉ với V-function, đơn giản hóa kiến trúc trong khi duy trì phương sai thấp."
     },
     {
@@ -249,12 +249,12 @@
       "level": "advanced",
       "question": "Cho bài toán tải tính toán trong mạng edge computing, tại sao Actor-Critic được ưa thích hơn DQN?",
       "options": [
-        "Actor-Critic tránh xấp xỉ hàm, làm nó ổn định hơn DQN",
-        "Tỷ lệ tải là giá trị liên tục; Actor-Critic xử lý hành động liên tục tự nhiên",
+        "Actor-Critic dùng chính sách bảng dễ diễn giải hơn neural network",
         "DQN không thể mô hình hóa đường đa chặng còn Actor-Critic thì có",
-        "Actor-Critic dùng chính sách bảng dễ diễn giải hơn neural network"
+        "Tỷ lệ tải là giá trị liên tục; Actor-Critic xử lý hành động liên tục tự nhiên",
+        "Actor-Critic tránh xấp xỉ hàm, làm nó ổn định hơn DQN"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "Tỷ lệ tải tính toán (phần nhiệm vụ được tải) là giá trị liên tục trong [0,1]. DQN không thể liệt kê hiệu quả tất cả hành động liên tục, trong khi Actor-Critic xuất ra giá trị hành động liên tục trực tiếp qua π(a|s,θ)."
     },
     {
@@ -262,10 +262,10 @@
       "level": "advanced",
       "question": "Score function ∇_θ log π(a|s,θ) là trung tâm của cập nhật policy gradient. Ý nghĩa trực giác của nó là gì?",
       "options": [
-        "Nó phạt các hành động có Q-value thấp hơn giá trị trung bình V(s)",
         "Nó tính phần thưởng tương lai kỳ vọng từ việc thực hiện hành động a tại s",
+        "Nó đo lường mức độ giá trị trạng thái V(s) thay đổi theo θ",
         "Nó chỉ hướng tăng xác suất hành động a nhiều nhất trong không gian tham số",
-        "Nó đo lường mức độ giá trị trạng thái V(s) thay đổi theo θ"
+        "Nó phạt các hành động có Q-value thấp hơn giá trị trung bình V(s)"
       ],
       "answer": 2,
       "explanation": "∇_θ log π(a|s,θ) là gradient của log-xác suất thực hiện hành động a. Nó chỉ hướng trong không gian tham số tăng xác suất hành động a được chọn tại trạng thái s nhiều nhất."
@@ -275,13 +275,26 @@
       "level": "advanced",
       "question": "So sánh REINFORCE và Actor-Critic về đánh đổi lệch-phương sai. Câu nào đúng?",
       "options": [
-        "Actor-Critic không lệch và luôn có phương sai thấp hơn REINFORCE",
-        "Cả hai phương pháp có lệch và phương sai giống hệt nhau theo định lý policy gradient",
+        "REINFORCE có phương sai thấp hơn nhưng lệch cao hơn Actor-Critic",
         "REINFORCE không lệch nhưng phương sai cao; Actor-Critic có phương sai thấp hơn nhưng đưa vào lệch qua bootstrapping",
-        "REINFORCE có phương sai thấp hơn nhưng lệch cao hơn Actor-Critic"
+        "Cả hai phương pháp có lệch và phương sai giống hệt nhau theo định lý policy gradient",
+        "Actor-Critic không lệch và luôn có phương sai thấp hơn REINFORCE"
       ],
-      "answer": 2,
+      "answer": 1,
       "explanation": "REINFORCE dùng lợi nhuận Monte Carlo chính xác G_t (không lệch, nhưng phương sai cao). Actor-Critic dùng bootstrapping TD δ = r + γV(s') - V(s), đưa vào lệch nhỏ (do hàm V xấp xỉ) nhưng giảm đáng kể phương sai, cho phép học ổn định và hiệu quả hơn."
+    },
+    {
+      "id": 21,
+      "level": "basic",
+      "question": "Lợi thế chính của phương pháp policy-based so với value-based là gì?",
+      "options": [
+        "Hội tụ nhanh hơn nhờ dùng replay buffer và target network",
+        "Luôn cho phương sai gradient thấp hơn phương pháp value-based",
+        "Không cần tín hiệu phần thưởng để học chính sách tối ưu",
+        "Xử lý tự nhiên không gian action liên tục mà không cần argmax"
+      ],
+      "answer": 3,
+      "explanation": "Phương pháp policy-based học trực tiếp π(a|s,θ), xuất ra hành động liên tục mà không cần tính argmax. Ngược lại, value-based như DQN dùng argmax_a Q̂(s,a,θ) — không khả thi khi không gian action là liên tục (vô số hành động)."
     }
   ]
 }

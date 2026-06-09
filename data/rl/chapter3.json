@@ -28,12 +28,12 @@
       "level": "basic",
       "question": "Sự khác biệt cốt lõi giữa RL dựa trên mô hình và RL không cần mô hình là gì?",
       "options": [
-        "Dựa trên mô hình biết xác suất chuyển trạng thái; không cần mô hình học từ kinh nghiệm",
-        "Dựa trên mô hình dùng mạng nơ-ron; không cần mô hình dùng bảng tra cứu",
         "Dựa trên mô hình cần nhiều dữ liệu hơn; không cần mô hình cần ít dữ liệu hơn",
-        "Dựa trên mô hình huấn luyện nhanh hơn; không cần mô hình hội tụ chậm hơn"
+        "Dựa trên mô hình huấn luyện nhanh hơn; không cần mô hình hội tụ chậm hơn",
+        "Dựa trên mô hình biết xác suất chuyển trạng thái; không cần mô hình học từ kinh nghiệm",
+        "Dựa trên mô hình dùng mạng nơ-ron; không cần mô hình dùng bảng tra cứu"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "RL dựa trên mô hình có xác suất chuyển trạng thái P(s'|s,a) và hàm phần thưởng, cho phép dùng Dynamic Programming. RL không cần mô hình học trực tiếp từ kinh nghiệm lấy mẫu mà không cần biết mô hình môi trường."
     },
     {
@@ -42,11 +42,11 @@
       "question": "Nên dùng phương pháp nào khi biết đầy đủ mô hình môi trường (xác suất chuyển trạng thái)?",
       "options": [
         "Temporal-Difference để bootstrapping trực tuyến",
-        "Deep Reinforcement Learning để xấp xỉ hàm",
         "Monte Carlo để lấy mẫu trực tiếp từ môi trường",
-        "Dynamic Programming để tính toán chính xác và hiệu quả"
+        "Dynamic Programming để tính toán chính xác và hiệu quả",
+        "Deep Reinforcement Learning để xấp xỉ hàm"
       ],
-      "answer": 3,
+      "answer": 2,
       "explanation": "Khi có đầy đủ mô hình (xác suất chuyển trạng thái và hàm phần thưởng đã biết), Dynamic Programming có thể giải các phương trình Bellman một cách chính xác và hiệu quả."
     },
     {
@@ -54,12 +54,12 @@
       "level": "basic",
       "question": "Trong chiến lược epsilon-greedy, tác nhân làm gì với xác suất ε?",
       "options": [
+        "Chọn một hành động hoàn toàn ngẫu nhiên để khám phá",
         "Chọn hành động có Q-value cao nhất trong bảng",
-        "Đặt lại tập về trạng thái ban đầu để thử lại",
         "Cập nhật hàm giá trị bằng phương pháp bootstrapping",
-        "Chọn một hành động hoàn toàn ngẫu nhiên để khám phá"
+        "Đặt lại tập về trạng thái ban đầu để thử lại"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Với xác suất ε, tác nhân thực hiện hành động ngẫu nhiên (khám phá). Với xác suất 1-ε, nó chọn hành động greedy tốt nhất đã biết (khai thác). Điều này đảm bảo tất cả cặp trạng thái-hành động cuối cùng đều được thăm."
     },
     {
@@ -68,11 +68,11 @@
       "question": "Thuật toán Value Iteration bắt đầu với điều gì?",
       "options": [
         "Chính sách tối ưu được tính từ dữ liệu trước đó",
-        "Lịch trình khám phá epsilon-greedy cố định sẵn",
         "Hàm giá trị khởi đầu v_0 tùy ý bất kỳ",
-        "Xác suất chuyển trạng thái ước lượng từ mẫu"
+        "Xác suất chuyển trạng thái ước lượng từ mẫu",
+        "Lịch trình khám phá epsilon-greedy cố định sẵn"
       ],
-      "answer": 2,
+      "answer": 1,
       "explanation": "Value Iteration bắt đầu với hàm giá trị tùy ý v_0 (ví dụ tất cả bằng 0). Định lý ánh xạ co đảm bảo hội tụ đến v* bất kể điểm khởi đầu này là gì."
     },
     {
@@ -82,10 +82,10 @@
       "options": [
         "Lấy mẫu chuyển trạng thái từ môi trường thực tế",
         "Học từ các tập hoàn chỉnh mà không cần mô hình",
-        "Cập nhật ước lượng bằng cách dùng các ước lượng hiện tại khác",
-        "Khởi tạo ngẫu nhiên tất cả hàm giá trị về không"
+        "Khởi tạo ngẫu nhiên tất cả hàm giá trị về không",
+        "Cập nhật ước lượng bằng cách dùng các ước lượng hiện tại khác"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Bootstrapping có nghĩa là cập nhật ước lượng giá trị của một trạng thái bằng cách dùng các giá trị ước lượng hiện tại của các trạng thái kế tiếp, thay vì chờ kết quả trả về cuối cùng thực sự."
     },
     {
@@ -94,11 +94,11 @@
       "question": "Monte Carlo phù hợp nhất với loại tác vụ nào?",
       "options": [
         "Tác vụ liên tục không có trạng thái kết thúc",
+        "Tác vụ cần cập nhật trực tuyến theo thời gian thực",
         "Tác vụ mà mô hình môi trường được xác định đầy đủ",
-        "Tác vụ có tập (episodic) với trạng thái kết thúc rõ ràng",
-        "Tác vụ cần cập nhật trực tuyến theo thời gian thực"
+        "Tác vụ có tập (episodic) với trạng thái kết thúc rõ ràng"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Phương pháp Monte Carlo yêu cầu các tập hoàn chỉnh để tính phần thưởng tích lũy. Chúng hoạt động tốt với tác vụ có tập (có trạng thái kết thúc) nhưng không thể xử lý tác vụ liên tục không bao giờ kết thúc."
     },
     {
@@ -106,12 +106,12 @@
       "level": "basic",
       "question": "Greedy policy theo hàm giá trị là gì?",
       "options": [
-        "Chính sách chọn hành động tối đa hóa Q-value",
         "Chính sách dùng epsilon để khám phá ngẫu nhiên",
-        "Chính sách luôn chọn hành động hoàn toàn ngẫu nhiên",
-        "Chính sách tối thiểu hóa tổng số bước cần thực hiện"
+        "Chính sách chọn hành động tối đa hóa Q-value",
+        "Chính sách tối thiểu hóa tổng số bước cần thực hiện",
+        "Chính sách luôn chọn hành động hoàn toàn ngẫu nhiên"
       ],
-      "answer": 0,
+      "answer": 1,
       "explanation": "Greedy policy chọn hành động tối đa hóa action-value: π(s) = argmax_a q(s,a). Nó khai thác các ước lượng giá trị hiện tại mà không có bất kỳ sự khám phá nào."
     },
     {
@@ -121,8 +121,8 @@
       "options": [
         "`v_{k+1}(s) = max_a q_k(s,a)` (tối đa greedy)",
         "`v_{k+1}(s) = Σ_a π(a|s) · q_k(s,a)` (trung bình theo chính sách)",
-        "`v_{k+1}(s) = α·r + (1-α)·v_k(s)` (trung bình trượt)",
-        "`v_{k+1}(s) = min_a q_k(s,a)` (tối thiểu bi quan)"
+        "`v_{k+1}(s) = min_a q_k(s,a)` (tối thiểu bi quan)",
+        "`v_{k+1}(s) = α·r + (1-α)·v_k(s)` (trung bình trượt)"
       ],
       "answer": 0,
       "explanation": "Value Iteration cập nhật bằng cách lấy tối đa trên các hành động: v_{k+1}(s) = max_a q_k(s,a), áp dụng trực tiếp phương trình tối ưu Bellman."
@@ -133,9 +133,9 @@
       "question": "Hai bước xen kẽ trong Policy Iteration là gì?",
       "options": [
         "Policy Evaluation và Policy Improvement lặp xen kẽ nhau",
+        "Giai đoạn khám phá và giai đoạn khai thác xen kẽ nhau",
         "Ước lượng giá trị và chọn hành động từ bảng tra cứu",
-        "Lượt truyền xuôi và lượt truyền ngược qua MDP",
-        "Giai đoạn khám phá và giai đoạn khai thác xen kẽ nhau"
+        "Lượt truyền xuôi và lượt truyền ngược qua MDP"
       ],
       "answer": 0,
       "explanation": "Policy Iteration xen kẽ giữa Policy Evaluation (tính V^π cho chính sách hiện tại) và Policy Improvement (làm cho chính sách greedy w.r.t. V^π) cho đến khi hội tụ."
@@ -145,12 +145,12 @@
       "level": "intermediate",
       "question": "Hạn chế chính của các phương pháp Dynamic Programming là gì?",
       "options": [
-        "Chúng không thể xử lý không gian trạng thái rời rạc hiệu quả",
         "Chúng hội tụ đến cực tiểu cục bộ thay vì toàn cục",
-        "Chúng yêu cầu tập hoàn chỉnh trước khi cập nhật bất kỳ thứ gì",
-        "Chúng yêu cầu mô hình môi trường đầy đủ để tính toán cập nhật"
+        "Chúng yêu cầu mô hình môi trường đầy đủ để tính toán cập nhật",
+        "Chúng không thể xử lý không gian trạng thái rời rạc hiệu quả",
+        "Chúng yêu cầu tập hoàn chỉnh trước khi cập nhật bất kỳ thứ gì"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "DP yêu cầu biết xác suất chuyển trạng thái P(s'|s,a) và hàm phần thưởng r(s,a). Không có mô hình này, DP không thể áp dụng — đây là động lực chính cho các phương pháp không cần mô hình."
     },
     {
@@ -158,12 +158,12 @@
       "level": "intermediate",
       "question": "Sự khác biệt giữa First-visit MC và Every-visit MC là gì?",
       "options": [
-        "First-visit chỉ cập nhật trạng thái kết thúc; every-visit cập nhật mọi trạng thái",
         "First-visit cần mô hình; every-visit hoàn toàn không cần mô hình",
-        "First-visit trung bình chỉ lần trả về đầu tiên mỗi tập; every-visit trung bình mọi lần",
-        "First-visit dùng học off-policy; every-visit dùng học on-policy"
+        "First-visit dùng học off-policy; every-visit dùng học on-policy",
+        "First-visit chỉ cập nhật trạng thái kết thúc; every-visit cập nhật mọi trạng thái",
+        "First-visit trung bình chỉ lần trả về đầu tiên mỗi tập; every-visit trung bình mọi lần"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "First-visit MC lấy trung bình phần thưởng từ lần ĐẦU TIÊN thăm trạng thái s trong mỗi tập. Every-visit MC lấy trung bình từ TẤT CẢ các lần thăm s trong mỗi tập. Cả hai đều hội tụ đến V^π."
     },
     {
@@ -171,12 +171,12 @@
       "level": "intermediate",
       "question": "Tại sao phương pháp Monte Carlo phải chờ đến khi kết thúc tập?",
       "options": [
-        "Chúng chỉ cập nhật chính sách sau khi mô hình được huấn luyện đầy đủ",
         "Chúng cần phần thưởng tích lũy G_t bao gồm tất cả phần thưởng tương lai",
+        "Chúng chỉ cập nhật chính sách sau khi mô hình được huấn luyện đầy đủ",
         "Chúng cần tính xác suất chuyển trạng thái chính xác trước tiên",
         "Chúng phải đồng bộ hóa tất cả trạng thái trước mỗi lần cập nhật"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Cập nhật MC dùng kết quả trả về thực G_t = r_{t+1} + γr_{t+2} + ... tổng tất cả phần thưởng tương lai trong tập. Tổng này chỉ biết khi đạt đến trạng thái kết thúc."
     },
     {
@@ -184,8 +184,8 @@
       "level": "intermediate",
       "question": "Định lý nào đảm bảo Value Iteration hội tụ đến v*?",
       "options": [
-        "Định lý Lập Trình Tuyến Tính của Bellman cho MDP",
         "Định lý Policy Gradient cho chính sách có tham số",
+        "Định lý Lập Trình Tuyến Tính của Bellman cho MDP",
         "Định lý Ánh Xạ Co cho toán tử Bellman",
         "Định lý Giới Hạn Trung Tâm cho trung bình trả về lấy mẫu"
       ],
@@ -197,12 +197,12 @@
       "level": "intermediate",
       "question": "Phương pháp on-policy trong học tăng cường là gì?",
       "options": [
-        "Phương pháp học về chính sách đang được thực thi hiện tại",
         "Phương pháp chỉ học giá trị của greedy policy mà thôi",
         "Phương pháp yêu cầu mô hình đầy đủ của môi trường",
+        "Phương pháp học về chính sách đang được thực thi hiện tại",
         "Phương pháp cập nhật tất cả trạng thái đồng thời mỗi bước"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Các phương pháp on-policy học hàm giá trị cho cùng chính sách đang tạo ra kinh nghiệm (ví dụ: SARSA với ε-greedy cải thiện chính sách ε-greedy mà nó đang theo)."
     },
     {
@@ -223,12 +223,12 @@
       "level": "advanced",
       "question": "Trong cập nhật Value Iteration, q_k(s,a) = Σ p(r|s,a)·r + γ Σ p(s'|s,a)·v_k(s'). Số hạng γ Σ p(s'|s,a)·v_k(s') biểu diễn:",
       "options": [
-        "Giá trị tương lai kỳ vọng được chiết khấu từ các trạng thái kế tiếp",
-        "Entropy của chính sách trên tất cả các hành động có thể",
         "Phần thưởng kỳ vọng ngay lập tức cho hành động a ở trạng thái s",
+        "Entropy của chính sách trên tất cả các hành động có thể",
+        "Giá trị tương lai kỳ vọng được chiết khấu từ các trạng thái kế tiếp",
         "Điểm thưởng khám phá cho các cặp trạng thái-hành động ít được thăm"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Số hạng này là giá trị tương lai bootstrapped: trung bình có trọng số chiết khấu (γ) của các giá trị v_k tại các trạng thái kế tiếp s', có trọng số theo xác suất chuyển trạng thái. Nó thay thế kết quả trả về tương lai thực bằng ước lượng hiện tại."
     },
     {
@@ -236,12 +236,12 @@
       "level": "advanced",
       "question": "Tại sao Monte Carlo thất bại với tác vụ liên tục (không có tập)?",
       "options": [
-        "Kết quả trả về G_t là vô hạn và không bao giờ kết thúc để tính toán",
         "Hành động liên tục không tương thích với việc lấy trung bình Monte Carlo",
+        "Kết quả trả về G_t là vô hạn và không bao giờ kết thúc để tính toán",
         "Không thể biểu diễn không gian trạng thái vô hạn trong bộ nhớ",
         "Cần mô hình để ước lượng xác suất chuyển trạng thái chính xác"
       ],
-      "answer": 0,
+      "answer": 1,
       "explanation": "Trong tác vụ liên tục không có trạng thái kết thúc, kết quả trả về G_t = Σ_{k=0}^∞ γ^k r_{t+k+1} yêu cầu tổng vô hạn không bao giờ đạt đến cuối tập. MC phải chờ kết thúc tập, điều này không bao giờ xảy ra."
     },
     {
@@ -249,12 +249,12 @@
       "level": "advanced",
       "question": "Định lý Cải Thiện Chính Sách phát biểu rằng nếu π'(s) = argmax_a q^π(s,a), thì:",
       "options": [
-        "π' bằng π chỉ khi chính sách tối ưu đã được đạt đến",
         "V^{π'}(s) = V^π(s) với mọi trạng thái s (điều kiện ổn định)",
+        "V^{π'}(s) ≥ V^π(s) với mọi trạng thái s (cải thiện đơn điệu)",
         "V^{π'}(s) ≤ V^π(s) với ít nhất một trạng thái (trường hợp xấu nhất)",
-        "V^{π'}(s) ≥ V^π(s) với mọi trạng thái s (cải thiện đơn điệu)"
+        "π' bằng π chỉ khi chính sách tối ưu đã được đạt đến"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "Định lý Cải Thiện Chính Sách đảm bảo V^{π'}(s) ≥ V^π(s) với MỌI trạng thái s. Nếu V^{π'}(s) = V^π(s), thì cả hai đều thỏa mãn phương trình tối ưu Bellman và cả hai đều là tối ưu."
     },
     {
@@ -262,12 +262,12 @@
       "level": "advanced",
       "question": "Phương pháp MC off-policy dùng chính sách hành vi μ và đánh giá chính sách mục tiêu π. Thách thức thống kê chính là gì?",
       "options": [
-        "Tỷ số lấy mẫu importance sampling có thể có phương sai rất cao",
         "Chính sách mục tiêu phải là greedy để đảm bảo hội tụ",
         "Monte Carlo không thể xử lý nhiều hơn một chính sách cùng lúc",
-        "Chính sách hành vi phải giống hệt với chính sách mục tiêu"
+        "Chính sách hành vi phải giống hệt với chính sách mục tiêu",
+        "Tỷ số lấy mẫu importance sampling có thể có phương sai rất cao"
       ],
-      "answer": 0,
+      "answer": 3,
       "explanation": "MC off-policy dùng importance sampling để hiệu chỉnh sự khác biệt giữa μ và π. Tỷ số importance sampling ∏(π/μ) có thể rất lớn, dẫn đến ước lượng có phương sai cực cao."
     },
     {
@@ -275,13 +275,91 @@
       "level": "advanced",
       "question": "Trong bài toán lập lịch mạng không dây, tại sao Monte Carlo có thể được ưu tiên hơn DP dù có mô hình xấp xỉ?",
       "options": [
-        "DP không thể xử lý hàm phần thưởng có giá trị âm trong mạng",
-        "Mô hình không chính xác trong DP lan truyền sai số; MC dùng kinh nghiệm thực",
         "Monte Carlo khai thác được GPU song song còn DP hoàn toàn tuần tự",
-        "Monte Carlo luôn hội tụ nhanh hơn DP bất kể chất lượng mô hình"
+        "Mô hình không chính xác trong DP lan truyền sai số; MC dùng kinh nghiệm thực",
+        "Monte Carlo luôn hội tụ nhanh hơn DP bất kể chất lượng mô hình",
+        "DP không thể xử lý hàm phần thưởng có giá trị âm trong mạng"
       ],
       "answer": 1,
       "explanation": "Nếu mô hình mạng là xấp xỉ, DP sẽ tính chính sách tối ưu cho mô hình sai. MC học trực tiếp từ tương tác môi trường thực, khiến nó mạnh hơn trước sự không chính xác của mô hình — đặc biệt quan trọng trong môi trường không dây động."
+    },
+    {
+      "id": 21,
+      "level": "intermediate",
+      "question": "Policy evaluation trong Dynamic Programming tính toán điều gì?",
+      "options": [
+        "Phần thưởng kỳ vọng tức thời của mỗi cặp trạng thái-hành động",
+        "Xác suất chuyển trạng thái của mô hình môi trường",
+        "Hàm giá trị của một policy cho trước",
+        "Chính sách tối ưu bằng cách áp dụng greedy trên toán tử Bellman"
+      ],
+      "answer": 2,
+      "explanation": "Policy evaluation giải phương trình Bellman để tính V^π(s) — hàm giá trị của policy π hiện tại. Đây là bước đầu tiên trong Policy Iteration trước khi thực hiện policy improvement."
+    },
+    {
+      "id": 22,
+      "level": "intermediate",
+      "question": "Ý tưởng cốt lõi của policy improvement là gì?",
+      "options": [
+        "Chọn action theo greedy dựa trên ước lượng giá trị hiện tại",
+        "Dùng Monte Carlo để lấy mẫu kết quả trả về từ nhiều tập",
+        "Giảm dần tốc độ học α để đảm bảo hội tụ đến policy tối ưu",
+        "Lặp lại policy evaluation nhiều lần để hội tụ về hàm giá trị chính xác"
+      ],
+      "answer": 0,
+      "explanation": "Policy improvement cập nhật policy bằng cách chọn greedy: π'(s) = argmax_a q^π(s,a). Ý tưởng là nếu luôn chọn action tốt nhất theo ước lượng giá trị hiện tại, policy mới sẽ không tệ hơn policy cũ."
+    },
+    {
+      "id": 23,
+      "level": "intermediate",
+      "question": "Phát biểu nào mô tả đúng nhất thuật toán value iteration?",
+      "options": [
+        "Xen kẽ giữa đánh giá policy đầy đủ và cải thiện policy một lần",
+        "Lấy mẫu kết quả trả về từ các episode hoàn chỉnh để ước lượng giá trị",
+        "Học hàm giá trị từ kinh nghiệm mà không cần mô hình môi trường",
+        "Cập nhật giá trị trực tiếp hướng đến tối ưu mà không cần policy evaluation đầy đủ"
+      ],
+      "answer": 3,
+      "explanation": "Value iteration áp dụng trực tiếp phương trình tối ưu Bellman: v_{k+1}(s) = max_a q_k(s,a). Nó không cần policy evaluation đầy đủ ở mỗi bước — mỗi vòng lặp vừa cập nhật giá trị vừa ngầm cải thiện policy."
+    },
+    {
+      "id": 24,
+      "level": "intermediate",
+      "question": "Tại sao action-value function thường được dùng trong Monte Carlo control thay vì chỉ dùng state-value function?",
+      "options": [
+        "Vì state-value function không thể biểu diễn với bảng tra cứu",
+        "Vì action-value function hội tụ nhanh hơn trong môi trường có tập",
+        "Vì policy improvement cần so sánh các action tại mỗi state",
+        "Vì action-value function dễ tính hơn khi không có mô hình"
+      ],
+      "answer": 2,
+      "explanation": "Để thực hiện policy improvement (chọn action tốt nhất), cần so sánh giá trị của các action khác nhau tại cùng một state. Nếu chỉ có V(s), cần mô hình để tính q(s,a). Action-value Q(s,a) cho phép greedy improvement trực tiếp mà không cần mô hình."
+    },
+    {
+      "id": 25,
+      "level": "basic",
+      "question": "Tại sao khám phá ε-greedy hữu ích trong học tăng cường?",
+      "options": [
+        "Cân bằng khai thác action tốt đã biết với khám phá các lựa chọn thay thế",
+        "Tăng tốc độ hội tụ bằng cách giảm số cặp state-action cần thăm",
+        "Đảm bảo tác nhân luôn chọn action có phần thưởng cao nhất",
+        "Loại bỏ hoàn toàn sự không chắc chắn trong ước lượng giá trị"
+      ],
+      "answer": 0,
+      "explanation": "ε-greedy cân bằng exploitation (chọn action tốt nhất đã biết với xác suất 1-ε) và exploration (thử action ngẫu nhiên với xác suất ε). Không khám phá thì tác nhân có thể bỏ qua các action tốt hơn chưa được thử."
+    },
+    {
+      "id": 26,
+      "level": "intermediate",
+      "question": "Nếu ε giảm quá nhanh trong quá trình huấn luyện, hậu quả nào xảy ra?",
+      "options": [
+        "Tác nhân tiêu tốn quá nhiều thời gian khám phá các action kém hiệu quả",
+        "Tốc độ học α tự động tăng lên để bù cho việc giảm khám phá",
+        "Khám phá không đủ và có thể hội tụ về policy dưới tối ưu",
+        "Policy hội tụ sớm nhưng luôn đạt được kết quả tối ưu toàn cục"
+      ],
+      "answer": 2,
+      "explanation": "Nếu ε giảm quá nhanh, tác nhân ngừng khám phá trước khi thu thập đủ thông tin về tất cả cặp state-action. Kết quả là policy có thể bị kẹt ở cực tiểu cục bộ — hội tụ về policy dưới tối ưu vì chưa bao giờ thử các action tốt hơn."
     }
   ]
 }

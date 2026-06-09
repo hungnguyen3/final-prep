@@ -28,10 +28,10 @@
       "level": "basic",
       "question": "Tại sao phương pháp bảng thất bại khi không gian trạng thái rất lớn?",
       "options": [
+        "Chúng không thể tính toán hàm phần thưởng chính xác",
         "Chúng chỉ hoạt động với không gian hành động liên tục",
-        "Chúng cần target network để ổn định quá trình học",
         "Chúng yêu cầu lưu một ô cho mỗi trạng thái, trở nên không khả thi",
-        "Chúng không thể tính toán hàm phần thưởng chính xác"
+        "Chúng cần target network để ổn định quá trình học"
       ],
       "answer": 2,
       "explanation": "Phương pháp bảng lưu một giá trị cho mỗi cặp (s,a). Khi không gian trạng thái tăng theo hàm mũ (ví dụ: định tuyến mạng), việc lưu trữ và cập nhật tất cả các ô trở nên không khả thi về bộ nhớ và tính toán."
@@ -41,12 +41,12 @@
       "level": "basic",
       "question": "Xấp xỉ hàm giá trị thay thế điều gì trong RL?",
       "options": [
+        "Bảng tra cứu bằng một hàm có tham số",
         "Bộ mô phỏng môi trường được dùng trong quá trình huấn luyện",
-        "Hệ số chiết khấu dùng trong phương trình Bellman",
         "Tín hiệu phần thưởng từ môi trường",
-        "Bảng tra cứu bằng một hàm có tham số"
+        "Hệ số chiết khấu dùng trong phương trình Bellman"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Xấp xỉ hàm giá trị thay thế bảng tra cứu (một giá trị mỗi trạng thái/hành động) bằng hàm có tham số V̂(s,w) hoặc Q̂(s,a,w), cho phép khái quát hóa qua các trạng thái tương tự."
     },
     {
@@ -54,12 +54,12 @@
       "level": "basic",
       "question": "Trong xấp xỉ hàm giá trị tuyến tính, φ(s) là gì?",
       "options": [
-        "Vector đặc trưng biểu diễn trạng thái s",
-        "Tốc độ học kiểm soát kích thước bước",
+        "Giá trị mục tiêu tính từ phương trình Bellman",
         "Vector trọng số được cập nhật trong huấn luyện",
-        "Giá trị mục tiêu tính từ phương trình Bellman"
+        "Vector đặc trưng biểu diễn trạng thái s",
+        "Tốc độ học kiểm soát kích thước bước"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Trong xấp xỉ tuyến tính V̂(s,w) = wᵀφ(s), φ(s) là vector đặc trưng biểu diễn trạng thái s trong một không gian đặc trưng cố định."
     },
     {
@@ -67,12 +67,12 @@
       "level": "basic",
       "question": "Đầu vào và đầu ra của mạng DQN là gì?",
       "options": [
-        "Đầu vào: xác suất hành động; Đầu ra: hành động được chọn",
         "Đầu vào: trạng thái s; Đầu ra: Q-value cho tất cả hành động",
-        "Đầu vào: vector trọng số; Đầu ra: tham số đã cập nhật",
-        "Đầu vào: tín hiệu phần thưởng; Đầu ra: chính sách tối ưu"
+        "Đầu vào: tín hiệu phần thưởng; Đầu ra: chính sách tối ưu",
+        "Đầu vào: xác suất hành động; Đầu ra: hành động được chọn",
+        "Đầu vào: vector trọng số; Đầu ra: tham số đã cập nhật"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "Một DQN nhận trạng thái hiện tại s làm đầu vào và xuất Q-value cho tất cả các hành động rời rạc cùng lúc, cho phép chọn hành động qua argmax."
     },
     {
@@ -81,9 +81,9 @@
       "question": "DQN chọn hành động tại trạng thái s như thế nào?",
       "options": [
         "Bằng cách tính argmax_a Q̂(s,a,θ) trên tất cả hành động",
+        "Bằng cách lấy mẫu từ phân phối xác suất đầu ra",
         "Bằng cách lấy trung bình Q-value trên tất cả hành động có thể",
-        "Bằng cách theo một quy tắc cố định lưu trong bảng tra cứu",
-        "Bằng cách lấy mẫu từ phân phối xác suất đầu ra"
+        "Bằng cách theo một quy tắc cố định lưu trong bảng tra cứu"
       ],
       "answer": 0,
       "explanation": "DQN chọn hành động có Q-value ước tính cao nhất: a* = argmax_a Q̂(s,a,θ). Điều này yêu cầu đánh giá tất cả các hành động rời rạc."
@@ -93,12 +93,12 @@
       "level": "basic",
       "question": "Mục đích chính của experience replay trong DQN là gì?",
       "options": [
-        "Phá vỡ tương quan thời gian trong các mẫu huấn luyện",
         "Tăng tốc độ học trong quá trình huấn luyện",
-        "Giảm kích thước trọng số của neural network",
-        "Tính toán giá trị target network nhanh hơn"
+        "Tính toán giá trị target network nhanh hơn",
+        "Phá vỡ tương quan thời gian trong các mẫu huấn luyện",
+        "Giảm kích thước trọng số của neural network"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Experience replay lưu các chuyển tiếp vào buffer và lấy mẫu ngẫu nhiên từ đó, phá vỡ tương quan thời gian giữa các mẫu huấn luyện liên tiếp mà nếu không sẽ làm mất ổn định quá trình học."
     },
     {
@@ -106,12 +106,12 @@
       "level": "basic",
       "question": "Replay buffer D trong DQN lưu trữ gì?",
       "options": [
+        "Các chuyển tiếp dạng (s, a, r, s') từ quá trình tương tác",
         "Chỉ các trạng thái và phần thưởng tương ứng của chúng",
         "Trọng số neural network tại mỗi bước thời gian",
-        "Q-value mục tiêu tính bởi mạng đóng băng",
-        "Các chuyển tiếp dạng (s, a, r, s') từ quá trình tương tác"
+        "Q-value mục tiêu tính bởi mạng đóng băng"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Replay buffer D lưu các chuyển tiếp kinh nghiệm (s, a, r, s') — trạng thái, hành động, phần thưởng và trạng thái tiếp theo — từ quá trình tương tác của tác nhân với môi trường."
     },
     {
@@ -119,12 +119,12 @@
       "level": "intermediate",
       "question": "Hàm mất mát DQN dùng để huấn luyện mạng chính là gì?",
       "options": [
-        "`L(θ) = E[(y - Q̂(s,a,θ))²]` với `y = r + γ max_{a'} Q̂(s',a',θ⁻)`",
+        "`L(θ) = E[log π(a|s,θ) · Q̂(s,a,θ)]`",
         "`L(θ) = E[(r + γV̂(s,w) - Q̂(s,a,θ))²]`",
-        "`L(θ) = E[(G_t - Q̂(s,a,θ))²]` dùng lợi nhuận Monte Carlo",
-        "`L(θ) = E[log π(a|s,θ) · Q̂(s,a,θ)]`"
+        "`L(θ) = E[(y - Q̂(s,a,θ))²]` với `y = r + γ max_{a'} Q̂(s',a',θ⁻)`",
+        "`L(θ) = E[(G_t - Q̂(s,a,θ))²]` dùng lợi nhuận Monte Carlo"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Hàm mất mát DQN là sai số bình phương trung bình giữa Q̂(s,a,θ) dự đoán và mục tiêu y = r + γ max_{a'} Q̂(s',a',θ⁻), trong đó θ⁻ là target network đóng băng."
     },
     {
@@ -133,9 +133,9 @@
       "question": "Mục đích của target network θ⁻ trong DQN là gì?",
       "options": [
         "Cung cấp mục tiêu ổn định bằng cách cập nhật ít thường xuyên hơn",
+        "Lưu tất cả chuyển tiếp trong bộ nhớ replay buffer",
         "Chọn hành động khám phá bằng chiến lược epsilon-greedy",
-        "Tính toán cập nhật gradient nhanh hơn cho mạng chính",
-        "Lưu tất cả chuyển tiếp trong bộ nhớ replay buffer"
+        "Tính toán cập nhật gradient nhanh hơn cho mạng chính"
       ],
       "answer": 0,
       "explanation": "Target network θ⁻ là bản sao đóng băng của mạng chính được cập nhật mỗi C bước. Nó cung cấp mục tiêu huấn luyện ổn định, ngăn chặn bất ổn định gây ra khi cả dự đoán lẫn mục tiêu đều thay đổi đồng thời."
@@ -145,12 +145,12 @@
       "level": "intermediate",
       "question": "Vấn đề gì xảy ra trong huấn luyện DQN nếu không có target network?",
       "options": [
-        "Cả giá trị dự đoán và mục tiêu đều dịch chuyển mỗi bước, gây bất ổn định",
         "Vector đặc trưng φ(s) không thể biểu diễn đúng trạng thái",
-        "Replay buffer đầy và ngừng nhận chuyển tiếp mới",
-        "Không gian hành động thu hẹp về một hành động duy nhất"
+        "Không gian hành động thu hẹp về một hành động duy nhất",
+        "Cả giá trị dự đoán và mục tiêu đều dịch chuyển mỗi bước, gây bất ổn định",
+        "Replay buffer đầy và ngừng nhận chuyển tiếp mới"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Không có target network, cả Q̂(s,a,θ) và mục tiêu y đều thay đổi mỗi bước gradient, tạo ra vấn đề mục tiêu di chuyển dẫn đến dao động và phân kỳ."
     },
     {
@@ -158,12 +158,12 @@
       "level": "intermediate",
       "question": "Target network θ⁻ của DQN được cập nhật bao lâu một lần?",
       "options": [
-        "Mỗi C bước bằng cách sao chép trọng số từ mạng chính",
         "Sau mỗi bước gradient descent trên mạng chính",
+        "Mỗi C bước bằng cách sao chép trọng số từ mạng chính",
         "Sau mỗi episode hoàn chỉnh mà tác nhân chơi",
         "Liên tục bằng cách cập nhật trung bình động hàm mũ"
       ],
-      "answer": 0,
+      "answer": 1,
       "explanation": "Target network θ⁻ được cập nhật mỗi C bước (ví dụ: mỗi 1000 bước) bằng cách sao chép trọng số từ mạng chính θ, giữ mục tiêu ổn định giữa các lần cập nhật."
     },
     {
@@ -171,8 +171,8 @@
       "level": "intermediate",
       "question": "Ưu điểm khái quát hóa then chốt của xấp xỉ hàm so với Q-learning bảng là gì?",
       "options": [
-        "Nó cho phép tác nhân hoạt động chỉ trong môi trường tất định",
         "Nó loại bỏ nhu cầu về tín hiệu phần thưởng trong huấn luyện",
+        "Nó cho phép tác nhân hoạt động chỉ trong môi trường tất định",
         "Nó lưu một giá trị riêng cho mỗi cặp trạng thái-hành động có thể",
         "Cập nhật trọng số tại một trạng thái cải thiện ước tính tại các trạng thái tương tự"
       ],
@@ -184,12 +184,12 @@
       "level": "intermediate",
       "question": "Tại sao DQN xử lý được không gian trạng thái lớn trong định tuyến mạng khác với Q-learning bảng?",
       "options": [
-        "DQN đánh giá từng trạng thái độc lập không cần bộ nhớ",
         "DQN xấp xỉ Q-value bằng neural network có khả năng khái quát hóa",
         "DQN dùng bảng tra cứu được nén bằng hashing",
+        "DQN đánh giá từng trạng thái độc lập không cần bộ nhớ",
         "DQN chỉ lưu 100 trạng thái được thăm nhiều nhất trong bộ nhớ"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "DQN dùng neural network để xấp xỉ Q(s,a,θ), có thể khái quát hóa đến các trạng thái chưa thấy. Điều này giúp nó có thể mở rộng đến không gian trạng thái lớn hoặc liên tục như trong định tuyến mạng."
     },
     {
@@ -197,12 +197,12 @@
       "level": "intermediate",
       "question": "Trong quy tắc cập nhật trọng số DQN `w ← w + α[target - V̂(s,w)]·∇_w V̂(s,w)`, số hạng `[target - V̂(s,w)]` biểu diễn điều gì?",
       "options": [
-        "Sai số TD — chênh lệch giữa mục tiêu và ước tính hiện tại",
-        "Log xác suất của hành động được thực hiện tại trạng thái s",
         "Gradient giá trị hành động dùng trong phương pháp policy gradient",
+        "Log xác suất của hành động được thực hiện tại trạng thái s",
+        "Sai số TD — chênh lệch giữa mục tiêu và ước tính hiện tại",
         "Hệ số chiết khấu áp dụng cho phần thưởng tương lai kỳ vọng"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Số hạng [target - V̂(s,w)] là sai số temporal-difference (TD), biểu diễn mức độ chênh lệch của ước tính hiện tại so với mục tiêu. Nó điều khiển cập nhật trọng số hướng đến ước tính tốt hơn."
     },
     {
@@ -210,12 +210,12 @@
       "level": "intermediate",
       "question": "DQN xử lý được loại không gian hành động nào và hạn chế của nó là gì?",
       "options": [
+        "Chỉ liên tục; không thể xử lý các lựa chọn rời rạc",
         "Cả rời rạc lẫn liên tục thông qua các đầu ra riêng biệt",
         "Chỉ rời rạc; không thể xử lý hiệu quả hành động liên tục",
-        "Chỉ liên tục; không thể xử lý các lựa chọn rời rạc",
         "Không gian hỗn hợp; nhưng chỉ đến 10 hành động đồng thời"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "DQN chọn hành động qua argmax_a Q̂(s,a,θ), yêu cầu liệt kê tất cả hành động. Điều này hoạt động cho không gian hành động rời rạc nhưng thất bại với hành động liên tục (ví dụ: kiểm soát công suất) khi có vô số hành động."
     },
     {
@@ -223,8 +223,8 @@
       "level": "advanced",
       "question": "Trong định tuyến mạng với DQN, phương án nào mô tả tốt nhất hàm phần thưởng?",
       "options": [
-        "Phần thưởng dương cho mỗi lần cập nhật bảng định tuyến",
         "Phần thưởng cố định +1 khi bất kỳ gói tin đến bất kỳ nút nào",
+        "Phần thưởng dương cho mỗi lần cập nhật bảng định tuyến",
         "Chênh lệch giữa độ dài hàng đợi hiện tại và trước đó",
         "Độ trễ gói tin âm hoặc tín hiệu xác nhận giao hàng thành công"
       ],
@@ -236,12 +236,12 @@
       "level": "advanced",
       "question": "Tại sao lấy mẫu ngẫu nhiên từ replay buffer cải thiện tính ổn định huấn luyện DQN?",
       "options": [
-        "Nó tăng gấp đôi kích thước batch hiệu quả mà không tốn thêm bộ nhớ",
-        "Nó ưu tiên các chuyển tiếp hiếm mà tác nhân ít gặp",
+        "Nó loại bỏ tương quan thời gian làm lệch ước tính gradient",
         "Nó đảm bảo tất cả chuyển tiếp có cùng độ lớn phần thưởng",
-        "Nó loại bỏ tương quan thời gian làm lệch ước tính gradient"
+        "Nó ưu tiên các chuyển tiếp hiếm mà tác nhân ít gặp",
+        "Nó tăng gấp đôi kích thước batch hiệu quả mà không tốn thêm bộ nhớ"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Các chuyển tiếp liên tiếp có tương quan cao (cùng episode, trạng thái tương tự). Lấy mẫu ngẫu nhiên từ replay buffer tách tương quan trong mini-batch, tạo ra ước tính gradient độc lập hơn, ít lệch hơn."
     },
     {
@@ -249,12 +249,12 @@
       "level": "advanced",
       "question": "Mục tiêu DQN dùng `max_{a'} Q̂(s',a',θ⁻)` thay vì `max_{a'} Q̂(s',a',θ)`. Tại sao?",
       "options": [
-        "Dùng θ cho mục tiêu tạo ra phụ thuộc vòng tròn gây phân kỳ",
         "θ⁻ được cập nhật thường xuyên hơn và do đó chính xác hơn θ",
+        "θ⁻ dùng kiến trúc mạng lớn hơn để đạt độ chính xác cao hơn",
         "Mạng chính θ không thể đánh giá Q-value trạng thái tiếp theo",
-        "θ⁻ dùng kiến trúc mạng lớn hơn để đạt độ chính xác cao hơn"
+        "Dùng θ cho mục tiêu tạo ra phụ thuộc vòng tròn gây phân kỳ"
       ],
-      "answer": 0,
+      "answer": 3,
       "explanation": "Nếu cùng mạng θ được dùng cho cả dự đoán lẫn tính mục tiêu, cả hai vế của hàm mất mát đều thay đổi mỗi bước, gây bất ổn định. θ⁻ đóng băng tách rời chúng, ổn định hóa quá trình huấn luyện."
     },
     {
@@ -262,12 +262,12 @@
       "level": "advanced",
       "question": "Một kỹ sư mạng lập luận rằng với phân bổ băng thông liên tục, DQN nên dùng hành động rời rạc hóa mịn (1000 bins). Vấn đề chính của cách này là gì?",
       "options": [
-        "DQN không thể biểu diễn giá trị băng thông là đầu ra Q-network",
-        "Rời rạc hóa mịn làm bùng nổ không gian hành động, khiến argmax tốn kém và kém chính xác",
+        "Rời rạc hóa không gây sai số nếu các bin đủ mịn",
         "argmax trên 1000 hành động có chi phí tính toán thấp và chính xác",
-        "Rời rạc hóa không gây sai số nếu các bin đủ mịn"
+        "Rời rạc hóa mịn làm bùng nổ không gian hành động, khiến argmax tốn kém và kém chính xác",
+        "DQN không thể biểu diễn giá trị băng thông là đầu ra Q-network"
       ],
-      "answer": 1,
+      "answer": 2,
       "explanation": "Rời rạc hóa mịn hành động liên tục làm argmax tốn kém (nhiều hành động cần đánh giá) và vẫn gây ra sai số rời rạc hóa. Phương pháp policy gradient là giải pháp thích hợp cho không gian hành động liên tục."
     },
     {
@@ -275,13 +275,26 @@
       "level": "advanced",
       "question": "Xét DQN áp dụng cho định tuyến khi trạng thái gồm độ dài hàng đợi tại 50 nút. Tại sao điều này tốt hơn Q-learning bảng và ràng buộc cơ bản nào vẫn còn tồn tại?",
       "options": [
-        "Q-learning bảng cũng mở rộng đến mạng 50 nút nếu đủ bộ nhớ",
-        "DQN xử lý trạng thái liên tục qua khái quát hóa, nhưng vẫn bị giới hạn hành động chặng tiếp theo rời rạc",
         "DQN chuyển đổi trạng thái thành bins rời rạc, loại bỏ mọi sai số xấp xỉ",
-        "DQN loại bỏ nhu cầu về phần thưởng bằng cách học từ chuyển tiếp trạng thái"
+        "DQN xử lý trạng thái liên tục qua khái quát hóa, nhưng vẫn bị giới hạn hành động chặng tiếp theo rời rạc",
+        "DQN loại bỏ nhu cầu về phần thưởng bằng cách học từ chuyển tiếp trạng thái",
+        "Q-learning bảng cũng mở rộng đến mạng 50 nút nếu đủ bộ nhớ"
       ],
       "answer": 1,
       "explanation": "DQN khái quát hóa qua không gian trạng thái nhiều chiều (50 độ dài hàng đợi) qua xấp xỉ neural network, điều mà phương pháp bảng không thể xử lý. Tuy nhiên, argmax của DQN vẫn yêu cầu hành động rời rạc — không thể xuất trực tiếp băng thông hoặc công suất liên tục."
+    },
+    {
+      "id": 21,
+      "level": "basic",
+      "question": "Tại sao phương pháp bảng thất bại với bài toán định tuyến mạng quy mô lớn?",
+      "options": [
+        "Phương pháp bảng yêu cầu target network để ổn định quá trình học",
+        "Phương pháp bảng không thể biểu diễn hành động chọn nút kế tiếp",
+        "Bảng tra cứu chỉ hoạt động với môi trường tất định không nhiễu",
+        "Không gian state tăng theo hàm mũ với số lượng node và link"
+      ],
+      "answer": 3,
+      "explanation": "Trong định tuyến mạng lớn, mỗi node có thể có nhiều trạng thái (độ dài hàng đợi, độ trễ link). Số lượng tổ hợp trạng thái tăng theo hàm mũ với số node và link, khiến bảng tra cứu trở nên không khả thi về bộ nhớ và tính toán."
     }
   ]
 }

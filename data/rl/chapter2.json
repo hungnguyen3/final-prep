@@ -29,11 +29,11 @@
       "question": "Chữ viết tắt MDP trong Reinforcement Learning là viết tắt của gì?",
       "options": [
         "Model-Driven Policy learning",
-        "Maximum Decision Pathway",
+        "Markov Decision Process",
         "Multi-step Dynamic Programming",
-        "Markov Decision Process"
+        "Maximum Decision Pathway"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "MDP là viết tắt của Markov Decision Process — framework toán học chuẩn để mô hình hóa việc ra quyết định tuần tự trong điều kiện bất định của RL."
     },
     {
@@ -41,12 +41,12 @@
       "level": "basic",
       "question": "Thành phần nào sau đây KHÔNG thuộc bộ tuple MDP chính thức (S, A, P, R, γ)?",
       "options": [
-        "Tập hợp các state có thể S",
-        "Learning rate α cho cập nhật tham số",
         "Discount factor γ cho reward tương lai",
-        "Hàm xác suất chuyển tiếp P"
+        "Hàm xác suất chuyển tiếp P",
+        "Tập hợp các state có thể S",
+        "Learning rate α cho cập nhật tham số"
       ],
-      "answer": 1,
+      "answer": 3,
       "explanation": "MDP được định nghĩa bởi (S, A, P, R, γ). Learning rate α là siêu tham số của thuật toán RL, không phải thành phần của MDP."
     },
     {
@@ -55,11 +55,11 @@
       "question": "Hàm chuyển tiếp P(s'|s,a) trong MDP đại diện cho điều gì?",
       "options": [
         "Chiết khấu áp dụng cho reward ở state tiếp theo",
-        "Action tối ưu cần thực hiện ở state s để đến s'",
+        "Xác suất chuyển sang state s' từ s bằng action a",
         "Reward kỳ vọng sau action a tại state s",
-        "Xác suất chuyển sang state s' từ s bằng action a"
+        "Action tối ưu cần thực hiện ở state s để đến s'"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "P(s'|s,a) là xác suất chuyển tiếp — khả năng môi trường di chuyển từ state s đến state s' khi agent thực hiện action a."
     },
     {
@@ -67,12 +67,12 @@
       "level": "basic",
       "question": "Markov Property phát biểu rằng tương lai chỉ phụ thuộc vào:",
       "options": [
-        "Toàn bộ lịch sử các state và action trước đó",
-        "Tổng reward tích lũy nhận được trong episode",
         "State và action hiện tại, không phải toàn bộ lịch sử",
-        "Hai state gần nhất và action gần nhất"
+        "Hai state gần nhất và action gần nhất",
+        "Toàn bộ lịch sử các state và action trước đó",
+        "Tổng reward tích lũy nhận được trong episode"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "Markov Property phát biểu rằng p(s',r|s,a) được xác định hoàn toàn bởi state s và action a hiện tại — toàn bộ lịch sử không cung cấp thêm thông tin dự đoán."
     },
     {
@@ -81,11 +81,11 @@
       "question": "Trong ví dụ MDP drone giao hàng, hàm reward R gán như thế nào?",
       "options": [
         "R = 0 mỗi bước và +100 tại state kết thúc",
-        "R = +1 mỗi bước và −10 khi trượt mục tiêu",
         "R = −5 mỗi bước và +5 khi đến bất kỳ ô nào",
-        "R = −1 mỗi bước và +10 khi giao hàng thành công"
+        "R = −1 mỗi bước và +10 khi giao hàng thành công",
+        "R = +1 mỗi bước và −10 khi trượt mục tiêu"
       ],
-      "answer": 3,
+      "answer": 2,
       "explanation": "Trong ví dụ, reward là −1 mỗi bước thời gian (để khuyến khích hiệu quả) và +10 khi giao hàng thành công, hướng dẫn agent giao hàng nhanh chóng."
     },
     {
@@ -93,12 +93,12 @@
       "level": "basic",
       "question": "Điều kiện nào cần có để mô hình hóa một tác vụ dưới dạng MDP?",
       "options": [
+        "Hàm reward phải luôn dương và bị chặn trên",
         "Không gian state phải hữu hạn và không gian action rời rạc",
         "Môi trường phải tất định và không có yếu tố ngẫu nhiên",
-        "Agent phải quan sát đầy đủ và Markov Property phải thỏa mãn",
-        "Hàm reward phải luôn dương và bị chặn trên"
+        "Agent phải quan sát đầy đủ và Markov Property phải thỏa mãn"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "MDP giả định quan sát đầy đủ (agent thấy trạng thái thật) và Markov Property thỏa mãn. Môi trường ngẫu nhiên được chấp nhận — không cần tất định hoàn toàn."
     },
     {
@@ -106,12 +106,12 @@
       "level": "basic",
       "question": "'Policy' trong ngữ cảnh MDP là gì?",
       "options": [
-        "Hàm ánh xạ state hoặc cặp state-action sang return kỳ vọng",
         "Hệ số chiết khấu áp dụng cho giá trị reward tương lai",
-        "Quy tắc của môi trường để chuyển tiếp giữa các state",
-        "Chiến lược ánh xạ state sang action hoặc xác suất action"
+        "Chiến lược ánh xạ state sang action hoặc xác suất action",
+        "Hàm ánh xạ state hoặc cặp state-action sang return kỳ vọng",
+        "Quy tắc của môi trường để chuyển tiếp giữa các state"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "Policy π định nghĩa hành vi của agent — ánh xạ state sang action (deterministic) hoặc sang phân phối xác suất trên các action (stochastic)."
     },
     {
@@ -119,12 +119,12 @@
       "level": "intermediate",
       "question": "Tại sao Markov Property đơn giản hóa việc học và lập kế hoạch trong MDP?",
       "options": [
-        "Nó loại bỏ nhu cầu về hàm reward trong mô hình",
         "Nó đảm bảo hàm giá trị hội tụ trong một lần lặp",
-        "Nó đảm bảo policy tối ưu luôn là deterministic",
-        "Nó cho phép agent quyết định chỉ dựa trên state hiện tại, không cần lịch sử"
+        "Nó loại bỏ nhu cầu về hàm reward trong mô hình",
+        "Nó cho phép agent quyết định chỉ dựa trên state hiện tại, không cần lịch sử",
+        "Nó đảm bảo policy tối ưu luôn là deterministic"
       ],
-      "answer": 3,
+      "answer": 2,
       "explanation": "Vì chuyển tiếp tương lai chỉ phụ thuộc vào state hiện tại, agent không cần theo dõi lịch sử. Điều này giảm đáng kể độ phức tạp của thuật toán học và lập kế hoạch."
     },
     {
@@ -134,8 +134,8 @@
       "options": [
         "Tổng bằng đúng 1",
         "Tổng bằng discount factor γ",
-        "Tổng bằng reward tức thì kỳ vọng r(s,a)",
-        "Phân bố đều trên tất cả các state"
+        "Phân bố đều trên tất cả các state",
+        "Tổng bằng reward tức thì kỳ vọng r(s,a)"
       ],
       "answer": 0,
       "explanation": "Với mỗi cặp (s,a) cố định, các xác suất P(s'|s,a) tạo thành phân phối xác suất hợp lệ trên các state kế tiếp và phải tổng bằng 1."
@@ -145,12 +145,12 @@
       "level": "intermediate",
       "question": "Tình huống nào sau đây sẽ VI PHẠM Markov Property?",
       "options": [
+        "Trò chơi bài mà nước đi tốt nhất phụ thuộc vào các lá bài đã chơi trước",
         "Robot có thể quan sát đầy đủ góc và vận tốc khớp",
         "Thế giới lưới nơi mỗi ô có giá trị reward cố định",
-        "Bộ định tuyến quan sát được độ dài hàng đợi hiện tại của tất cả liên kết",
-        "Trò chơi bài mà nước đi tốt nhất phụ thuộc vào các lá bài đã chơi trước"
+        "Bộ định tuyến quan sát được độ dài hàng đợi hiện tại của tất cả liên kết"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Trong trò chơi bài mà các lá đã chơi ảnh hưởng đến quyết định tối ưu, quan sát hiện tại (tay bài hiện tại) là chưa đủ — lịch sử có vai trò quan trọng. Điều này vi phạm Markov Property."
     },
     {
@@ -158,12 +158,12 @@
       "level": "intermediate",
       "question": "Bellman equation cho V^π(s) phát biểu rằng giá trị của state s bằng:",
       "options": [
+        "Reward tức thì kỳ vọng cộng γ nhân giá trị state tiếp theo kỳ vọng",
         "Chỉ reward tức thì r(s,a), bỏ qua state tương lai",
         "Tổng tất cả reward tương lai mà không có hệ số chiết khấu",
-        "Giá trị action Q(s,a) tối đa trên tất cả action",
-        "Reward tức thì kỳ vọng cộng γ nhân giá trị state tiếp theo kỳ vọng"
+        "Giá trị action Q(s,a) tối đa trên tất cả action"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Phương trình đánh giá Bellman: V^π(s) = Σ_a π(a|s) Σ p(s',r|s,a)[r + γ·V^π(s')]. Nó phân rã giá trị thành reward tức thì cộng với giá trị chiết khấu của các state kế tiếp."
     },
     {
@@ -172,8 +172,8 @@
       "question": "Bellman Optimality Equation khác Bellman Evaluation Equation như thế nào?",
       "options": [
         "Optimality dùng trung bình trên tất cả action; evaluation dùng max",
-        "Optimality chỉ áp dụng cho stochastic policy; evaluation cho deterministic",
         "Optimality dùng γ=1; evaluation dùng γ < 1 để có return hữu hạn",
+        "Optimality chỉ áp dụng cho stochastic policy; evaluation cho deterministic",
         "Optimality lấy max trên action; evaluation lấy trung bình theo policy π"
       ],
       "answer": 3,
@@ -197,9 +197,9 @@
       "level": "intermediate",
       "question": "Policy evaluation trong MDP đề cập đến:",
       "options": [
-        "Ước lượng xác suất chuyển tiếp P(s'|s,a) từ dữ liệu",
         "Tìm policy tối đa hóa hàm giá trị",
         "Cập nhật policy greedy theo Q(s,a)",
+        "Ước lượng xác suất chuyển tiếp P(s'|s,a) từ dữ liệu",
         "Tính hàm giá trị V^π cho một policy π cố định"
       ],
       "answer": 3,
@@ -210,12 +210,12 @@
       "level": "intermediate",
       "question": "Tại sao stochastic policy đôi khi được ưu tiên hơn deterministic policy trong MDP?",
       "options": [
+        "Chúng cho phép khám phá và xử lý môi trường có lợi từ ngẫu nhiên",
         "Chúng cần ít chuyển tiếp state hơn để đánh giá hoàn toàn",
         "Chúng luôn đạt reward tích lũy cao hơn khi hội tụ",
-        "Chúng cho phép khám phá và xử lý môi trường có lợi từ ngẫu nhiên",
         "Chúng loại bỏ nhu cầu về mô hình xác suất chuyển tiếp"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "Stochastic policy cho phép khám phá (thử các action khác nhau) và hữu ích trong môi trường đối kháng hoặc quan sát một phần nơi deterministic policy có thể đoán trước bị khai thác."
     },
     {
@@ -223,12 +223,12 @@
       "level": "advanced",
       "question": "Trong MDP thế giới lưới với 4 state và 2 action, hàm chuyển tiếp P phải thỏa mãn điều kiện nào với mọi cặp (s,a)?",
       "options": [
-        "Σ_{s,a} P(s'|s,a) = 1 với mỗi s'",
-        "P(s'|s,a) ≥ 0.25 với mọi s' có thể đến được",
         "Σ_{s'} P(s'|s,a) = 1 với mọi s và a",
+        "P(s'|s,a) ≥ 0.25 với mọi s' có thể đến được",
+        "Σ_{s,a} P(s'|s,a) = 1 với mỗi s'",
         "Σ_{s'} P(s'|s,a) = γ với mọi s và a"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "Với mỗi cặp (s,a) cố định, P(s'|s,a) là phân phối xác suất trên các state tiếp theo s', vì vậy phải tổng bằng 1. Không cần phân bố đều — một số chuyển tiếp có thể có xác suất 0."
     },
     {
@@ -250,11 +250,11 @@
       "question": "Policy iteration xen kẽ giữa policy evaluation và policy improvement. Tại sao sự hội tụ được đảm bảo cho MDP hữu hạn?",
       "options": [
         "Mỗi bước improvement làm giảm nghiêm ngặt hàm giá trị",
-        "Stochastic policy luôn thống trị deterministic policy trong MDP hữu hạn",
         "Số lượng deterministic policy là hữu hạn và improvement không bao giờ làm tệ policy",
+        "Stochastic policy luôn thống trị deterministic policy trong MDP hữu hạn",
         "Bellman equation có nghiệm duy nhất chỉ khi γ = 0"
       ],
-      "answer": 2,
+      "answer": 1,
       "explanation": "Có hữu hạn deterministic policy. Mỗi bước policy improvement tạo ra policy ít nhất tốt bằng policy hiện tại (Định lý Policy Improvement), nên thuật toán phải kết thúc tại policy tối ưu."
     },
     {
@@ -262,12 +262,12 @@
       "level": "advanced",
       "question": "Robot trong môi trường quan sát một phần nơi nhiễu cảm biến ngăn quan sát state thật sẽ vi phạm giả định MDP nào?",
       "options": [
-        "Hàm chuyển tiếp phải cố định theo thời gian",
-        "Hàm reward phải chỉ phụ thuộc vào state và action",
         "Agent phải có quan sát đầy đủ về state thật",
-        "Discount factor phải nghiêm ngặt nhỏ hơn 1"
+        "Discount factor phải nghiêm ngặt nhỏ hơn 1",
+        "Hàm reward phải chỉ phụ thuộc vào state và action",
+        "Hàm chuyển tiếp phải cố định theo thời gian"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "MDP giả định quan sát đầy đủ — agent trực tiếp quan sát state thật. Khi state thật bị ẩn (quan sát một phần), cần dùng POMDP (Partially Observable MDP) thay thế."
     },
     {
@@ -275,13 +275,65 @@
       "level": "advanced",
       "question": "Trong MDP dạng bảng, phương trình đánh giá Bellman được áp dụng lặp đi lặp lại (V_{k+1}(s) ← ...). Đảm bảo hội tụ là gì?",
       "options": [
-        "Hội tụ về V* bất kể policy ban đầu",
-        "Hội tụ chính xác sau |S| lần lặp với không gian state hữu hạn bất kỳ",
         "Chỉ hội tụ nếu policy π là deterministic",
-        "Hội tụ về V^π ở giới hạn nếu γ < 1 hoặc tác vụ là episodic"
+        "Hội tụ về V^π ở giới hạn nếu γ < 1 hoặc tác vụ là episodic",
+        "Hội tụ chính xác sau |S| lần lặp với không gian state hữu hạn bất kỳ",
+        "Hội tụ về V* bất kể policy ban đầu"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "Policy evaluation lặp hội tụ về hàm giá trị thật V^π với mọi policy π, với điều kiện γ < 1 (hoặc tác vụ là episodic), bằng định lý ánh xạ co."
+    },
+    {
+      "id": 21,
+      "level": "basic",
+      "question": "Bộ tuple nào sau đây định nghĩa đúng một Markov Decision Process?",
+      "options": [
+        "(S, A, P, R, γ) với P là hàm xác suất chuyển tiếp",
+        "(S, A, R, α, γ) với α là learning rate",
+        "(S, A, P, Q, γ) với Q là hàm Q-value",
+        "(S, A, R, V, π) với V là hàm giá trị"
+      ],
+      "answer": 0,
+      "explanation": "MDP được định nghĩa chính thức bởi bộ tuple (S, A, P, R, γ): tập state S, tập action A, hàm xác suất chuyển tiếp P, hàm reward R, và hệ số chiết khấu γ."
+    },
+    {
+      "id": 22,
+      "level": "intermediate",
+      "question": "Một hệ thống UAV chỉ được biểu diễn bằng vị trí hiện tại, bỏ qua vận tốc và hướng bay. Tại sao điều này có thể vi phạm Markov property?",
+      "options": [
+        "Vì hàm reward của UAV phụ thuộc vào lịch sử nhiệm vụ",
+        "Vì chuyển động tương lai có thể vẫn phụ thuộc vào thông tin quá khứ ẩn",
+        "Vì UAV không thể quan sát đầy đủ môi trường xung quanh",
+        "Vì không gian state quá nhỏ để học policy hiệu quả"
+      ],
+      "answer": 1,
+      "explanation": "Markov property yêu cầu state hiện tại chứa đủ thông tin để dự đoán tương lai. Nếu bỏ qua vận tốc và hướng bay, state vị trí hiện tại không đủ — chuyển động tiếp theo vẫn phụ thuộc vào thông tin lịch sử ẩn (ví dụ: quán tính, hướng di chuyển)."
+    },
+    {
+      "id": 23,
+      "level": "intermediate",
+      "question": "Vai trò chính của Bellman expectation equation là gì?",
+      "options": [
+        "Ước lượng hàm xác suất chuyển tiếp P từ dữ liệu quan sát",
+        "Biểu diễn mối quan hệ đệ quy của hàm giá trị theo một policy",
+        "Chuẩn hóa reward để đảm bảo return luôn hữu hạn",
+        "Tìm action tối ưu bằng cách lấy max trên tất cả action"
+      ],
+      "answer": 1,
+      "explanation": "Bellman expectation equation biểu diễn hàm giá trị V^π(s) theo cách đệ quy dưới một policy π cố định: giá trị state hiện tại bằng reward kỳ vọng cộng giá trị chiết khấu của state tiếp theo theo đúng policy đó."
+    },
+    {
+      "id": 24,
+      "level": "advanced",
+      "question": "Tại sao Bellman optimality equation khó giải hơn Bellman expectation equation?",
+      "options": [
+        "Vì nó bao gồm phép tối đa hoá trên các action",
+        "Vì nó chỉ áp dụng được cho không gian state liên tục",
+        "Vì nó cần nhiều dữ liệu mẫu hơn để hội tụ chính xác",
+        "Vì nó yêu cầu biết mô hình chuyển tiếp P của môi trường"
+      ],
+      "answer": 0,
+      "explanation": "Bellman optimality equation chứa toán tử max: V*(s) = max_a Σ P(s',r|s,a)[r + γ·V*(s')]. Phép tối đa hoá phi tuyến này khiến hệ phương trình không còn tuyến tính, làm cho việc giải trực tiếp khó hơn nhiều so với Bellman expectation equation vốn là hệ tuyến tính."
     }
   ]
 }

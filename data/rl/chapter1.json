@@ -29,11 +29,11 @@
       "question": "Điều nào sau đây mô tả đúng nhất mục tiêu của một agent trong Reinforcement Learning?",
       "options": [
         "Giảm thiểu lỗi dự đoán trên tập kiểm tra",
-        "Phân loại đầu vào bằng dữ liệu huấn luyện có nhãn",
         "Khám phá các cụm ẩn trong dữ liệu không nhãn",
-        "Tối đa hóa tổng reward tích lũy theo thời gian"
+        "Tối đa hóa tổng reward tích lũy theo thời gian",
+        "Phân loại đầu vào bằng dữ liệu huấn luyện có nhãn"
       ],
-      "answer": 3,
+      "answer": 2,
       "explanation": "Mục tiêu của agent trong RL là học một policy tối đa hóa reward tích lũy (dài hạn) nhận được từ môi trường."
     },
     {
@@ -41,12 +41,12 @@
       "level": "basic",
       "question": "Trong Reinforcement Learning, vai trò của 'environment' là gì?",
       "options": [
-        "Phản ứng với action và cung cấp state cùng reward",
-        "Cung cấp các ví dụ có nhãn để agent huấn luyện",
+        "Lưu trữ các tham số policy mà agent đã học",
         "Chọn action tốt nhất ở mỗi bước thời gian",
-        "Lưu trữ các tham số policy mà agent đã học"
+        "Phản ứng với action và cung cấp state cùng reward",
+        "Cung cấp các ví dụ có nhãn để agent huấn luyện"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Environment nhận action từ agent, chuyển sang trạng thái mới, và trả về cả trạng thái mới lẫn tín hiệu reward cho agent."
     },
     {
@@ -54,12 +54,12 @@
       "level": "basic",
       "question": "Loại học máy nào học bằng cách tương tác với môi trường thay vì từ tập dữ liệu cố định?",
       "options": [
-        "Supervised learning",
-        "Semi-supervised learning",
         "Reinforcement learning",
-        "Unsupervised learning"
+        "Supervised learning",
+        "Unsupervised learning",
+        "Semi-supervised learning"
       ],
-      "answer": 2,
+      "answer": 0,
       "explanation": "Các agent Reinforcement learning học qua tương tác thử-sai với môi trường, nhận tín hiệu reward thay vì các ví dụ có nhãn."
     },
     {
@@ -67,12 +67,12 @@
       "level": "basic",
       "question": "'State' đại diện cho điều gì trong một bài toán RL?",
       "options": [
+        "Ảnh chụp của môi trường tại một thời điểm",
         "Tổng reward tích lũy hiện tại của agent",
-        "Tập hợp tất cả các action có thể thực hiện",
         "Tín hiệu phản hồi vô hướng sau mỗi action",
-        "Ảnh chụp của môi trường tại một thời điểm"
+        "Tập hợp tất cả các action có thể thực hiện"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "State là ảnh chụp hoặc biểu diễn của môi trường tại một thời điểm cụ thể, được agent sử dụng để quyết định action nào cần thực hiện."
     },
     {
@@ -81,9 +81,9 @@
       "question": "Trong bài toán RL định tuyến mạng, yếu tố nào tương ứng tự nhiên nhất với 'reward'?",
       "options": [
         "Tập hợp tất cả các đường định tuyến có thể",
-        "Mức độ tắc nghẽn hiện tại của tất cả các liên kết",
+        "Lựa chọn hop tiếp theo cho một gói tin",
         "Giá trị âm tỉ lệ với độ trễ gói tin",
-        "Lựa chọn hop tiếp theo cho một gói tin"
+        "Mức độ tắc nghẽn hiện tại của tất cả các liên kết"
       ],
       "answer": 2,
       "explanation": "Reward là tín hiệu phản hồi vô hướng. Trong định tuyến mạng, reward tự nhiên là giá trị âm tỉ lệ với độ trễ (ví dụ: r = -delay) hoặc hình phạt khi mất gói tin."
@@ -93,12 +93,12 @@
       "level": "basic",
       "question": "'Deterministic policy' trong Reinforcement Learning là gì?",
       "options": [
-        "Policy ánh xạ mỗi state đến đúng một action",
-        "Policy gán xác suất cho từng action có thể",
         "Policy không cần thông tin state để hành động",
-        "Policy tối đa hóa reward chỉ trong một bước"
+        "Policy ánh xạ mỗi state đến đúng một action",
+        "Policy tối đa hóa reward chỉ trong một bước",
+        "Policy gán xác suất cho từng action có thể"
       ],
-      "answer": 0,
+      "answer": 1,
       "explanation": "Deterministic policy π(s) = a ánh xạ trực tiếp mỗi state đến một action cố định duy nhất, trái với stochastic policy định nghĩa phân phối xác suất."
     },
     {
@@ -106,12 +106,12 @@
       "level": "basic",
       "question": "Ứng dụng thực tế nào sau đây thuộc lĩnh vực Reinforcement Learning?",
       "options": [
-        "Gán nhãn ảnh theo danh mục đối tượng",
         "Nén tập dữ liệu để tiết kiệm bộ nhớ",
-        "Phân cụm khách hàng theo hành vi mua sắm",
-        "Huấn luyện cánh tay robot gắp đồ vật"
+        "Huấn luyện cánh tay robot gắp đồ vật",
+        "Gán nhãn ảnh theo danh mục đối tượng",
+        "Phân cụm khách hàng theo hành vi mua sắm"
       ],
-      "answer": 3,
+      "answer": 1,
       "explanation": "Điều khiển robot — như huấn luyện cánh tay robot — là ứng dụng RL điển hình. Robot học thực hiện action (chuyển động khớp) để tối đa hóa reward (gắp thành công)."
     },
     {
@@ -119,12 +119,12 @@
       "level": "intermediate",
       "question": "Điều gì phân biệt stochastic policy với deterministic policy?",
       "options": [
-        "Stochastic policy bỏ qua thông tin state khi chọn action",
+        "Stochastic policy xuất ra phân phối xác suất trên các action",
         "Stochastic policy chọn action chỉ dựa trên reward tức thì",
-        "Stochastic policy lưu bảng tra cứu state-action cố định",
-        "Stochastic policy xuất ra phân phối xác suất trên các action"
+        "Stochastic policy bỏ qua thông tin state khi chọn action",
+        "Stochastic policy lưu bảng tra cứu state-action cố định"
       ],
-      "answer": 3,
+      "answer": 0,
       "explanation": "Stochastic policy π(a|s) định nghĩa xác suất chọn action a tại state s, cho phép khám phá và xử lý quan sát một phần."
     },
     {
@@ -132,12 +132,12 @@
       "level": "intermediate",
       "question": "Hàm giá trị state V(s) khác hàm giá trị action Q(s,a) như thế nào?",
       "options": [
-        "V(s) đánh giá state đơn thuần; Q(s,a) đánh giá cặp state-action",
         "V(s) cần biết state tiếp theo; Q(s,a) thì không",
-        "V(s) chỉ cho reward tức thì; Q(s,a) cho reward tích lũy",
-        "V(s) dùng cho stochastic policy; Q(s,a) cho deterministic policy"
+        "V(s) đánh giá state đơn thuần; Q(s,a) đánh giá cặp state-action",
+        "V(s) dùng cho stochastic policy; Q(s,a) cho deterministic policy",
+        "V(s) chỉ cho reward tức thì; Q(s,a) cho reward tích lũy"
       ],
-      "answer": 0,
+      "answer": 1,
       "explanation": "V(s) là return kỳ vọng từ state s theo policy π. Q(s,a) là return kỳ vọng khi thực hiện action a tại state s rồi theo policy π — nó phụ thuộc vào cả state lẫn action."
     },
     {
@@ -147,10 +147,10 @@
       "options": [
         "Trung bình tất cả reward tương lai một cách đều nhau",
         "Reward nhận được ở bước thời gian cuối cùng",
-        "Reward được chiết khấu theo hàm mũ qua mọi bước",
-        "Chỉ reward tức thì ở bước tiếp theo"
+        "Chỉ reward tức thì ở bước tiếp theo",
+        "Reward được chiết khấu theo hàm mũ qua mọi bước"
       ],
-      "answer": 3,
+      "answer": 2,
       "explanation": "Khi γ = 0, return chiết khấu G_t = r_{t+1}, nên agent chỉ xem xét reward tức thì và bỏ qua mọi reward tương lai."
     },
     {
@@ -158,12 +158,12 @@
       "level": "intermediate",
       "question": "Mục đích chính của hệ số chiết khấu γ trong các tác vụ liên tục (không có episode) là gì?",
       "options": [
-        "Cân bằng sự đánh đổi giữa khám phá và khai thác",
         "Tăng tốc hội tụ của các cập nhật policy gradient",
-        "Chuẩn hóa reward để rơi vào khoảng từ 0 đến 1",
-        "Đảm bảo tổng vô hạn của reward tương lai luôn hữu hạn"
+        "Cân bằng sự đánh đổi giữa khám phá và khai thác",
+        "Đảm bảo tổng vô hạn của reward tương lai luôn hữu hạn",
+        "Chuẩn hóa reward để rơi vào khoảng từ 0 đến 1"
       ],
-      "answer": 3,
+      "answer": 2,
       "explanation": "Trong các tác vụ liên tục không có trạng thái kết thúc, tổng reward có thể vô hạn. Hệ số chiết khấu γ < 1 đảm bảo chuỗi hình học hội tụ về return hữu hạn."
     },
     {
@@ -172,11 +172,11 @@
       "question": "Một episode kết thúc khi agent đến trạng thái kết thúc. Loại tác vụ này được gọi là:",
       "options": [
         "Continuing task với horizon vô hạn",
+        "Stationary task với tín hiệu reward cố định",
         "Discounted task với γ gần bằng 0",
-        "Episodic task có trạng thái kết thúc",
-        "Stationary task với tín hiệu reward cố định"
+        "Episodic task có trạng thái kết thúc"
       ],
-      "answer": 2,
+      "answer": 3,
       "explanation": "Episodic task có điểm kết thúc tự nhiên — trạng thái kết thúc — sau đó môi trường reset cho episode mới. Continuing task không có điểm kết thúc như vậy."
     },
     {
@@ -184,12 +184,12 @@
       "level": "intermediate",
       "question": "Trong vòng lặp tương tác agent-environment, agent gửi GÌ đến environment ở mỗi bước thời gian?",
       "options": [
-        "Một action được chọn theo policy của nó",
         "Một cập nhật hàm giá trị cho state hiện tại",
         "State hiện tại và reward tương lai kỳ vọng",
+        "Một action được chọn theo policy của nó",
         "Tín hiệu reward dựa trên chuyển tiếp cuối cùng"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Ở mỗi bước thời gian, agent quan sát state rồi gửi một action đến environment. Environment sau đó trả về state tiếp theo và reward."
     },
     {
@@ -197,12 +197,12 @@
       "level": "intermediate",
       "question": "Tại sao khám phá (exploration) quan trọng trong Reinforcement Learning?",
       "options": [
-        "Giúp agent phát hiện các action tốt hơn chưa được thử",
         "Ngăn agent nhận bất kỳ reward âm nào",
+        "Giúp agent phát hiện các action tốt hơn chưa được thử",
         "Cho phép agent ghi nhớ toàn bộ bảng chuyển tiếp",
         "Đảm bảo policy hội tụ thành một deterministic policy"
       ],
-      "answer": 0,
+      "answer": 1,
       "explanation": "Nếu không có khám phá, agent có thể chỉ khai thác các action đã biết là tốt và không bao giờ phát hiện ra các lựa chọn tốt hơn. Khám phá cho phép thu thập thông tin mới về môi trường."
     },
     {
@@ -210,9 +210,9 @@
       "level": "intermediate",
       "question": "Phát biểu nào về vòng phản hồi khép kín giữa agent và environment là ĐÚNG?",
       "options": [
-        "Environment chỉ gửi reward — state là nội bộ của agent",
         "Agent gửi reward và environment gửi action ngược lại",
         "Cả agent và environment cùng cập nhật tham số đồng thời",
+        "Environment chỉ gửi reward — state là nội bộ của agent",
         "Environment gửi state tiếp theo và reward sau mỗi action"
       ],
       "answer": 3,
@@ -223,12 +223,12 @@
       "level": "advanced",
       "question": "Agent có γ = 0.9 nhận reward r1=1, r2=2, r3=3 trước khi episode kết thúc. Return chiết khấu G_0 là bao nhiêu?",
       "options": [
-        "4.87",
         "5.23",
+        "4.87",
         "6.00",
         "4.33"
       ],
-      "answer": 1,
+      "answer": 0,
       "explanation": "G_0 = r1 + γ·r2 + γ²·r3 = 1 + 0.9×2 + 0.81×3 = 1 + 1.8 + 2.43 = 5.23."
     },
     {
@@ -236,12 +236,12 @@
       "level": "advanced",
       "question": "Hàm giá trị V^π(s) thỏa mãn điều kiện nhất quán: giá trị của nó bằng reward tức thì cộng với giá trị state tiếp theo được chiết khấu. Mối quan hệ đệ quy này được gọi là:",
       "options": [
-        "Bellman equation cho policy π",
         "Phương trình backup Monte Carlo",
         "Công thức target temporal-difference",
+        "Bellman equation cho policy π",
         "Định lý policy gradient"
       ],
-      "answer": 0,
+      "answer": 2,
       "explanation": "Bellman equation biểu diễn V^π(s) theo cách đệ quy: giá trị của một state bằng reward tức thì kỳ vọng cộng với γ nhân giá trị kỳ vọng của state kế tiếp theo policy π."
     },
     {
@@ -249,12 +249,12 @@
       "level": "advanced",
       "question": "Policy improvement đảm bảo rằng cập nhật policy greedy theo Q(s,a) sẽ:",
       "options": [
-        "Tạo ra policy không tệ hơn policy ban đầu",
         "Luôn tạo ra policy tốt hơn rõ rệt trên mọi state",
+        "Tạo ra policy không tệ hơn policy ban đầu",
         "Hội tụ về policy tối ưu trong một bước cập nhật",
         "Chỉ cải thiện policy trên các state có reward dương"
       ],
-      "answer": 0,
+      "answer": 1,
       "explanation": "Định lý Policy Improvement đảm bảo rằng policy greedy π' theo Q^π ít nhất tốt bằng π (V^{π'}(s) ≥ V^π(s) với mọi s), nhưng không nhất thiết tốt hơn rõ rệt trên mọi state."
     },
     {
@@ -262,10 +262,10 @@
       "level": "advanced",
       "question": "Tại sao reward shaping (thêm reward phụ trợ) có thể giúp agent RL nhưng cũng tiềm ẩn rủi ro?",
       "options": [
-        "Giảm phương sai nhưng tăng độ lệch trong ước lượng hàm giá trị",
+        "Tăng tốc hội tụ nhưng có thể khiến agent overfitting với episode huấn luyện",
         "Dẫn dắt agent nhanh hơn nhưng có thể tạo policy không tối ưu nếu reward phụ mâu thuẫn với mục tiêu thật",
         "Đơn giản hóa không gian state nhưng làm policy không chuyển đổi được sang môi trường mới",
-        "Tăng tốc hội tụ nhưng có thể khiến agent overfitting với episode huấn luyện"
+        "Giảm phương sai nhưng tăng độ lệch trong ước lượng hàm giá trị"
       ],
       "answer": 1,
       "explanation": "Reward shaping cung cấp phản hồi dày đặc hơn, tăng tốc học. Tuy nhiên, nếu reward được định hình tạo ra policy tối ưu khác với reward thật, agent có thể học hành vi ngoài ý muốn."
@@ -275,13 +275,65 @@
       "level": "advanced",
       "question": "Agent sử dụng stochastic policy thay vì deterministic policy trong môi trường quan sát đầy đủ. Lý do hợp lệ nhất cho lựa chọn này là:",
       "options": [
-        "Stochastic policy đảm bảo reward tích lũy cao hơn khi hội tụ",
+        "Stochastic policy luôn hội tụ nhanh hơn deterministic policy",
         "Deterministic policy không thể biểu diễn Q-function chính xác",
         "Stochastic policy tích hợp sẵn cơ chế khám phá trong huấn luyện",
-        "Stochastic policy luôn hội tụ nhanh hơn deterministic policy"
+        "Stochastic policy đảm bảo reward tích lũy cao hơn khi hội tụ"
       ],
       "answer": 2,
       "explanation": "Trong môi trường quan sát đầy đủ, deterministic policy có thể tối ưu khi hội tụ, nhưng stochastic policy được dùng trong huấn luyện để cân bằng khám phá và khai thác mà không cần cơ chế ε-greedy riêng biệt."
+    },
+    {
+      "id": 21,
+      "level": "basic",
+      "question": "Phát biểu nào mô tả đúng nhất Reinforcement Learning?",
+      "options": [
+        "Tối ưu hóa hàm mất mát trên tập dữ liệu tĩnh cố định",
+        "Phân loại dữ liệu đầu vào từ tập huấn luyện có nhãn",
+        "Phát hiện cấu trúc ẩn trong dữ liệu không có nhãn",
+        "Học ra quyết định thông qua tương tác và phản hồi reward"
+      ],
+      "answer": 3,
+      "explanation": "RL là phương pháp học ra quyết định thông qua tương tác với môi trường và nhận phản hồi dưới dạng reward — không cần dữ liệu có nhãn hay tập dữ liệu tĩnh."
+    },
+    {
+      "id": 22,
+      "level": "basic",
+      "question": "Return G_t trong Reinforcement Learning đại diện cho điều gì?",
+      "options": [
+        "Xác suất chuyển tiếp sang state tiếp theo từ t",
+        "Giá trị trung bình của hàm giá trị state V(s)",
+        "Tổng phần thưởng tương lai đã chiết khấu tích lũy",
+        "Reward tức thì nhận được tại bước thời gian t"
+      ],
+      "answer": 2,
+      "explanation": "Return G_t = r_{t+1} + γ·r_{t+2} + γ²·r_{t+3} + ... là tổng tất cả reward tương lai đã được chiết khấu, tích lũy từ bước thời gian t trở đi."
+    },
+    {
+      "id": 23,
+      "level": "intermediate",
+      "question": "Trong bài toán định tuyến động, tại sao RL phù hợp hơn supervised learning?",
+      "options": [
+        "Vì các action ảnh hưởng đến tắc nghẽn tương lai và nhãn thường không có sẵn",
+        "Vì supervised learning không thể xử lý không gian state liên tục",
+        "Vì RL hội tụ nhanh hơn trên mọi bộ dữ liệu mạng",
+        "Vì RL không yêu cầu hàm mất mát để huấn luyện"
+      ],
+      "answer": 0,
+      "explanation": "Trong định tuyến động, mỗi quyết định định tuyến ảnh hưởng đến tình trạng tắc nghẽn tương lai của mạng, tạo ra phụ thuộc tuần tự. Hơn nữa, nhãn 'action tối ưu' thường không có sẵn để huấn luyện supervised learning."
+    },
+    {
+      "id": 24,
+      "level": "intermediate",
+      "question": "Agent dùng γ=0.95 trong bài toán phân bổ tài nguyên không dây. Hành vi nào agent sẽ thể hiện?",
+      "options": [
+        "Đặt trọng tâm mạnh vào hiệu suất dài hạn của hệ thống",
+        "Dao động liên tục do hệ số chiết khấu quá cao",
+        "Hội tụ chậm vì reward tương lai bị giảm quá mạnh",
+        "Ưu tiên tuyệt đối reward tức thì, bỏ qua tương lai"
+      ],
+      "answer": 0,
+      "explanation": "γ=0.95 rất gần 1, nghĩa là agent coi trọng reward tương lai gần như ngang bằng reward tức thì. Điều này khiến agent tập trung vào hiệu suất dài hạn thay vì chỉ tối ưu ngắn hạn."
     }
   ]
 }

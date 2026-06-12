@@ -1,0 +1,183 @@
+{
+  "title": "Chương 4: Đặc tả lưu lượng mạng",
+  "theory": [
+    {
+      "heading": "5 yếu tố đặc tả Network Traffic",
+      "content": "**Network Traffic Factors** designer cần phân tích:\n\n1) **Traffic flow** — luồng đi đâu, theo path nào\n2) **Location of traffic sources and data stores** — vị trí nguồn và đích\n3) **Traffic load** — tải lượng, peak/average\n4) **Traffic behavior** — broadcast/multicast/unicast pattern\n5) **QoS requirements** — yêu cầu chất lượng dịch vụ\n\n**Bảng User Communities:** Name · Size · Location(s) · Applications used.\n\n**Bảng Data Stores:** Data Store · Location · Applications/Communities using it.\n\n**Traffic Flow table:** Source × Destination × MB/sec × Path."
+    },
+    {
+      "heading": "6 loại Traffic Flow",
+      "content": "**Types of Traffic Flow:**\n- **Terminal/host** — terminal kết nối host (legacy)\n- **Client/server** — phổ biến nhất, web, mail\n- **Thin client** — VDI, RDP\n- **Peer-to-peer** — file sharing, voice/video direct\n- **Server/server** — replication, backup giữa các server\n- **Distributed computing** — tính toán phân tán, MapReduce, HPC\n\n**VoIP (Voice over IP) — đặc biệt:**\n- Call **setup/teardown** = client/server flow (phone ↔ call manager)\n- **Audio voice transport** = peer-to-peer flow giữa hai endpoint\n- ⇒ VoIP có **HAI flow** đan xen, mỗi loại đặc trưng khác nhau"
+    },
+    {
+      "heading": "Traffic Load — kích thước object",
+      "content": "**Để tính traffic load, cần biết:**\n- Số lượng station\n- Average idle time giữa các frame\n- Thời gian truyền 1 message khi được phép truy cập medium\n\n⚠️ Thực tế những thông tin chi tiết này khó thu thập đầy đủ.\n\n**Kích thước object mạng phổ biến:**\n- Terminal screen: **4 KB**\n- Simple e-mail: **10 KB**\n- Simple web page: **50 KB**\n- High-quality image: **50,000 KB** (~50 MB)\n- Database backup: **1,000,000+ KB** (~1 GB+)\n\nDùng để **estimate** offered load × số lượng người dùng × số lần dùng/ngày."
+    },
+    {
+      "heading": "Traffic Behavior — Broadcast & Multicast",
+      "content": "**Broadcast:**\n- Địa chỉ Layer-2: `FF:FF:FF:FF:FF:FF` (toàn 1)\n- Không nhất thiết tốn nhiều bandwidth\n- **Disturb mọi CPU** trong broadcast domain — vì mọi NIC phải nhận và pass lên CPU\n- Lý do để chia VLAN/subnet — giới hạn broadcast domain\n\n**Multicast:**\n- Bit đầu tiên của địa chỉ MAC = 1 (VD `01:00:0C:CC:CC:CC` cho CDP)\n- **Chỉ disturb NIC đã đăng ký** nhận multicast group\n- Cần multicast routing protocol (PIM, IGMP) để route giữa các subnet\n\n**Network Efficiency phụ thuộc:**\n- Frame size (lớn = ít overhead)\n- Protocol interaction (handshake, ack)\n- Windowing & flow control\n- Error-recovery mechanism (retransmission)"
+    },
+    {
+      "heading": "QoS Requirements",
+      "content": "**ATM service categories:**\n- **CBR** — Constant Bit Rate (voice, circuit emulation)\n- **rt-VBR** — Realtime Variable Bit Rate (video conferencing)\n- **nrt-VBR** — Non-realtime VBR\n- **UBR** — Unspecified Bit Rate (best-effort)\n- **ABR** — Available Bit Rate\n- **GFR** — Guaranteed Frame Rate\n\n**IETF Integrated Services (IntServ):**\n- **Controlled load service** — QoS xấp xỉ mạng không tải\n- **Guaranteed service** — bảo đảm bound mathematic cho end-to-end queuing delay\n\n**IETF Differentiated Services (DiffServ) — RFC 2475:**\n- Đánh dấu IP packet với **DSCP** (Differentiated Services Code Point)\n- Router dùng DSCP để quyết định queueing và packet-dropping\n- Scale tốt hơn IntServ vì không cần per-flow state ở mỗi router"
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "VoIP traffic gồm bao nhiêu loại flow đặc trưng?",
+      "options": [
+        "1 — chỉ peer-to-peer",
+        "1 — chỉ client/server",
+        "2 — call setup/teardown (client/server) + audio (peer-to-peer)",
+        "3 — setup, audio, và signaling đều khác nhau"
+      ],
+      "answer": 2,
+      "explanation": "VoIP có 2 flow đan xen: call setup/teardown (phone ↔ call manager: client/server) và audio voice transport (giữa hai endpoint: peer-to-peer). Vì vậy phải lập kế hoạch QoS và bandwidth cho cả hai loại."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Địa chỉ MAC broadcast là?",
+      "options": [
+        "00:00:00:00:00:00",
+        "FF:FF:FF:FF:FF:FF",
+        "01:00:5E:00:00:01",
+        "FE:80:00:00:00:00"
+      ],
+      "answer": 1,
+      "explanation": "MAC broadcast = FF:FF:FF:FF:FF:FF (tất cả các bit là 1). 01:00:5E:00:00:01 là multicast IPv4. FE:80 là IPv6 link-local. 00:00:... không phải broadcast."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Đâu KHÔNG phải là một loại traffic flow điển hình?",
+      "options": [
+        "Client/server",
+        "Peer-to-peer",
+        "Server/server",
+        "Cloud/edge"
+      ],
+      "answer": 3,
+      "explanation": "6 loại traffic flow chuẩn: Terminal/host, Client/server, Thin client, Peer-to-peer, Server/server, Distributed computing. 'Cloud/edge' không phải phân loại flow theo Top-Down Network Design (Oppenheimer)."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "DSCP (Differentiated Services Code Point) được dùng để làm gì?",
+      "options": [
+        "Mã hóa nội dung packet",
+        "Đánh dấu IP packet để router quyết định queuing và drop",
+        "Định danh user trong VPN",
+        "Thay thế cho địa chỉ MAC"
+      ],
+      "answer": 1,
+      "explanation": "DSCP (RFC 2475, DiffServ) là field trong IP header dùng để mark packet theo loại service. Router xem DSCP để quyết định queue nào, drop nào trước khi nghẽn. Không liên quan đến mã hóa hay định danh."
+    },
+    {
+      "id": 5,
+      "level": "intermediate",
+      "question": "Vì sao broadcast traffic LÀ MỘT VẤN ĐỀ ngay cả khi nó chiếm ít bandwidth?",
+      "options": [
+        "Vì broadcast đi qua mọi router và làm sập internet",
+        "Vì mọi NIC trong broadcast domain phải nhận và đẩy gói lên CPU xử lý — gây overhead CPU cho tất cả host",
+        "Vì broadcast luôn là tấn công DoS",
+        "Vì broadcast chỉ chạy trên IPv6"
+      ],
+      "answer": 1,
+      "explanation": "Broadcast không tốn nhiều bandwidth nhưng MỌI host trong broadcast domain phải nhận, NIC phải interrupt CPU. 1000 host × 100 broadcast/giây = 100,000 interrupt/giây tổng cộng. Đây là lý do designer giới hạn broadcast domain bằng VLAN/subnet — không phải vì bandwidth."
+    },
+    {
+      "id": 6,
+      "level": "intermediate",
+      "question": "Khác biệt cốt lõi giữa IETF IntServ 'guaranteed service' và 'controlled load service' là?",
+      "options": [
+        "Guaranteed có math-bound cho end-to-end queuing delay; controlled load chỉ cung cấp QoS xấp xỉ mạng không tải",
+        "Hai cái như nhau, chỉ khác tên",
+        "Controlled load đắt hơn guaranteed",
+        "Guaranteed chỉ dành cho video, controlled load chỉ cho voice"
+      ],
+      "answer": 0,
+      "explanation": "Guaranteed service = đảm bảo có firm mathematical bound trên end-to-end queuing delay (cho ứng dụng cực kỳ nhạy delay). Controlled load = approximate QoS giống mạng không tải, không có bound cứng. Hai cấp độ đảm bảo khác nhau trong IntServ."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "Một designer cần ước lượng tải mạng cho 200 nhân viên duyệt web. Mỗi web page ~50KB, mỗi người tải 60 page/giờ. Bandwidth trung bình cần khoảng?",
+      "options": [
+        "~1 Mbps",
+        "~13 Mbps",
+        "~100 Kbps",
+        "~1 Gbps"
+      ],
+      "answer": 0,
+      "explanation": "200 người × 60 page/h × 50 KB = 600,000 KB/h = ~167 KB/s = ~1.34 Mbps trung bình. Tuy nhiên peak có thể cao hơn nhiều — khi designer tính phải cộng burst factor (×3-5 lần). Đây là dạng câu hỏi tính 'back-of-envelope' rất phổ biến trong network design."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Multicast khác broadcast ở điểm cốt lõi nào về tác động trên host?",
+      "options": [
+        "Multicast chỉ disturb những NIC đã đăng ký nhận group đó; broadcast disturb mọi NIC trong domain",
+        "Multicast tốn nhiều bandwidth hơn broadcast",
+        "Broadcast nhanh hơn multicast",
+        "Hai loại không có khác biệt thực sự"
+      ],
+      "answer": 0,
+      "explanation": "Multicast: NIC chỉ nhận nếu join group (qua IGMP). Host không tham gia → không bị disturb. Broadcast: mọi NIC phải nhận. Đó là lý do streaming, IPTV dùng multicast — không 'làm phiền' người không xem."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Trong ATM QoS, dịch vụ nào phù hợp NHẤT cho voice/circuit emulation?",
+      "options": [
+        "UBR — Unspecified Bit Rate",
+        "ABR — Available Bit Rate",
+        "CBR — Constant Bit Rate",
+        "GFR — Guaranteed Frame Rate"
+      ],
+      "answer": 2,
+      "explanation": "CBR (Constant Bit Rate) = bit rate cố định, jitter cực thấp — chính xác là điều voice/circuit emulation cần. UBR = best-effort không guarantee gì. ABR = adaptive theo congestion. GFR = guarantee frame-level chứ không bit-level."
+    },
+    {
+      "id": 10,
+      "level": "advanced",
+      "question": "DiffServ (RFC 2475) có ưu thế kiến trúc gì so với IntServ?",
+      "options": [
+        "DiffServ cung cấp guarantee mạnh hơn IntServ",
+        "DiffServ dùng per-flow state ở mọi router",
+        "DiffServ hoạt động bằng cách mark DSCP và xử lý theo class — không cần per-flow state, scale tốt hơn nhiều với số flow lớn",
+        "DiffServ chỉ chạy trên ATM"
+      ],
+      "answer": 2,
+      "explanation": "IntServ yêu cầu mọi router giữ state cho từng flow (RSVP signaling) — không scale với millions of flow. DiffServ chỉ mark DSCP và router xử lý theo class (EF, AF, BE) — stateless theo flow, scale tốt hơn cho internet backbone. Tradeoff: guarantee yếu hơn IntServ."
+    },
+    {
+      "id": 11,
+      "level": "advanced",
+      "question": "Một video conferencing hoạt động kém: jitter cao, frame drop. Phân tích lý thuyết nào KHẢ DĨ NHẤT?",
+      "options": [
+        "Bandwidth không đủ — luôn là lý do duy nhất",
+        "Có thể bandwidth đủ nhưng queuing delay biến thiên cao do thiếu QoS classification — packet video bị xếp chung queue với traffic best-effort",
+        "Video conferencing không thể chạy trên IP network",
+        "Cần dùng protocol khác thay TCP/IP"
+      ],
+      "answer": 1,
+      "explanation": "Triệu chứng jitter cao + drop chỉ ra thiếu QoS, không phải thiếu bandwidth. Khi voice/video xếp chung queue với file transfer, queuing delay biến thiên rất lớn → jitter cao → frame drop. Giải pháp: classify traffic (DSCP), priority queue cho real-time. Đây là lý do RTP nhạy queuing nhiều hơn bandwidth thuần."
+    },
+    {
+      "id": 12,
+      "level": "advanced",
+      "question": "Trong bảng đặc tả 'Network Applications Traffic Characteristics', đâu là cột THIẾU SÓT thường thấy ở student designer?",
+      "options": [
+        "Tên ứng dụng",
+        "Approximate Bandwidth Requirements",
+        "QoS Requirements và Type of Traffic Flow",
+        "Protocols Used"
+      ],
+      "answer": 2,
+      "explanation": "Student thường ghi tên app + protocol + bandwidth, NHƯNG quên QoS (delay/jitter/loss tolerance) và TYPE OF FLOW (peer-to-peer? client/server?). Mất hai cột này → không thiết kế đúng được hierarchy và prioritization. Bảng chuẩn: Name · Type of Flow · Protocols · User Communities · Data Stores · Bandwidth · QoS."
+    }
+  ]
+}

@@ -1,39 +1,183 @@
 {
-  "title": "Chương 1: Giới thiệu TKM",
+  "title": "Chương 1: Phân tích mục tiêu & ràng buộc kinh doanh",
   "theory": [
     {
-      "heading": "TKM là gì?",
-      "content": "TKM (Toán Kỹ thuật / Toán Kinh tế) nghiên cứu các phương pháp toán học ứng dụng vào giải quyết bài toán kỹ thuật và kinh tế."
+      "heading": "Triết lý Top-Down Network Design",
+      "content": "Thiết kế mạng top-down **không bắt đầu bằng việc kết nối thiết bị** mà bắt đầu từ tầng cao nhất — phân tích **mục tiêu kinh doanh** và **ứng dụng**, rồi mới đi xuống công nghệ cụ thể.\n\n**Nguyên tắc cốt lõi:**\n- Phân tích mục tiêu doanh nghiệp và kỹ thuật **trước** khi chọn thiết bị\n- Hiểu cơ cấu tổ chức và mạng phục vụ ai, làm gì\n- Quyết định ứng dụng nào chạy trên mạng và hoạt động ra sao\n- **Mô hình logical được xây dựng TRƯỚC mô hình physical**\n\n**Khác biệt logical vs physical:**\n- Logical: các block chức năng, cấu trúc hệ thống (chưa nói thiết bị nào)\n- Physical: thiết bị và công nghệ cụ thể để hiện thực hệ thống"
     },
     {
-      "heading": "Các phương pháp chính",
-      "content": "Quy hoạch tuyến tính, quy hoạch động, lý thuyết đồ thị, mô hình xác suất."
+      "heading": "Quy trình PDIOO và 4 Phase thiết kế",
+      "content": "**PDIOO Network Life Cycle:** Plan → Design → Implement → Operate → Optimize (và Retire khi kết thúc).\n\n**4 Phase thiết kế top-down:**\n\n1) **Phase 1 — Phân tích yêu cầu:** mục tiêu/ràng buộc kinh doanh, mục tiêu kỹ thuật, mạng hiện tại, lưu lượng mạng\n\n2) **Phase 2 — Thiết kế logical:** mô hình mạng (topology), mô hình địa chỉ và tên, giao thức routing/switching, giải pháp bảo mật, giải pháp quản trị\n\n3) **Phase 3 — Thiết kế physical:** chọn thiết bị và công nghệ cho campus, cho enterprise\n\n4) **Phase 4 — Kiểm tra, cải tiến, văn bản hóa:** test thiết kế, optimize, document\n\n**SDLC (Systems Development Life Cycle):** quy trình quản lý và phát triển hệ thống — là khái niệm tổng quát hơn PDIOO."
+    },
+    {
+      "heading": "Mục tiêu kinh doanh điển hình",
+      "content": "Khi gặp khách hàng, designer cần hiểu các **business goals** của họ:\n\n- Tăng lợi nhuận / Giảm chi phí hoạt động\n- Cải tiến giao tiếp / Rút ngắn thời gian sản xuất\n- Mở rộng thị trường / Xây dựng quan hệ giữa các công ty\n- Cung cấp dịch vụ hỗ trợ khách hàng\n\n**Mức độ ưu tiên thường gặp:**\n- Tính di động (Mobility)\n- Bảo mật (Security)\n- Khả năng phục hồi — Resiliency / fault tolerance\n- Tính liên tục sau sự cố\n- Mục tiêu chi phí\n- Đảm bảo độ trễ thấp cho ứng dụng real-time"
+    },
+    {
+      "heading": "Ràng buộc & câu hỏi cần đặt",
+      "content": "**Ràng buộc (constraints) thường gặp:** Chi phí · Con người · Thời gian · Chính sách công ty.\n\n**Khi gặp khách hàng — đặt trọng tâm:**\n- Vấn đề nào cần giải quyết?\n- Công nghệ/hệ thống có giúp doanh nghiệp thành công?\n- Chuyện gì xảy ra **nếu dự án không thành công?**\n- Đây có phải thành phần trọng yếu của doanh nghiệp?\n- Cấp trên có biết đến dự án này không?\n\n**Tìm điểm 'thiên vị' của khách hàng:**\n- Họ ưa công nghệ chuyên biệt nào?\n- Họ tránh công nghệ nào?\n- Nói chuyện với **cả** quản lý lẫn kỹ thuật\n\n**Phạm vi thiết kế (scope):** nhỏ (VD: thêm VPN cho sales) hay lớn (thiết lại toàn hệ thống)? Phải đáp ứng được chi phí/người/thời gian."
+    },
+    {
+      "heading": "Thông tin cần thu thập",
+      "content": "Sau khi hiểu mục tiêu, designer thu thập **chi tiết kỹ thuật**:\n\n- **Application** — danh sách ứng dụng, ứng dụng mới hay cũ, mức độ quan trọng\n- **User communities** — nhóm người dùng, vị trí, ứng dụng họ dùng\n- **Data stores** — vị trí lưu trữ, ứng dụng nào truy cập\n- **Protocols** — các giao thức đang chạy\n- **Mô hình logical & physical** hiện tại\n- **Hiệu năng mạng hiện tại**\n\n⚠️ Lưu ý: phải ghi lại các thành phần **network và security cần được bảo vệ** (phần cứng, phần mềm, dữ liệu, IP, bí mật kinh doanh, hình ảnh công ty)."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "Quy hoạch tuyến tính giải quyết bài toán nào?",
-      "options": ["Tối ưu hóa hàm mục tiêu tuyến tính với ràng buộc tuyến tính", "Giải phương trình vi phân", "Tìm nghiệm của đa thức", "Phân tích chuỗi thời gian"],
-      "answer": 0,
-      "explanation": "Linear Programming (quy hoạch tuyến tính) tìm cực trị của hàm mục tiêu tuyến tính subject to các ràng buộc tuyến tính."
+      "question": "Theo phương pháp top-down network design, bước nào KHÔNG nên là bước khởi đầu?",
+      "options": [
+        "Phân tích mục tiêu kinh doanh của khách hàng",
+        "Tìm hiểu các ứng dụng đang chạy trên hệ thống",
+        "Lựa chọn và mua các thiết bị router, switch để kết nối",
+        "Phân tích cơ cấu tổ chức và người dùng"
+      ],
+      "answer": 2,
+      "explanation": "Top-down design KHÔNG bắt đầu bằng việc kết nối hay mua thiết bị. Bắt đầu từ tầng cao (Application/Business goals) rồi mới đi xuống Physical. Mua thiết bị thuộc Phase 3 (physical design)."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Phương pháp simplex được dùng để?",
-      "options": ["Giải bài toán quy hoạch tuyến tính", "Giải bài toán quy hoạch động", "Tìm đường đi ngắn nhất", "Tối ưu hóa mạng"],
-      "answer": 0,
-      "explanation": "Simplex là thuật toán cổ điển để giải bài toán quy hoạch tuyến tính."
+      "question": "Thứ tự đúng của 4 phase trong quy trình thiết kế mạng top-down là?",
+      "options": [
+        "Thiết kế logical → Phân tích yêu cầu → Thiết kế physical → Kiểm tra & văn bản hóa",
+        "Phân tích yêu cầu → Thiết kế logical → Thiết kế physical → Kiểm tra & văn bản hóa",
+        "Phân tích yêu cầu → Thiết kế physical → Thiết kế logical → Kiểm tra & văn bản hóa",
+        "Thiết kế physical → Thiết kế logical → Phân tích yêu cầu → Kiểm tra & văn bản hóa"
+      ],
+      "answer": 1,
+      "explanation": "Đúng thứ tự là: Phase 1 Phân tích yêu cầu → Phase 2 Logical (topology, addressing, routing, security, management) → Phase 3 Physical (chọn thiết bị) → Phase 4 Test & document. Logical luôn TRƯỚC physical."
     },
     {
       "id": 3,
-      "level": "intermediate",
-      "question": "Trong quy hoạch động, nguyên lý tối ưu Bellman phát biểu?",
-      "options": ["Lời giải tối ưu của bài toán con là phần của lời giải tối ưu toàn cục", "Hàm mục tiêu luôn là tuyến tính", "Không thể chia bài toán thành bài toán con", "Chỉ áp dụng cho bài toán có ràng buộc nguyên"],
+      "level": "basic",
+      "question": "PDIOO trong vòng đời mạng là viết tắt của?",
+      "options": [
+        "Plan, Design, Implement, Operate, Optimize",
+        "Plan, Develop, Install, Optimize, Observe",
+        "Prepare, Design, Integrate, Operate, Outsource",
+        "Plan, Deploy, Install, Operate, Outsource"
+      ],
       "answer": 0,
-      "explanation": "Bellman's principle of optimality: một chính sách tối ưu có tính chất là tại bất kỳ state nào, các quyết định còn lại phải tạo thành chính sách tối ưu."
+      "explanation": "PDIOO = Plan → Design → Implement → Operate → Optimize (và Retire khi kết thúc). Đây là vòng đời quản lý mạng do Cisco đề xuất."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Phát biểu nào về mô hình logical và physical là ĐÚNG?",
+      "options": [
+        "Mô hình physical thể hiện chức năng còn logical thể hiện thiết bị",
+        "Logical chỉ áp dụng cho LAN, physical chỉ áp dụng cho WAN",
+        "Hai mô hình hoàn toàn độc lập, có thể làm song song",
+        "Logical xây dựng trước; physical thể hiện thiết bị/công nghệ cụ thể"
+      ],
+      "answer": 3,
+      "explanation": "Nguyên tắc top-down: logical (block chức năng, cấu trúc) xây dựng TRƯỚC physical (thiết bị, công nghệ cụ thể). Logical trả lời 'cần gì'; physical trả lời 'dùng thiết bị nào'."
+    },
+    {
+      "id": 5,
+      "level": "intermediate",
+      "question": "Một công ty muốn 'rút ngắn thời gian sản xuất bằng cách tự động hóa quy trình'. Đây thuộc loại mục tiêu nào trong top-down design?",
+      "options": [
+        "Mục tiêu kỹ thuật (technical goal)",
+        "Mục tiêu kinh doanh (business goal)",
+        "Ràng buộc kỹ thuật (technical constraint)",
+        "Yêu cầu vận hành (operational requirement)"
+      ],
+      "answer": 1,
+      "explanation": "Rút ngắn thời gian sản xuất là mục tiêu KINH DOANH (giúp doanh nghiệp thành công), không phải kỹ thuật. Mục tiêu kỹ thuật điển hình là scalability, availability, performance, security. Designer phải nắm business goal trước khi bàn đến technical goal."
+    },
+    {
+      "id": 6,
+      "level": "intermediate",
+      "question": "Khi phỏng vấn khách hàng, câu hỏi nào ÍT có giá trị nhất ở giai đoạn đầu tiên (first meeting)?",
+      "options": [
+        "Sản phẩm/dịch vụ chính của công ty là gì?",
+        "Đối thủ cạnh tranh và lợi thế cạnh tranh của công ty?",
+        "Bạn muốn dùng router của Cisco model nào và bao nhiêu cổng?",
+        "Chuyện gì xảy ra nếu dự án không thành công?"
+      ],
+      "answer": 2,
+      "explanation": "Trong buổi họp đầu, designer thu thập business context (sản phẩm, khách hàng, đối thủ, hậu quả thất bại) — KHÔNG hỏi chi tiết model thiết bị. Chọn model là việc của Phase 3 (physical design), sau khi hiểu rõ yêu cầu."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "'Chính sách của công ty' trong thiết kế mạng được xếp vào nhóm nào?",
+      "options": [
+        "Mục tiêu kỹ thuật",
+        "Ràng buộc thiết kế",
+        "Lưu lượng mạng",
+        "Đặc tả ứng dụng"
+      ],
+      "answer": 1,
+      "explanation": "Ràng buộc (constraints) gồm: Chi phí · Con người · Thời gian · Chính sách công ty. Chính sách (VD: bắt buộc dùng vendor X, cấm cloud công cộng) là ràng buộc designer phải tuân theo, không phải mục tiêu cần đạt."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Tại sao cần nói chuyện với CẢ bộ phận quản lý lẫn kỹ thuật khi phân tích yêu cầu?",
+      "options": [
+        "Để lập biên bản họp đúng quy trình hành chính",
+        "Vì chỉ quản lý mới hiểu công nghệ mạng",
+        "Để tận dụng thời gian, tránh phải họp nhiều lần",
+        "Vì hai nhóm có ưu tiên và 'thiên vị' khác nhau, cần cả hai góc nhìn"
+      ],
+      "answer": 3,
+      "explanation": "Quản lý quan tâm cost, ROI, business risk; kỹ thuật quan tâm performance, công nghệ quen dùng. Designer phải nghe cả hai để hiểu được ưu tiên thực sự và biết được những 'biases' (công nghệ thích/tránh) mà mỗi nhóm có."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Trong các yêu cầu sau, đâu là MỤC TIÊU ƯU TIÊN (priority) chứ không phải mục tiêu kinh doanh thuần?",
+      "options": [
+        "Mở rộng thị trường sang Đông Nam Á",
+        "Đảm bảo độ trễ thấp cho ứng dụng real-time như VoIP",
+        "Tăng lợi nhuận quý IV thêm 15%",
+        "Xây dựng quan hệ đối tác với 5 nhà cung cấp mới"
+      ],
+      "answer": 1,
+      "explanation": "Độ trễ thấp cho real-time là mục tiêu ƯU TIÊN của thiết kế mạng (Mobility, Security, Resiliency, độ trễ thấp...). Ba phương án còn lại là business goal thuần — không trực tiếp quy ra yêu cầu cho mạng."
+    },
+    {
+      "id": 10,
+      "level": "advanced",
+      "question": "Một designer được giao thiết kế mạng cho startup fintech. Khách hàng nói: 'Mục tiêu là vận hành 24/7, mọi giao dịch phải dưới 100ms, và ngân sách giai đoạn 1 chỉ có 200 triệu.' Phân loại đúng nhất là?",
+      "options": [
+        "Tất cả đều là mục tiêu kinh doanh",
+        "24/7 + 100ms là mục tiêu kỹ thuật/ưu tiên; 200 triệu là ràng buộc",
+        "24/7 là kinh doanh; 100ms là kỹ thuật; 200 triệu là kinh doanh",
+        "100ms là ràng buộc; 24/7 và 200 triệu là mục tiêu kinh doanh"
+      ],
+      "answer": 1,
+      "explanation": "24/7 = availability (kỹ thuật/ưu tiên), 100ms = low latency (kỹ thuật/ưu tiên cho real-time). 200 triệu là CONSTRAINT (chi phí) — designer phải vừa đạt mục tiêu vừa không vượt ngân sách. Phân biệt rõ goal vs constraint là kỹ năng cốt lõi của Phase 1."
+    },
+    {
+      "id": 11,
+      "level": "advanced",
+      "question": "Lý do quan trọng nhất khiến thiết kế logical phải đi TRƯỚC physical là gì?",
+      "options": [
+        "Vì thiết bị physical đắt tiền nên phải tiết kiệm",
+        "Vì các vendor yêu cầu tài liệu logical mới bán hàng",
+        "Để có thể chọn đúng thiết bị/công nghệ phù hợp với yêu cầu chức năng đã xác định, tránh ràng buộc thiết kế bởi sản phẩm có sẵn",
+        "Vì luật quốc tế yêu cầu trình tự đó"
+      ],
+      "answer": 2,
+      "explanation": "Nếu chọn thiết bị trước, ta sẽ ép thiết kế khớp với khả năng của thiết bị đó (vendor lock-in về tư duy). Logical-first cho phép xác định 'cần gì' rồi mới chọn 'ai làm được' — tránh việc thiết kế bị giới hạn bởi sản phẩm sẵn có hoặc thiên vị vendor."
+    },
+    {
+      "id": 12,
+      "level": "advanced",
+      "question": "Trong 4 phase top-down, phase nào là nơi designer quyết định 'dùng OSPF hay EIGRP', 'subnet thế nào' và 'firewall đặt ở đâu'?",
+      "options": [
+        "Phase 1 — Phân tích yêu cầu",
+        "Phase 2 — Thiết kế logical",
+        "Phase 3 — Thiết kế physical",
+        "Phase 4 — Kiểm tra và văn bản hóa"
+      ],
+      "answer": 1,
+      "explanation": "Phase 2 (logical) bao gồm: thiết kế topology, addressing/naming, chọn giao thức routing/switching, giải pháp bảo mật, giải pháp quản lý. Đây là nơi quyết định OSPF/EIGRP, subnet plan, vị trí firewall trong topology — TRƯỚC khi chọn brand/model thiết bị ở Phase 3."
     }
   ]
 }

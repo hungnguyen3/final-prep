@@ -1,0 +1,183 @@
+{
+  "title": "Chương 5: Thiết kế mô hình mạng (Topology)",
+  "theory": [
+    {
+      "heading": "5 chủ đề trong topology design",
+      "content": "**Các chủ đề chính khi thiết kế topology:**\n\n1) **Hierarchy** — phân cấp\n2) **Redundancy** — dự phòng\n3) **Modularity** — chia khối\n4) **Well-defined entry/exit points** — đầu vào/ra xác định\n5) **Protected perimeters** — vùng cần bảo vệ\n\n**Lợi ích của hierarchical design:**\n- Giảm tải cho thiết bị (tránh device giao tiếp với quá nhiều device khác)\n- Giới hạn broadcast domain\n- Tăng tính đơn giản, dễ hiểu\n- Giảm impact khi có thay đổi (cô lập tác động)\n- Tăng scalability"
+    },
+    {
+      "heading": "Mô hình phân cấp 3 lớp Cisco",
+      "content": "**Cisco Hierarchical Network Design — 3 layers:**\n\n- **Core layer** — backbone\n  · Router/switch cấp cao\n  · Tối ưu cho **availability** và **tốc độ cao**\n  · KHÔNG nên xử lý ACL/policy phức tạp (tránh chậm core)\n\n- **Distribution layer**\n  · Router/switch trung gian\n  · Triển khai **policy** (ACL, QoS classification)\n  · Phân đoạn luồng dữ liệu (route giữa VLAN)\n  · Aggregation các access switch\n\n- **Access layer**\n  · Kết nối trực tiếp với end-user\n  · Switch port-density cao\n  · PoE cho phone/AP\n\n**Quy tắc tránh:**\n- ⚠️ **Chains** — kéo dài access vào access (không phải qua distribution)\n- ⚠️ **Backdoors** — link tắt giữa các module phá vỡ phân cấp"
+    },
+    {
+      "heading": "Topology: Mesh, Hub-and-spoke, Flat vs Hierarchy",
+      "content": "**Mesh designs:**\n- **Full-mesh** — mọi node nối với mọi node. Tốn link, khó scale (n×(n-1)/2 link)\n- **Partial-mesh** — chỉ những cặp quan trọng có link\n\n**Hub-and-spoke:**\n- Branch office → headquarters (single point)\n- Đơn giản, rẻ, nhưng HQ là single point of failure\n\n**Flat vs Hierarchical Redundant:**\n- Flat loop: 1 HQ + 4 branch nối flat → mọi branch tin nhau qua HQ\n- Hierarchical redundant: 1 HQ + 2 distribution + nhiều branch → có dự phòng và phân lớp\n\n**Khi nào ta có một mô hình tốt?**\n- Dễ thêm tòa nhà/tầng/chi nhánh/dịch vụ\n- Khi thêm component, ảnh hưởng cục bộ\n- Mạng tăng 2-3 lần không cần redesign\n- Troubleshoot dễ vì không có giao thức phức tạp"
+    },
+    {
+      "heading": "STP — Spanning Tree Protocol",
+      "content": "**STP** dùng để **tránh loop** ở Layer 2 khi có redundant link giữa switch.\n\n**Quy trình STP:**\n1) Switches **bầu Root Bridge** — bridge có **lowest Bridge ID** thắng (Bridge ID = priority + MAC)\n2) Mỗi non-root bridge tính **shortest cost** đến Root → chọn **Root Port**\n3) Mỗi LAN segment bầu **Designated Bridge** + **Designated Port** (port gần Root nhất). Mọi port trên Root đều là Designated.\n4) Các port còn lại → **Blocked** (không forward traffic)\n\n**4 trạng thái port:**\n- **Blocking** — không forward\n- **Listening** — nghe BPDU\n- **Learning** — học MAC\n- **Forwarding** — chuyển dữ liệu\n\n**RSTP — IEEE 802.1w:** rapid reconfiguration, hội tụ nhanh hơn STP truyền thống.\n\n**Best practice:** giữ STP network < 7 switches.\n\n**STP enhancements:** PortFast, UplinkFast, BackboneFast, BPDU Guard, Loop Guard, UDLD."
+    },
+    {
+      "heading": "VLAN, HSRP, Mô hình bảo mật DMZ",
+      "content": "**VLAN — Virtual LAN:**\n- Tập hợp thiết bị cùng nhóm quản lý logic\n- **Giới hạn broadcast domain** (mỗi VLAN = 1 broadcast domain)\n- Có thể span nhiều switch qua trunk (802.1Q)\n- WLAN cũng là một dạng VLAN\n\n**HSRP — Hot Standby Router Protocol:**\n- Cung cấp **redundancy cho default gateway**\n- Active router + Standby router cùng share một **virtual IP** và virtual MAC\n- Nếu active fail, standby tiếp quản — host không cần đổi gateway\n- Cisco-proprietary; chuẩn IETF tương đương: VRRP\n\n**Multihoming Internet:**\n- Option A: 1 ISP, 1 site — đơn giản nhất, ít redundant\n- Option B: 2 ISP, 1 site — redundant ISP\n- Option C: 1 ISP, 2 site — redundant location\n- Option D: 2 ISP, 2 site — redundant tối đa\n\n**Mô hình bảo mật DMZ:**\n- DMZ chứa public server (web, mail, DNS)\n- Firewall giữa DMZ ↔ Enterprise network và DMZ ↔ Internet\n- Compromise public server không lan sang internal"
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Trong Cisco hierarchical design, lớp nào triển khai POLICY (ACL, QoS)?",
+      "options": [
+        "Core layer",
+        "Access layer",
+        "Distribution layer",
+        "Application layer"
+      ],
+      "answer": 2,
+      "explanation": "Distribution layer = nơi triển khai policy (ACL, QoS classification, route summarization). Core phải tối ưu cho speed nên KHÔNG xử lý policy phức tạp. Access kết nối user. 'Application layer' không phải lớp trong hierarchy của Cisco."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Mục đích chính của STP (Spanning Tree Protocol) là gì?",
+      "options": [
+        "Tăng bandwidth giữa các switch",
+        "Mã hóa traffic Layer 2",
+        "Ngăn loop khi có redundant link Layer 2",
+        "Định tuyến giữa các VLAN"
+      ],
+      "answer": 2,
+      "explanation": "STP block các port redundant để tạo cây không loop. Không tăng bandwidth (ngược lại — block port không dùng), không mã hóa, không route giữa VLAN (đó là việc của router/L3 switch)."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Trong STP, switch nào được bầu làm Root Bridge?",
+      "options": [
+        "Switch có IP cao nhất",
+        "Switch có Bridge ID THẤP NHẤT (priority + MAC)",
+        "Switch ở vị trí cao nhất trong rack",
+        "Switch được cấu hình thủ công đầu tiên"
+      ],
+      "answer": 1,
+      "explanation": "Root Bridge = lowest Bridge ID (Bridge ID = 2-byte priority + 6-byte MAC). Default priority = 32768 → so MAC. Muốn ép một switch làm root, đặt priority thấp hơn (vd 4096). Vị trí vật lý không liên quan."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Thiết bị nào dùng giao thức HSRP?",
+      "options": [
+        "Switch Layer 2 — để bầu root",
+        "End-host — để chọn DNS",
+        "Router/L3 switch — để cung cấp redundant default gateway",
+        "Wireless AP — để chọn channel"
+      ],
+      "answer": 2,
+      "explanation": "HSRP chạy giữa các router/L3 switch trên cùng segment, chia sẻ một virtual IP/MAC làm default gateway cho host. Nếu active fail, standby tiếp quản ngay. Không liên quan switch L2 (đó là STP) hay end-host."
+    },
+    {
+      "id": 5,
+      "level": "intermediate",
+      "question": "Lý do CHÍNH ĐỂ giới hạn STP network < 7 switches là?",
+      "options": [
+        "Giới hạn của giao thức — không thể có hơn 7",
+        "Hội tụ STP chậm khi diameter lớn — có thể vượt timer mặc định và gây loop tạm thời",
+        "Cisco bán license tối đa 7 switch",
+        "Vì Bridge ID chỉ có 7 bit"
+      ],
+      "answer": 1,
+      "explanation": "Mỗi BPDU đi qua một switch tốn thời gian, default max-age timer = 20s. STP diameter quá lớn → BPDU chưa kịp lan tỏa thì timer hết hạn → loop có thể xuất hiện. Khuyến nghị giữ diameter ≤ 7. RSTP hội tụ nhanh hơn nhưng best practice vẫn áp dụng."
+    },
+    {
+      "id": 6,
+      "level": "intermediate",
+      "question": "Đặt một ACL phức tạp trên ROUTER LỚP CORE thường KHÔNG nên vì?",
+      "options": [
+        "Core router không hỗ trợ ACL",
+        "Core phải tối ưu cho tốc độ và availability — ACL phức tạp gây latency và CPU overhead, ảnh hưởng toàn mạng",
+        "ACL chỉ chạy được ở access",
+        "Sẽ làm tăng kích thước routing table"
+      ],
+      "answer": 1,
+      "explanation": "Nguyên tắc Cisco hierarchical: Core = forward càng nhanh càng tốt. ACL phức tạp = lookup mỗi packet → tăng latency, CPU. Mọi traffic đi qua core → impact toàn cục. Policy phải đặt ở DISTRIBUTION layer, nơi đã có chức năng aggregation và đủ resource."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "VLAN giúp giới hạn broadcast domain bằng cách?",
+      "options": [
+        "Mã hóa broadcast frame",
+        "Mỗi VLAN là một broadcast domain riêng — broadcast trong VLAN A không lan sang VLAN B trừ khi route bằng L3",
+        "Giảm số lượng host trong cùng một switch",
+        "Tăng số bit trong địa chỉ MAC"
+      ],
+      "answer": 1,
+      "explanation": "VLAN tách switch port thành các nhóm logic, mỗi nhóm = 1 broadcast domain riêng. Broadcast trong VLAN 10 không vượt sang VLAN 20 ở Layer 2. Để traffic giữa VLAN cần router/L3 switch (inter-VLAN routing). Đây là kỹ thuật then chốt để scale mạng campus."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Trong các topology sau, cái nào KHÔNG có redundancy?",
+      "options": [
+        "Full-mesh giữa 4 router",
+        "Hierarchical redundant với 2 distribution switch",
+        "Pure hub-and-spoke (1 HQ, 5 branch không nối nhau)",
+        "Multi-homed đến 2 ISP"
+      ],
+      "answer": 2,
+      "explanation": "Pure hub-and-spoke: HQ là single point of failure — HQ chết = mọi branch mất kết nối nhau. Full-mesh có nhiều path. Hierarchical redundant có dual distribution. Multi-homed 2 ISP có dự phòng ngoại tuyến. Hub-and-spoke đơn giản nhưng không redundant."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Đâu là lý do KHÔNG nên có 'backdoor link' trong hierarchical design?",
+      "options": [
+        "Vì backdoor làm mạng nhanh hơn quá mức cần thiết",
+        "Vì backdoor phá vỡ phân lớp, gây routing loop, làm khó troubleshoot và bypass policy ở distribution",
+        "Vì Cisco không hỗ trợ backdoor",
+        "Vì backdoor luôn là tấn công bảo mật"
+      ],
+      "answer": 1,
+      "explanation": "Backdoor (link tắt giữa hai access switch không qua distribution) phá phân lớp: traffic đi đường lạ, bypass ACL/QoS, routing protocol khó hội tụ, troubleshoot cực khó. Tương tự, 'chain' (kéo dài access vào access) cũng cần tránh."
+    },
+    {
+      "id": 10,
+      "level": "advanced",
+      "question": "Mạng có 3 LAN segment nối qua 3 switch (B, C, D), Root Bridge là A có port ra cả 3. Cost mỗi link = 19. Theo STP, port nào sẽ bị BLOCK?",
+      "options": [
+        "Một port của Root Bridge",
+        "Các Designated Port",
+        "Các Root Port của B, C, D",
+        "Một port không phải Root Port và không phải Designated Port — thường ở segment có hai bridge cùng cạnh tranh designated"
+      ],
+      "answer": 3,
+      "explanation": "STP block port KHÔNG phải Root Port (port gần Root) cũng KHÔNG phải Designated Port (port gần Root nhất trên segment). Root Bridge có mọi port là Designated. Mỗi non-root chọn 1 Root Port. Trên segment có 2 non-root cạnh tranh, bridge có lower Bridge ID thắng → port của bridge thua bị block."
+    },
+    {
+      "id": 11,
+      "level": "advanced",
+      "question": "Trong multihoming Internet, 'Option B' (2 ISP nối vào 1 site) bảo vệ trước những sự cố nào — và KHÔNG bảo vệ trước cái gì?",
+      "options": [
+        "Bảo vệ trước cả ISP outage và site outage",
+        "Bảo vệ trước ISP outage; KHÔNG bảo vệ trước site outage (đứt cáp đến tòa nhà, mất điện toàn bộ site)",
+        "Chỉ bảo vệ trước site outage",
+        "Không bảo vệ trước bất kỳ sự cố nào"
+      ],
+      "answer": 1,
+      "explanation": "Option B = 2 ISP, 1 site → 1 ISP fail vẫn còn ISP kia. Nhưng cả site mất điện hoặc đứt cáp tòa nhà = mất hoàn toàn. Option D (2 ISP × 2 site) bảo vệ cả hai. Designer phải biết failure mode nào là acceptable risk."
+    },
+    {
+      "id": 12,
+      "level": "advanced",
+      "question": "Một mạng campus có 50 switch L2 nối nhau, gặp tình trạng broadcast storm thỉnh thoảng. Giải pháp tốt NHẤT về mặt thiết kế là?",
+      "options": [
+        "Tăng bandwidth tất cả uplink lên 100 Gbps",
+        "Bật tất cả port lên forwarding, tắt STP cho nhanh",
+        "Phân lớp lại: chia thành các VLAN/Layer-3 boundary để giới hạn broadcast domain; áp hierarchical 3 lớp có distribution route giữa VLAN",
+        "Đổi sang Token Ring"
+      ],
+      "answer": 2,
+      "explanation": "Broadcast storm trong mạng L2 lớn = broadcast domain quá rộng + có loop. Không phải vấn đề bandwidth. Giải pháp đúng: phân broadcast domain bằng VLAN/L3 (giới hạn 'blast radius'), áp hierarchy + STP/RSTP đúng. Tắt STP càng tệ hơn (loop không kiểm soát)."
+    }
+  ]
+}

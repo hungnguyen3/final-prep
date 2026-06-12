@@ -1,8 +1,16 @@
 {
   "id": "tkm",
-  "title": "TKM",
-  "description": "Toán kinh tế / Toán kỹ thuật — Tối ưu hóa và mô hình toán",
+  "title": "TKM — Thiết kế Mạng",
+  "description": "NT113 · Top-Down Network Design — Phân tích yêu cầu, thiết kế logical/physical, định tuyến, bảo mật và quản trị mạng",
   "chapters": [
-    { "id": 1, "title": "Giới thiệu TKM" }
+    { "id": 1, "title": "Phân tích mục tiêu & ràng buộc kinh doanh" },
+    { "id": 2, "title": "Mục tiêu kỹ thuật & các đánh đổi" },
+    { "id": 3, "title": "Đặc tả mạng hiện tại" },
+    { "id": 4, "title": "Đặc tả lưu lượng mạng" },
+    { "id": 5, "title": "Thiết kế mô hình mạng (Topology)" },
+    { "id": 6, "title": "Đặt tên & địa chỉ" },
+    { "id": 7, "title": "Lựa chọn giao thức Switching & Routing" },
+    { "id": 8, "title": "Thiết kế bảo mật mạng" },
+    { "id": 9, "title": "Thiết kế quản trị mạng" }
   ]
 }

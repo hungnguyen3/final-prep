@@ -1,0 +1,183 @@
+{
+  "title": "Chương 2: Mục tiêu kỹ thuật & các đánh đổi",
+  "theory": [
+    {
+      "heading": "8 mục tiêu kỹ thuật",
+      "content": "**Tám mục tiêu kỹ thuật** trong thiết kế mạng:\n\n- **Scalability** — Tính mở rộng (thêm chi nhánh, user, server)\n- **Availability** — Tính sẵn sàng (uptime %)\n- **Performance** — Hiệu năng (bandwidth, throughput, delay)\n- **Security** — Bảo mật\n- **Manageability** — Tính quản lý\n- **Usability** — Tính dễ sử dụng\n- **Adaptability** — Khả năng đáp ứng (thêm công nghệ, thay đổi)\n- **Affordability** — Hiệu quả về chi phí\n\n**Tradeoffs** thường xảy ra — bạn không thể tối đa hóa tất cả cùng lúc."
+    },
+    {
+      "heading": "Availability — MTBF, MTTR, công thức",
+      "content": "**Availability** = thời gian uptime / tổng thời gian, tính theo %.\n\n**Công thức:**\n```\nAvailability = MTBF / (MTBF + MTTR)\n```\n- **MTBF** (Mean Time Between Failure): trung bình thời gian giữa hai lần lỗi\n- **MTTR** (Mean Time To Repair): trung bình thời gian sửa\n\n**Ví dụ:** Hệ thống fail mỗi 4,000h, sửa trong 1h → 4000/4001 ≈ **99.98%**.\n\n**Bảng downtime tương ứng:**\n- 99.999% (Five Nines): ~5 phút/năm\n- 99.98%: ~105 phút/năm\n- 99.9%: ~526 phút/năm\n- 99.7%: ~1577 phút/năm\n\n**Tính uptime ví dụ:** 165h/168h trong tuần = 98.21%.\n\n⚠️ Five Nines (99.999%) thường yêu cầu multi-ISP, redundant hardware → chi phí cao."
+    },
+    {
+      "heading": "Hiệu năng — các yếu tố",
+      "content": "**Yếu tố ảnh hưởng performance:**\n- **Capacity (Bandwidth)** — dung lượng tối đa của link\n- **Utilization** — % bandwidth đang được dùng\n- **Optimum Utilization** — mức sử dụng tối ưu (~70%)\n- **Throughput** — lượng dữ liệu thực sự truyền được\n- **Offered Load** — tải đưa vào\n- **Accuracy** — Bit Error Rate\n- **Efficiency** — overhead protocol\n- **Delay (latency)** và **Jitter** (delay variation)\n- **Response time** — thời gian phản hồi\n\n**Bandwidth ≠ Throughput:** bandwidth là khả năng tối đa của ống; throughput là lượng dữ liệu thực sự đi qua (luôn ≤ bandwidth).\n\n**Yếu tố ảnh hưởng throughput:** kích thước packet, inter-frame gap, tốc độ thiết bị forward, CPU/memory client-server, network design, protocol, distance, errors, time of day."
+    },
+    {
+      "heading": "Bốn loại Delay",
+      "content": "**Total nodal delay:**\n```\ndnodal = dproc + dqueue + dtrans + dprop\n```\n\n- **dproc — Processing delay**: kiểm tra bit lỗi, xác định đường ra. Thường < msec.\n- **dqueue — Queuing delay**: thời gian đợi tại cổng ra để được truyền. Phụ thuộc mức tắc nghẽn router.\n- **dtrans — Transmission delay**: dtrans = L/R (L = chiều dài packet bits, R = bandwidth bps). Thời gian 'đẩy' bit lên dây.\n- **dprop — Propagation delay**: dprop = d/s (d = độ dài link, s ≈ 2×10⁸ m/s). Thời gian tín hiệu lan truyền qua medium.\n\n⚠️ **dtrans và dprop rất khác nhau** — một là 'push bit lên dây', một là 'tín hiệu đi từ A đến B'.\n\n**Queue depth** tăng theo cấp số nhân khi utilization → 1.0 (gần 100% sử dụng → queue bùng nổ)."
+    },
+    {
+      "heading": "Tradeoffs điển hình",
+      "content": "Tăng một mục tiêu thường phải đánh đổi mục tiêu khác:\n\n- **Availability vs Cost** — five-nines đòi hỏi redundancy đắt tiền\n- **Performance vs Cost** — bandwidth cao = $$$\n- **Security vs Usability** — mật khẩu phức tạp khó dùng, MFA gây khó chịu\n- **Throughput vs Delay** — gói lớn → throughput tốt nhưng delay cao\n\n**Bảng trọng số mẫu (tổng = 100):** Scalability 20 · Availability 30 · Performance 15 · Security 5 · Manageability 5 · Usability 5 · Adaptability 5 · Affordability 15.\n\n**5 lĩnh vực Manageability:** Fault, Configuration, Accounting, Performance, Security management."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Công thức Availability trong thiết kế mạng là?",
+      "options": [
+        "Availability = MTTR / (MTBF + MTTR)",
+        "Availability = MTBF × MTTR",
+        "Availability = MTBF / (MTBF + MTTR)",
+        "Availability = (MTBF − MTTR) / MTBF"
+      ],
+      "answer": 2,
+      "explanation": "Availability = MTBF / (MTBF + MTTR). Trong đó MTBF là Mean Time Between Failure, MTTR là Mean Time To Repair. Đây là tỉ lệ giữa thời gian không lỗi và tổng thời gian (gồm cả thời gian sửa)."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "'Five Nines' trong availability tương ứng với?",
+      "options": [
+        "99.5%",
+        "99.9%",
+        "99.99%",
+        "99.999%"
+      ],
+      "answer": 3,
+      "explanation": "Five Nines = 99.999% — chỉ ~5 phút downtime/năm. Đây là yêu cầu rất cao, thường thấy ở viễn thông, ngân hàng, hệ thống y tế quan trọng. Đòi hỏi multi-ISP, hardware redundancy."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Đâu KHÔNG phải là một trong 8 mục tiêu kỹ thuật của thiết kế mạng?",
+      "options": [
+        "Scalability",
+        "Profitability",
+        "Manageability",
+        "Affordability"
+      ],
+      "answer": 1,
+      "explanation": "8 technical goals: Scalability, Availability, Performance, Security, Manageability, Usability, Adaptability, Affordability. Profitability (lợi nhuận) là BUSINESS goal, không phải technical goal."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Manageability bao gồm 5 lĩnh vực quản lý nào?",
+      "options": [
+        "Fault, Configuration, Accounting, Performance, Security",
+        "Fault, Capacity, Authentication, Performance, Storage",
+        "Backup, Configuration, Audit, Performance, Security",
+        "Fault, Cost, Accounting, Privacy, Security"
+      ],
+      "answer": 0,
+      "explanation": "Năm lĩnh vực manageability theo ISO: Fault management, Configuration management, Accounting management, Performance management, Security management (FCAPS — học theo viết tắt FCAPS dễ nhớ)."
+    },
+    {
+      "id": 5,
+      "level": "intermediate",
+      "question": "Một hệ thống không bị fail sau mỗi 9,999h và mất 1h để sửa. Availability là?",
+      "options": [
+        "99.0%",
+        "99.9%",
+        "99.99%",
+        "99.999%"
+      ],
+      "answer": 2,
+      "explanation": "Availability = 9999/(9999+1) = 9999/10000 = 99.99%. Lưu ý là 'four nines' chứ không phải five nines — five nines cần MTBF/MTTR ratio cỡ 100,000:1."
+    },
+    {
+      "id": 6,
+      "level": "intermediate",
+      "question": "Phân biệt nào về Bandwidth và Throughput là ĐÚNG?",
+      "options": [
+        "Bandwidth và Throughput là cùng một khái niệm với tên gọi khác",
+        "Throughput luôn lớn hơn Bandwidth do nén dữ liệu",
+        "Bandwidth là khả năng tối đa của link; Throughput là lượng dữ liệu thực truyền được — luôn ≤ Bandwidth",
+        "Bandwidth đo bằng MB/s, Throughput đo bằng Mbps"
+      ],
+      "answer": 2,
+      "explanation": "Bandwidth = capacity tối đa lý thuyết của link. Throughput = lượng dữ liệu thực tế đi qua trong một khoảng thời gian, luôn ≤ Bandwidth do overhead, errors, congestion, protocol... Cùng đơn vị đo (bps), không phụ thuộc đơn vị."
+    },
+    {
+      "id": 7,
+      "level": "intermediate",
+      "question": "Khi link utilization tăng dần từ 0.7 lên gần 1.0, queue depth (số packet trong hàng đợi)?",
+      "options": [
+        "Tăng tuyến tính theo utilization",
+        "Giảm dần do router xử lý hiệu quả hơn khi tải cao",
+        "Không thay đổi vì queue có kích thước cố định",
+        "Tăng theo cấp số nhân (gần như bùng nổ)"
+      ],
+      "answer": 3,
+      "explanation": "Queue depth tăng EXPONENTIALLY khi utilization tiến gần 1.0 — đây là lý do thực tế người ta giữ utilization ở mức 'optimum' khoảng 70%. Vượt 80% bắt đầu thấy queuing delay tăng nhanh, gần 100% gây nghẽn nghiêm trọng."
+    },
+    {
+      "id": 8,
+      "level": "intermediate",
+      "question": "Tradeoff nào sau đây là KHÔNG tự nhiên (không phải đánh đổi điển hình)?",
+      "options": [
+        "Security vs Usability",
+        "Availability vs Cost",
+        "Throughput vs Delay",
+        "Manageability vs Adaptability"
+      ],
+      "answer": 3,
+      "explanation": "Manageability và Adaptability không trực tiếp đánh đổi — thậm chí còn bổ trợ nhau (mạng quản lý tốt thường dễ adapt). Ba tradeoff còn lại là kinh điển: bảo mật chặt → khó dùng; uptime cao → tốn tiền; gói lớn → throughput tốt nhưng delay cao."
+    },
+    {
+      "id": 9,
+      "level": "intermediate",
+      "question": "Hệ thống chạy 165 giờ trong 1 tuần (168h), uptime tuần là?",
+      "options": [
+        "98.21%",
+        "99.21%",
+        "97.62%",
+        "95.83%"
+      ],
+      "answer": 0,
+      "explanation": "165/168 ≈ 0.9821 = 98.21%. Đây là uptime KHÁ THẤP — 98.21% nghĩa là khoảng 3h downtime/tuần, tương đương ~157h/năm — không đạt 'three nines'."
+    },
+    {
+      "id": 10,
+      "level": "advanced",
+      "question": "Trong công thức dnodal = dproc + dqueue + dtrans + dprop, yếu tố nào phụ thuộc vào MỨC ĐỘ TẮC NGHẼN của router?",
+      "options": [
+        "dproc (processing delay)",
+        "dqueue (queuing delay)",
+        "dtrans (transmission delay)",
+        "dprop (propagation delay)"
+      ],
+      "answer": 1,
+      "explanation": "dqueue phụ thuộc vào số packet đang đợi tại cổng ra — càng tắc nghẽn càng đợi lâu. dproc gần như cố định (<msec); dtrans = L/R chỉ phụ thuộc kích thước packet và bandwidth; dprop = d/s chỉ phụ thuộc khoảng cách và medium."
+    },
+    {
+      "id": 11,
+      "level": "advanced",
+      "question": "Một packet 12,000 bits truyền qua link 1 Gbps, dài 2,000 km (s = 2×10⁸ m/s). Đâu ĐÚNG về dtrans và dprop?",
+      "options": [
+        "dtrans = 12 µs, dprop = 10 ms — dprop lớn hơn nhiều",
+        "dtrans = 10 ms, dprop = 12 µs — dtrans lớn hơn nhiều",
+        "dtrans ≈ dprop ≈ 12 µs",
+        "dtrans = 12 ms, dprop = 10 µs"
+      ],
+      "answer": 0,
+      "explanation": "dtrans = L/R = 12,000 / 10⁹ = 12 µs. dprop = d/s = 2,000,000 / (2×10⁸) = 10 ms = 10,000 µs. Trên link tốc độ cao + khoảng cách xa, dprop chiếm ưu thế tuyệt đối — bandwidth không 'làm ánh sáng đi nhanh hơn'."
+    },
+    {
+      "id": 12,
+      "level": "advanced",
+      "question": "Một designer phải lựa chọn giữa 'gói lớn (large frame)' và 'gói nhỏ (small frame)'. Phát biểu chính xác về tradeoff này?",
+      "options": [
+        "Gói lớn cải thiện cả throughput lẫn delay",
+        "Gói lớn cải thiện throughput (ít overhead) nhưng tăng dtrans, gây delay cao hơn cho packet đơn lẻ",
+        "Gói nhỏ luôn tốt hơn cho mọi loại traffic",
+        "Kích thước packet không ảnh hưởng đến throughput hay delay"
+      ],
+      "answer": 1,
+      "explanation": "Throughput vs Delay tradeoff: gói lớn → tỉ lệ overhead/payload thấp hơn → throughput tốt hơn; nhưng dtrans = L/R tăng theo L → packet đơn lẻ mất lâu hơn để truyền. Voice/video thích frame nhỏ (delay thấp); file transfer thích frame lớn (throughput cao). Đây là lý do MTU tuning quan trọng."
+    }
+  ]
+}

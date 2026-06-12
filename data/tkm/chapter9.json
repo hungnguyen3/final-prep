@@ -3,181 +3,285 @@
   "theory": [
     {
       "heading": "Vì sao Network Management quan trọng",
-      "content": "**Vai trò của Network Management:**\n- Giúp tổ chức đạt mục tiêu **availability, performance, security**\n- Đo lường mức độ đạt được design goal, điều chỉnh khi không đạt\n- Hỗ trợ **scalability** — phân tích hành vi mạng hiện tại, áp dụng upgrade phù hợp, troubleshoot upgrade issue\n\n**Network Management Design — cân nhắc:**\n- Scalability\n- Traffic patterns\n- Data formats\n- Cost/benefit tradeoffs\n- Quyết định tài nguyên nào monitor\n- Metric đo performance\n- Bao nhiêu data thu thập\n\n**Proactive Management:**\n- Plan check sức khỏe ngay khi mạng chạy bình thường — KHÔNG đợi có vấn đề\n- Nhận biết vấn đề tiềm ẩn khi nó vừa nhú\n- Optimize performance, plan upgrade kịp thời"
+      "content": "**Vai trò:**\n- Giúp đạt mục tiêu **availability, performance, security**\n- Đo lường mức độ đạt được design goal, điều chỉnh khi không đạt\n- Hỗ trợ **scalability** — phân tích, upgrade, troubleshoot\n\n**Network Management Design — cân nhắc:**\n- Scalability\n- Traffic patterns\n- Data formats\n- Cost/benefit tradeoffs\n- Tài nguyên nào monitor, metric nào, bao nhiêu data thu thập\n\n**Proactive Management:**\n- Plan check sức khỏe khi mạng bình thường — KHÔNG đợi vấn đề\n- Nhận biết vấn đề tiềm ẩn\n- Optimize performance, plan upgrade kịp thời"
     },
     {
       "heading": "5 ISO Network Management Processes (FCAPS)",
-      "content": "Theo ISO, network management gồm 5 quá trình (viết tắt **FCAPS**):\n\n**F — Fault Management:**\n- Detect, isolate, diagnose, correct vấn đề\n- Báo trạng thái cho end-user và manager\n- Track xu hướng (trend) liên quan đến vấn đề\n\n**C — Configuration Management:**\n- Track device và config của chúng\n- Maintain inventory tài sản mạng\n- Log version OS, application\n\n**A — Accounting Management:**\n- Track usage theo phòng ban hoặc cá nhân\n- Hỗ trợ usage-based billing\n- Phát hiện 'abuser' dùng quá nhiều resource\n\n**P — Performance Management:**\n- Monitor end-to-end performance\n- Monitor component performance (link, device riêng)\n- Test reachability, đo response time\n- Đo traffic flow và volume\n- Record route changes\n\n**S — Security Management:**\n- Maintain user/password\n- Generate, distribute, store encryption key\n- Phân tích router/switch/server config xem có compliance security policy không\n- Collect, store, examine security audit logs"
+      "content": "**FCAPS:**\n\n**F — Fault Management:**\n- Detect, isolate, diagnose, correct vấn đề\n- Báo trạng thái\n- Track xu hướng\n\n**C — Configuration Management:**\n- Track device và config\n- Maintain inventory\n- Log version OS, application\n\n**A — Accounting Management:**\n- Track usage theo phòng ban/cá nhân\n- Hỗ trợ usage-based billing\n- Phát hiện 'abuser'\n\n**P — Performance Management:**\n- Monitor end-to-end performance\n- Monitor component performance\n- Test reachability, response time\n- Đo traffic flow và volume\n\n**S — Security Management:**\n- Maintain user/password\n- Generate, distribute, store encryption key\n- Phân tích config xem compliance\n- Collect, store, examine security audit logs"
     },
     {
       "heading": "Kiến trúc Network Management",
-      "content": "**3 thành phần:**\n- **Managed device** — node trong mạng thu thập và lưu trữ thông tin quản trị\n- **Agent** — phần mềm management chạy trên managed device\n- **Network-Management System (NMS)** — chạy app hiển thị data, monitor và control device, giao tiếp với agent\n\n**Architecture:**\n```\n         NMS\n        / | \\\n   Agent Agent Agent\n     |     |     |\n   MIB    MIB    MIB    (Management Information Base)\n  └─Managed Devices─┘\n```\n\n**Architecture concerns:**\n\n**In-band vs Out-of-band monitoring:**\n- **In-band**: management traffic dùng chung mạng với production traffic. Dễ phát triển hơn, nhưng khi production có vấn đề thì management cũng bị ảnh hưởng.\n- **Out-of-band**: dùng channel riêng (console, separate network). Phức tạp hơn nhưng vẫn quản lý được khi mạng chính sập.\n\n**Centralized vs Distributed monitoring:**\n- **Centralized**: dễ phát triển và maintain; nhưng huge data phải về một NOC trung tâm — bottleneck bandwidth.\n- **Distributed**: scale tốt hơn, nhưng phức tạp đồng bộ và tổng hợp."
+      "content": "**3 thành phần:**\n- **Managed device** — node thu thập và lưu trữ thông tin\n- **Agent** — phần mềm management trên managed device\n- **NMS** — chạy app hiển thị data, monitor và control device\n\n**Architecture concerns:**\n\n**In-band vs Out-of-band:**\n- **In-band**: management dùng chung mạng với production. Dễ phát triển, nhưng production sập thì management cũng sập.\n- **Out-of-band**: channel riêng (console, separate network). Phức tạp hơn nhưng quản lý được khi mạng chính sập.\n\n**Centralized vs Distributed:**\n- **Centralized**: dễ phát triển và maintain; bottleneck bandwidth ở NOC.\n- **Distributed**: scale tốt hơn, nhưng phức tạp đồng bộ."
     },
     {
       "heading": "SNMP & RMON",
-      "content": "**SNMP — Simple Network Management Protocol:**\n- Giao thức **phổ biến nhất** cho network management\n- Hoạt động ở **Application layer**\n- Phiên bản: v1, v2c, **v3** (v3 được khuyến nghị vì có authentication và encryption tốt hơn)\n- Làm việc với **MIB** (Management Information Base) — DB hierarchical chứa managed object\n- Port: **UDP 161** (manager → agent), **UDP 162** (trap từ agent → manager)\n\n**RMON — Remote Monitoring:**\n- IETF chuẩn hóa từ early 1990s để bù đắp shortcoming của standard MIB\n- Cung cấp thông tin ở **data link và physical layer**\n- 9 nhóm data cho Ethernet\n- **Statistics group** track: packet, octet, packet-size distribution, broadcast, collision, dropped, fragment, CRC/alignment errors, jabber, undersized/oversized\n\n**Quan hệ:** RMON có thể coi là phần mở rộng của SNMP — RMON probe gửi data qua SNMP về NMS."
+      "content": "**SNMP — Simple Network Management Protocol:**\n- Giao thức **phổ biến nhất** cho network management\n- Hoạt động ở **Application layer**\n- Phiên bản: v1, v2c, **v3** (v3 có authentication và encryption)\n- Làm việc với **MIB** (Management Information Base)\n- Port: **UDP 161** (manager → agent), **UDP 162** (trap)\n\n**RMON — Remote Monitoring:**\n- IETF chuẩn hóa từ early 1990s\n- Cung cấp thông tin **data link và physical layer**\n- 9 nhóm data cho Ethernet\n- **Statistics group** track: packet, octet, broadcast, collision, dropped, fragment, CRC errors, jabber\n\n**Quan hệ:** RMON có thể coi là extension của SNMP — RMON probe gửi data qua SNMP về NMS."
     },
     {
       "heading": "Cisco Tools cho Network Management",
-      "content": "**Cisco Discovery Protocol (CDP):**\n- Layer 2, Cisco-proprietary\n- `show cdp neighbors detail` cho thấy device kế bên + IOS version + capability + IP\n- Useful cho discovery và inventory tự động\n\n**NetFlow Accounting:**\n- Phần của Cisco IOS, thu thập và đo data khi enter interface router/switch\n- Flow = stream packet với cùng src/dst IP, port, protocol\n- Output cho phân tích traffic, billing, security investigation\n- Khác với SNMP/MIB ở chỗ NetFlow là FLOW-LEVEL chi tiết\n\n**Một số port quản trị mạng cần nhớ:**\n- FTP: TCP 20 (data), 21 (control)\n- Telnet: TCP 23 (KHÔNG dùng — plaintext)\n- SSH: TCP 22\n- SMTP: TCP 25\n- HTTP: TCP 80 / HTTPS: TCP 443\n- SNMP: UDP 161/162\n- DNS: UDP 53 (query), TCP 53 (zone transfer)\n- DHCP: UDP 67 (server) / 68 (client)"
+      "content": "**CDP:**\n- Layer 2, Cisco-proprietary\n- `show cdp neighbors detail` cho thấy device kế bên + IOS version + capability + IP\n- Useful cho discovery và inventory\n\n**NetFlow Accounting:**\n- Phần Cisco IOS, thu thập data khi enter interface\n- Flow = stream packet với cùng src/dst IP, port, protocol\n- Output cho phân tích traffic, billing, security investigation\n- Khác SNMP/MIB ở chỗ NetFlow là FLOW-LEVEL chi tiết\n\n**Port quản trị mạng cần nhớ:**\n- FTP: TCP 20/21\n- Telnet: TCP 23\n- SSH: TCP 22\n- SMTP: TCP 25\n- HTTP/HTTPS: TCP 80/443\n- SNMP: UDP 161/162\n- DNS: UDP 53 / TCP 53\n- DHCP: UDP 67/68"
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "FCAPS đại diện cho 5 quá trình quản trị mạng nào (theo ISO)?",
+      "question": "FCAPS đại diện cho 5 quá trình quản trị mạng nào theo ISO?",
       "options": [
         "Firewall, Configuration, Authentication, Performance, Security",
         "Fault, Configuration, Accounting, Performance, Security",
-        "Fault, Capacity, Audit, Privacy, SNMP",
+        "Fault, Capacity, Audit, Privacy, Storage management",
         "Function, Connection, Access, Protocol, Service"
       ],
       "answer": 1,
-      "explanation": "FCAPS = Fault, Configuration, Accounting, Performance, Security. Đây là chuẩn ISO mô tả 5 lĩnh vực của network management. Học theo FCAPS dễ nhớ."
+      "explanation": "FCAPS = Fault, Configuration, Accounting, Performance, Security — chuẩn ISO mô tả 5 lĩnh vực network management."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "SNMP dùng port UDP nào cho trap (agent → manager)?",
+      "question": "SNMP dùng port UDP nào cho TRAP từ agent về manager?",
       "options": [
-        "UDP 161",
-        "UDP 162",
-        "UDP 514",
-        "TCP 22"
+        "UDP 161 (cùng port với query)",
+        "UDP 162 (port riêng cho trap)",
+        "UDP 514 (cùng port với syslog)",
+        "TCP 22 (cùng port với SSH)"
       ],
       "answer": 1,
-      "explanation": "SNMP query (manager → agent) dùng UDP 161; trap (agent → manager) dùng UDP 162. UDP 514 là syslog. TCP 22 là SSH. Cần nhớ cặp này khi cấu hình firewall cho network management."
+      "explanation": "SNMP query (manager → agent) = UDP 161; trap (agent → manager) = UDP 162. UDP 514 là syslog. Cần nhớ cặp này khi cấu hình firewall cho monitoring."
     },
     {
       "id": 3,
       "level": "basic",
       "question": "MIB trong SNMP là?",
       "options": [
-        "Một loại router",
-        "Management Information Base — database hierarchical chứa managed object mà SNMP query/set",
-        "Một dạng encryption key",
-        "Phần mềm trên client"
+        "Một loại router quản trị mạng",
+        "Database hierarchical chứa managed object",
+        "Một dạng encryption key cho SNMPv3",
+        "Phần mềm chạy trên client để query"
       ],
       "answer": 1,
-      "explanation": "MIB = Management Information Base. Cấu trúc cây của các OID (Object Identifier) — mỗi OID đại diện một metric/setting có thể đọc hoặc set qua SNMP. VD: ifInOctets (bytes vào interface), sysUpTime."
+      "explanation": "MIB = Management Information Base. Cấu trúc cây của OID (Object Identifier) — mỗi OID đại diện một metric/setting. VD: ifInOctets (bytes vào interface), sysUpTime."
     },
     {
       "id": 4,
       "level": "basic",
-      "question": "Phiên bản SNMP nào được khuyến nghị về mặt bảo mật?",
+      "question": "Phiên bản SNMP nào được khuyến nghị về bảo mật?",
       "options": [
-        "SNMPv1",
-        "SNMPv2c",
-        "SNMPv3",
-        "SNMPv0"
+        "SNMPv1 (chỉ community string)",
+        "SNMPv2c (community string mở rộng)",
+        "SNMPv3 (có authentication và encryption)",
+        "SNMPv0 (phiên bản đầu tiên)"
       ],
       "answer": 2,
-      "explanation": "SNMPv3 có authentication và encryption — bảo mật tốt nhất. v1 và v2c chỉ có 'community string' (như password plaintext). v0 không tồn tại. Khi thiết kế, design phải dùng v3, đặc biệt khi management traffic đi qua mạng không tin cậy."
+      "explanation": "SNMPv3 có authentication và encryption. v1 và v2c chỉ có 'community string' (như password plaintext). v0 không tồn tại. Design phải dùng v3 khi management traffic đi qua mạng không tin cậy."
     },
     {
       "id": 5,
-      "level": "intermediate",
-      "question": "Khác biệt cốt lõi giữa SNMP và RMON là?",
+      "level": "basic",
+      "question": "Đâu là 3 thành phần kiến trúc network management?",
       "options": [
-        "RMON thay thế SNMP hoàn toàn",
-        "SNMP query chủ yếu thông tin Layer 3/4; RMON cung cấp dữ liệu data link/physical layer chi tiết — RMON probe có thể coi là extension của SNMP",
-        "SNMP là Cisco-proprietary, RMON là chuẩn IETF",
-        "Hai cái không liên quan"
+        "Manager, Agent, Database trên mỗi node",
+        "Managed device, Agent, NMS",
+        "Client, Server, Router trung gian",
+        "Console, Switch, Cable connection"
       ],
       "answer": 1,
-      "explanation": "SNMP MIB chuẩn cung cấp thông tin device-centric. RMON tập trung vào quan sát SEGMENT mạng — packet size, broadcast, collision, errors ở data link/physical. RMON probe đẩy data qua SNMP về NMS, nên hai cái bổ sung. Cả hai đều IETF chuẩn (không Cisco-proprietary)."
+      "explanation": "3 thành phần: Managed device (node thu thập info), Agent (software trên managed device), NMS (Network Management System chạy app monitor)."
     },
     {
       "id": 6,
-      "level": "intermediate",
-      "question": "Đặc điểm của Out-of-band management là?",
+      "level": "basic",
+      "question": "Trong FCAPS, Fault Management có nhiệm vụ?",
       "options": [
-        "Management traffic dùng chung mạng với production",
-        "Dùng channel/network riêng (console serial, dedicated management VLAN/network) — vẫn quản lý được khi mạng chính sập, nhưng cần infrastructure thêm",
-        "Chỉ chạy ở Layer 1",
-        "Tự động tắt khi production busy"
+        "Track usage theo phòng ban để billing",
+        "Maintain user, password, encryption key",
+        "Detect, isolate, diagnose vấn đề",
+        "Monitor end-to-end performance metrics"
       ],
-      "answer": 1,
-      "explanation": "Out-of-band = channel độc lập (console serial, terminal server, dedicated mgmt network). Lý do tồn tại: khi production network sập (do config sai, attack), in-band management cũng sập theo → mất tay. Out-of-band cho phép admin reach device trong khủng hoảng. Đắt hơn nhưng critical cho mạng quan trọng."
+      "answer": 2,
+      "explanation": "Fault Management = phát hiện, cô lập, chẩn đoán, sửa lỗi; báo trạng thái; track trend. Accounting = track usage; Security = user/password/key; Performance = monitor."
     },
     {
       "id": 7,
       "level": "intermediate",
-      "question": "Trong 5 process FCAPS, 'Accounting management' có mục đích chính là?",
+      "question": "Khác biệt cốt lõi giữa SNMP và RMON?",
       "options": [
-        "Lưu log security",
-        "Track network usage theo phòng ban/cá nhân để usage-based billing và phát hiện abuser",
-        "Lưu config snapshot hàng đêm",
-        "Đo response time end-to-end"
+        "RMON thay thế SNMP hoàn toàn trong mọi trường hợp",
+        "SNMP query L3/L4; RMON cung cấp L1/L2 detail",
+        "SNMP là Cisco-proprietary, RMON là chuẩn IETF",
+        "Hai cái không liên quan và hoàn toàn độc lập"
       ],
       "answer": 1,
-      "explanation": "Accounting management trong FCAPS không phải 'kế toán tài chính' mà là 'tính toán sử dụng tài nguyên'. Dùng cho: chargeback giữa các phòng ban, billing nội bộ/external, phát hiện ai dùng quá quota. NetFlow là công cụ điển hình hỗ trợ accounting."
+      "explanation": "SNMP MIB cung cấp thông tin device-centric (interface counter, status). RMON tập trung observation SEGMENT — packet size, broadcast, collision, errors ở data link/physical. RMON probe đẩy data qua SNMP về NMS. Cả hai đều IETF chuẩn."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "Vì sao 'centralized monitoring' khó scale với mạng lớn?",
+      "question": "Đặc điểm của Out-of-band management là?",
       "options": [
-        "Vì TCP không scale",
-        "Vì lượng data từ mọi managed device đều phải về NOC trung tâm — bandwidth bottleneck, single point of failure, latency cao",
-        "Vì SNMP không hỗ trợ centralized",
-        "Vì phải dùng router Cisco"
+        "Management traffic dùng chung mạng với production",
+        "Channel/network riêng, vẫn quản lý khi mạng chính sập",
+        "Chỉ chạy ở Layer 1 vật lý của mạng",
+        "Tự động tắt khi production network busy"
       ],
       "answer": 1,
-      "explanation": "Centralized: tất cả data flow về 1 NOC. Mạng lớn = lượng data khổng lồ → bottleneck bandwidth ở NOC, single point of failure (NOC down = mất visibility), latency cao cho remote site. Distributed (regional NOC, hierarchical) phân tải tốt hơn. Tradeoff: phức tạp hơn."
+      "explanation": "Out-of-band = channel độc lập (console serial, terminal server, dedicated mgmt network). Khi production sập (config sai, attack), in-band cũng sập theo. Out-of-band cho phép admin reach device trong khủng hoảng."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "Cisco NetFlow KHÁC SNMP MIB ở điểm cốt lõi nào?",
+      "question": "Trong FCAPS, Accounting Management có mục đích chính?",
       "options": [
-        "NetFlow đo flow-level chi tiết (cùng src/dst/port/proto = 1 flow) — phù hợp traffic analysis, billing, security; SNMP chỉ cho counter aggregate ở interface/device",
-        "NetFlow là chuẩn IETF, SNMP là Cisco-proprietary",
-        "Hai cái cung cấp cùng dữ liệu",
-        "NetFlow chỉ chạy trên switch L2"
+        "Lưu log security cho audit trail",
+        "Track network usage theo phòng/cá nhân",
+        "Lưu config snapshot mỗi đêm tự động",
+        "Đo response time end-to-end của ứng dụng"
       ],
-      "answer": 0,
-      "explanation": "SNMP MIB cho aggregate counter (ifInOctets — tổng byte in trên interface). NetFlow detail từng flow (10.0.0.5:443 → 10.0.0.9:55321 TCP, 1234 packets, 567890 bytes). Dùng phân tích ai nói chuyện với ai, thấy được anomaly (port scan). SNMP không thấy được điều này. Cisco original nhưng giờ có IPFIX (IETF chuẩn dựa trên NetFlow v9)."
+      "answer": 1,
+      "explanation": "Accounting trong FCAPS không phải 'kế toán tài chính' mà là 'tính toán sử dụng tài nguyên'. Dùng cho chargeback, billing, phát hiện ai dùng quá quota. NetFlow là tool điển hình hỗ trợ accounting."
     },
     {
       "id": 10,
-      "level": "advanced",
-      "question": "Một mạng campus cỡ 5000 host. Designer chọn 'in-band centralized SNMP polling mỗi 30 giây cho mọi interface'. Vấn đề tiềm ẩn?",
+      "level": "intermediate",
+      "question": "Vì sao 'centralized monitoring' khó scale với mạng lớn?",
       "options": [
-        "Mạng quá nhỏ để bị ảnh hưởng",
-        "(1) Polling traffic ngốn bandwidth khi scale; (2) Khi production sập, in-band cũng sập → mất visibility lúc cần nhất; (3) Centralized = single NOC bottleneck",
-        "SNMP không chạy được ở scale này",
-        "Phải dùng RMON thay SNMP"
+        "Vì TCP không scale được trên mạng lớn",
+        "Vì lượng data về NOC trung tâm — bottleneck",
+        "Vì SNMP không hỗ trợ centralized monitoring",
+        "Vì phải dùng router Cisco mới chạy được"
       ],
       "answer": 1,
-      "explanation": "Cả 3 vấn đề đều thực tế: (1) 5000 host × N interface × poll mỗi 30s = traffic không nhỏ, đặc biệt với MIB lớn; (2) In-band khi mạng down = không reach được agent; (3) Centralized scale kém. Giải pháp: out-of-band cho critical mgmt, hierarchical/distributed NMS, kết hợp trap-driven thay vì poll-only, NetFlow cho flow analytics tách rời SNMP polling."
+      "explanation": "Centralized: tất cả data về 1 NOC. Mạng lớn = lượng data khổng lồ → bottleneck bandwidth, single point of failure, latency cao. Distributed phân tải tốt hơn nhưng phức tạp đồng bộ."
     },
     {
       "id": 11,
-      "level": "advanced",
-      "question": "Trong proactive network management, đâu là CÁCH TIẾP CẬN ĐÚNG NHẤT?",
+      "level": "intermediate",
+      "question": "Cisco NetFlow KHÁC SNMP MIB ở điểm cốt lõi nào?",
       "options": [
-        "Đợi user complaint rồi mới điều tra",
-        "Baseline performance khi mạng khỏe + đặt threshold/alert trên các metric (utilization, error rate, response time) → cảnh báo trước khi vấn đề ảnh hưởng user; track trend để plan upgrade",
-        "Reboot router mỗi đêm để 'cho chắc'",
-        "Tăng bandwidth gấp đôi mỗi 6 tháng"
+        "NetFlow đo flow-level chi tiết; SNMP đo aggregate counter",
+        "NetFlow là chuẩn IETF, SNMP là Cisco-proprietary",
+        "Hai cái cung cấp đúng cùng một loại dữ liệu",
+        "NetFlow chỉ chạy được trên switch L2 thuần"
       ],
-      "answer": 1,
-      "explanation": "Proactive = đo baseline lúc mạng healthy (vd utilization trung bình 30%, error 0.01%), set alert threshold (vd > 70% sustained 10 phút). Khi metric vượt → cảnh báo SỚM, fix trước khi user thấy. Track trend (utilization tăng 5%/tháng) → plan upgrade trước khi nghẽn. Reactive (đợi user gọi) là failure mode. Brute force tăng bandwidth không dựa data là lãng phí."
+      "answer": 0,
+      "explanation": "SNMP MIB cho aggregate counter (ifInOctets — tổng byte). NetFlow detail từng flow (10.0.0.5:443 → 10.0.0.9:55321 TCP, 1234 packets). Phân tích ai nói chuyện ai, anomaly. SNMP không thấy. IPFIX (IETF) dựa trên NetFlow v9."
     },
     {
       "id": 12,
-      "level": "advanced",
-      "question": "Phân tích sau là phù hợp với loại process nào trong FCAPS: 'Hệ thống tự động compare config router với golden template hằng đêm; alert khi có drift; rollback bằng config gần nhất nếu phát hiện thay đổi không authorized'?",
+      "level": "intermediate",
+      "question": "CDP (Cisco Discovery Protocol) chạy ở Layer mấy và làm gì?",
       "options": [
-        "Performance Management",
-        "Configuration Management — quản lý config, inventory, version, phát hiện và rollback drift",
-        "Accounting Management",
-        "Fault Management"
+        "Layer 2, discover device láng giềng kế bên",
+        "Layer 3, route giữa các subnet khác nhau",
+        "Layer 4, kiểm soát kết nối TCP/UDP",
+        "Layer 7, application-level monitoring"
+      ],
+      "answer": 0,
+      "explanation": "CDP = Cisco-proprietary L2 protocol. `show cdp neighbors detail` cho thấy device láng giềng, IOS version, capability, IP. Dùng cho auto-discovery và inventory."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "Trong FCAPS, Configuration Management bao gồm hoạt động nào?",
+      "options": [
+        "Track device, inventory, log version OS",
+        "Generate và distribute encryption key",
+        "Monitor real-time performance của link",
+        "Track usage theo phòng ban và user"
+      ],
+      "answer": 0,
+      "explanation": "Configuration Management: track device và config, maintain inventory, log version OS/app. Security = encryption key. Performance = monitor link. Accounting = usage tracking."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "Proactive vs Reactive network management khác ở điểm gì?",
+      "options": [
+        "Proactive đợi user complaint rồi điều tra",
+        "Proactive monitor liên tục, baseline + alert sớm",
+        "Reactive luôn nhanh hơn proactive trong mọi case",
+        "Hai cách tiếp cận hoàn toàn giống nhau về bản chất"
       ],
       "answer": 1,
-      "explanation": "Configuration Management bao gồm: track device config, inventory, log version, phát hiện drift, rollback. Bài tả chính xác là một workflow Configuration Management hiện đại (như Ansible/Cisco Prime/SolarWinds NCM). Performance đo throughput/response time; Accounting track usage; Fault detect/isolate vấn đề."
+      "explanation": "Proactive = baseline performance khi healthy, set threshold, alert SỚM trước khi user thấy. Reactive = đợi complaint rồi mới làm — failure mode. Proactive cũng track trend để plan upgrade."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Port của giao thức nào là TCP 22?",
+      "options": [
+        "Telnet (remote terminal cũ)",
+        "SSH (secure shell mã hóa)",
+        "FTP (file transfer protocol)",
+        "SMTP (mail transfer protocol)"
+      ],
+      "answer": 1,
+      "explanation": "SSH = TCP 22 (secure remote shell). Telnet = TCP 23 (plaintext, không an toàn). FTP = TCP 20/21. SMTP = TCP 25. Designer phải nhớ port để cấu hình firewall đúng."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "Mạng campus 5000 host. 'In-band centralized SNMP polling 30s' có vấn đề gì?",
+      "options": [
+        "Mạng quá nhỏ để bị ảnh hưởng đáng kể",
+        "Polling tốn band, in-band sập theo, NOC bottleneck",
+        "SNMP không chạy được ở scale 5000 host",
+        "Phải dùng RMON thay thế SNMP polling"
+      ],
+      "answer": 1,
+      "explanation": "Cả 3 vấn đề thực: (1) 5000 host × N interface × poll 30s = band không nhỏ; (2) In-band sập = mất visibility lúc cần nhất; (3) Centralized scale kém. Giải pháp: out-of-band cho critical, hierarchical NMS, trap-driven, NetFlow tách rời polling."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "Proactive network management thực hiện cách tiếp cận nào ĐÚNG NHẤT?",
+      "options": [
+        "Đợi user complaint thì mới điều tra root cause",
+        "Reboot mọi router mỗi đêm để 'cho chắc'",
+        "Baseline + threshold alert + trend tracking",
+        "Tăng bandwidth gấp đôi mỗi 6 tháng định kỳ"
+      ],
+      "answer": 2,
+      "explanation": "Proactive = baseline lúc healthy (utilization 30%, error 0.01%), set alert threshold (vd > 70% sustained 10 phút). Cảnh báo SỚM, fix trước user. Trend (utilization tăng 5%/tháng) → plan upgrade. Reactive là failure mode."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "Workflow 'config drift detection + auto-rollback' thuộc FCAPS process nào?",
+      "options": [
+        "Performance Management (đo throughput)",
+        "Configuration Management (drift, rollback)",
+        "Accounting Management (usage tracking)",
+        "Fault Management (detect anomaly)"
+      ],
+      "answer": 1,
+      "explanation": "Configuration Management bao gồm: track config, inventory, log version, drift detection, rollback. Đây là workflow Configuration Management hiện đại (Ansible/SolarWinds NCM). Performance = throughput; Accounting = usage; Fault = vấn đề."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "Trong Cisco IOS, lệnh `show cdp neighbors detail` cho biết?",
+      "options": [
+        "Routing table và metric của các route",
+        "Device láng giềng + IOS + capability + IP",
+        "Packet drop và error trên các interface",
+        "Cấu hình NAT và rule firewall hiện tại"
+      ],
+      "answer": 1,
+      "explanation": "show cdp neighbors detail: tên device láng giềng, platform, IOS version, capabilities (router/switch), IP address của neighbor. Hữu ích auto-discovery và inventory. Routing table = show ip route; interface = show interfaces."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "Một designer cần monitor 1000 interface với SNMP nhưng tránh ngốn band. Chiến lược?",
+      "options": [
+        "Poll mỗi 1 giây cho mọi interface để chính xác",
+        "Poll thưa hơn + dùng SNMP trap khi có thay đổi",
+        "Tắt SNMP hoàn toàn để tiết kiệm band",
+        "Poll mỗi giờ cho mọi interface là đủ rồi"
+      ],
+      "answer": 1,
+      "explanation": "Poll thưa (5 phút) cho metric chậm thay đổi + SNMP trap (push từ agent khi có event như link down) = giảm band đáng kể so với poll dày. Trap-driven mới phát hiện sự cố tức thời. Poll mỗi giây là quá tốn; poll mỗi giờ thì latency phát hiện cao."
     }
   ]
 }

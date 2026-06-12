@@ -26,28 +26,28 @@
     {
       "id": 1,
       "level": "basic",
-      "question": "Theo phương pháp top-down network design, bước nào KHÔNG nên là bước khởi đầu?",
+      "question": "Theo top-down network design, bước nào KHÔNG nên là bước khởi đầu?",
       "options": [
         "Phân tích mục tiêu kinh doanh của khách hàng",
+        "Lựa chọn router, switch và đi cáp kết nối các site",
         "Tìm hiểu các ứng dụng đang chạy trên hệ thống",
-        "Lựa chọn và mua các thiết bị router, switch để kết nối",
-        "Phân tích cơ cấu tổ chức và người dùng"
+        "Phân tích cơ cấu tổ chức và nhóm người dùng"
       ],
-      "answer": 2,
-      "explanation": "Top-down design KHÔNG bắt đầu bằng việc kết nối hay mua thiết bị. Bắt đầu từ tầng cao (Application/Business goals) rồi mới đi xuống Physical. Mua thiết bị thuộc Phase 3 (physical design)."
+      "answer": 1,
+      "explanation": "Top-down KHÔNG bắt đầu bằng việc kết nối hay mua thiết bị. Bắt đầu từ tầng cao (Application/Business goals) rồi mới đi xuống Physical. Mua thiết bị thuộc Phase 3."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Thứ tự đúng của 4 phase trong quy trình thiết kế mạng top-down là?",
+      "question": "Thứ tự đúng của 4 phase trong quy trình thiết kế mạng top-down?",
       "options": [
-        "Thiết kế logical → Phân tích yêu cầu → Thiết kế physical → Kiểm tra & văn bản hóa",
-        "Phân tích yêu cầu → Thiết kế logical → Thiết kế physical → Kiểm tra & văn bản hóa",
-        "Phân tích yêu cầu → Thiết kế physical → Thiết kế logical → Kiểm tra & văn bản hóa",
-        "Thiết kế physical → Thiết kế logical → Phân tích yêu cầu → Kiểm tra & văn bản hóa"
+        "Logical → Phân tích yêu cầu → Physical → Kiểm tra & văn bản",
+        "Phân tích yêu cầu → Logical → Physical → Kiểm tra & văn bản",
+        "Phân tích yêu cầu → Physical → Logical → Kiểm tra & văn bản",
+        "Physical → Logical → Phân tích yêu cầu → Kiểm tra & văn bản"
       ],
       "answer": 1,
-      "explanation": "Đúng thứ tự là: Phase 1 Phân tích yêu cầu → Phase 2 Logical (topology, addressing, routing, security, management) → Phase 3 Physical (chọn thiết bị) → Phase 4 Test & document. Logical luôn TRƯỚC physical."
+      "explanation": "Đúng thứ tự: Phase 1 Phân tích yêu cầu → Phase 2 Logical (topology, addressing, routing, security, mgmt) → Phase 3 Physical (chọn thiết bị) → Phase 4 Test & document. Logical luôn TRƯỚC physical."
     },
     {
       "id": 3,
@@ -60,25 +60,51 @@
         "Plan, Deploy, Install, Operate, Outsource"
       ],
       "answer": 0,
-      "explanation": "PDIOO = Plan → Design → Implement → Operate → Optimize (và Retire khi kết thúc). Đây là vòng đời quản lý mạng do Cisco đề xuất."
+      "explanation": "PDIOO = Plan → Design → Implement → Operate → Optimize (và Retire khi kết thúc). Vòng đời quản lý mạng do Cisco đề xuất."
     },
     {
       "id": 4,
       "level": "basic",
       "question": "Phát biểu nào về mô hình logical và physical là ĐÚNG?",
       "options": [
-        "Mô hình physical thể hiện chức năng còn logical thể hiện thiết bị",
+        "Physical thể hiện chức năng còn logical thể hiện thiết bị",
         "Logical chỉ áp dụng cho LAN, physical chỉ áp dụng cho WAN",
-        "Hai mô hình hoàn toàn độc lập, có thể làm song song",
-        "Logical xây dựng trước; physical thể hiện thiết bị/công nghệ cụ thể"
+        "Logical xây dựng trước; physical là thiết bị/công nghệ cụ thể",
+        "Hai mô hình hoàn toàn độc lập, có thể làm song song với nhau"
       ],
-      "answer": 3,
-      "explanation": "Nguyên tắc top-down: logical (block chức năng, cấu trúc) xây dựng TRƯỚC physical (thiết bị, công nghệ cụ thể). Logical trả lời 'cần gì'; physical trả lời 'dùng thiết bị nào'."
+      "answer": 2,
+      "explanation": "Nguyên tắc top-down: logical (block chức năng) xây dựng TRƯỚC physical (thiết bị, công nghệ cụ thể). Logical trả lời 'cần gì'; physical trả lời 'dùng thiết bị nào'."
     },
     {
       "id": 5,
+      "level": "basic",
+      "question": "SDLC trong thiết kế hệ thống là viết tắt của?",
+      "options": [
+        "Software Design Lifecycle Control",
+        "Systems Development Life Cycle",
+        "Standard Deployment Logic Chain",
+        "Service Delivery Logical Cycle"
+      ],
+      "answer": 1,
+      "explanation": "SDLC = Systems Development Life Cycle — quy trình tổng quát quản lý và phát triển hệ thống. PDIOO là một biến thể của SDLC chuyên cho mạng."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Đâu KHÔNG thuộc nhóm 'ràng buộc' (constraints) trong thiết kế mạng?",
+      "options": [
+        "Chi phí (cost)",
+        "Con người (staff)",
+        "Tính sẵn sàng (availability)",
+        "Chính sách công ty (policy)"
+      ],
+      "answer": 2,
+      "explanation": "4 ràng buộc điển hình: Chi phí, Con người, Thời gian, Chính sách. Availability là MỤC TIÊU kỹ thuật cần đạt, không phải ràng buộc."
+    },
+    {
+      "id": 7,
       "level": "intermediate",
-      "question": "Một công ty muốn 'rút ngắn thời gian sản xuất bằng cách tự động hóa quy trình'. Đây thuộc loại mục tiêu nào trong top-down design?",
+      "question": "Công ty muốn 'rút ngắn thời gian sản xuất bằng tự động hóa'. Đây là loại mục tiêu gì?",
       "options": [
         "Mục tiêu kỹ thuật (technical goal)",
         "Mục tiêu kinh doanh (business goal)",
@@ -86,98 +112,176 @@
         "Yêu cầu vận hành (operational requirement)"
       ],
       "answer": 1,
-      "explanation": "Rút ngắn thời gian sản xuất là mục tiêu KINH DOANH (giúp doanh nghiệp thành công), không phải kỹ thuật. Mục tiêu kỹ thuật điển hình là scalability, availability, performance, security. Designer phải nắm business goal trước khi bàn đến technical goal."
-    },
-    {
-      "id": 6,
-      "level": "intermediate",
-      "question": "Khi phỏng vấn khách hàng, câu hỏi nào ÍT có giá trị nhất ở giai đoạn đầu tiên (first meeting)?",
-      "options": [
-        "Sản phẩm/dịch vụ chính của công ty là gì?",
-        "Đối thủ cạnh tranh và lợi thế cạnh tranh của công ty?",
-        "Bạn muốn dùng router của Cisco model nào và bao nhiêu cổng?",
-        "Chuyện gì xảy ra nếu dự án không thành công?"
-      ],
-      "answer": 2,
-      "explanation": "Trong buổi họp đầu, designer thu thập business context (sản phẩm, khách hàng, đối thủ, hậu quả thất bại) — KHÔNG hỏi chi tiết model thiết bị. Chọn model là việc của Phase 3 (physical design), sau khi hiểu rõ yêu cầu."
-    },
-    {
-      "id": 7,
-      "level": "intermediate",
-      "question": "'Chính sách của công ty' trong thiết kế mạng được xếp vào nhóm nào?",
-      "options": [
-        "Mục tiêu kỹ thuật",
-        "Ràng buộc thiết kế",
-        "Lưu lượng mạng",
-        "Đặc tả ứng dụng"
-      ],
-      "answer": 1,
-      "explanation": "Ràng buộc (constraints) gồm: Chi phí · Con người · Thời gian · Chính sách công ty. Chính sách (VD: bắt buộc dùng vendor X, cấm cloud công cộng) là ràng buộc designer phải tuân theo, không phải mục tiêu cần đạt."
+      "explanation": "Rút ngắn thời gian sản xuất là business goal (giúp doanh nghiệp thành công), không phải technical. Technical goals điển hình là scalability, availability, performance, security."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "Tại sao cần nói chuyện với CẢ bộ phận quản lý lẫn kỹ thuật khi phân tích yêu cầu?",
+      "question": "Khi phỏng vấn khách hàng, câu hỏi nào ÍT có giá trị nhất ở giai đoạn đầu?",
       "options": [
-        "Để lập biên bản họp đúng quy trình hành chính",
-        "Vì chỉ quản lý mới hiểu công nghệ mạng",
-        "Để tận dụng thời gian, tránh phải họp nhiều lần",
-        "Vì hai nhóm có ưu tiên và 'thiên vị' khác nhau, cần cả hai góc nhìn"
+        "Sản phẩm và dịch vụ chính của công ty là gì?",
+        "Bạn muốn dùng router Cisco model nào và bao nhiêu cổng?",
+        "Đối thủ và lợi thế cạnh tranh của công ty là gì?",
+        "Chuyện gì xảy ra nếu dự án này không thành công?"
       ],
-      "answer": 3,
-      "explanation": "Quản lý quan tâm cost, ROI, business risk; kỹ thuật quan tâm performance, công nghệ quen dùng. Designer phải nghe cả hai để hiểu được ưu tiên thực sự và biết được những 'biases' (công nghệ thích/tránh) mà mỗi nhóm có."
+      "answer": 1,
+      "explanation": "Buổi đầu thu thập business context (sản phẩm, đối thủ, hậu quả thất bại) — KHÔNG hỏi chi tiết model thiết bị. Chọn model là Phase 3, sau khi hiểu yêu cầu."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "Trong các yêu cầu sau, đâu là MỤC TIÊU ƯU TIÊN (priority) chứ không phải mục tiêu kinh doanh thuần?",
+      "question": "'Chính sách bảo mật của công ty' khi thiết kế mạng được xếp vào nhóm nào?",
       "options": [
-        "Mở rộng thị trường sang Đông Nam Á",
-        "Đảm bảo độ trễ thấp cho ứng dụng real-time như VoIP",
-        "Tăng lợi nhuận quý IV thêm 15%",
-        "Xây dựng quan hệ đối tác với 5 nhà cung cấp mới"
+        "Mục tiêu kỹ thuật",
+        "Ràng buộc thiết kế",
+        "Đặc tả lưu lượng",
+        "Đặc tả ứng dụng"
       ],
       "answer": 1,
-      "explanation": "Độ trễ thấp cho real-time là mục tiêu ƯU TIÊN của thiết kế mạng (Mobility, Security, Resiliency, độ trễ thấp...). Ba phương án còn lại là business goal thuần — không trực tiếp quy ra yêu cầu cho mạng."
+      "explanation": "Ràng buộc gồm: Chi phí · Người · Thời gian · Chính sách. Chính sách (vd bắt buộc dùng vendor X) là constraint designer phải tuân, không phải mục tiêu cần đạt."
     },
     {
       "id": 10,
-      "level": "advanced",
-      "question": "Một designer được giao thiết kế mạng cho startup fintech. Khách hàng nói: 'Mục tiêu là vận hành 24/7, mọi giao dịch phải dưới 100ms, và ngân sách giai đoạn 1 chỉ có 200 triệu.' Phân loại đúng nhất là?",
+      "level": "intermediate",
+      "question": "Vì sao cần nói chuyện với CẢ quản lý lẫn kỹ thuật khi phân tích yêu cầu?",
       "options": [
-        "Tất cả đều là mục tiêu kinh doanh",
-        "24/7 + 100ms là mục tiêu kỹ thuật/ưu tiên; 200 triệu là ràng buộc",
+        "Để lập biên bản họp đúng quy trình hành chính của công ty",
+        "Vì chỉ quản lý mới hiểu được công nghệ mạng hiện đại",
+        "Để tận dụng thời gian, tránh phải tổ chức thêm các buổi họp",
+        "Vì hai nhóm có ưu tiên khác nhau, cần nghe cả hai góc nhìn"
+      ],
+      "answer": 3,
+      "explanation": "Quản lý quan tâm cost, ROI, risk; kỹ thuật quan tâm performance, công nghệ quen. Designer phải nghe cả hai để biết ưu tiên thực sự và 'biases' (công nghệ thích/tránh)."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "Đâu là MỤC TIÊU ƯU TIÊN của thiết kế mạng, không phải mục tiêu kinh doanh thuần?",
+      "options": [
+        "Mở rộng thị trường sang khu vực Đông Nam Á",
+        "Tăng lợi nhuận quý IV của công ty thêm 15%",
+        "Đảm bảo độ trễ thấp cho ứng dụng VoIP và video",
+        "Xây dựng quan hệ đối tác với 5 nhà cung cấp mới"
+      ],
+      "answer": 2,
+      "explanation": "Độ trễ thấp cho real-time là mục tiêu ƯU TIÊN của mạng (Mobility, Security, Resiliency, low-latency...). Ba phương án còn lại là business goal — không trực tiếp quy ra yêu cầu cho mạng."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "Trong các thông tin sau, đâu KHÔNG phải là dữ liệu cần thu thập về mạng hiện tại?",
+      "options": [
+        "Danh sách ứng dụng đang chạy",
+        "Vị trí và nhóm người dùng",
+        "Doanh thu hàng quý của công ty",
+        "Hiệu năng mạng và các giao thức đang dùng"
+      ],
+      "answer": 2,
+      "explanation": "Cần thu thập: Application, User communities, Data stores, Protocols, mô hình logical/physical, performance hiện tại. Doanh thu là dữ liệu kinh doanh, không phải dữ liệu mạng."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "Phase 2 (logical design) bao gồm hoạt động nào sau đây?",
+      "options": [
+        "Lựa chọn brand và model cụ thể của switch core",
+        "Đo throughput thực tế của các link đang chạy",
+        "Thiết kế topology, addressing, chọn routing protocol",
+        "Lập biên bản nghiệm thu và bàn giao thiết bị mới"
+      ],
+      "answer": 2,
+      "explanation": "Phase 2 logical: thiết kế topology, addressing/naming, chọn routing/switching protocol, security solution, management solution. Chọn brand/model là Phase 3 (physical)."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "Trong thiết kế mạng, 'phạm vi (scope) nhỏ' điển hình là?",
+      "options": [
+        "Thiết kế lại toàn bộ hệ thống mạng của doanh nghiệp",
+        "Bổ sung VPN truy cập từ xa cho nhóm sale 30 người",
+        "Triển khai data center mới với 200 server và storage",
+        "Migration toàn bộ workload lên public cloud"
+      ],
+      "answer": 1,
+      "explanation": "Scope nhỏ = thay đổi cục bộ, ít ảnh hưởng (thêm VPN, thêm 1 chi nhánh). Scope lớn = thiết kế lại toàn hệ thống, data center mới, cloud migration."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Mức độ ưu tiên của thiết kế mạng KHÔNG bao gồm yếu tố nào?",
+      "options": [
+        "Tính di động (Mobility)",
+        "Bảo mật (Security)",
+        "Khả năng phục hồi (Resiliency)",
+        "Tốc độ tăng trưởng doanh thu (Revenue growth)"
+      ],
+      "answer": 3,
+      "explanation": "Priorities: Mobility, Security, Resiliency, business continuity, cost goals, low latency cho real-time. Revenue growth là business outcome, không phải design priority."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "Khách hàng nói: '24/7, mọi giao dịch < 100ms, ngân sách 200 triệu'. Phân loại đúng nhất?",
+      "options": [
+        "Tất cả ba yêu cầu đều là mục tiêu kinh doanh",
+        "24/7 + 100ms là mục tiêu kỹ thuật; 200 triệu là ràng buộc",
         "24/7 là kinh doanh; 100ms là kỹ thuật; 200 triệu là kinh doanh",
         "100ms là ràng buộc; 24/7 và 200 triệu là mục tiêu kinh doanh"
       ],
       "answer": 1,
-      "explanation": "24/7 = availability (kỹ thuật/ưu tiên), 100ms = low latency (kỹ thuật/ưu tiên cho real-time). 200 triệu là CONSTRAINT (chi phí) — designer phải vừa đạt mục tiêu vừa không vượt ngân sách. Phân biệt rõ goal vs constraint là kỹ năng cốt lõi của Phase 1."
+      "explanation": "24/7 = availability (kỹ thuật/ưu tiên), 100ms = low latency (kỹ thuật). 200 triệu là CONSTRAINT (chi phí). Phân biệt goal vs constraint là kỹ năng cốt lõi của Phase 1."
     },
     {
-      "id": 11,
+      "id": 17,
       "level": "advanced",
-      "question": "Lý do quan trọng nhất khiến thiết kế logical phải đi TRƯỚC physical là gì?",
+      "question": "Lý do quan trọng nhất để thiết kế logical đi TRƯỚC physical là?",
       "options": [
-        "Vì thiết bị physical đắt tiền nên phải tiết kiệm",
-        "Vì các vendor yêu cầu tài liệu logical mới bán hàng",
-        "Để có thể chọn đúng thiết bị/công nghệ phù hợp với yêu cầu chức năng đã xác định, tránh ràng buộc thiết kế bởi sản phẩm có sẵn",
-        "Vì luật quốc tế yêu cầu trình tự đó"
+        "Để tiết kiệm chi phí thiết bị do giá thị trường ngày càng tăng",
+        "Vì vendor yêu cầu phải có tài liệu logical thì mới chịu báo giá",
+        "Để chọn thiết bị theo đúng yêu cầu chức năng, không bị bó buộc bởi sản phẩm sẵn có",
+        "Vì các tổ chức tiêu chuẩn quốc tế bắt buộc phải làm theo trình tự đó"
       ],
       "answer": 2,
-      "explanation": "Nếu chọn thiết bị trước, ta sẽ ép thiết kế khớp với khả năng của thiết bị đó (vendor lock-in về tư duy). Logical-first cho phép xác định 'cần gì' rồi mới chọn 'ai làm được' — tránh việc thiết kế bị giới hạn bởi sản phẩm sẵn có hoặc thiên vị vendor."
+      "explanation": "Nếu chọn thiết bị trước, ta sẽ ép thiết kế khớp với khả năng thiết bị đó. Logical-first cho phép xác định 'cần gì' rồi mới chọn 'ai làm được' — tránh vendor lock-in về tư duy."
     },
     {
-      "id": 12,
+      "id": 18,
       "level": "advanced",
-      "question": "Trong 4 phase top-down, phase nào là nơi designer quyết định 'dùng OSPF hay EIGRP', 'subnet thế nào' và 'firewall đặt ở đâu'?",
+      "question": "Trong 4 phase top-down, phase nào quyết định 'dùng OSPF hay EIGRP', 'subnet thế nào'?",
       "options": [
         "Phase 1 — Phân tích yêu cầu",
         "Phase 2 — Thiết kế logical",
         "Phase 3 — Thiết kế physical",
-        "Phase 4 — Kiểm tra và văn bản hóa"
+        "Phase 4 — Kiểm tra và văn bản"
       ],
       "answer": 1,
-      "explanation": "Phase 2 (logical) bao gồm: thiết kế topology, addressing/naming, chọn giao thức routing/switching, giải pháp bảo mật, giải pháp quản lý. Đây là nơi quyết định OSPF/EIGRP, subnet plan, vị trí firewall trong topology — TRƯỚC khi chọn brand/model thiết bị ở Phase 3."
+      "explanation": "Phase 2 logical: chọn routing/switching protocol, addressing plan, security topology — TRƯỚC khi chọn brand/model thiết bị ở Phase 3."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "Một designer bỏ qua Phase 1 và làm thẳng Phase 2-3. Hậu quả KHẢ DĨ NHẤT?",
+      "options": [
+        "Tiết kiệm thời gian, không có rủi ro nào đáng kể",
+        "Thiết kế đẹp về kỹ thuật nhưng có thể không phù hợp business goal",
+        "Mạng sẽ tự động fail trong vòng 24 giờ đầu",
+        "Vendor sẽ từ chối báo giá thiết bị cho dự án"
+      ],
+      "answer": 1,
+      "explanation": "Bỏ Phase 1 = không hiểu business goal, ràng buộc, ưu tiên. Kết quả: thiết kế có thể đắt quá ngân sách, sai SLA, hoặc giải quyết sai vấn đề. Đây là failure mode kinh điển."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "Khách hàng có 'biases' (thiên vị) về công nghệ. Designer NÊN làm gì?",
+      "options": [
+        "Bỏ qua biases để giữ tính khách quan của thiết kế",
+        "Chỉ làm theo bias, không cần phân tích yêu cầu",
+        "Ghi nhận biases như input, vẫn phân tích yêu cầu khách quan",
+        "Báo cáo biases lên quản lý cấp cao để xử lý kỷ luật"
+      ],
+      "answer": 2,
+      "explanation": "Biases (thích vendor X, ghét công nghệ Y) là constraint mềm có thật — designer không thể bỏ qua nhưng cũng không nên mù quáng làm theo. Ghi nhận, đánh giá rủi ro, propose phương án dung hòa."
     }
   ]
 }

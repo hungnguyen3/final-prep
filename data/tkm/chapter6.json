@@ -3,23 +3,23 @@
   "theory": [
     {
       "heading": "Hướng dẫn cho việc đặt tên và địa chỉ",
-      "content": "**Nguyên tắc:**\n- Sử dụng **mô hình phân cấp** trong việc đặt tên và địa chỉ\n- Quyết định: hệ thống đặt tên/địa chỉ **tập trung hay phân tán**\n- Public hay Private addressing\n- Static hay Dynamic addressing\n\n**Lợi ích của structured addressing:**\n- Đọc mô hình mạng dễ hơn\n- Giám sát hoạt động mạng\n- Nhận biết giao thức/thiết bị trong analyzer\n- Dễ thiết kế filter ở firewall/router\n- Thực hiện **route summarization** (gom nhiều prefix thành một advertise)"
+      "content": "**Nguyên tắc:**\n- Sử dụng **mô hình phân cấp** trong đặt tên và địa chỉ\n- Quyết định: hệ thống đặt tên/địa chỉ **tập trung hay phân tán**\n- Public hay Private addressing\n- Static hay Dynamic addressing\n\n**Lợi ích của structured addressing:**\n- Đọc mô hình mạng dễ hơn\n- Giám sát hoạt động mạng\n- Nhận biết giao thức/thiết bị trong analyzer\n- Dễ thiết kế filter ở firewall/router\n- Thực hiện **route summarization**"
     },
     {
       "heading": "Public vs Private Addressing",
-      "content": "**IP Public:**\n- Quản lý bởi **IANA** (Internet Assigned Numbers Authority)\n- ISP nhận dải từ **RIR** (Regional Internet Registry)\n- 5 RIR: ARIN (Bắc Mỹ), RIPE NCC (Châu Âu), APNIC (Châu Á-TBD), LACNIC (Mỹ Latin), AfriNIC (Châu Phi)\n\n**IP Private (RFC 1918):**\n- `10.0.0.0/8`           — 10.0.0.0 – 10.255.255.255\n- `172.16.0.0/12`        — 172.16.0.0 – 172.31.255.255\n- `192.168.0.0/16`       — 192.168.0.0 – 192.168.255.255\n\nPrivate IP không route được trên Internet — phải qua NAT.\n\n**Static vs Dynamic — tiêu chí:**\n- Số lượng end systems\n- Có cần đánh số lại không\n- High availability\n- Yêu cầu bảo mật\n- Truy vết (audit trail)\n- End system cần thông tin khác (DNS, gateway)"
+      "content": "**IP Public:**\n- Quản lý bởi **IANA**\n- ISP nhận dải từ **RIR**\n- 5 RIR: ARIN (Bắc Mỹ), RIPE NCC (Châu Âu), APNIC (Châu Á-TBD), LACNIC (Mỹ Latin), AfriNIC (Châu Phi)\n\n**IP Private (RFC 1918):**\n- `10.0.0.0/8` — 10.0.0.0 – 10.255.255.255\n- `172.16.0.0/12` — 172.16.0.0 – 172.31.255.255\n- `192.168.0.0/16` — 192.168.0.0 – 192.168.255.255\n\nPrivate IP không route được trên Internet — phải qua NAT.\n\n**Static vs Dynamic — tiêu chí:**\n- Số lượng end systems\n- Có cần đánh số lại\n- High availability\n- Yêu cầu bảo mật\n- Truy vết (audit trail)"
     },
     {
       "heading": "Subnetting & Prefix Length",
-      "content": "**IP address có 2 phần:** Prefix (network) + Host. Prefix length = số bit dùng cho phần network.\n\n**Cách viết:**\n- Subnet mask: `255.255.255.0`\n- /Length: `192.168.10.1/24`\n\n**Ví dụ subnet mask:**\n- `11111111 11111111 11111111 00000000` = /24 = 255.255.255.0\n- `11111111 11111111 11110000 00000000` = /20 = 255.255.240.0\n- `11111111 11111111 11111000 00000000` = /21 = 255.255.248.0\n\n**Thiết kế subnet:**\n1) Quyết định subnet size (số host cần)\n2) Tính subnet mask\n3) Tính địa chỉ subnet\n\n**Địa chỉ cần TRÁNH gán cho host:**\n- Toàn 1 (broadcast của subnet)\n- Toàn 0 (network address)\n→ Số host khả dụng = 2^(32−prefix) − 2"
+      "content": "**IP address có 2 phần:** Prefix (network) + Host. Prefix length = số bit cho phần network.\n\n**Cách viết:**\n- Subnet mask: `255.255.255.0`\n- /Length: `192.168.10.1/24`\n\n**Ví dụ subnet mask:**\n- /24 = 255.255.255.0\n- /20 = 255.255.240.0\n- /21 = 255.255.248.0\n- /27 = 255.255.255.224\n\n**Thiết kế subnet:**\n1) Quyết định subnet size (số host)\n2) Tính subnet mask\n3) Tính địa chỉ subnet\n\n**Tránh:**\n- Toàn 1 (broadcast của subnet)\n- Toàn 0 (network address)\n→ Số host khả dụng = 2^(32−prefix) − 2"
     },
     {
       "heading": "Bài tập subnetting điển hình",
-      "content": "**VD 1:** Cho 172.16.0.0, mỗi subnet 600 nodes.\n- Cần 2^x − 2 ≥ 600 → x = 10 bit host → mask /22 = 255.255.252.0\n- Subnet đầu: 172.16.0.0/22\n- First host: 172.16.0.1\n- Broadcast: 172.16.3.255\n\n**VD 2:** Cho 172.16.0.0 chia thành 8 subnet.\n- Cần 2^n ≥ 8 → n = 3 bit subnet → mask /19 = 255.255.224.0\n- Subnet đầu: 172.16.0.0/19\n- First host: 172.16.0.1\n- Broadcast: 172.16.31.255\n\n**VD 3:** Cho 192.168.55.0 với mỗi subnet 25 nodes.\n- Cần 2^x − 2 ≥ 25 → x = 5 bit host → mask /27 = 255.255.255.224\n- Subnet đầu: 192.168.55.0/27\n- First host: 192.168.55.1\n- Broadcast: 192.168.55.31\n\n**Supernetting:** gộp nhiều subnet thành một advertise (move prefix boundary sang trái). VD branch advertise 172.16.0.0/14 thay vì 4 prefix /16."
+      "content": "**VD 1:** Cho 172.16.0.0, mỗi subnet 600 nodes.\n- 2^x − 2 ≥ 600 → x = 10 → mask /22\n- Subnet đầu: 172.16.0.0/22, broadcast 172.16.3.255\n\n**VD 2:** Cho 172.16.0.0 chia thành 8 subnet.\n- 2^n ≥ 8 → n = 3 bit → mask /19\n- Subnet đầu: 172.16.0.0/19, broadcast 172.16.31.255\n\n**VD 3:** Cho 192.168.55.0 với mỗi subnet 25 nodes.\n- 2^x − 2 ≥ 25 → x = 5 → mask /27\n- Subnet đầu: 192.168.55.0/27, broadcast 192.168.55.31\n\n**Supernetting:** gộp nhiều subnet thành một advertise. VD branch advertise 172.16.0.0/14 thay vì 4 prefix /16."
     },
     {
       "heading": "DNS — Domain Name System",
-      "content": "**DNS** maps tên (domain name) → IP address.\n\n**Đặc điểm:**\n- Hỗ trợ hierarchical naming: `frodo.rivendell.middle-earth.com`\n- Server có DB **resource records (RRs)** trong **zone of authority**\n- Client/server model — client cấu hình IP của DNS server (manually hoặc qua DHCP)\n- DNS resolver software trên client gửi query đến DNS server\n\n**Port:**\n- **UDP port 53** — name query và reply\n- **TCP port 53** — zone transfer (truyền lượng lớn, cần reliable)\n\n**Recursion:**\n- Server có thể recursive query — hỏi server khác thay client\n- Server cấu hình IP của một hoặc nhiều **root DNS server**\n- Khi nhận response, server **cache** với TTL do authoritative server quy định\n- Non-authoritative server không thể cache lâu hơn TTL cho phép\n\n**Hướng dẫn đặt tên:** ngắn, có ý nghĩa, rõ ràng, khác biệt, phân biệt hoa/thường. Tránh ký tự lạ (-, _, @...)."
+      "content": "**DNS** maps tên (domain name) → IP address.\n\n**Đặc điểm:**\n- Hỗ trợ hierarchical naming: `frodo.rivendell.middle-earth.com`\n- Server có DB **resource records** trong **zone of authority**\n- Client cấu hình IP của DNS server (manually hoặc DHCP)\n\n**Port:**\n- **UDP port 53** — name query và reply\n- **TCP port 53** — zone transfer\n\n**Recursion:**\n- Server có thể recursive query — hỏi server khác thay client\n- Server cấu hình IP của một hoặc nhiều **root DNS server**\n- Server **cache** với TTL do authoritative server quy định\n\n**Hướng dẫn đặt tên:** ngắn, có ý nghĩa, rõ ràng, khác biệt. Tránh ký tự lạ (-, _, @...)."
     }
   ],
   "questions": [
@@ -34,150 +34,254 @@
         "169.254.0.0 – 169.254.255.255"
       ],
       "answer": 3,
-      "explanation": "169.254.0.0/16 là APIPA (Automatic Private IP Addressing) — dùng khi DHCP fail, không phải private addressing theo RFC 1918. Ba dải kia chính xác là RFC 1918 private."
+      "explanation": "169.254.0.0/16 là APIPA — dùng khi DHCP fail, không phải private addressing theo RFC 1918. Ba dải kia chính xác là RFC 1918 private."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "DNS dùng port nào?",
+      "question": "DNS dùng port nào cho query và zone transfer?",
       "options": [
-        "TCP 53 cho query, UDP 53 cho zone transfer",
-        "UDP 53 cho query/reply, TCP 53 cho zone transfer",
-        "TCP 80 cho cả hai",
-        "UDP 67 cho query, UDP 68 cho reply"
+        "TCP 53 query, UDP 53 zone transfer",
+        "UDP 53 query/reply, TCP 53 zone transfer",
+        "TCP 80 cho cả hai loại traffic DNS",
+        "UDP 67 query, UDP 68 reply"
       ],
       "answer": 1,
-      "explanation": "UDP 53 cho name query/reply (nhanh, ít overhead). TCP 53 cho zone transfer (lượng dữ liệu lớn, cần reliability). UDP 67/68 là DHCP. TCP 80 là HTTP."
+      "explanation": "UDP 53 cho name query/reply (nhanh, ít overhead). TCP 53 cho zone transfer (data lớn, cần reliability). UDP 67/68 là DHCP. TCP 80 là HTTP."
     },
     {
       "id": 3,
       "level": "basic",
       "question": "Tổ chức nào quản lý IP public toàn cầu?",
       "options": [
-        "ICANN — IANA",
-        "Cisco",
-        "ITU-T",
-        "RIPE NCC"
+        "ICANN/IANA (Internet Assigned Numbers)",
+        "Cisco Systems (vendor lớn nhất)",
+        "ITU-T (viễn thông quốc tế)",
+        "RIPE NCC (chỉ Châu Âu)"
       ],
       "answer": 0,
-      "explanation": "IANA (Internet Assigned Numbers Authority, dưới ICANN) quản lý IP public toàn cầu. RIPE NCC chỉ là 1 trong 5 RIR (phục vụ Châu Âu/Trung Đông/Trung Á), nhận dải từ IANA. Cisco là vendor; ITU là viễn thông."
+      "explanation": "IANA (dưới ICANN) quản lý IP public toàn cầu. RIPE NCC chỉ là 1 trong 5 RIR (Châu Âu/Trung Đông/Trung Á), nhận dải từ IANA. Cisco là vendor; ITU là viễn thông."
     },
     {
       "id": 4,
       "level": "basic",
       "question": "Subnet mask /24 tương đương với?",
       "options": [
-        "255.255.0.0",
-        "255.255.255.0",
-        "255.255.255.128",
-        "255.0.0.0"
+        "255.255.0.0 (class B mặc định)",
+        "255.255.255.0 (class C mặc định)",
+        "255.255.255.128 (chia đôi class C)",
+        "255.0.0.0 (class A mặc định)"
       ],
       "answer": 1,
       "explanation": "/24 = 24 bit network = 255.255.255.0. /16 = 255.255.0.0. /25 = 255.255.255.128. /8 = 255.0.0.0."
     },
     {
       "id": 5,
-      "level": "intermediate",
-      "question": "Cho 172.16.0.0, cần chia thành các subnet, mỗi subnet chứa 600 host. Mask phù hợp NHẤT là?",
+      "level": "basic",
+      "question": "RIR nào phục vụ khu vực Châu Á - Thái Bình Dương?",
       "options": [
-        "/24 (255.255.255.0)",
-        "/22 (255.255.252.0)",
-        "/20 (255.255.240.0)",
-        "/16 (255.255.0.0)"
+        "ARIN (American Registry)",
+        "RIPE NCC (European)",
+        "APNIC (Asia-Pacific)",
+        "AfriNIC (African Network)"
       ],
-      "answer": 1,
-      "explanation": "Cần 2^x − 2 ≥ 600 → x = 10 bit host (2^10 − 2 = 1022 host). 32 − 10 = 22 → mask /22 = 255.255.252.0. /24 chỉ 254 host (không đủ). /20 dư 4094 host (lãng phí địa chỉ)."
+      "answer": 2,
+      "explanation": "5 RIR: ARIN (Bắc Mỹ), RIPE NCC (Châu Âu/Trung Đông/Trung Á), APNIC (Châu Á-Thái Bình Dương), LACNIC (Mỹ Latin), AfriNIC (Châu Phi)."
     },
     {
       "id": 6,
-      "level": "intermediate",
-      "question": "Cho 172.16.0.0 chia thành 8 subnet bằng nhau, broadcast của subnet đầu tiên là?",
+      "level": "basic",
+      "question": "Đâu là 2 phần của một địa chỉ IP?",
       "options": [
-        "172.16.0.255",
-        "172.16.7.255",
-        "172.16.31.255",
-        "172.16.255.255"
+        "Prefix (network) và Host",
+        "Source và Destination",
+        "Public và Private",
+        "Static và Dynamic"
       ],
-      "answer": 2,
-      "explanation": "Để có 8 subnet cần 3 bit (2^3 = 8). Mượn 3 bit từ default /16 → mask /19 = 255.255.224.0. Subnet đầu: 172.16.0.0 – 172.16.31.255 → broadcast = 172.16.31.255. Mỗi subnet rộng 8192 địa chỉ (2^13)."
+      "answer": 0,
+      "explanation": "IP address chia thành Prefix (phần mạng) và Host. Prefix length cho biết bao nhiêu bit dùng cho prefix. Source/Destination, Public/Private, Static/Dynamic là phân loại khác."
     },
     {
       "id": 7,
       "level": "intermediate",
-      "question": "Cho 192.168.55.0 chia thành các subnet với mỗi subnet 25 host. Mask cần dùng?",
+      "question": "Cho 172.16.0.0, chia subnet với 600 host mỗi subnet. Mask phù hợp?",
       "options": [
-        "/26 (255.255.255.192)",
-        "/27 (255.255.255.224)",
-        "/28 (255.255.255.240)",
-        "/29 (255.255.255.248)"
+        "/24 (255.255.255.0) — 254 host",
+        "/22 (255.255.252.0) — 1022 host",
+        "/20 (255.255.240.0) — 4094 host",
+        "/16 (255.255.0.0) — 65534 host"
       ],
       "answer": 1,
-      "explanation": "Cần 2^x − 2 ≥ 25 → x = 5 (2^5 − 2 = 30 host). 32 − 5 = 27 → /27. /28 chỉ 14 host (không đủ). /26 dư 62 host (lãng phí, được 4 subnet thôi)."
+      "explanation": "Cần 2^x − 2 ≥ 600 → x = 10 host bit (1022 host). 32 − 10 = 22 → mask /22. /24 không đủ; /20 lãng phí địa chỉ."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "Khi NÀO Static addressing tốt hơn Dynamic (DHCP)?",
+      "question": "Cho 172.16.0.0 chia thành 8 subnet bằng nhau, broadcast của subnet đầu là?",
       "options": [
-        "Cho mạng có hàng nghìn laptop di động",
-        "Cho server, router, printer — thiết bị cần địa chỉ cố định để DNS/firewall rule trỏ tới và dễ truy vết",
-        "Khi muốn giảm tải admin",
-        "Cho mọi end-host trong mạng doanh nghiệp"
+        "172.16.0.255 (subnet rộng /24)",
+        "172.16.7.255 (subnet rộng /21)",
+        "172.16.31.255 (subnet rộng /19)",
+        "172.16.255.255 (toàn /16)"
       ],
-      "answer": 1,
-      "explanation": "Static dùng cho thiết bị cần IP ổn định: server (DNS A record), printer (queue trên client), router gateway, network device được monitoring. Dynamic phù hợp end-user (workstation, laptop) — đỡ tốn admin. Tiêu chí thực tế: tính sẵn sàng cao + bảo mật + truy vết → static."
+      "answer": 2,
+      "explanation": "8 subnet cần 3 bit (2^3 = 8). Mượn 3 bit từ /16 → mask /19. Subnet đầu: 172.16.0.0 – 172.16.31.255. Mỗi subnet rộng 8192 địa chỉ."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "Lợi ích của route summarization (supernetting) là?",
+      "question": "Cho 192.168.55.0 chia subnet, mỗi subnet 25 host. Mask cần?",
       "options": [
-        "Tăng số lượng host trong một subnet",
-        "Giảm kích thước routing table và lượng update — chỉ advertise 1 prefix thay vì nhiều prefix con",
-        "Mã hóa địa chỉ IP",
-        "Loại bỏ cần subnet mask"
+        "/26 (255.255.255.192) — 62 host",
+        "/27 (255.255.255.224) — 30 host",
+        "/28 (255.255.255.240) — 14 host",
+        "/29 (255.255.255.248) — 6 host"
       ],
       "answer": 1,
-      "explanation": "Summarization gộp nhiều prefix con (vd 172.16.0.0/16, 172.17.0.0/16, 172.18.0.0/16, 172.19.0.0/16) thành một advertise (172.16.0.0/14) → routing table nhỏ, ít update khi thay đổi nội bộ, hội tụ nhanh. Là kỹ thuật then chốt để scale OSPF/EIGRP."
+      "explanation": "Cần 2^x − 2 ≥ 25 → x = 5 (30 host). 32 − 5 = 27. /28 chỉ 14 host (không đủ). /26 dư 62 host (lãng phí, được 4 subnet)."
     },
     {
       "id": 10,
-      "level": "advanced",
-      "question": "Tại sao DNS dùng UDP cho query nhưng TCP cho zone transfer?",
+      "level": "intermediate",
+      "question": "Khi nào Static addressing tốt hơn Dynamic (DHCP)?",
       "options": [
-        "Vì UDP nhanh hơn cho payload nhỏ (query/response thường < 512 bytes); zone transfer truyền nhiều record nên cần TCP để reliable và xử lý gói lớn",
-        "Vì TCP không hỗ trợ zone transfer",
-        "Vì UDP đảm bảo thứ tự gói, TCP thì không",
-        "Quyết định ngẫu nhiên của RFC, không có lý do kỹ thuật"
+        "Cho hàng nghìn laptop di động cần roam",
+        "Cho server, router, printer cần IP cố định",
+        "Khi muốn giảm tải công việc của admin",
+        "Cho mọi end-host trong mạng doanh nghiệp"
       ],
-      "answer": 0,
-      "explanation": "Query DNS thường nhỏ (< 512 bytes lịch sử), one-shot — UDP đủ và nhanh, không tốn handshake. Zone transfer (AXFR/IXFR) có thể MB → cần TCP để reliable, ordered, có flow control. Đây là ví dụ kinh điển protocol designer chọn UDP/TCP đúng theo workload."
+      "answer": 1,
+      "explanation": "Static cho thiết bị cần IP ổn định: server (DNS A record), printer (queue), router gateway, network device. Dynamic phù hợp end-user. Tiêu chí: tính sẵn sàng, bảo mật, audit → static."
     },
     {
       "id": 11,
-      "level": "advanced",
-      "question": "Một thiết kế dùng địa chỉ 'không liên tục' (discontiguous subnets — VD subnet 10.108.16.0/24 ở Area 1 và 10.108.32.0/24 ở Area 2 với network 192.168.49.0 ở giữa). Hậu quả tiềm ẩn là?",
+      "level": "intermediate",
+      "question": "Lợi ích của route summarization (supernetting) là?",
       "options": [
-        "Tăng performance",
-        "Một số routing protocol (đặc biệt classful như RIPv1) auto-summarize ở classful boundary → mất route đến subnet khác → hai area không thấy nhau",
-        "DNS sẽ tự động tạo CNAME",
-        "Không có hậu quả gì"
+        "Tăng số lượng host trong một subnet",
+        "Giảm kích thước routing table và update",
+        "Mã hóa địa chỉ IP để bảo mật cao",
+        "Loại bỏ hoàn toàn cần subnet mask"
       ],
       "answer": 1,
-      "explanation": "Discontiguous subnets là vấn đề kinh điển với classful routing (RIPv1, IGRP) vốn auto-summarize tại classful boundary → router thấy 2 path đến cùng major network mà không phân biệt subnet → mất kết nối. Giải pháp: dùng classless protocol (OSPF, EIGRP, RIPv2 với 'no auto-summary') hoặc tránh discontiguous design."
+      "explanation": "Summarization gộp nhiều prefix con thành 1 advertise → routing table nhỏ, ít update khi thay đổi nội bộ, hội tụ nhanh. Kỹ thuật then chốt để scale OSPF/EIGRP."
     },
     {
       "id": 12,
-      "level": "advanced",
-      "question": "Trong DNS recursion, vì sao việc cache có TTL do AUTHORITATIVE server quyết định là quan trọng?",
+      "level": "intermediate",
+      "question": "Subnet mask /27 cho phép bao nhiêu host khả dụng mỗi subnet?",
       "options": [
-        "Để bảo vệ server khỏi DDoS",
-        "Để admin của zone kiểm soát được tốc độ propagation khi đổi record — TTL ngắn cho rollout, TTL dài để giảm tải",
-        "TTL không có tác dụng gì",
-        "Để mã hóa response"
+        "14 host (mask /28)",
+        "30 host (mask /27)",
+        "62 host (mask /26)",
+        "126 host (mask /25)"
       ],
       "answer": 1,
-      "explanation": "Authoritative admin (chủ zone) hiểu rõ tần suất thay đổi record. Trước migration → set TTL thấp (vd 300s) để cache hết hạn nhanh khi đổi IP. Hằng ngày → TTL cao (vd 86400s) để giảm tải DNS server và tăng tốc resolution. Non-authoritative server (recursive resolver) phải tuân TTL — không tự ý cache lâu hơn."
+      "explanation": "/27 có 32 − 27 = 5 bit host → 2^5 − 2 = 30 host khả dụng (trừ network và broadcast). /28 có 14 host, /26 có 62 host, /25 có 126 host."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "Trong DNS, Resource Record (RR) là?",
+      "options": [
+        "Bản ghi mã hóa giữa client và server",
+        "Bản ghi map tên với địa chỉ IP",
+        "Bản ghi bảo mật phiên DNS query",
+        "Bản ghi của các neighbor DNS server"
+      ],
+      "answer": 1,
+      "explanation": "Resource Record là entry trong DNS database map tên với địa chỉ IP (A/AAAA), mail server (MX), nameserver (NS), alias (CNAME)... Server giữ DB của RR cho zone of authority."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "Hướng dẫn đặt tên thiết bị trong mạng KHÔNG bao gồm?",
+      "options": [
+        "Tên ngắn và có ý nghĩa rõ ràng",
+        "Phân biệt rõ ràng giữa các tên",
+        "Tránh ký tự lạ như -, _, @...",
+        "Đặt tên bằng tiếng Việt có dấu"
+      ],
+      "answer": 3,
+      "explanation": "Hướng dẫn: ngắn, có nghĩa, rõ ràng, khác biệt, phân biệt hoa/thường, tránh ký tự lạ. Tiếng Việt có dấu thường gây lỗi với DNS, OS, ứng dụng — nên dùng ASCII."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Trong DNS, query 'recursive' nghĩa là?",
+      "options": [
+        "Server tự đi hỏi root → TLD → authoritative",
+        "Client gửi query nhiều lần liên tiếp",
+        "Server cache query để tăng tốc độ tra",
+        "Query mã hóa để bảo vệ thông tin"
+      ],
+      "answer": 0,
+      "explanation": "Recursive query: client hỏi 1 lần, server tự đi hỏi root, TLD, authoritative server thay client → trả về kết quả. Iterative query: client tự đi từng bước. Recursive thuận lợi cho client."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "Vì sao DNS dùng UDP cho query nhưng TCP cho zone transfer?",
+      "options": [
+        "UDP nhanh cho payload nhỏ; TCP reliable cho data lớn",
+        "TCP không hỗ trợ zone transfer của DNS",
+        "UDP đảm bảo thứ tự gói, TCP thì không",
+        "Quyết định ngẫu nhiên không có lý do kỹ thuật"
+      ],
+      "answer": 0,
+      "explanation": "Query DNS thường nhỏ (< 512 bytes), one-shot — UDP đủ và nhanh. Zone transfer (AXFR/IXFR) có thể MB → cần TCP để reliable, ordered, có flow control. Ví dụ kinh điển chọn UDP/TCP đúng."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "Discontiguous subnets gây vấn đề với loại routing protocol nào?",
+      "options": [
+        "Mọi loại routing protocol đều bị",
+        "Classful protocol (RIPv1, IGRP) auto-summarize",
+        "Chỉ link-state như OSPF mới gặp vấn đề",
+        "Static route không thể hoạt động được"
+      ],
+      "answer": 1,
+      "explanation": "Classful (RIPv1, IGRP) không gửi mask, auto-summarize ở classful boundary → discontiguous subnets thấy 2 path đến cùng major network → mất route. Fix: dùng classless (OSPF, EIGRP, RIPv2 + 'no auto-summary')."
+    },
+    {
+      "id": 18,
+      "level": "advanced",
+      "question": "Trong DNS recursion, vì sao TTL do authoritative server quyết định?",
+      "options": [
+        "Để bảo vệ server khỏi DDoS attacks",
+        "Để admin zone kiểm soát propagation",
+        "TTL không có tác dụng gì thực sự",
+        "Để mã hóa response trên đường truyền"
+      ],
+      "answer": 1,
+      "explanation": "Authoritative admin hiểu rõ tần suất thay đổi record. Trước migration → TTL thấp (300s) để cache hết hạn nhanh. Hằng ngày → TTL cao (86400s) giảm tải. Non-authoritative server phải tuân TTL."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "Lợi ích của hierarchical addressing là?",
+      "options": [
+        "Tăng tốc độ truyền packet trên link vật lý",
+        "Cho phép route summarization và scaling",
+        "Mã hóa địa chỉ IP để chống spoofing",
+        "Giảm thiểu broadcast trong segment LAN"
+      ],
+      "answer": 1,
+      "explanation": "Hierarchical addressing (gán theo geographic/organizational) cho phép summarization → routing table nhỏ → scale tốt. Cũng dễ filter, monitor, troubleshoot. Không liên quan tốc độ vật lý hay mã hóa."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "Vì sao subnet 'toàn 0' và 'toàn 1' phần host bị tránh?",
+      "options": [
+        "Toàn 0 là network address, toàn 1 là broadcast",
+        "Hai địa chỉ này chậm hơn các địa chỉ khác",
+        "Router không biết cách xử lý các giá trị này",
+        "Cisco IOS không hỗ trợ các giá trị đặc biệt"
+      ],
+      "answer": 0,
+      "explanation": "Trong subnet, toàn 0 phần host = network address (định danh subnet). Toàn 1 = broadcast của subnet (gửi tới mọi host). Hai địa chỉ này có ý nghĩa đặc biệt, không gán cho host → host khả dụng = 2^h − 2."
     }
   ]
 }

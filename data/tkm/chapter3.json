@@ -15,44 +15,44 @@
     },
     {
       "heading": "Kiểm tra sức khỏe của mạng",
-      "content": "**Các metric cần đo:**\n- **Performance** — throughput, response time\n- **Availability** — uptime %, MTBF, MTTR, ngày/thời lượng/nguyên nhân/cách fix downtime gần nhất\n- **Bandwidth utilization** — tổng thể và theo protocol\n- **Accuracy** — tỉ lệ lỗi\n- **Efficiency** — tỉ lệ overhead\n- **Response time** — bảng ma trận giữa các node\n- **Status** routers, switches, firewalls\n\n**Network utilization** thường đo theo:\n- Minute intervals (chi tiết, thấy spike)\n- Hour intervals (xu hướng dài hạn)\n\n**Bandwidth utilization by protocol** — đánh giá protocol nào ngốn băng thông, có broadcast rate hay multicast rate cao không."
+      "content": "**Các metric cần đo:**\n- **Performance** — throughput, response time\n- **Availability** — uptime %, MTBF, MTTR, ngày/thời lượng/nguyên nhân/cách fix downtime gần nhất\n- **Bandwidth utilization** — tổng thể và theo protocol\n- **Accuracy** — tỉ lệ lỗi\n- **Efficiency** — tỉ lệ overhead\n- **Response time** — bảng ma trận giữa các node\n- **Status** routers, switches, firewalls\n\n**Network utilization** thường đo theo:\n- Minute intervals (chi tiết, thấy spike)\n- Hour intervals (xu hướng dài hạn)\n\n**Bandwidth utilization by protocol** — đánh giá protocol nào ngốn băng thông."
     },
     {
       "heading": "Lệnh Cisco IOS để check device",
-      "content": "**Các lệnh `show` thông dụng để kiểm tra router/switch/firewall:**\n- `show buffers` — buffer memory\n- `show environment` — temp, voltage, fan, power supply\n- `show interfaces` — packets, errors, drops, utilization từng interface\n- `show memory` — memory usage\n- `show processes` — CPU usage by process\n- `show running-config` — config đang chạy\n- `show version` — IOS version, hardware info\n\n**Công cụ giám sát mạng:**\n- **Protocol analyzers** — Wireshark, tcpdump\n- **MRTG** (Multi Router Traffic Grapher)\n- **RMON probes** — Remote Monitoring\n- **CDP** — Cisco Discovery Protocol\n- **NetFlow** — flow-level traffic data\n- **CiscoWorks**"
+      "content": "**Các lệnh `show` thông dụng:**\n- `show buffers` — buffer memory\n- `show environment` — temp, voltage, fan, power supply\n- `show interfaces` — packets, errors, drops, utilization\n- `show memory` — memory usage\n- `show processes` — CPU usage by process\n- `show running-config` — config đang chạy\n- `show version` — IOS version, hardware info\n\n**Công cụ giám sát mạng:**\n- **Protocol analyzers** — Wireshark, tcpdump\n- **MRTG** (Multi Router Traffic Grapher)\n- **RMON probes** — Remote Monitoring\n- **CDP** — Cisco Discovery Protocol\n- **NetFlow** — flow-level traffic data\n- **CiscoWorks**"
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "Loại cáp nào phù hợp NHẤT cho long-distance, high-bandwidth backbone (như submarine cable)?",
+      "question": "Loại cáp nào phù hợp NHẤT cho long-distance backbone (submarine cable)?",
       "options": [
-        "UTP copper",
-        "Coaxial cable",
-        "Multi-mode fiber",
-        "Single-mode fiber"
+        "UTP copper category 6",
+        "Coaxial cable RG-6",
+        "Multi-mode fiber 62.5 µm",
+        "Single-mode fiber 9 µm"
       ],
       "answer": 3,
-      "explanation": "Single-mode fiber có core nhỏ (~9µm), chỉ một mode ánh sáng → loss rất thấp, bandwidth cực cao, đi được cự ly rất xa. Multi-mode chỉ phù hợp building backbone (vài trăm mét). UTP/Coax không cạnh tranh nổi về distance/bandwidth."
+      "explanation": "Single-mode fiber có core nhỏ (~9µm) → loss thấp, bandwidth cao, đi rất xa. Multi-mode chỉ phù hợp building backbone (vài trăm mét). UTP/Coax không cạnh tranh nổi về distance."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Đâu KHÔNG phải là vấn đề của truyền dẫn wireless?",
+      "question": "Đâu KHÔNG phải vấn đề của truyền dẫn wireless?",
       "options": [
-        "Reflection (phản xạ)",
-        "Absorption (hấp thụ)",
-        "Refraction (khúc xạ)",
+        "Reflection (phản xạ sóng)",
+        "Absorption (hấp thụ sóng)",
+        "Refraction (khúc xạ sóng)",
         "Compression (nén tín hiệu)"
       ],
       "answer": 3,
-      "explanation": "4 vấn đề wireless: Reflection (phản xạ), Absorption (hấp thụ — tường, người), Refraction (khúc xạ qua medium khác), Diffraction (nhiễu xạ — uốn quanh vật cản). Compression không phải vấn đề lan truyền sóng."
+      "explanation": "4 vấn đề wireless: Reflection, Absorption, Refraction, Diffraction. Compression không phải vấn đề lan truyền sóng."
     },
     {
       "id": 3,
       "level": "basic",
-      "question": "Lệnh nào KHÔNG được dùng để kiểm tra trạng thái router/switch Cisco?",
+      "question": "Lệnh nào KHÔNG phải để kiểm tra trạng thái router/switch Cisco?",
       "options": [
         "show interfaces",
         "show memory",
@@ -60,7 +60,7 @@
         "show database"
       ],
       "answer": 3,
-      "explanation": "`show database` không phải lệnh Cisco IOS. Các lệnh chuẩn: show buffers, show environment, show interfaces, show memory, show processes, show running-config, show version."
+      "explanation": "`show database` không phải lệnh Cisco IOS chuẩn. Các lệnh chuẩn: show buffers, show environment, show interfaces, show memory, show processes, show running-config, show version."
     },
     {
       "id": 4,
@@ -68,116 +68,220 @@
       "question": "Công cụ nào KHÔNG dùng để giám sát/đo lưu lượng mạng?",
       "options": [
         "Multi Router Traffic Grapher (MRTG)",
-        "Cisco IOS NetFlow",
-        "RMON probes",
+        "Cisco IOS NetFlow accounting",
+        "RMON probes giám sát từ xa",
         "Hot Standby Router Protocol (HSRP)"
       ],
       "answer": 3,
-      "explanation": "HSRP là giao thức REDUNDANCY cho default gateway, không phải công cụ giám sát. Công cụ monitoring: Protocol analyzer, MRTG, RMON, CDP, NetFlow, CiscoWorks."
+      "explanation": "HSRP là giao thức REDUNDANCY cho default gateway, không phải công cụ monitoring. Công cụ monitoring: Protocol analyzer, MRTG, RMON, CDP, NetFlow, CiscoWorks."
     },
     {
       "id": 5,
-      "level": "intermediate",
-      "question": "Khi đặc tả mạng hiện có, vì sao phải mô tả CẢ logical structure chứ không chỉ physical?",
+      "level": "basic",
+      "question": "Trong campus wiring, MDF là viết tắt của?",
       "options": [
-        "Vì physical structure khó thu thập hơn",
-        "Vì logical phản ánh cách tổ chức chức năng (VLAN, miền broadcast, segmentation) — không suy ra được từ sơ đồ vật lý",
-        "Vì khách hàng chỉ trả tiền nếu có đủ hai sơ đồ",
-        "Vì đó là quy định của Cisco SAFE"
+        "Main Distribution Frame (cross-connect chính)",
+        "Mobile Data Forwarder (chuyển tiếp di động)",
+        "Multi-Domain Firewall (tường lửa đa miền)",
+        "Managed Device Filter (lọc thiết bị quản lý)"
       ],
-      "answer": 1,
-      "explanation": "Hai switch nối nhau (physical) nhưng có thể nằm trong 5 VLAN khác nhau, traffic không flow tự do (logical). Phân tích traffic, broadcast domain, security boundary cần logical view. Sơ đồ physical chỉ cho biết 'cái gì cắm vào cái gì'."
+      "answer": 0,
+      "explanation": "MDF = Main Distribution Frame (hay Main Cross-Connect Room) — phòng phân phối chính trong tòa nhà. IDF = Intermediate Distribution Frame, phân phối nhánh."
     },
     {
       "id": 6,
-      "level": "intermediate",
-      "question": "Sự khác nhau giữa 'relative' và 'absolute' network utilization là?",
+      "level": "basic",
+      "question": "Loại cáp nào RẺ NHẤT và PHỔ BIẾN NHẤT cho mạng văn phòng?",
       "options": [
-        "Relative đo theo % bandwidth, absolute đo theo bps tuyệt đối — relative phụ thuộc cả tải và bandwidth của link",
-        "Hai khái niệm này hoàn toàn giống nhau",
-        "Relative chỉ dùng cho LAN, absolute chỉ dùng cho WAN",
-        "Absolute chính xác hơn relative trong mọi trường hợp"
+        "Single-mode fiber",
+        "Multi-mode fiber",
+        "Shielded Twisted Pair (STP)",
+        "Unshielded Twisted Pair (UTP)"
       ],
-      "answer": 0,
-      "explanation": "Absolute utilization = lượng dữ liệu thực tế (bps). Relative utilization = % so với capacity của link. Cùng 100 Mbps traffic: trên link 1 Gbps là 10% (relative), trên link 100 Mbps là 100%. Khi nâng cấp bandwidth, absolute không đổi nhưng relative giảm — designer cần phân biệt rõ."
+      "answer": 3,
+      "explanation": "UTP là loại cáp phổ biến nhất cho mạng nhà/văn phòng — rẻ, dễ lắp, đủ tốt khi không có EMI mạnh. STP đắt hơn, dùng khi cần chống EMI. Fiber dành cho backbone."
     },
     {
       "id": 7,
       "level": "intermediate",
-      "question": "Đâu là LÝ DO chính để chọn UTP thay vì STP cho mạng văn phòng thông thường?",
+      "question": "Khi đặc tả mạng, vì sao phải mô tả CẢ logical structure chứ không chỉ physical?",
       "options": [
-        "UTP có bandwidth cao hơn STP",
-        "UTP miễn nhiễm EMI tốt hơn STP",
-        "UTP rẻ hơn, dễ lắp đặt và đủ tốt khi không có nhiễu mạnh",
-        "UTP có chiều dài tối đa lớn hơn STP"
+        "Vì physical structure khó thu thập hơn nhiều so với logical",
+        "Vì logical phản ánh chức năng (VLAN, broadcast domain) — không suy ra từ physical",
+        "Vì khách hàng chỉ trả tiền khi có đủ cả hai loại sơ đồ",
+        "Vì đó là quy định bắt buộc của Cisco SAFE Reference"
       ],
-      "answer": 2,
-      "explanation": "UTP rẻ và dễ lắp — phù hợp môi trường văn phòng thông thường (ít EMI). STP đắt và bulky hơn, chỉ thật sự đáng dùng khi có nguồn EMI mạnh (industrial, gần motor lớn). Cả hai có max length ~100m và bandwidth tương đương ở cùng category."
+      "answer": 1,
+      "explanation": "Hai switch nối nhau (physical) có thể nằm trong 5 VLAN khác nhau (logical). Phân tích traffic, broadcast domain, security boundary cần logical view. Physical chỉ cho biết 'cái gì cắm vào cái gì'."
     },
     {
       "id": 8,
       "level": "intermediate",
-      "question": "Khi đặc tả 'sức khỏe mạng', metric nào sau đây IT có giá trị NHẤT cho việc dự đoán tắc nghẽn?",
+      "question": "Khác nhau giữa 'relative' và 'absolute' network utilization là?",
       "options": [
-        "Bandwidth utilization theo phút",
-        "Average response time giữa các node",
-        "Phiên bản IOS đang chạy trên router",
-        "Bandwidth utilization theo protocol"
+        "Relative tính bằng %, absolute tính bằng bps tuyệt đối",
+        "Hai khái niệm này hoàn toàn giống nhau, chỉ khác tên",
+        "Relative chỉ áp dụng cho mạng LAN, absolute cho WAN",
+        "Absolute luôn chính xác hơn relative trong mọi trường hợp"
       ],
-      "answer": 2,
-      "explanation": "IOS version giúp đánh giá compliance/security nhưng KHÔNG cho biết tải mạng. Utilization theo phút (thấy spike), response time, utilization theo protocol đều phản ánh trực tiếp khả năng tắc nghẽn và có thể được monitor để cảnh báo."
+      "answer": 0,
+      "explanation": "Absolute = lượng dữ liệu thực tế (bps). Relative = % so với capacity của link. Cùng 100 Mbps traffic: trên link 1 Gbps = 10% relative; trên link 100 Mbps = 100%. Khi nâng cấp bandwidth, absolute không đổi nhưng relative giảm."
     },
     {
       "id": 9,
       "level": "intermediate",
-      "question": "Trong campus wiring, đâu là thứ tự đúng từ máy người dùng đến backbone giữa các tòa?",
+      "question": "Lý do chính để chọn UTP thay vì STP cho mạng văn phòng thông thường?",
       "options": [
-        "Wallplate → Vertical wiring → Horizontal wiring → Campus backbone",
-        "Wallplate → Horizontal wiring → Vertical wiring (building backbone) → Campus backbone",
-        "Campus backbone → Vertical → Horizontal → Wallplate",
-        "Horizontal wiring → Wallplate → Campus backbone → Vertical wiring"
+        "UTP có bandwidth cao hơn STP rất nhiều",
+        "UTP miễn nhiễm EMI tốt hơn so với STP",
+        "UTP rẻ hơn, dễ lắp đặt và đủ tốt khi không có EMI mạnh",
+        "UTP có chiều dài tối đa lớn hơn STP rất nhiều"
       ],
-      "answer": 1,
-      "explanation": "Hierarchy: wallplate (work area) → horizontal wiring (đến telecom closet trên cùng tầng) → vertical wiring/building backbone (giữa các tầng → MDF tòa nhà) → campus backbone (giữa các tòa nhà)."
+      "answer": 2,
+      "explanation": "UTP rẻ và dễ lắp — phù hợp văn phòng thông thường (ít EMI). STP đắt hơn, chỉ đáng dùng khi có EMI mạnh (industrial). Cả hai có max length ~100m và bandwidth tương đương ở cùng category."
     },
     {
       "id": 10,
-      "level": "advanced",
-      "question": "Một mạng có MTBF gần đây giảm từ 4000h xuống 1000h trong khi MTTR giữ nguyên 1h. Tác động đến availability?",
+      "level": "intermediate",
+      "question": "Khi đặc tả 'sức khỏe mạng', metric nào ÍT có giá trị nhất để dự đoán tắc nghẽn?",
       "options": [
-        "Availability giảm từ ~99.975% xuống ~99.9% — vẫn 'three nines'",
-        "Availability tăng vì MTTR không đổi",
-        "Không thay đổi vì chỉ MTBF thay đổi",
-        "Availability giảm xuống dưới 99% — mất 'two nines'"
+        "Bandwidth utilization theo từng phút",
+        "Average response time giữa các node",
+        "Phiên bản IOS đang chạy trên router",
+        "Bandwidth utilization theo từng protocol"
       ],
-      "answer": 0,
-      "explanation": "Trước: 4000/4001 ≈ 99.975%. Sau: 1000/1001 ≈ 99.9%. MTBF giảm 4 lần → downtime tăng 4 lần (từ ~131 phút/năm lên ~526 phút/năm). Vẫn three nines (99.9%) nhưng đã rời four nines — đây là dấu hiệu cần investigate root cause của fail thường xuyên hơn."
+      "answer": 2,
+      "explanation": "IOS version giúp đánh giá compliance/security nhưng KHÔNG cho biết tải mạng. Utilization theo phút, response time, utilization theo protocol đều phản ánh trực tiếp khả năng tắc nghẽn."
     },
     {
       "id": 11,
-      "level": "advanced",
-      "question": "Khi triển khai wireless trong tòa nhà có nhiều bê tông cốt thép, vấn đề lan truyền nào trầm trọng NHẤT?",
+      "level": "intermediate",
+      "question": "Trong campus wiring, thứ tự đúng từ máy người dùng đến backbone giữa các tòa?",
       "options": [
-        "Diffraction (nhiễu xạ)",
-        "Refraction (khúc xạ)",
-        "Absorption và reflection (bê tông + thép hấp thụ và phản xạ mạnh sóng RF)",
-        "Compression (nén tín hiệu)"
+        "Wallplate → Vertical wiring → Horizontal wiring → Campus backbone",
+        "Wallplate → Horizontal → Vertical (building backbone) → Campus backbone",
+        "Campus backbone → Vertical wiring → Horizontal wiring → Wallplate",
+        "Horizontal wiring → Wallplate → Campus backbone → Vertical wiring"
       ],
-      "answer": 2,
-      "explanation": "Bê tông dày hấp thụ (absorption) sóng RF, cốt thép gây phản xạ (reflection) tạo multipath fading. Diffraction giúp sóng uốn quanh góc; refraction xảy ra giữa các medium nhưng không phải vấn đề chính trong tòa nhà. Survey RF trước khi triển khai để xác định vị trí AP."
+      "answer": 1,
+      "explanation": "Hierarchy: wallplate (work area) → horizontal wiring (đến telecom closet trên tầng) → vertical wiring/building backbone (giữa các tầng → MDF) → campus backbone (giữa các tòa)."
     },
     {
       "id": 12,
+      "level": "intermediate",
+      "question": "Đâu KHÔNG phải hạn chế kiến trúc cần đảm bảo cho phòng máy?",
+      "options": [
+        "Hệ thống điều hòa, thông gió, làm mát",
+        "Hệ thống nguồn (UPS, generator dự phòng)",
+        "Hệ thống cửa khóa và bảo vệ EMI",
+        "Hệ thống loa thông báo công cộng"
+      ],
+      "answer": 3,
+      "explanation": "Cần đảm bảo: air conditioning, heating, ventilation, power, EMI protection, doors/locks. Loa công cộng không phải hạn chế kiến trúc của phòng máy."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "Multi-mode fiber khác Single-mode fiber chủ yếu ở điểm nào?",
+      "options": [
+        "Multi-mode dùng đồng, Single-mode dùng thủy tinh",
+        "Core lớn hơn (50/62.5 µm), distance ngắn hơn, rẻ hơn",
+        "Multi-mode immune EMI, Single-mode thì không",
+        "Multi-mode nhanh hơn Single-mode rất nhiều lần"
+      ],
+      "answer": 1,
+      "explanation": "Multi-mode core 50 hoặc 62.5 µm cho phép nhiều mode ánh sáng → modal dispersion → distance ngắn hơn (< 2 km). Rẻ hơn single-mode. Phù hợp building backbone, không phù hợp long-haul."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "Bandwidth utilization theo protocol giúp designer biết điều gì?",
+      "options": [
+        "Phiên bản IOS nào đang chạy trên các thiết bị",
+        "Protocol nào đang chiếm phần lớn bandwidth của mạng",
+        "Số lượng người dùng đang online tại mỗi thời điểm",
+        "Vị trí địa lý cụ thể của các nguồn phát traffic"
+      ],
+      "answer": 1,
+      "explanation": "Utilization by protocol cho thấy SMB chiếm 40%, HTTP 30%, video 20%... Biết protocol nào ngốn band, có broadcast/multicast rate cao không, từ đó tối ưu hoặc redesign."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Lệnh `show environment` trên Cisco router cho thông tin gì?",
+      "options": [
+        "Cấu hình routing đang chạy trên thiết bị",
+        "Nhiệt độ, voltage, quạt và power supply",
+        "Danh sách neighbor router phát hiện được",
+        "Danh sách interface và lỗi của chúng"
+      ],
+      "answer": 1,
+      "explanation": "show environment hiển thị thông tin môi trường vật lý: temperature, voltage, fan status, power supply. Hữu ích phát hiện overheat, quạt fail. Khác với show running-config, show cdp neighbors, show interfaces."
+    },
+    {
+      "id": 16,
+      "level": "advanced",
+      "question": "MTBF giảm 4000h → 1000h, MTTR giữ 1h. Tác động đến availability?",
+      "options": [
+        "Giảm từ ~99.975% xuống ~99.9% — vẫn three nines",
+        "Tăng vì MTTR không đổi nên uptime cải thiện",
+        "Không thay đổi vì chỉ MTBF thay đổi, không MTTR",
+        "Giảm xuống dưới 99% — mất hoàn toàn two nines"
+      ],
+      "answer": 0,
+      "explanation": "Trước: 4000/4001 ≈ 99.975%. Sau: 1000/1001 ≈ 99.9%. Downtime tăng 4 lần (131 → 526 phút/năm). Vẫn three nines nhưng đã rời four nines."
+    },
+    {
+      "id": 17,
+      "level": "advanced",
+      "question": "Triển khai wireless trong tòa nhà bê tông cốt thép, vấn đề nghiêm trọng NHẤT?",
+      "options": [
+        "Diffraction (nhiễu xạ qua góc cạnh)",
+        "Refraction (khúc xạ qua medium khác)",
+        "Absorption và reflection (bê tông + thép)",
+        "Compression (nén do tường dày đặc)"
+      ],
+      "answer": 2,
+      "explanation": "Bê tông dày hấp thụ sóng RF, cốt thép gây phản xạ tạo multipath fading. Diffraction giúp uốn quanh góc; refraction xảy ra giữa medium khác nhau. RF survey trước khi triển khai."
+    },
+    {
+      "id": 18,
       "level": "advanced",
       "question": "Cisco Discovery Protocol (CDP) khác RMON ở điểm cốt lõi nào?",
       "options": [
-        "CDP chạy ở Layer 2, dành để phát hiện thông tin device láng giềng (neighbor); RMON tập trung thu thập thống kê traffic ở data link/physical",
-        "RMON là proprietary của Cisco, CDP là chuẩn IETF",
-        "CDP và RMON là cùng một giao thức với hai tên gọi",
-        "CDP đo throughput, RMON đo neighbor"
+        "CDP discover device láng giềng L2; RMON thu thập statistics traffic",
+        "RMON là Cisco-proprietary, CDP là chuẩn IETF",
+        "CDP và RMON là cùng giao thức với hai tên khác nhau",
+        "CDP đo throughput của link, RMON đo neighbor"
       ],
       "answer": 0,
-      "explanation": "CDP = Cisco-proprietary Layer 2 discovery — `show cdp neighbors detail` cho thấy thiết bị kế bên, IOS version, capability... RMON (do IETF chuẩn hóa) thu thập statistics: packets, octets, broadcast, collision, CRC errors. Hai công cụ phục vụ mục đích khác nhau, bổ sung cho nhau."
+      "explanation": "CDP = Cisco-proprietary L2 discovery (`show cdp neighbors detail`). RMON (IETF chuẩn) thu thập statistics: packets, octets, broadcast, collision, errors. Hai mục đích khác nhau, bổ sung nhau."
+    },
+    {
+      "id": 19,
+      "level": "advanced",
+      "question": "Một mạng có response time cao bất thường. Bước đầu KHẢ DĨ NHẤT là?",
+      "options": [
+        "Mua thêm thiết bị router để xử lý nhanh hơn",
+        "Đổi sang IPv6 vì IPv4 đã quá cũ kỹ và chậm",
+        "Đo bandwidth utilization, errors, queue depth từng segment",
+        "Reboot toàn bộ thiết bị mạng để xóa cache cũ"
+      ],
+      "answer": 2,
+      "explanation": "Đặc tả trước, hành động sau. Đo metric trên từng segment để tìm bottleneck (link nào tắc, queue ở đâu sâu, error rate cao ở interface nào). Mua thêm thiết bị mà không đo = đoán mò."
+    },
+    {
+      "id": 20,
+      "level": "advanced",
+      "question": "Đặc tả mạng hiện tại giúp designer tránh sai lầm nào KHẢ DĨ NHẤT?",
+      "options": [
+        "Đặt giả thiết sai về capacity và utilization hiện tại",
+        "Mua quá nhiều thiết bị từ một vendor duy nhất",
+        "Lỡ deadline bàn giao do không đủ nhân lực dự án",
+        "Vi phạm quy định về bảo mật của tổ chức ngành"
+      ],
+      "answer": 0,
+      "explanation": "Không đặc tả = đoán capacity/utilization → over-provisioning (lãng phí) hoặc under-provisioning (nghẽn). Cũng giúp 'cover yourself' nếu mạng mới gặp vấn đề do tồn đọng từ mạng cũ."
     }
   ]
 }

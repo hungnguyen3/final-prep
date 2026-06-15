@@ -28,10 +28,10 @@
       "level": "basic",
       "question": "VoIP traffic gồm bao nhiêu loại flow đặc trưng?",
       "options": [
-        "1 flow — chỉ peer-to-peer cho audio",
-        "1 flow — chỉ client/server cho signaling",
+        "1 flow — chỉ peer-to-peer cho cả setup và audio",
+        "1 flow — duy nhất client/server đến call manager",
         "2 flows — call setup (C/S) + audio (P2P)",
-        "3 flows — setup, audio, signaling tách biệt"
+        "3 flows — signaling, RTP audio, RTCP control tách biệt"
       ],
       "answer": 2,
       "explanation": "VoIP có 2 flow đan xen: call setup/teardown (phone ↔ call manager: client/server) và audio voice transport (giữa endpoint: peer-to-peer). Phải lập kế hoạch QoS và bandwidth cho cả hai."
@@ -41,13 +41,13 @@
       "level": "basic",
       "question": "Địa chỉ MAC broadcast là?",
       "options": [
-        "00:00:00:00:00:00",
+        "01:00:0C:CC:CC:CC",
         "FF:FF:FF:FF:FF:FF",
         "01:00:5E:00:00:01",
-        "FE:80:00:00:00:00"
+        "33:33:00:00:00:01"
       ],
       "answer": 1,
-      "explanation": "MAC broadcast = FF:FF:FF:FF:FF:FF (toàn bit 1). 01:00:5E:... là multicast IPv4. FE:80 là IPv6 link-local. 00:00:... không phải broadcast."
+      "explanation": "MAC broadcast = FF:FF:FF:FF:FF:FF (toàn bit 1). 01:00:5E:... là multicast IPv4. 33:33:... là multicast IPv6. 01:00:0C:CC:CC:CC là multicast CDP của Cisco."
     },
     {
       "id": 3,
@@ -67,13 +67,13 @@
       "level": "basic",
       "question": "DSCP trong DiffServ được dùng để làm gì?",
       "options": [
-        "Mã hóa nội dung packet để bảo mật",
+        "Giữ per-flow state ở mọi router trên đường đi",
         "Đánh dấu IP packet để router queueing/drop",
-        "Định danh user trong VPN tunnel",
-        "Thay thế cho địa chỉ MAC ở Layer 2"
+        "Reservation bandwidth qua signaling RSVP",
+        "Mã hóa header IP để bảo mật trên đường truyền"
       ],
       "answer": 1,
-      "explanation": "DSCP (RFC 2475) là field trong IP header để mark packet theo loại service. Router xem DSCP để quyết định queue và drop khi nghẽn. Không liên quan mã hóa hay định danh."
+      "explanation": "DSCP (RFC 2475) là field trong IP header để mark packet theo loại service. Router xem DSCP để quyết định queue và drop khi nghẽn. Per-flow state và RSVP là của IntServ, không phải DiffServ."
     },
     {
       "id": 5,
@@ -96,20 +96,20 @@
         "Traffic flow và data store location",
         "Traffic load và traffic behavior",
         "QoS requirements của ứng dụng",
-        "Brand thiết bị router đang dùng"
+        "Vendor và model của switch/router"
       ],
       "answer": 3,
-      "explanation": "5 yếu tố: Traffic flow, Location of sources/stores, Traffic load, Traffic behavior, QoS requirements. Brand thiết bị thuộc Phase 3 physical, không phải traffic characterization."
+      "explanation": "5 yếu tố: Traffic flow, Location of sources/stores, Traffic load, Traffic behavior, QoS requirements. Vendor/model thiết bị thuộc Phase 3 physical design, không phải traffic characterization."
     },
     {
       "id": 7,
       "level": "intermediate",
       "question": "Vì sao broadcast LÀ MỘT VẤN ĐỀ ngay cả khi chiếm ít bandwidth?",
       "options": [
-        "Vì broadcast đi qua mọi router và làm sập internet",
+        "Vì broadcast được forward qua mọi router liên mạng",
         "Vì mọi NIC trong domain phải nhận và đẩy lên CPU xử lý",
-        "Vì broadcast luôn là một dạng tấn công DoS",
-        "Vì broadcast chỉ chạy được trên IPv6"
+        "Vì broadcast luôn yêu cầu ack từ mọi host nhận",
+        "Vì broadcast chiếm trọn buffer ở switch core"
       ],
       "answer": 1,
       "explanation": "Broadcast không tốn nhiều bandwidth nhưng MỌI host phải nhận, NIC interrupt CPU. 1000 host × 100 broadcast/s = 100,000 interrupt/s. Lý do giới hạn broadcast domain bằng VLAN/subnet."
@@ -120,9 +120,9 @@
       "question": "Khác biệt giữa IntServ 'guaranteed service' và 'controlled load service'?",
       "options": [
         "Guaranteed có math-bound cho queuing delay; controlled load chỉ xấp xỉ",
-        "Hai cái như nhau, chỉ khác tên gọi do RFC khác nhau",
-        "Controlled load đắt hơn guaranteed gấp nhiều lần",
-        "Guaranteed chỉ cho video, controlled load chỉ cho voice"
+        "Controlled load đảm bảo zero packet loss, guaranteed thì không",
+        "Guaranteed dùng DSCP, controlled load dùng RSVP signaling",
+        "Guaranteed cho rt-VBR, controlled load cho nrt-VBR"
       ],
       "answer": 0,
       "explanation": "Guaranteed = đảm bảo firm mathematical bound trên end-to-end queuing delay. Controlled load = approximate QoS giống mạng không tải, không có bound cứng. Hai cấp đảm bảo khác trong IntServ."
@@ -146,9 +146,9 @@
       "question": "Multicast khác broadcast ở điểm cốt lõi nào về tác động trên host?",
       "options": [
         "Multicast chỉ disturb NIC đã đăng ký group đó",
-        "Multicast tốn nhiều bandwidth hơn broadcast",
-        "Broadcast nhanh hơn multicast trên cùng segment",
-        "Hai loại không có khác biệt thực sự nào"
+        "Multicast luôn được router forward qua mọi subnet",
+        "Multicast dùng địa chỉ FF:FF:FF:FF:FF:FF như broadcast",
+        "Multicast luôn cần ack từ mọi receiver trong group"
       ],
       "answer": 0,
       "explanation": "Multicast: NIC chỉ nhận nếu join group (qua IGMP). Host không tham gia → không bị disturb. Broadcast: mọi NIC phải nhận. Đó là lý do streaming/IPTV dùng multicast."
@@ -161,10 +161,10 @@
         "UBR — Unspecified Bit Rate",
         "ABR — Available Bit Rate",
         "CBR — Constant Bit Rate",
-        "GFR — Guaranteed Frame Rate"
+        "nrt-VBR — Non-realtime Variable Bit Rate"
       ],
       "answer": 2,
-      "explanation": "CBR = bit rate cố định, jitter cực thấp — chính xác cho voice/circuit emulation. UBR = best-effort. ABR = adaptive theo congestion. GFR = guarantee frame-level chứ không bit-level."
+      "explanation": "CBR = bit rate cố định, jitter cực thấp — chính xác cho voice/circuit emulation. UBR = best-effort. ABR = adaptive theo congestion. nrt-VBR cho dữ liệu burst không thời gian thực."
     },
     {
       "id": 12,
@@ -174,10 +174,10 @@
         "Frame size (kích thước frame)",
         "Protocol interaction và overhead",
         "Windowing và flow control",
-        "Số lượng VLAN trên switch"
+        "Số lượng entry trong bảng MAC của switch"
       ],
       "answer": 3,
-      "explanation": "Network efficiency: frame size (lớn = ít overhead), protocol interaction, windowing/flow control, error-recovery mechanism. Số VLAN không trực tiếp ảnh hưởng efficiency của một flow."
+      "explanation": "Network efficiency: frame size (lớn = ít overhead), protocol interaction, windowing/flow control, error-recovery mechanism. Số entry MAC table không trực tiếp ảnh hưởng efficiency của một flow."
     },
     {
       "id": 13,
@@ -187,20 +187,20 @@
         "Số lượng station trong segment đó",
         "Average idle time giữa các frame",
         "Thời gian truyền 1 message khi được phép",
-        "Màu sắc giao diện ứng dụng người dùng"
+        "Hệ điều hành mà workstation sử dụng"
       ],
       "answer": 3,
-      "explanation": "Cần biết: số station, average idle time, thời gian truyền message khi truy cập được medium. Màu giao diện UI không liên quan đến traffic load."
+      "explanation": "Cần biết: số station, average idle time, thời gian truyền message khi truy cập được medium. Hệ điều hành workstation không trực tiếp dùng để tính offered load."
     },
     {
       "id": 14,
       "level": "intermediate",
       "question": "DiffServ đánh dấu packet bằng DSCP. Lợi thế chính so với IntServ?",
       "options": [
-        "DiffServ cung cấp guarantee mạnh hơn IntServ",
-        "DiffServ dùng per-flow state ở mọi router",
+        "DiffServ cung cấp mathematical delay-bound cho từng flow",
+        "DiffServ dùng RSVP để reserve bandwidth end-to-end",
         "Stateless theo flow, scale tốt với hàng triệu flow",
-        "DiffServ chỉ chạy được trên mạng ATM thuần"
+        "DiffServ chỉ chạy trên ATM CBR và rt-VBR"
       ],
       "answer": 2,
       "explanation": "IntServ giữ per-flow state (RSVP) — không scale với millions of flow. DiffServ chỉ mark DSCP và xử lý theo class — stateless theo flow, scale tốt cho internet backbone. Tradeoff: guarantee yếu hơn."
@@ -212,8 +212,8 @@
       "options": [
         "Là client/server flow đến call manager",
         "Là peer-to-peer flow giữa hai endpoint",
-        "Là broadcast flow đến toàn segment",
-        "Là multicast flow theo group đăng ký"
+        "Là server/server flow giữa các gateway",
+        "Là distributed computing flow giữa các node"
       ],
       "answer": 1,
       "explanation": "Audio voice transport = peer-to-peer giữa hai phone/endpoint. Call setup/teardown mới là client/server (phone ↔ call manager). VoIP có 2 flow đan xen với đặc trưng khác nhau."
@@ -223,10 +223,10 @@
       "level": "advanced",
       "question": "Video conferencing kém: jitter cao, frame drop. Phân tích KHẢ DĨ NHẤT?",
       "options": [
-        "Bandwidth không đủ — đây luôn là lý do duy nhất",
+        "Bandwidth tổng không đủ — chắc chắn phải nâng cấp link",
         "Bandwidth đủ nhưng thiếu QoS classification cho video",
-        "Video conferencing không thể chạy trên IP network",
-        "Phải dùng protocol khác thay TCP/IP cho video"
+        "Multicast bị disable nên audio không tới được endpoint",
+        "MAC table của switch quá đầy nên drop frame video"
       ],
       "answer": 1,
       "explanation": "Triệu chứng jitter + drop chỉ ra thiếu QoS, không thiếu bandwidth. Voice/video xếp chung queue với best-effort → queuing delay biến thiên cao → jitter. Giải pháp: classify (DSCP), priority queue."
@@ -249,10 +249,10 @@
       "level": "advanced",
       "question": "Một mạng có nhiều server-to-server traffic cho replication. Hậu quả thiết kế?",
       "options": [
-        "Không cần đặc biệt vì server tự xử lý hết",
+        "Đặt user community xen giữa các server để cân tải",
         "Cần đặt server replicate gần nhau, băng thông cao",
-        "Phải dùng wireless để di chuyển server linh hoạt",
-        "Server-to-server không tồn tại trong thiết kế"
+        "Chuyển toàn bộ replication sang flow client/server qua user switch",
+        "Replication chỉ là broadcast, không cần thiết kế đặc biệt"
       ],
       "answer": 1,
       "explanation": "Server/server flow (replication, backup) thường lượng lớn, đều đặn. Cần đặt server cùng rack/cùng switch, dedicated VLAN, băng thông cao. Tránh để traffic này đi qua user access switch."
@@ -264,8 +264,8 @@
       "options": [
         "Server gửi 1000 unicast stream — tốn ×1000 bandwidth",
         "Server gửi 1 multicast stream, router replicate khi cần",
-        "Mỗi user phải tải xuống file rồi mới xem được",
-        "Multicast không hỗ trợ video streaming kiểu này"
+        "Server gửi 1 broadcast stream, mọi host trong WAN nhận",
+        "Mỗi user thiết lập 1 RSVP reservation đến server"
       ],
       "answer": 1,
       "explanation": "Lợi thế multicast: source gửi 1 stream, router/switch replicate cho receiver đăng ký group. 1000 user cùng channel = 1 stream chứ không phải 1000. IPTV, financial market data dùng multicast vì lý do này."

@@ -28,10 +28,10 @@
       "level": "basic",
       "question": "Đâu là LINK-STATE routing protocol?",
       "options": [
-        "RIP version 2",
-        "EIGRP của Cisco",
-        "OSPF Open Shortest Path First",
-        "BGP Border Gateway Protocol"
+        "IGRP — tiền thân của EIGRP",
+        "EIGRP với DUAL của Cisco",
+        "IS-IS Intermediate System to Intermediate System",
+        "BGP-4 path-vector cho Internet"
       ],
       "answer": 2,
       "explanation": "OSPF và IS-IS là link-state. RIP là pure distance-vector. EIGRP là 'advanced distance-vector'. BGP là path-vector — không phải link-state hay pure DV."
@@ -41,10 +41,10 @@
       "level": "basic",
       "question": "Switch ở mode 'cut-through' có đặc điểm gì?",
       "options": [
-        "Chậm hơn store-and-forward do kiểm CRC kỹ",
+        "Đợi nhận đủ frame và kiểm CRC trước khi forward",
         "Latency thấp nhưng có thể forward bad frame",
-        "Hai mode hoàn toàn giống nhau, chỉ khác tên",
-        "Chỉ chạy được ở Layer 3 không phải L2"
+        "Tự động chuyển mode khi mức lỗi vượt ngưỡng",
+        "Chỉ hoạt động ở Layer 1 giống như hub"
       ],
       "answer": 1,
       "explanation": "Cut-through đọc destination MAC (đầu frame) là forward ngay → latency thấp nhất nhưng KHÔNG kiểm CRC trước → có thể đẩy bad frame. Store-and-forward kiểm CRC, an toàn nhưng latency cao."
@@ -54,10 +54,10 @@
       "level": "basic",
       "question": "Chuẩn nào dùng để truyền VLAN information giữa switch?",
       "options": [
-        "IEEE 802.1D (Spanning Tree)",
-        "IEEE 802.1Q (VLAN tagging)",
-        "IEEE 802.3ad (Link Aggregation)",
-        "IEEE 802.11 (Wireless LAN)"
+        "IEEE 802.1D dùng cho Spanning Tree",
+        "IEEE 802.1Q chèn 4-byte VLAN tag",
+        "IEEE 802.1X cho port-based authentication",
+        "IEEE 802.1AB cho Link Layer Discovery"
       ],
       "answer": 1,
       "explanation": "802.1Q chèn 4-byte VLAN tag vào Ethernet frame. 802.1D là STP. 802.3ad là LACP. 802.11 là wireless."
@@ -67,10 +67,10 @@
       "level": "basic",
       "question": "BGP thuộc loại routing protocol nào?",
       "options": [
-        "Interior Gateway Protocol (IGP)",
-        "Link-State với SPF Dijkstra",
-        "Exterior Gateway Protocol (EGP)",
-        "Distance-vector pure không hybrid"
+        "Interior Gateway Protocol giống OSPF/EIGRP",
+        "Link-state với SPF Dijkstra như IS-IS",
+        "Exterior Gateway Protocol — định tuyến giữa các AS",
+        "Distance-vector cổ điển dùng hop count metric"
       ],
       "answer": 2,
       "explanation": "BGP là EGP — định tuyến giữa các Autonomous Systems trên Internet. Hoạt động theo path-vector (giữ AS_PATH). OSPF/EIGRP/RIP là IGP."
@@ -80,10 +80,10 @@
       "level": "basic",
       "question": "AD (Administrative Distance) mặc định của OSPF là?",
       "options": [
-        "AD = 90 (trùng với EIGRP)",
-        "AD = 110 (kém tin hơn EIGRP)",
-        "AD = 120 (trùng với RIP)",
-        "AD = 200 (trùng với iBGP)"
+        "AD = 90 — bằng với EIGRP internal",
+        "AD = 110 — kém tin hơn EIGRP nội miền",
+        "AD = 115 — bằng với IS-IS",
+        "AD = 120 — bằng với RIPv2"
       ],
       "answer": 1,
       "explanation": "AD mặc định: Connected=0, Static=1, eBGP=20, EIGRP=90, OSPF=110, IS-IS=115, RIP=120, iBGP=200. OSPF kém tin hơn EIGRP về AD."
@@ -93,10 +93,10 @@
       "level": "basic",
       "question": "EIGRP là loại routing protocol gì theo Cisco?",
       "options": [
-        "Pure link-state như OSPF/IS-IS",
-        "Pure distance-vector như RIP cũ",
-        "Advanced distance-vector / hybrid",
-        "Exterior gateway protocol như BGP"
+        "Pure link-state — tính SPF Dijkstra giống OSPF",
+        "Pure distance-vector — chỉ dùng hop count",
+        "Advanced distance-vector / hybrid với DUAL",
+        "Path-vector exterior protocol giữa các AS"
       ],
       "answer": 2,
       "explanation": "Cisco gọi EIGRP là 'advanced distance-vector' hoặc 'hybrid' vì nó kết hợp DV bản chất + DUAL algorithm + triggered update — nhanh gần ngang OSPF nhưng không phải pure link-state."
@@ -106,10 +106,10 @@
       "level": "intermediate",
       "question": "Khi nào CHỌN distance-vector (như RIP) thay vì link-state?",
       "options": [
-        "Khi mạng rất lớn cần hội tụ cực nhanh",
-        "Khi topology đơn giản; admin không rành LS",
-        "Khi cần authentication mạnh nhất có thể",
-        "Khi mạng cần hierarchical area phân lớp"
+        "Khi cần hội tụ sub-second cho backbone lớn",
+        "Khi topology đơn giản, hub-and-spoke; admin chưa quen LS",
+        "Khi cần chia hierarchical area và summarization",
+        "Khi router có CPU/RAM dồi dào để tính SPF"
       ],
       "answer": 1,
       "explanation": "DV phù hợp mạng nhỏ, đơn giản, hub-and-spoke, admin chưa quen LS. LS dành mạng lớn, hierarchical, cần convergence nhanh, admin có chuyên môn. Không phải vấn đề 'cái nào hiện đại hơn'."
@@ -119,10 +119,10 @@
       "level": "intermediate",
       "question": "Administrative Distance dùng để làm gì?",
       "options": [
-        "Đo độ tin cậy khi cùng prefix học từ nhiều protocol",
-        "Tính khoảng cách vật lý giữa các router thực",
-        "Đặt mật khẩu cho session routing protocol",
-        "Đo bandwidth của link giữa hai router"
+        "Đo độ tin cậy nguồn route khi cùng prefix học từ nhiều protocol",
+        "Tính metric tổng hợp gồm bandwidth, delay, load, MTU",
+        "Đếm số hop trên path để chọn route ngắn nhất",
+        "Quyết định AS_PATH ngắn nhất giữa các BGP peer"
       ],
       "answer": 0,
       "explanation": "AD là 'mức tin cậy' của nguồn route. Khi cùng prefix học qua nhiều protocol, router chọn protocol có AD thấp hơn. Connected=0 (tin nhất), Static=1, EIGRP=90, OSPF=110, RIP=120."
@@ -132,10 +132,10 @@
       "level": "intermediate",
       "question": "PortFast nên BẬT trên loại port nào?",
       "options": [
-        "Trunk port nối hai switch với nhau",
-        "Edge port nối end-host (PC, máy in)",
-        "Port nối với router gateway của LAN",
-        "Mọi port để hội tụ STP nhanh nhất"
+        "Trunk port 802.1Q nối switch-to-switch",
+        "Edge port (access) nối end-host như PC, máy in",
+        "Port uplink nối lên distribution switch",
+        "Port nối với router làm default gateway"
       ],
       "answer": 1,
       "explanation": "PortFast cho port vào forwarding ngay (skip listening 15s + learning 15s) → DHCP/PXE nhanh. CHỈ dùng edge port. Bật trên port nối switch khác là cực kỳ nguy hiểm — có thể gây loop."
@@ -145,10 +145,10 @@
       "level": "intermediate",
       "question": "Vì sao classful routing gặp vấn đề với discontiguous subnets?",
       "options": [
-        "Vì auto-summarize tại classful boundary, không gửi mask",
-        "Vì chúng chạy quá nhanh không kịp hội tụ",
-        "Vì chỉ hỗ trợ IPv6 không phải IPv4",
-        "Vì cần authentication mới hoạt động"
+        "Vì auto-summarize ở classful boundary và không gửi subnet mask",
+        "Vì split-horizon chặn quảng bá ngược lại interface đến",
+        "Vì hold-down timer giữ route quá lâu sau khi mất",
+        "Vì poison-reverse đặt metric vô cực không truyền tiếp"
       ],
       "answer": 0,
       "explanation": "RIPv1/IGRP không gửi mask, auto-summarize ở classful boundary (8/16/24-bit). Hai subnet cùng major network sau routers khác nhau → cả hai advertise cùng prefix → conflict, mất route."
@@ -158,10 +158,10 @@
       "level": "intermediate",
       "question": "Split horizon trong distance-vector dùng để?",
       "options": [
-        "Tăng tốc độ hội tụ khi có thay đổi mạng",
-        "Mã hóa routing update giữa các router",
-        "Chống count-to-infinity loop trong DV",
-        "Làm cho metric tính toán chính xác hơn"
+        "Rút ngắn hold-down timer cho hội tụ nhanh hơn",
+        "Authenticate routing update bằng MD5 giữa neighbor",
+        "Chống count-to-infinity loop bằng cách không quảng bá ngược",
+        "Chia routing table thành nhiều area phân cấp"
       ],
       "answer": 2,
       "explanation": "Split horizon: router không quảng bá route trở lại interface học được. Một trong các kỹ thuật chống loop của DV (cùng hold-down, poison-reverse). Tránh count-to-infinity. LS không cần."
@@ -171,10 +171,10 @@
       "level": "intermediate",
       "question": "EIGRP khác RIP ở điểm cốt lõi nào?",
       "options": [
-        "EIGRP dùng Dijkstra như link-state",
-        "EIGRP có DUAL với feasible successor",
-        "EIGRP chỉ chạy giữa các AS độc lập",
-        "EIGRP không có metric như RIP có hop count"
+        "EIGRP là pure link-state với SPF Dijkstra trên từng router",
+        "EIGRP có DUAL với feasible successor và triggered update",
+        "EIGRP là EGP định tuyến giữa các autonomous system",
+        "EIGRP dùng AS_PATH thay cho metric composite"
       ],
       "answer": 1,
       "explanation": "EIGRP dùng DUAL algorithm — giữ feasibility table, có backup path tức thì. Update là triggered (chỉ khi đổi), không periodic. Convergence nhanh gần ngang OSPF, nhưng vẫn DV bản chất."
@@ -184,10 +184,10 @@
       "level": "intermediate",
       "question": "Trong các metric routing, RIP dùng?",
       "options": [
-        "Cost dựa trên bandwidth của link",
-        "Composite của bandwidth, delay, load, MTU",
-        "Hop count (số router trên path)",
-        "AS_PATH với số autonomous systems"
+        "Cost dựa trên bandwidth của link như OSPF",
+        "Composite của bandwidth, delay, load, MTU như EIGRP",
+        "Hop count đơn giản, max 15 — 16 nghĩa là unreachable",
+        "AS_PATH cộng nhiều attribute như BGP"
       ],
       "answer": 2,
       "explanation": "RIP dùng hop count đơn giản (max 15, 16 = unreachable). OSPF dùng cost (bandwidth-based). EIGRP/IGRP dùng composite. BGP dùng AS_PATH + nhiều attribute."
@@ -197,10 +197,10 @@
       "level": "intermediate",
       "question": "VTP (VLAN Trunking Protocol) làm gì?",
       "options": [
-        "Sync VLAN database giữa các switch Cisco",
-        "Mã hóa traffic VLAN trên trunk link",
-        "Tự thương lượng trunk giữa các switch",
-        "Định tuyến giữa các VLAN khác nhau"
+        "Sync VLAN database giữa các switch Cisco theo server/client",
+        "Tự thương lượng trunk giữa hai switch (vai trò của DTP)",
+        "Encapsulate frame trên trunk như ISL hay 802.1Q",
+        "Định tuyến inter-VLAN giữa các broadcast domain"
       ],
       "answer": 0,
       "explanation": "VTP sync VLAN database giữa switch (server/client/transparent mode). DTP tự thương lượng trunk. Inter-VLAN routing là việc của router/L3 switch. VTP không mã hóa."
@@ -210,10 +210,10 @@
       "level": "intermediate",
       "question": "Convergence của routing protocol nghĩa là?",
       "options": [
-        "Tốc độ truyền packet trên link vật lý",
-        "Thời gian để mọi router đồng bộ topology",
-        "Khả năng nén routing table cho gọn",
-        "Tỉ lệ thành công khi gửi update"
+        "Băng thông tối đa link vật lý có thể truyền",
+        "Thời gian để mọi router trong domain đồng bộ topology",
+        "Mức độ summarization route trong routing table",
+        "Chu kỳ gửi periodic update giữa các neighbor"
       ],
       "answer": 1,
       "explanation": "Convergence = thời gian từ khi có thay đổi (link fail, thêm router) đến khi mọi router trong domain có routing table đồng bộ. LS hội tụ nhanh hơn DV. Convergence chậm = packet drop."
@@ -223,10 +223,10 @@
       "level": "advanced",
       "question": "Khi redistribute từ OSPF (AD=110) vào EIGRP (AD=90), cần cẩn thận điều gì?",
       "options": [
-        "Metric incompatibility, loop, AD đảo ngược",
-        "Không cần cẩn thận điều gì cả thực sự",
-        "Chỉ redistribute IPv6 mới được phép",
-        "Phải tắt OSPF trước khi redistribute"
+        "Metric incompatibility, nguy cơ loop, AD chênh lệch gây prefer ngược",
+        "Phải đổi cùng AS number giữa OSPF và EIGRP trước",
+        "Bắt buộc redistribute song hướng để route luôn nhất quán",
+        "Chỉ redistribute được nếu hai protocol cùng metric type"
       ],
       "answer": 0,
       "explanation": "Redistribution: (1) metric khác kiểu cần seed metric; (2) two-way dễ gây loop nếu thiếu route-map; (3) chênh AD có thể khiến route external prefer hơn internal. Designer one-way nếu có thể, dùng tag chặn loop."
@@ -236,10 +236,10 @@
       "level": "advanced",
       "question": "Designer chọn protocol cho campus 50 router, hội tụ < 1s, multi-vendor. Tốt NHẤT?",
       "options": [
-        "RIPv2 — đơn giản, dễ cấu hình nhất",
-        "EIGRP — convergence rất nhanh, hybrid",
-        "OSPF — link-state chuẩn IETF, scale tốt",
-        "BGP — luôn là lựa chọn an toàn nhất"
+        "RIPv2 — classless, đơn giản, dễ cấu hình nhất",
+        "EIGRP — DUAL hội tụ rất nhanh, metric composite",
+        "OSPF — link-state IETF chuẩn mở, hierarchical area",
+        "IGRP — distance-vector cổ điển của Cisco"
       ],
       "answer": 2,
       "explanation": "OSPF là link-state chuẩn IETF (multi-vendor) → khắc phục lock-in của EIGRP. Hierarchical area để scale 50 router. Fast hello + sub-second timer. RIPv2 quá chậm. BGP overkill cho IGP. EIGRP vướng vendor lock-in."
@@ -249,10 +249,10 @@
       "level": "advanced",
       "question": "Trong hierarchical routing design, lớp Core thường dùng?",
       "options": [
-        "Static routes do admin cấu hình tay",
-        "OSPF/IS-IS hoặc BGP cho backbone",
-        "RIPv1 vì đơn giản và nhẹ nhàng",
-        "Distance-vector classful kiểu cũ"
+        "Static default route do admin cấu hình tay từng node",
+        "OSPF/IS-IS hoặc BGP làm backbone, fast convergence",
+        "RIPv1 vì nhẹ, ít tốn CPU và bandwidth",
+        "On-demand routing kích hoạt khi có traffic đến"
       ],
       "answer": 1,
       "explanation": "Core layer thường dùng OSPF/IS-IS (IGP backbone) hoặc BGP (giữa các AS). Cần fast convergence và scale. Distribution layer thường OSPF/EIGRP với summarization. Access có thể default route."
@@ -262,10 +262,10 @@
       "level": "advanced",
       "question": "BPDU Guard kết hợp PortFast để?",
       "options": [
-        "Tăng tốc convergence của STP toàn mạng",
-        "Shutdown port nếu nhận BPDU bất ngờ",
-        "Mã hóa BPDU truyền giữa các switch",
-        "Bypass STP hoàn toàn cho mọi port"
+        "Phát hiện link một chiều giống chức năng UDLD",
+        "Shutdown port (err-disable) nếu nhận BPDU bất ngờ",
+        "Giữ port ở blocking khi BPDU dừng đến (LoopGuard)",
+        "Tăng tốc hội tụ STP khi uplink fail (UplinkFast)"
       ],
       "answer": 1,
       "explanation": "PortFast cho edge port vào forwarding ngay. Nếu ai cắm switch vào edge port (vô tình hoặc cố ý) → port sẽ nhận BPDU → BPDU Guard shutdown port. Bảo vệ topology STP khỏi rogue switch."
@@ -275,10 +275,10 @@
       "level": "advanced",
       "question": "Distance-vector và link-state khác biệt cơ bản về cái gì?",
       "options": [
-        "DV gửi cả routing table; LS có map topology đầy đủ",
-        "DV chỉ chạy trên IPv4; LS chỉ chạy trên IPv6",
-        "DV nhanh hơn LS trong mọi trường hợp",
-        "LS chỉ dùng cho EGP, DV chỉ cho IGP"
+        "DV gửi cả routing table cho neighbor; LS có map topology đầy đủ và chạy SPF",
+        "DV cần authentication MD5; LS chạy plaintext không xác thực",
+        "DV luôn hội tụ nhanh hơn; LS chậm vì phải tính Dijkstra",
+        "LS chỉ làm việc liên-AS; DV chỉ chạy nội miền IGP"
       ],
       "answer": 0,
       "explanation": "DV: 'routing by rumor' — gửi cả routing table cho neighbor, không có view toàn cục. LS: mỗi router có topology map đầy đủ, tính SPF (Dijkstra) tự. LS hội tụ nhanh hơn nhưng tốn CPU/memory hơn."

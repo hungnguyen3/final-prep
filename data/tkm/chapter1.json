@@ -29,7 +29,7 @@
       "question": "Theo top-down network design, bước nào KHÔNG nên là bước khởi đầu?",
       "options": [
         "Phân tích mục tiêu kinh doanh của khách hàng",
-        "Lựa chọn router, switch và đi cáp kết nối các site",
+        "Lựa chọn router, switch và đấu nối thiết bị giữa các site",
         "Tìm hiểu các ứng dụng đang chạy trên hệ thống",
         "Phân tích cơ cấu tổ chức và nhóm người dùng"
       ],
@@ -41,10 +41,10 @@
       "level": "basic",
       "question": "Thứ tự đúng của 4 phase trong quy trình thiết kế mạng top-down?",
       "options": [
-        "Logical → Phân tích yêu cầu → Physical → Kiểm tra & văn bản",
-        "Phân tích yêu cầu → Logical → Physical → Kiểm tra & văn bản",
         "Phân tích yêu cầu → Physical → Logical → Kiểm tra & văn bản",
-        "Physical → Logical → Phân tích yêu cầu → Kiểm tra & văn bản"
+        "Phân tích yêu cầu → Logical → Physical → Kiểm tra & văn bản",
+        "Logical → Phân tích yêu cầu → Physical → Kiểm tra & văn bản",
+        "Phân tích yêu cầu → Logical → Kiểm tra & văn bản → Physical"
       ],
       "answer": 1,
       "explanation": "Đúng thứ tự: Phase 1 Phân tích yêu cầu → Phase 2 Logical (topology, addressing, routing, security, mgmt) → Phase 3 Physical (chọn thiết bị) → Phase 4 Test & document. Logical luôn TRƯỚC physical."
@@ -55,9 +55,9 @@
       "question": "PDIOO trong vòng đời mạng là viết tắt của?",
       "options": [
         "Plan, Design, Implement, Operate, Optimize",
-        "Plan, Develop, Install, Optimize, Observe",
-        "Prepare, Design, Integrate, Operate, Outsource",
-        "Plan, Deploy, Install, Operate, Outsource"
+        "Plan, Design, Integrate, Operate, Outsource",
+        "Prepare, Develop, Implement, Operate, Optimize",
+        "Plan, Deploy, Install, Operate, Observe"
       ],
       "answer": 0,
       "explanation": "PDIOO = Plan → Design → Implement → Operate → Optimize (và Retire khi kết thúc). Vòng đời quản lý mạng do Cisco đề xuất."
@@ -67,10 +67,10 @@
       "level": "basic",
       "question": "Phát biểu nào về mô hình logical và physical là ĐÚNG?",
       "options": [
-        "Physical thể hiện chức năng còn logical thể hiện thiết bị",
-        "Logical chỉ áp dụng cho LAN, physical chỉ áp dụng cho WAN",
-        "Logical xây dựng trước; physical là thiết bị/công nghệ cụ thể",
-        "Hai mô hình hoàn toàn độc lập, có thể làm song song với nhau"
+        "Physical mô tả block chức năng, logical mô tả cấu hình thiết bị cụ thể",
+        "Logical chỉ áp dụng cho LAN còn physical chỉ áp dụng cho WAN",
+        "Logical xây dựng trước; physical là thiết bị/công nghệ cụ thể hiện thực logical",
+        "Logical và physical được làm song song để rút ngắn thời gian dự án"
       ],
       "answer": 2,
       "explanation": "Nguyên tắc top-down: logical (block chức năng) xây dựng TRƯỚC physical (thiết bị, công nghệ cụ thể). Logical trả lời 'cần gì'; physical trả lời 'dùng thiết bị nào'."
@@ -80,10 +80,10 @@
       "level": "basic",
       "question": "SDLC trong thiết kế hệ thống là viết tắt của?",
       "options": [
-        "Software Design Lifecycle Control",
+        "System Design Logical Cycle",
         "Systems Development Life Cycle",
-        "Standard Deployment Logic Chain",
-        "Service Delivery Logical Cycle"
+        "Standard Deployment Lifecycle Control",
+        "Service Delivery Life Cycle"
       ],
       "answer": 1,
       "explanation": "SDLC = Systems Development Life Cycle — quy trình tổng quát quản lý và phát triển hệ thống. PDIOO là một biến thể của SDLC chuyên cho mạng."
@@ -94,7 +94,7 @@
       "question": "Đâu KHÔNG thuộc nhóm 'ràng buộc' (constraints) trong thiết kế mạng?",
       "options": [
         "Chi phí (cost)",
-        "Con người (staff)",
+        "Nhân lực triển khai (staff)",
         "Tính sẵn sàng (availability)",
         "Chính sách công ty (policy)"
       ],
@@ -108,8 +108,8 @@
       "options": [
         "Mục tiêu kỹ thuật (technical goal)",
         "Mục tiêu kinh doanh (business goal)",
-        "Ràng buộc kỹ thuật (technical constraint)",
-        "Yêu cầu vận hành (operational requirement)"
+        "Ràng buộc thiết kế (design constraint)",
+        "Ưu tiên thiết kế mạng (design priority)"
       ],
       "answer": 1,
       "explanation": "Rút ngắn thời gian sản xuất là business goal (giúp doanh nghiệp thành công), không phải technical. Technical goals điển hình là scalability, availability, performance, security."
@@ -120,7 +120,7 @@
       "question": "Khi phỏng vấn khách hàng, câu hỏi nào ÍT có giá trị nhất ở giai đoạn đầu?",
       "options": [
         "Sản phẩm và dịch vụ chính của công ty là gì?",
-        "Bạn muốn dùng router Cisco model nào và bao nhiêu cổng?",
+        "Cần bao nhiêu cổng switch và model nào cho trụ sở chính?",
         "Đối thủ và lợi thế cạnh tranh của công ty là gì?",
         "Chuyện gì xảy ra nếu dự án này không thành công?"
       ],
@@ -132,10 +132,10 @@
       "level": "intermediate",
       "question": "'Chính sách bảo mật của công ty' khi thiết kế mạng được xếp vào nhóm nào?",
       "options": [
-        "Mục tiêu kỹ thuật",
-        "Ràng buộc thiết kế",
-        "Đặc tả lưu lượng",
-        "Đặc tả ứng dụng"
+        "Mục tiêu kỹ thuật (technical goal)",
+        "Ràng buộc thiết kế (constraint)",
+        "Đặc tả lưu lượng (traffic specification)",
+        "Yêu cầu ứng dụng (application requirement)"
       ],
       "answer": 1,
       "explanation": "Ràng buộc gồm: Chi phí · Người · Thời gian · Chính sách. Chính sách (vd bắt buộc dùng vendor X) là constraint designer phải tuân, không phải mục tiêu cần đạt."
@@ -145,9 +145,9 @@
       "level": "intermediate",
       "question": "Vì sao cần nói chuyện với CẢ quản lý lẫn kỹ thuật khi phân tích yêu cầu?",
       "options": [
-        "Để lập biên bản họp đúng quy trình hành chính của công ty",
-        "Vì chỉ quản lý mới hiểu được công nghệ mạng hiện đại",
-        "Để tận dụng thời gian, tránh phải tổ chức thêm các buổi họp",
+        "Để xác định ngân sách và thời hạn dự án sớm hơn",
+        "Vì kỹ thuật mới nắm được mục tiêu kinh doanh thực sự",
+        "Để đảm bảo cấp trên đã biết và phê duyệt dự án",
         "Vì hai nhóm có ưu tiên khác nhau, cần nghe cả hai góc nhìn"
       ],
       "answer": 3,
@@ -171,9 +171,9 @@
       "level": "intermediate",
       "question": "Trong các thông tin sau, đâu KHÔNG phải là dữ liệu cần thu thập về mạng hiện tại?",
       "options": [
-        "Danh sách ứng dụng đang chạy",
-        "Vị trí và nhóm người dùng",
-        "Doanh thu hàng quý của công ty",
+        "Danh sách ứng dụng đang chạy và mức độ quan trọng",
+        "Vị trí và nhóm người dùng (user communities)",
+        "Doanh thu hàng quý và lợi nhuận của công ty",
         "Hiệu năng mạng và các giao thức đang dùng"
       ],
       "answer": 2,
@@ -185,9 +185,9 @@
       "question": "Phase 2 (logical design) bao gồm hoạt động nào sau đây?",
       "options": [
         "Lựa chọn brand và model cụ thể của switch core",
-        "Đo throughput thực tế của các link đang chạy",
-        "Thiết kế topology, addressing, chọn routing protocol",
-        "Lập biên bản nghiệm thu và bàn giao thiết bị mới"
+        "Đo throughput và độ trễ thực tế của các link đang chạy",
+        "Thiết kế topology, addressing, chọn routing/switching protocol",
+        "Test toàn bộ thiết kế và viết tài liệu bàn giao"
       ],
       "answer": 2,
       "explanation": "Phase 2 logical: thiết kế topology, addressing/naming, chọn routing/switching protocol, security solution, management solution. Chọn brand/model là Phase 3 (physical)."
@@ -200,7 +200,7 @@
         "Thiết kế lại toàn bộ hệ thống mạng của doanh nghiệp",
         "Bổ sung VPN truy cập từ xa cho nhóm sale 30 người",
         "Triển khai data center mới với 200 server và storage",
-        "Migration toàn bộ workload lên public cloud"
+        "Mở thêm chi nhánh mới và đấu nối WAN tới trụ sở"
       ],
       "answer": 1,
       "explanation": "Scope nhỏ = thay đổi cục bộ, ít ảnh hưởng (thêm VPN, thêm 1 chi nhánh). Scope lớn = thiết kế lại toàn hệ thống, data center mới, cloud migration."
@@ -223,10 +223,10 @@
       "level": "advanced",
       "question": "Khách hàng nói: '24/7, mọi giao dịch < 100ms, ngân sách 200 triệu'. Phân loại đúng nhất?",
       "options": [
-        "Tất cả ba yêu cầu đều là mục tiêu kinh doanh",
-        "24/7 + 100ms là mục tiêu kỹ thuật; 200 triệu là ràng buộc",
-        "24/7 là kinh doanh; 100ms là kỹ thuật; 200 triệu là kinh doanh",
-        "100ms là ràng buộc; 24/7 và 200 triệu là mục tiêu kinh doanh"
+        "24/7 và 100ms là mục tiêu kinh doanh; 200 triệu là mục tiêu kỹ thuật",
+        "24/7 và 100ms là mục tiêu kỹ thuật; 200 triệu là ràng buộc",
+        "24/7 là mục tiêu kinh doanh; 100ms là kỹ thuật; 200 triệu là ưu tiên",
+        "100ms là ràng buộc; 24/7 và 200 triệu là mục tiêu kỹ thuật"
       ],
       "answer": 1,
       "explanation": "24/7 = availability (kỹ thuật/ưu tiên), 100ms = low latency (kỹ thuật). 200 triệu là CONSTRAINT (chi phí). Phân biệt goal vs constraint là kỹ năng cốt lõi của Phase 1."
@@ -236,10 +236,10 @@
       "level": "advanced",
       "question": "Lý do quan trọng nhất để thiết kế logical đi TRƯỚC physical là?",
       "options": [
-        "Để tiết kiệm chi phí thiết bị do giá thị trường ngày càng tăng",
-        "Vì vendor yêu cầu phải có tài liệu logical thì mới chịu báo giá",
+        "Để giảm chi phí mua thiết bị nhờ tránh được các đợt tăng giá",
+        "Để có tài liệu logical làm cơ sở pháp lý khi đấu thầu vendor",
         "Để chọn thiết bị theo đúng yêu cầu chức năng, không bị bó buộc bởi sản phẩm sẵn có",
-        "Vì các tổ chức tiêu chuẩn quốc tế bắt buộc phải làm theo trình tự đó"
+        "Để đảm bảo tuân thủ quy trình PDIOO mà Cisco khuyến nghị"
       ],
       "answer": 2,
       "explanation": "Nếu chọn thiết bị trước, ta sẽ ép thiết kế khớp với khả năng thiết bị đó. Logical-first cho phép xác định 'cần gì' rồi mới chọn 'ai làm được' — tránh vendor lock-in về tư duy."
@@ -252,7 +252,7 @@
         "Phase 1 — Phân tích yêu cầu",
         "Phase 2 — Thiết kế logical",
         "Phase 3 — Thiết kế physical",
-        "Phase 4 — Kiểm tra và văn bản"
+        "Phase 4 — Kiểm tra và văn bản hóa"
       ],
       "answer": 1,
       "explanation": "Phase 2 logical: chọn routing/switching protocol, addressing plan, security topology — TRƯỚC khi chọn brand/model thiết bị ở Phase 3."
@@ -262,10 +262,10 @@
       "level": "advanced",
       "question": "Một designer bỏ qua Phase 1 và làm thẳng Phase 2-3. Hậu quả KHẢ DĨ NHẤT?",
       "options": [
-        "Tiết kiệm thời gian, không có rủi ro nào đáng kể",
+        "Rút ngắn thời gian dự án mà chất lượng không bị ảnh hưởng nhiều",
         "Thiết kế đẹp về kỹ thuật nhưng có thể không phù hợp business goal",
-        "Mạng sẽ tự động fail trong vòng 24 giờ đầu",
-        "Vendor sẽ từ chối báo giá thiết bị cho dự án"
+        "Mạng vận hành tốt nhưng tài liệu Phase 4 sẽ thiếu sót",
+        "Vendor không thể cung cấp thiết bị phù hợp do thiếu thông số"
       ],
       "answer": 1,
       "explanation": "Bỏ Phase 1 = không hiểu business goal, ràng buộc, ưu tiên. Kết quả: thiết kế có thể đắt quá ngân sách, sai SLA, hoặc giải quyết sai vấn đề. Đây là failure mode kinh điển."
@@ -275,10 +275,10 @@
       "level": "advanced",
       "question": "Khách hàng có 'biases' (thiên vị) về công nghệ. Designer NÊN làm gì?",
       "options": [
-        "Bỏ qua biases để giữ tính khách quan của thiết kế",
-        "Chỉ làm theo bias, không cần phân tích yêu cầu",
+        "Bỏ qua biases để đảm bảo thiết kế hoàn toàn khách quan",
+        "Ưu tiên làm theo bias vì khách hàng là người trả tiền cuối cùng",
         "Ghi nhận biases như input, vẫn phân tích yêu cầu khách quan",
-        "Báo cáo biases lên quản lý cấp cao để xử lý kỷ luật"
+        "Chỉ trao đổi biases với cấp quản lý, không hỏi nhóm kỹ thuật"
       ],
       "answer": 2,
       "explanation": "Biases (thích vendor X, ghét công nghệ Y) là constraint mềm có thật — designer không thể bỏ qua nhưng cũng không nên mù quáng làm theo. Ghi nhận, đánh giá rủi ro, propose phương án dung hòa."

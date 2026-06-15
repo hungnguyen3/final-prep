@@ -28,10 +28,10 @@
       "level": "basic",
       "question": "Trong Cisco hierarchical design, lớp nào triển khai POLICY (ACL, QoS)?",
       "options": [
-        "Core layer (backbone)",
-        "Access layer (user)",
+        "Core layer (backbone tốc độ cao)",
+        "Access layer (kết nối end-user)",
         "Distribution layer (aggregation)",
-        "Application layer (Layer 7)"
+        "Server farm module (Cisco SAFE)"
       ],
       "answer": 2,
       "explanation": "Distribution = nơi triển khai policy (ACL, QoS classification, route summarization). Core phải tối ưu cho speed → KHÔNG xử lý policy phức tạp. Access kết nối user."
@@ -41,10 +41,10 @@
       "level": "basic",
       "question": "Mục đích chính của STP là gì?",
       "options": [
-        "Tăng bandwidth giữa các switch",
-        "Mã hóa traffic ở tầng Layer 2",
+        "Aggregate nhiều uplink để tăng bandwidth",
+        "Cung cấp redundancy cho default gateway",
         "Ngăn loop khi có redundant link L2",
-        "Định tuyến giữa các VLAN khác nhau"
+        "Định tuyến inter-VLAN qua trunk 802.1Q"
       ],
       "answer": 2,
       "explanation": "STP block port redundant để tạo cây không loop. Không tăng bandwidth, không mã hóa, không route giữa VLAN (đó là việc của router/L3 switch)."
@@ -54,10 +54,10 @@
       "level": "basic",
       "question": "Trong STP, switch nào được bầu làm Root Bridge?",
       "options": [
-        "Switch có IP cao nhất trong segment",
+        "Switch có path cost đến segment cao nhất",
         "Switch có Bridge ID THẤP NHẤT",
-        "Switch ở vị trí cao nhất trong rack",
-        "Switch được cấu hình thủ công đầu"
+        "Switch có nhiều Designated Port nhất mạng",
+        "Switch đầu tiên gửi BPDU vào segment"
       ],
       "answer": 1,
       "explanation": "Root Bridge = lowest Bridge ID (priority + MAC). Default priority = 32768. Muốn ép một switch làm root, đặt priority thấp hơn (vd 4096). Vị trí vật lý không liên quan."
@@ -67,10 +67,10 @@
       "level": "basic",
       "question": "Thiết bị nào dùng giao thức HSRP?",
       "options": [
-        "Switch L2 (để bầu root bridge)",
-        "End-host (để chọn DNS server)",
+        "Switch L2 chạy STP để bầu Root Bridge",
+        "Access switch để gán VLAN cho user",
         "Router/L3 switch (default gateway)",
-        "Wireless AP (để chọn channel)"
+        "Edge router làm BGP multihoming Option B"
       ],
       "answer": 2,
       "explanation": "HSRP chạy giữa router/L3 switch trên cùng segment, share virtual IP/MAC làm default gateway cho host. Active fail → standby tiếp quản. Không liên quan switch L2 (đó là STP)."
@@ -81,9 +81,9 @@
       "question": "VLAN viết tắt của?",
       "options": [
         "Virtual Local Area Network",
-        "Verified Logical Access Network",
-        "Virtual Link Aggregation Node",
-        "Variable Length Address Network"
+        "Virtual Link Access Negotiation",
+        "Variable Length Aggregation Network",
+        "Virtual LAN Aggregation Node"
       ],
       "answer": 0,
       "explanation": "VLAN = Virtual Local Area Network. Tập hợp thiết bị cùng nhóm quản lý logic, mỗi VLAN là 1 broadcast domain riêng. Span nhiều switch qua trunk 802.1Q."
@@ -93,10 +93,10 @@
       "level": "basic",
       "question": "DMZ trong thiết kế mạng là?",
       "options": [
-        "Vùng cấm truy cập với mọi user",
+        "VLAN nội bộ chứa server quản trị mạng",
         "Vùng đệm chứa public server, sau firewall",
-        "Mạng wireless dành riêng cho khách",
-        "Vùng dành riêng cho admin nội bộ"
+        "Module server farm trong campus core",
+        "Subnet riêng cho default gateway HSRP"
       ],
       "answer": 1,
       "explanation": "DMZ = Demilitarized Zone — vùng đệm sau firewall ngoài, trước firewall trong. Chứa server cần expose ra internet. Compromise vẫn còn firewall trong → defense in depth."
@@ -106,10 +106,10 @@
       "level": "intermediate",
       "question": "Lý do CHÍNH để giới hạn STP network < 7 switches?",
       "options": [
-        "Giới hạn cứng của giao thức STP",
+        "Vì RSTP chỉ hỗ trợ tối đa 7 switch trong domain",
         "BPDU lan chậm có thể vượt timer mặc định",
-        "Cisco bán license tối đa cho 7 switch",
-        "Vì Bridge ID của STP chỉ có 7 bit"
+        "Vì mỗi VLAN chỉ map tối đa 7 access switch",
+        "Vì priority field của Bridge ID giới hạn 7 bit"
       ],
       "answer": 1,
       "explanation": "Mỗi BPDU đi qua một switch tốn thời gian, max-age timer = 20s. Diameter quá lớn → BPDU chưa kịp lan thì timer hết → loop tạm thời. Khuyến nghị diameter ≤ 7."
@@ -119,10 +119,10 @@
       "level": "intermediate",
       "question": "Đặt ACL phức tạp trên Core router thường KHÔNG nên vì?",
       "options": [
-        "Core router không hỗ trợ ACL phức tạp",
+        "Core chỉ chạy L2 nên không thể đọc IP header",
         "Core phải tối ưu cho tốc độ — ACL gây latency",
-        "ACL chỉ chạy được ở lớp access switch",
-        "Sẽ làm tăng kích thước routing table lớn"
+        "ACL chỉ áp được trên trunk port giữa các VLAN",
+        "ACL trên core sẽ làm vỡ summarization của OSPF"
       ],
       "answer": 1,
       "explanation": "Core = forward càng nhanh càng tốt. ACL phức tạp = lookup mỗi packet → tăng latency, CPU. Mọi traffic qua core → impact toàn cục. Policy phải đặt ở DISTRIBUTION layer."
@@ -132,10 +132,10 @@
       "level": "intermediate",
       "question": "VLAN giới hạn broadcast domain bằng cách?",
       "options": [
-        "Mã hóa nội dung của broadcast frame",
+        "Block port redundant như STP để chặn loop",
         "Mỗi VLAN là 1 broadcast domain riêng",
-        "Giảm số host kết nối vào cùng switch",
-        "Tăng số bit trong địa chỉ MAC frame"
+        "Aggregate uplink để chia tải broadcast frame",
+        "Đẩy broadcast lên L3 cho router xử lý"
       ],
       "answer": 1,
       "explanation": "VLAN tách switch port thành nhóm logic, mỗi nhóm = 1 broadcast domain. Broadcast trong VLAN 10 không vượt sang VLAN 20 ở L2. Để traffic giữa VLAN cần router/L3 switch."
@@ -158,10 +158,10 @@
       "level": "intermediate",
       "question": "Đâu là lý do KHÔNG nên có 'backdoor link' trong hierarchical design?",
       "options": [
-        "Vì backdoor làm mạng nhanh hơn quá mức",
+        "Vì backdoor giúp giảm broadcast domain",
         "Phá phân lớp, gây loop, bypass policy",
-        "Vì Cisco không hỗ trợ kiểu link backdoor",
-        "Vì backdoor luôn là một dạng tấn công"
+        "Vì backdoor thay thế hoàn toàn vai trò core",
+        "Vì backdoor là chuẩn bắt buộc của full-mesh"
       ],
       "answer": 1,
       "explanation": "Backdoor (link tắt giữa hai access switch) phá phân lớp: traffic đi đường lạ, bypass ACL/QoS, routing khó hội tụ, troubleshoot khó. Tương tự, 'chain' cũng cần tránh."
@@ -171,10 +171,10 @@
       "level": "intermediate",
       "question": "Trong các mô hình mesh, cái nào tốn nhiều link nhất?",
       "options": [
-        "Hub-and-spoke từ HQ ra các branch",
+        "Hub-and-spoke với HQ làm trung tâm",
         "Partial-mesh chỉ những cặp quan trọng",
         "Full-mesh tất cả node nối với nhau",
-        "Star topology qua switch trung tâm"
+        "Hierarchical 3-tier core/distribution/access"
       ],
       "answer": 2,
       "explanation": "Full-mesh: n node cần n×(n-1)/2 link. 10 node = 45 link. Khó scale nhanh. Partial-mesh chỉ kết nối cặp quan trọng. Hub-and-spoke chỉ n-1 link. Star tương tự."
@@ -184,10 +184,10 @@
       "level": "intermediate",
       "question": "Mô hình tốt theo Top-Down Design có đặc điểm gì?",
       "options": [
-        "Mọi switch đều full-mesh với nhau",
+        "Tất cả switch đều full-mesh để dự phòng tối đa",
         "Mạng tăng 2-3 lần không cần redesign",
-        "Dùng càng nhiều giao thức càng tốt",
-        "Chỉ dùng một vendor duy nhất toàn bộ"
+        "Loại bỏ phân lớp để giảm số thiết bị trung gian",
+        "Gộp toàn bộ user và server vào một broadcast domain"
       ],
       "answer": 1,
       "explanation": "Mô hình tốt: dễ thêm tòa nhà/chi nhánh, thêm component chỉ ảnh hưởng cục bộ, mạng tăng 2-3 lần vẫn ổn, troubleshoot dễ. Full-mesh không scale; nhiều giao thức làm phức tạp."
@@ -210,10 +210,10 @@
       "level": "intermediate",
       "question": "Multihoming 'Option B' (2 ISP, 1 site) bảo vệ tốt nhất trước?",
       "options": [
-        "ISP outage và site outage đồng thời",
+        "Cả ISP outage và site outage cùng lúc (như Option D)",
         "Chỉ ISP outage; không phải site outage",
-        "Chỉ site outage; không phải ISP outage",
-        "Không bảo vệ trước bất kỳ sự cố nào"
+        "Chỉ site outage; vì 1 ISP đã đủ tin cậy",
+        "Tấn công DDoS lên một địa chỉ public IP cụ thể"
       ],
       "answer": 1,
       "explanation": "Option B: 1 ISP fail vẫn còn ISP kia. Nhưng cả site mất điện = mất hoàn toàn. Option D (2 ISP × 2 site) bảo vệ cả hai. Designer phải biết failure mode nào acceptable."
@@ -239,7 +239,7 @@
         "Tăng bandwidth tất cả uplink lên 100 Gbps",
         "Tắt STP để các port chuyển sang forwarding",
         "Phân lớp lại bằng VLAN/L3 và áp 3-tier",
-        "Đổi sang công nghệ Token Ring legacy"
+        "Bật PortFast trên toàn bộ trunk giữa switch"
       ],
       "answer": 2,
       "explanation": "Broadcast storm = broadcast domain quá rộng + có loop. Không phải vấn đề bandwidth. Phân broadcast domain bằng VLAN/L3, áp hierarchy + STP/RSTP. Tắt STP càng tệ hơn."
@@ -249,10 +249,10 @@
       "level": "advanced",
       "question": "Một mạng dùng PortFast trên port nối switch khác. Hậu quả?",
       "options": [
-        "Hội tụ STP nhanh hơn cho mọi link",
+        "Hội tụ STP nhanh hơn cho mọi loại link",
         "Có thể gây loop nếu không có BPDU Guard",
-        "Tự động chuyển sang RSTP nhanh",
-        "Tăng bảo mật cho switch trunk port"
+        "Kích hoạt UplinkFast tự động cho uplink dự phòng",
+        "Tự động bầu lại Root Bridge ở mức ưu tiên thấp hơn"
       ],
       "answer": 1,
       "explanation": "PortFast cho port vào forwarding ngay (skip listening/learning). Chỉ dùng cho EDGE port (host-only). Bật trên port nối switch khác = bypass STP convergence → có thể gây loop. Kết hợp BPDU Guard để shutdown port nếu nhận BPDU."
@@ -262,10 +262,10 @@
       "level": "advanced",
       "question": "Trong topology Cisco SAFE, server farm thường đặt ở đâu?",
       "options": [
-        "Trực tiếp trong access layer của user",
+        "Cùng access switch với user để giảm hop",
         "Module riêng nối vào distribution/core",
-        "Trên cloud công cộng AWS/Azure",
-        "Trong wireless VLAN cho linh hoạt"
+        "Trong DMZ chung với public web/mail server",
+        "Trực tiếp trên backbone core không qua firewall"
       ],
       "answer": 1,
       "explanation": "Server farm thường là module riêng (server module), nối vào distribution/core với firewall và IDS. Tách khỏi user access để bảo mật và performance. Cloud là lựa chọn khác (off-premise)."
@@ -275,10 +275,10 @@
       "level": "advanced",
       "question": "Mô hình Cisco SAFE chia theo nguyên lý nào?",
       "options": [
-        "Theo geographic của các chi nhánh",
+        "Theo geographic của các chi nhánh khu vực",
         "Theo modular — module độc lập, dễ secure",
-        "Theo hãng vendor của thiết bị mạng",
-        "Theo bandwidth của từng đường truyền"
+        "Theo 3 lớp core/distribution/access truyền thống",
+        "Theo bandwidth sẵn có của từng đường truyền"
       ],
       "answer": 1,
       "explanation": "Cisco SAFE = Security Architecture For Enterprise — chia mạng thành module độc lập (campus, WAN, server farm, internet edge, remote access). Mỗi module có security domain riêng, dễ bảo vệ và scale."

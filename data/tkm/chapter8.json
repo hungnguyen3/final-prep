@@ -28,10 +28,10 @@
       "level": "basic",
       "question": "Bước ĐẦU TIÊN trong 12 bước thiết kế bảo mật là?",
       "options": [
-        "Define a security policy chính thức",
+        "Analyze security risks và threat model",
         "Identify network assets cần bảo vệ",
-        "Implement firewall và packet filter",
-        "Train users, managers, technical staff"
+        "Develop technical implementation strategy",
+        "Analyze security requirements và tradeoffs"
       ],
       "answer": 1,
       "explanation": "Step 1 = Identify network assets. Phải biết bảo vệ CÁI GÌ trước khi quyết định bảo vệ thế nào. Policy (5), Implement (10), Train (9) đều đến sau."
@@ -41,10 +41,10 @@
       "level": "basic",
       "question": "WEP nổi tiếng vì điểm gì?",
       "options": [
-        "Là chuẩn an toàn nhất cho wireless",
+        "Dùng AES/CCMP làm cơ chế mã hóa lõi",
         "Crackable — không nên dùng nữa hiện nay",
-        "Chỉ chạy trên thiết bị Cisco enterprise",
-        "Dùng AES-256 mã hóa cực mạnh"
+        "Bắt buộc EAP-TLS cho mọi client kết nối",
+        "Tự động xoay key mỗi frame như TKIP"
       ],
       "answer": 1,
       "explanation": "WEP dùng RC4 với IV ngắn → có thể crack trong vài phút bằng aircrack-ng. Không dùng cho enterprise. Thay thế: WPA2 (802.11i, AES/CCMP) hoặc WPA3."
@@ -54,10 +54,10 @@
       "level": "basic",
       "question": "DMZ trong thiết kế bảo mật mạng là?",
       "options": [
-        "Vùng cấm không cho ai truy cập vào",
+        "Phân khúc chứa server farm nội bộ + IDS",
         "Vùng đệm chứa public server, sau firewall",
-        "Mạng wireless dành riêng cho khách",
-        "Vùng dành cho admin truy cập từ xa"
+        "Subnet wireless tách biệt cho 802.1X",
+        "Phân khúc remote-access qua VPN concentrator"
       ],
       "answer": 1,
       "explanation": "DMZ (Demilitarized Zone) = vùng đệm sau firewall ngoài, trước firewall trong. Chứa server cần expose internet. Compromise vẫn còn firewall trong → defense in depth."
@@ -67,10 +67,10 @@
       "level": "basic",
       "question": "Trong 802.1X EAP, vai trò 'Authenticator' do thiết bị nào đảm nhận?",
       "options": [
-        "Wireless client như laptop, smartphone",
-        "RADIUS server xác thực credential",
+        "Supplicant trên laptop hoặc smartphone",
+        "RADIUS server giữ user database",
         "Access Point hoặc switch port",
-        "DNS server phân giải tên miền"
+        "VPN concentrator đầu trụ sở chính"
       ],
       "answer": 2,
       "explanation": "3 vai trò 802.1X: Supplicant = client; Authenticator = AP/switch (gateway tới network); Authentication server = RADIUS. Authenticator chuyển tiếp credential giữa supplicant và RADIUS, không tự verify."
@@ -80,10 +80,10 @@
       "level": "basic",
       "question": "Đâu KHÔNG phải là một trong các Security Mechanism cơ bản?",
       "options": [
-        "Authentication và Authorization (AAA)",
-        "Firewall và Packet Filter (chặn lưu lượng)",
-        "Intrusion Detection System (IDS)",
-        "DHCP Server cấp địa chỉ động"
+        "Authentication, Authorization, Accounting (AAA)",
+        "Packet filter và stateful firewall",
+        "IDS và IPS giám sát lưu lượng",
+        "Spanning Tree Protocol chống loop L2"
       ],
       "answer": 3,
       "explanation": "Security mechanisms: physical, AAA, encryption, packet filter, firewall, IDS/IPS. DHCP là dịch vụ cấp IP, không phải security mechanism dù có thể được hardened."
@@ -93,10 +93,10 @@
       "level": "basic",
       "question": "Phương pháp WLAN security AN TOÀN nhất hiện nay (giữa các option có)?",
       "options": [
-        "WEP với key 128-bit dài hơn 64-bit",
+        "WPA-Personal với TKIP và passphrase dài",
         "WPA2 (802.11i) với AES/CCMP",
-        "Chỉ dùng MAC address filtering",
-        "Disable SSID broadcast là đủ"
+        "EAP-MD5 với challenge text mạnh",
+        "WEP-128 kết hợp disable SSID broadcast"
       ],
       "answer": 1,
       "explanation": "WPA2 (802.11i) dùng AES/CCMP — chuẩn an toàn nhất trong list. WEP đã bị crack. MAC filter dễ bypass (MAC clone). Disable SSID là 'security through obscurity' yếu."
@@ -107,9 +107,9 @@
       "question": "Khác biệt cốt lõi giữa Security Plan và Security Policy?",
       "options": [
         "Plan = tài liệu high-level về 'sẽ làm gì'; Policy = formal rules",
-        "Hai cái giống nhau, chỉ khác cách gọi tên",
-        "Policy chỉ cho user, Plan chỉ cho admin",
-        "Plan là technical, Policy là marketing"
+        "Plan do RFC 2196 quy định, Policy do ISO 27001 quy định",
+        "Policy là bước 4 trong 12-step, Plan là bước 5",
+        "Plan ràng buộc end-user, Policy chỉ ràng buộc technical staff"
       ],
       "answer": 0,
       "explanation": "Plan = high-level proposal (làm thế nào, mất bao lâu, ai làm). Policy (RFC 2196) = formal rules — cấm/cho phép gì, accountability, authentication, privacy. Policy là 'luật'; Plan là 'lộ trình'."
@@ -120,9 +120,9 @@
       "question": "Defense in depth khác 'firewall đơn lớp' ở điểm gì?",
       "options": [
         "Dùng nhiều lớp bảo vệ độc lập, vượt 1 còn lớp khác",
-        "Defense in depth chỉ dùng 1 firewall mạnh nhất",
-        "Hai khái niệm tương đương về bản chất bảo mật",
-        "Defense in depth chỉ áp dụng cho mạng wireless"
+        "Tập trung mọi rule vào một firewall hiệu năng cao nhất",
+        "Là tên gọi khác của Cisco SAFE Reference Architecture",
+        "Chỉ áp dụng cho server farm, không cho edge"
       ],
       "answer": 0,
       "explanation": "Defense in depth = nhiều lớp barrier độc lập. Single-layer = 'castle wall' — vỡ là vào hết. Layered: chiếm DMZ vẫn vướng firewall trong; chiếm account vẫn vướng MFA. 'Belt-and-suspenders'."
@@ -132,10 +132,10 @@
       "level": "intermediate",
       "question": "Phương pháp bảo mật wireless AN TOÀN NHẤT cho doanh nghiệp?",
       "options": [
-        "WEP với key 128-bit và đổi định kỳ",
-        "WPA-Personal với passphrase rất phức tạp",
+        "WPA2-Personal với passphrase 20+ ký tự ngẫu nhiên",
+        "LEAP (Cisco) với mutual authentication trên mọi AP",
         "VPN trên wireless với VPN concentrator HQ",
-        "Disable SSID broadcast và MAC filter"
+        "TKIP-only với MAC filter và disable SSID broadcast"
       ],
       "answer": 2,
       "explanation": "VPN trên wireless = lớp mã hóa độc lập với WiFi security, đảm bảo dù WPA bị crack thì traffic vẫn được tunnel mã hóa end-to-end. WEP đã bẻ. WPA-Personal pre-shared key dễ leak. Disable SSID là obscurity."
@@ -145,10 +145,10 @@
       "level": "intermediate",
       "question": "Vì sao Top-Down khuyến cáo dùng SSH thay Telnet trên router?",
       "options": [
-        "SSH chạy nhanh hơn Telnet trên link chậm",
+        "SSH tiết kiệm bandwidth nhờ nén header gói tin",
         "Telnet truyền plaintext, SSH mã hóa session",
-        "SSH có nhiều màu sắc và hiển thị đẹp hơn",
-        "Telnet không hỗ trợ Cisco IOS hiện đại"
+        "Telnet không hỗ trợ routing protocol authentication",
+        "SSH tự động bật packet filter cho VTY line"
       ],
       "answer": 1,
       "explanation": "Telnet plaintext = lý do bị xếp 'không an toàn'. Đặc biệt nguy hiểm vì admin gõ enable password. SSHv2 mã hóa từ handshake đến lệnh. Best practice: 'no telnet, ssh only'."
@@ -160,8 +160,8 @@
       "options": [
         "Mã hóa với private key của chính Alice",
         "Mã hóa với public key của người nhận Bob",
-        "Mã hóa với public key của chính Alice",
-        "Gửi plaintext kèm chữ ký số của Alice"
+        "Mã hóa với private key của Bob đã chia sẻ trước",
+        "Ký bằng private key Alice rồi gửi plaintext kèm chữ ký"
       ],
       "answer": 1,
       "explanation": "Confidentiality = mã hóa với public key của RECEIVER (Bob), chỉ ai có private key Bob mới decrypt. Còn integrity/non-repudiation thì sign với private key SENDER. Hai use case dùng key ngược chiều."
@@ -171,10 +171,10 @@
       "level": "intermediate",
       "question": "Trong WLAN security, EAP được dùng cùng với?",
       "options": [
-        "WEP để tăng cường key 64-bit lên 256",
+        "TKIP để xoay WEP key sau mỗi frame truyền",
         "802.1X cho port-based authentication",
-        "DHCP để cấp địa chỉ IP cho client",
-        "DNS để phân giải tên miền nội bộ"
+        "CCMP để thay AES bằng RC4 trong WPA2",
+        "RADIUS accounting để cấp IP cho client"
       ],
       "answer": 1,
       "explanation": "EAP (Extensible Authentication Protocol) chạy bên trong 802.1X port-based authentication framework. Có nhiều variant: EAP-TLS, PEAP, LEAP, EAP-MD5. Không liên quan WEP key, DHCP, DNS."
@@ -184,10 +184,10 @@
       "level": "intermediate",
       "question": "Đâu KHÔNG phải là Network Asset cần bảo vệ?",
       "options": [
-        "Hardware và software thiết bị",
+        "Hardware, software và application",
         "Data và intellectual property",
-        "Company's reputation (uy tín)",
-        "Số lượng nhân viên IT có sẵn"
+        "Trade secrets và company's reputation",
+        "Bandwidth dư thừa của uplink internet"
       ],
       "answer": 3,
       "explanation": "Network assets: hardware, software, applications, data, intellectual property, trade secrets, company's reputation. Số lượng nhân viên IT là tài nguyên tổ chức, không phải asset cần security mechanism bảo vệ."
@@ -198,9 +198,9 @@
       "question": "Tradeoff phổ biến trong security là?",
       "options": [
         "Security vs Usability (chặt → khó dùng)",
-        "Security tăng đồng thời mọi mục tiêu khác",
-        "Security đối lập tuyệt đối với mọi mục tiêu",
-        "Không có tradeoff nào trong security cả"
+        "Confidentiality và Integrity luôn xung đột nhau",
+        "Defense in depth làm giảm affordability tới 0",
+        "AAA và encryption không thể cùng triển khai"
       ],
       "answer": 0,
       "explanation": "Tradeoff điển hình: Security vs Usability (mật khẩu phức tạp khó nhớ, MFA phiền), vs Performance (encryption tốn CPU), vs Cost (firewall đắt). Designer phải cân bằng."
@@ -210,10 +210,10 @@
       "level": "intermediate",
       "question": "RADIUS server trong 802.1X có vai trò?",
       "options": [
-        "Phát sóng wireless cho client kết nối",
-        "Cấp địa chỉ IP cho client wireless",
+        "Đóng vai trò Supplicant gửi credential",
+        "Là Authenticator chuyển EAP frame qua AP",
         "Authentication server xác thực credential",
-        "Mã hóa traffic giữa client và AP"
+        "Phát beacon WLAN và quản lý SSID"
       ],
       "answer": 2,
       "explanation": "RADIUS = Authentication server trong 802.1X. AP/switch (Authenticator) chuyển credential từ Supplicant (client) đến RADIUS. RADIUS verify (qua user database) và trả Accept/Reject."
@@ -223,10 +223,10 @@
       "level": "advanced",
       "question": "E-commerce server trong DMZ bị compromise. Hậu quả XẤU NHẤT KHẢ DĨ?",
       "options": [
-        "Toàn bộ enterprise network bị chiếm ngay lập tức",
+        "Attacker dùng public server làm bàn đạp deauth WLAN nội bộ",
         "Chỉ DMZ bị ảnh hưởng nếu phân khúc đúng cách",
-        "Mất internet kết nối toàn công ty trong vài giờ",
-        "Phải shutdown WLAN ngay lập tức để cô lập"
+        "Routing protocol authentication tự rớt toàn AS nội bộ",
+        "OTP token của toàn bộ remote-access user bị vô hiệu"
       ],
       "answer": 1,
       "explanation": "DMZ thiết kế đúng là 'sandbox' — server bị chiếm cũng không vượt firewall trong vào core. Nếu DMZ flat hoặc cho phép DMZ → internal qua nhiều port, mới có lateral movement. Audit DMZ rule định kỳ."
@@ -236,10 +236,10 @@
       "level": "advanced",
       "question": "Vì sao 'Achieve buy-in' (step 8) lại quan trọng trong 12-step?",
       "options": [
-        "Vì luật pháp yêu cầu phải có buy-in",
+        "Vì RFC 2196 yêu cầu buy-in trước khi viết policy",
         "Policy chỉ hiệu quả khi mọi người tuân thủ",
-        "Để có thêm budget cho dự án bảo mật",
-        "Để giảm số bước trong quy trình thực hiện"
+        "Để có thể bỏ qua bước Train (step 9) sau đó",
+        "Để rút ngắn step Test security còn vài giờ"
       ],
       "answer": 1,
       "explanation": "Security policy vô dụng nếu user lách luật. User cần hiểu LÝ DO, management cần cấp resource, technical staff cần thực thi. Một nhóm chống đối, mọi đầu tư technical là failure. Khía cạnh con người."
@@ -249,10 +249,10 @@
       "level": "advanced",
       "question": "Ngân hàng yêu cầu bảo mật cao cho VPN chi nhánh-HQ. Stack hợp lý nhất?",
       "options": [
-        "Chỉ dùng PPTP — đơn giản và đủ rồi",
-        "WEP với key 128-bit cho mọi tunnel",
+        "PPTP với MS-CHAP và pre-shared key duy nhất",
+        "GRE tunnel không mã hóa nhưng có routing auth",
         "IPSec + RADIUS + OTP + audit logging",
-        "Telnet over SSL cho admin truy cập"
+        "WPA2-Enterprise giữa hai router biên chi nhánh"
       ],
       "answer": 2,
       "explanation": "Ngân hàng = nhiều lớp: IPSec cho tunnel mã hóa và integrity, RADIUS cho AAA tập trung, OTP (RSA SecurID) chống password compromise + replay. Logging cho audit/compliance. PPTP đã bẻ. WEP cho wireless ≠ VPN."
@@ -262,10 +262,10 @@
       "level": "advanced",
       "question": "Theo 12-step, 'security testing' (step 11) làm gì?",
       "options": [
-        "Hỏi ý kiến vendor về sản phẩm bán",
+        "Soạn formal rules theo RFC 2196 cho user",
         "Test bằng pentest, vuln scan, audit",
-        "Đọc lại policy đã viết một lần nữa",
-        "Train user về các best practice mới"
+        "Lấy buy-in từ management cho budget bảo mật",
+        "Develop technical implementation strategy"
       ],
       "answer": 1,
       "explanation": "Step 11 = test security thực sự: pentest (red team), vulnerability scan, audit log review, simulate attack. Tìm gap thực tế giữa policy và implementation. Không phải đọc policy hay train user (step 9)."
@@ -276,9 +276,9 @@
       "question": "Encryption đảm bảo CONFIDENTIALITY và INTEGRITY khác nhau ở cách dùng key?",
       "options": [
         "Confidentiality dùng public key receiver; Integrity dùng private key sender",
-        "Cả hai đều dùng cùng một loại symmetric key chung",
+        "Confidentiality dùng public key sender; Integrity dùng public key receiver",
         "Confidentiality dùng private key sender; Integrity dùng public key sender",
-        "Chỉ Confidentiality dùng key, Integrity dùng hash thuần"
+        "Confidentiality dùng private key receiver; Integrity dùng public key receiver"
       ],
       "answer": 0,
       "explanation": "Confidentiality: encrypt với public key của RECEIVER, chỉ receiver decrypt được. Integrity/non-repudiation: sign với private key của SENDER, ai cũng verify được bằng public key sender. Hai use case dùng key ngược chiều."

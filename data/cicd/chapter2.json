@@ -1,0 +1,364 @@
+{
+  "title": "Chương 2: Ngôn ngữ kịch bản: Bash, PowerShell, Python",
+  "theory": [
+    {
+      "heading": "Bash — Shell và môi trường thực thi lệnh",
+      "content": "**Bash (Bourne Again Shell)** là shell mặc định trên Linux, đảm nhận hai vai trò chính: (1) thực thi lệnh người dùng nhập trong terminal và hiển thị kết quả; (2) là ngôn ngữ kịch bản (scripting) cổ điển. Cần phân biệt **terminal** (chương trình giao tiếp text với hệ thống) và **shell** (chạy bên trong terminal, nhận đầu vào, thực thi lệnh, xuất kết quả).\n\nMột Bash script là một chuỗi lệnh; nhiều lệnh có thể đặt trên cùng một dòng, ngăn cách bằng dấu `;`. Mỗi lệnh trả về **exit code** (0 = thành công, khác 0 = lỗi). Toán tử `&&` chỉ chạy lệnh kế tiếp khi lệnh trước thành công, `||` chỉ chạy khi lệnh trước thất bại — cho phép thực thi có điều kiện ngắn gọn."
+    },
+    {
+      "heading": "Bash — Kênh I/O, redirection và pipe",
+      "content": "Bash sử dụng ba kênh chuẩn: **stdout** (xuất chuẩn), **stderr** (báo lỗi), **stdin** (nhập chuẩn). Các toán tử chuyển hướng quan trọng: `>` ghi stdout vào file (ghi đè), `>>` nối thêm, `2>` chuyển hướng stderr, `&>` (hoặc `>&`) chuyển cả stdout lẫn stderr, `>&2` đẩy stdout sang kênh lỗi, `<` đọc input từ file, `<<` heredoc tới EOF, `<<<` herestring từ biến.\n\nToán tử pipe `|` đưa stdout của lệnh trước làm stdin của lệnh sau, là nền tảng để ghép các công cụ Unix nhỏ thành chuỗi xử lý mạnh. **Globbing** dùng wildcard: `?` (1 ký tự bất kỳ), `*` (số ký tự bất kỳ), `**` (đệ quy, globstar), `[aeiou]` (một trong tập), `[a-z]` (dải), `[!a-f]` hoặc `[^a-f]` (loại trừ). Brace expansion: `{a..f}` và `{a,b,c}`."
+    },
+    {
+      "heading": "Bash — Biến, cú pháp điều khiển và quản lý hệ thống",
+      "content": "Khai báo biến: `myvar=value` (không có khoảng trắng quanh `=`), đọc bằng `$myvar`. Tính toán số học: `((expr))` chạy biểu thức, `$((expr))` trả kết quả, `let myvar=expr` lưu vào biến. Mảng: `x=()`, gán `x[0]='a'`, đọc `${x[n]}`.\n\n**Biến định sẵn**: `$#` (số tham số), `$0` (tên script), `$1..$9` rồi `${10}` (tham số), `$*`/`$@` (toàn bộ tham số), `$?` (mã thoát lệnh trước), `$!` (PID tiến trình nền cuối), `$$` (PID shell hiện tại). **Biến môi trường** khai báo bằng `export`: HOME, PATH, PS1, USER, SHELL, IFS — cấu hình trong `/etc/profile`, `.profile`, `.bashrc`.\n\nCú pháp điều khiển gồm rẽ nhánh (`if-then-elif`, `case`), vòng lặp (`for`, `while`, `until`, `break`, `continue`) và hàm (biến local, kiểm tra lỗi, `exit`, `trap` cho tín hiệu, `timeout`). Quản lý file/thư mục: `touch`, `mkdir`, `rm`, `mv`, `cp` cùng phân quyền user/group/others × read/write/execute."
+    },
+    {
+      "heading": "PowerShell — Triết lý đối tượng và cú pháp Verb-Noun",
+      "content": "PowerShell đánh dấu chuyển dịch từ shell text-based truyền thống sang quản trị **hướng đối tượng**. Pipeline của PowerShell truyền các đối tượng .NET (giữ cấu trúc và kiểu dữ liệu), thay vì chỉ truyền text — giúp xử lý dữ liệu nhất quán, tin cậy.\n\nCú pháp **Verb-Noun** (`Get-Process`, `Set-Location`, `Test-NetConnection`) dễ tra cứu, dễ đoán. PowerShell hướng tới sysadmin (không phải lập trình viên), tập trung vào tự động hóa tác vụ. Lợi ích chiến lược: nhất quán trên toàn hệ sinh thái Microsoft (Windows, Azure, Office 365, Exchange, SQL Server), đa nền tảng nhờ PowerShell Core (Linux/macOS), hỗ trợ Infrastructure as Code, giảm lỗi con người, có thể giảm 60-80% thời gian tác vụ thường nhật."
+    },
+    {
+      "heading": "PowerShell — Tự động hóa quản trị mạng và hệ thống",
+      "content": "**Quản trị mạng**: cấu hình IP/DNS/adapter qua cmdlet, kiểm tra kết nối nâng cao (`Test-NetConnection -ComputerName \"server01\" -Port 443`), quản lý Windows Firewall ở quy mô lớn, kiểm kê mạng và tuân thủ cấu hình.\n\n**Quản trị hệ thống quy mô lớn**: quản lý service, process, event log, registry, user/group trên nhiều server. **PowerShell Remoting** dùng giao thức WS-Management, hỗ trợ thực thi song song one-to-many — luôn cần thử trên môi trường cô lập trước. **Active Directory**: vòng đời user (tạo/sửa/xóa), Group Policy, OU; áp dụng cho onboarding, quản lý mật khẩu, báo cáo tuân thủ, disaster recovery.\n\n**Bảo mật**: execution policy, code signing, constrained language mode, **JEA (Just Enough Administration)**, transcription logging. **Cloud & DevOps**: quản lý Azure, kịch bản hybrid, tích hợp CI/CD, IaC. **Giám sát & báo cáo**: thu thập metric CPU/memory/disk/network, xuất HTML/CSV, gửi email tự động (`ConvertTo-Html | Out-File ...`, `Send-MailMessage`)."
+    },
+    {
+      "heading": "Python — Vì sao là ngôn ngữ tự động hóa hàng đầu",
+      "content": "Python dẫn đầu trong tự động hóa quản trị mạng/hệ thống nhờ **cú pháp dễ đọc**, dễ học, **thư viện phong phú** cho giao tiếp/cấu hình/giám sát thiết bị, và chạy đa nền tảng (Windows/Linux/macOS).\n\nCác trường hợp dùng phổ biến: cấu hình & quản lý thiết bị, sao lưu/khôi phục tự động, thu thập & phân tích log, giám sát hiệu năng & cảnh báo, quản lý tài khoản và phân quyền. So với Bash (gắn với Linux) và PowerShell (mạnh trên hệ sinh thái Microsoft), Python là lựa chọn thống nhất khi môi trường **đa vendor, đa hệ điều hành**."
+    },
+    {
+      "heading": "Python — Thư viện và lĩnh vực ứng dụng",
+      "content": "**Thư viện chủ chốt**: **Netmiko** (kết nối SSH đa vendor cho thiết bị mạng), **Paramiko** (giao thức SSH bậc thấp), **NAPALM** (API thống nhất cho nhiều OS thiết bị mạng), **Ansible** (tự động hóa & điều phối agentless), **Requests** (REST API qua HTTP), **Pandas** (phân tích dữ liệu & báo cáo), **Schedule/APScheduler** (lập lịch tác vụ), **os/shutil** (quản lý file/thư mục).\n\n**Trong mạng**: quản lý cấu hình (đẩy cấu hình tới router/switch/firewall, triển khai hàng loạt, kiểm kê), giám sát (trạng thái thiết bị, thống kê interface, metric hiệu năng, kiểm tra sức khỏe định kỳ, cảnh báo), thu thập & phân tích log, tích hợp REST API với controller/cloud để cấp phát/thu hồi tự động.\n\n**Trong quản trị hệ thống**: giám sát tài nguyên, quản lý file/thư mục, user/quyền, service/process, cấu hình mạng, lập lịch, sao lưu/khôi phục, gửi thông báo. **Xu hướng tương lai**: tích hợp AI/ML, mạng tự trị (intent-based), Cloud-Native & DevOps, IoT/Edge; Python vẫn chiếm ưu thế nhờ hệ sinh thái, dù đối mặt cạnh tranh từ Go và Rust ở mảng hiệu năng cao."
+    },
+    {
+      "heading": "Câu hỏi tự luận tham khảo",
+      "content": "**Câu 1.** Một công ty thương mại điện tử Việt Nam triển khai 200 server Linux, yêu cầu deploy nền tảng mã nguồn mở (Magento/PrestaShop), kèm module phân tích thư mục và backup full + incremental đẩy lên S3-compatible. Hãy phác thảo cấu trúc Bash script trong 2-3 câu.\n\n**Trả lời:** Script chia làm ba phần: phần deploy cài web server + DB + runtime + ứng dụng (dùng `apt`/`yum` + cấu hình nginx/Apache, MySQL/MariaDB), kiểm tra exit code bằng `&&`/`||` và `trap` để rollback khi lỗi. Phần analytics dùng `find` + `awk`/`du` đếm số file/thư mục và tổng dung lượng theo phần mở rộng. Phần backup tạo full bằng `tar` nén tối ưu (xz/zstd), incremental dựa vào `find -newer` so với mốc backup trước, sau đó `rsync`/`aws s3 cp` lên object storage.\n\n---\n\n**Câu 2.** Một admin cần kiểm tra trạng thái service trên 100 Windows server. So sánh PowerShell Remoting với phương án SSH + Bash, lựa chọn nào tốt hơn và vì sao?\n\n**Trả lời:** PowerShell Remoting là lựa chọn tốt hơn trên môi trường Windows: nó dùng WS-Management one-to-many, hỗ trợ thực thi song song bằng `Invoke-Command`, trả về **đối tượng** giữ nguyên kiểu dữ liệu nên dễ lọc/báo cáo, và tích hợp sẵn với AD và execution policy. Phương án SSH+Bash đòi cài thêm OpenSSH server, thao tác text dễ vỡ khi parse, và không có pipeline đối tượng — chỉ phù hợp khi đã có hạ tầng SSH đồng nhất.\n\n---\n\n**Câu 3.** Khi nào nên chọn Python (Netmiko/NAPALM) thay vì Bash hoặc PowerShell cho tự động hóa mạng đa vendor?\n\n**Trả lời:** Nên chọn Python khi hạ tầng gồm thiết bị từ nhiều hãng (Cisco, Juniper, Arista, ...) cần một API thống nhất — NAPALM cung cấp tập hàm chung cho nhiều OS, còn Netmiko trừu tượng hóa SSH đa vendor. Python cũng vượt trội khi cần xử lý dữ liệu phức tạp (Pandas), gọi REST API (Requests), lập lịch (APScheduler) và chạy đa nền tảng — điều mà Bash (gắn Linux) hoặc PowerShell (mạnh trên Microsoft stack) khó làm cùng lúc."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Bash là viết tắt của cụm từ nào?",
+      "options": [
+        "Bourne Again Shell",
+        "Basic Application Shell",
+        "Berkeley Advanced Shell",
+        "Binary Automation Shell"
+      ],
+      "answer": 0,
+      "explanation": "Bash (Bourne Again Shell) là shell mặc định trên hầu hết các bản phân phối Linux, vừa thực thi lệnh tương tác vừa là ngôn ngữ kịch bản cổ điển."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Trong Bash, một lệnh trả về exit code bằng 0 nghĩa là gì?",
+      "options": [
+        "Lệnh đang chạy ngầm",
+        "Lệnh thực thi thành công",
+        "Lệnh bị treo",
+        "Lệnh có cảnh báo nhưng vẫn chạy"
+      ],
+      "answer": 1,
+      "explanation": "Quy ước Unix/Bash: exit code 0 nghĩa là không có lỗi; mọi giá trị khác 0 đều biểu thị một dạng lỗi cụ thể."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Toán tử nào trong Bash chỉ chạy lệnh kế tiếp khi lệnh trước **thất bại**?",
+      "options": [
+        "&&",
+        ";",
+        "||",
+        "|"
+      ],
+      "answer": 2,
+      "explanation": "`||` chạy lệnh sau chỉ khi lệnh trước trả về exit code khác 0 (thất bại). Ngược lại `&&` chạy khi thành công, `;` chạy tuần tự, `|` là pipe."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Toán tử nào dùng để **nối thêm** (append) stdout vào một file đã tồn tại?",
+      "options": [
+        ">",
+        "<<",
+        "2>",
+        ">>"
+      ],
+      "answer": 3,
+      "explanation": "`>>` ghi nối thêm vào cuối file; `>` ghi đè; `2>` chuyển hướng stderr; `<<` là heredoc cho input."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Trong Bash, biến đặc biệt `$?` chứa giá trị gì?",
+      "options": [
+        "Mã thoát của lệnh vừa chạy",
+        "Số lượng tham số truyền vào",
+        "PID của shell hiện tại",
+        "Tên script đang chạy"
+      ],
+      "answer": 0,
+      "explanation": "`$?` lưu exit code của lệnh chạy ngay trước đó. `$$` là PID shell, `$#` là số tham số, `$0` là tên script."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Triết lý cốt lõi phân biệt PowerShell với các shell text-based truyền thống là gì?",
+      "options": [
+        "Sử dụng cú pháp giống C++",
+        "Pipeline truyền đối tượng .NET thay vì text",
+        "Chạy nhanh hơn nhờ biên dịch sẵn",
+        "Bắt buộc khai báo kiểu cho mọi biến"
+      ],
+      "answer": 1,
+      "explanation": "PowerShell truyền các đối tượng .NET qua pipeline, giữ nguyên cấu trúc và kiểu dữ liệu — khác hẳn shell truyền thống chỉ truyền text."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "Cú pháp lệnh PowerShell theo dạng nào?",
+      "options": [
+        "Object.Method (Process.Get())",
+        "Noun-Verb (Process-Get, Location-Set)",
+        "Verb-Noun (Get-Process, Set-Location)",
+        "flag-based như Unix (ps -ef)"
+      ],
+      "answer": 2,
+      "explanation": "PowerShell dùng cú pháp Verb-Noun chuẩn hóa (Get-, Set-, Test-, New-, ...) giúp lệnh dễ đoán và dễ tra cứu."
+    },
+    {
+      "id": 8,
+      "level": "basic",
+      "question": "Thư viện Python nào chuyên cho kết nối SSH đa vendor tới thiết bị mạng?",
+      "options": [
+        "Pandas",
+        "Requests",
+        "Schedule",
+        "Netmiko"
+      ],
+      "answer": 3,
+      "explanation": "Netmiko là thư viện Python chuyên trừu tượng hóa SSH cho thiết bị mạng nhiều vendor (Cisco, Juniper, Arista, ...)."
+    },
+    {
+      "id": 9,
+      "level": "basic",
+      "question": "Thư viện Python nào cung cấp **API thống nhất** để tương tác với nhiều OS thiết bị mạng khác nhau?",
+      "options": [
+        "NAPALM",
+        "Paramiko",
+        "Requests",
+        "Ansible"
+      ],
+      "answer": 0,
+      "explanation": "NAPALM (Network Automation and Programmability Abstraction Layer with Multivendor support) cung cấp tập hàm chung cho nhiều OS thiết bị mạng."
+    },
+    {
+      "id": 10,
+      "level": "basic",
+      "question": "Đâu **không phải** là lý do khiến Python được ưa chuộng cho tự động hóa quản trị?",
+      "options": [
+        "Cú pháp dễ đọc, dễ học",
+        "Có sẵn trong mọi phiên bản Windows từ Windows 7",
+        "Chạy đa nền tảng",
+        "Hệ thư viện phong phú"
+      ],
+      "answer": 1,
+      "explanation": "Windows không cài Python sẵn; ba lý do còn lại đúng theo slide. PowerShell mới là tích hợp sẵn trên Windows."
+    },
+    {
+      "id": 11,
+      "level": "intermediate",
+      "question": "Toán tử nào chuyển hướng **cả stdout lẫn stderr** vào cùng một file?",
+      "options": [
+        "<<<",
+        ">> mọi output",
+        "2>&1 hoặc &>",
+        "| tee"
+      ],
+      "answer": 2,
+      "explanation": "`&>` (hoặc dạng tương đương `2>&1`) chuyển cả stdout và stderr vào cùng một đích. `<<<` là herestring; `| tee` chỉ nhân đôi stdout."
+    },
+    {
+      "id": 12,
+      "level": "intermediate",
+      "question": "Wildcard nào trong Bash dùng cho **globbing đệ quy** (matching qua nhiều cấp thư mục)?",
+      "options": [
+        "?",
+        "*",
+        "[a-z]",
+        "**"
+      ],
+      "answer": 3,
+      "explanation": "`**` là globstar — match đệ quy qua các cấp thư mục (cần `shopt -s globstar`). `?` là 1 ký tự, `*` là chuỗi ký tự ở cùng cấp, `[a-z]` là dải ký tự."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "Cách đúng để khai báo biến `name` với giá trị `\"alice\"` trong Bash là?",
+      "options": [
+        "name=\"alice\"",
+        "name = \"alice\"",
+        "let name = \"alice\"",
+        "$name = \"alice\""
+      ],
+      "answer": 0,
+      "explanation": "Bash yêu cầu **không có khoảng trắng** quanh dấu `=`. `let` chỉ dùng cho biểu thức số học, còn `$name` là cú pháp đọc biến."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "Trong Bash, biến đặc biệt nào chứa **PID của shell hiện tại**?",
+      "options": [
+        "$!",
+        "$$",
+        "$?",
+        "$#"
+      ],
+      "answer": 1,
+      "explanation": "`$$` là PID của shell hiện tại; `$!` là PID của tiến trình nền cuối cùng; `$?` là exit code; `$#` là số tham số."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Brace expansion `{a..d}` trong Bash sẽ mở rộng thành chuỗi nào?",
+      "options": [
+        "{a,b,c,d}",
+        "a, b, c, d (kèm dấu phẩy)",
+        "a b c d",
+        "a..d (giữ nguyên)"
+      ],
+      "answer": 2,
+      "explanation": "Brace expansion `{a..d}` mở rộng thành các token `a b c d` cách nhau bằng khoảng trắng (tương đương `{a,b,c,d}`)."
+    },
+    {
+      "id": 16,
+      "level": "intermediate",
+      "question": "Cmdlet PowerShell nào dùng để kiểm tra kết nối tới một host trên cổng cụ thể?",
+      "options": [
+        "Send-MailMessage",
+        "Get-NetAdapter",
+        "Resolve-DnsName",
+        "Test-NetConnection"
+      ],
+      "answer": 3,
+      "explanation": "`Test-NetConnection -ComputerName <host> -Port <port>` cho phép kiểm tra TCP và chẩn đoán nâng cao, vượt xa `ping` thông thường."
+    },
+    {
+      "id": 17,
+      "level": "intermediate",
+      "question": "PowerShell Remoting dựa trên giao thức nào để thực thi one-to-many?",
+      "options": [
+        "WS-Management (WinRM)",
+        "RDP",
+        "SSH",
+        "SMB"
+      ],
+      "answer": 0,
+      "explanation": "PowerShell Remoting dùng giao thức WS-Management (triển khai qua WinRM), hỗ trợ thực thi song song trên nhiều máy."
+    },
+    {
+      "id": 18,
+      "level": "intermediate",
+      "question": "Tính năng PowerShell nào giới hạn quyền của người dùng chỉ ở các cmdlet được phép, phù hợp với nguyên tắc least privilege?",
+      "options": [
+        "Execution Policy",
+        "Just Enough Administration (JEA)",
+        "Code Signing",
+        "Transcription Logging"
+      ],
+      "answer": 1,
+      "explanation": "JEA (Just Enough Administration) cho phép cấp quyền hạn chế theo vai trò, người dùng chỉ chạy được tập cmdlet định nghĩa trước. Execution Policy điều khiển script được phép chạy, không phải scope quyền."
+    },
+    {
+      "id": 19,
+      "level": "intermediate",
+      "question": "Trong PowerShell, cách phổ biến để xuất báo cáo hệ thống ra HTML là?",
+      "options": [
+        "Get-ComputerInfo | Out-Html",
+        "Get-ComputerInfo > report.html",
+        "Get-ComputerInfo | ConvertTo-Html | Out-File \"report.html\"",
+        "Export-Html -Path report.html"
+      ],
+      "answer": 2,
+      "explanation": "`ConvertTo-Html` chuyển đối tượng thành HTML rồi `Out-File` ghi ra file. `> report.html` chỉ ghi text thô; `Out-Html`/`Export-Html` không phải cmdlet chuẩn."
+    },
+    {
+      "id": 20,
+      "level": "intermediate",
+      "question": "Thư viện Python nào phù hợp nhất để **lập lịch tác vụ** (task scheduling) định kỳ trong script automation?",
+      "options": [
+        "Pandas",
+        "Requests",
+        "Paramiko",
+        "Schedule / APScheduler"
+      ],
+      "answer": 3,
+      "explanation": "`schedule` và `APScheduler` là hai thư viện chuyên cho lập lịch tác vụ. Pandas là phân tích dữ liệu, Requests cho HTTP, Paramiko cho SSH."
+    },
+    {
+      "id": 21,
+      "level": "advanced",
+      "question": "Bạn có file `script.sh` cần chạy `cmd1`, nếu thành công chạy `cmd2`, bất kể kết quả phải chạy `cleanup`. Cách viết **một dòng** đúng nhất là?",
+      "options": [
+        "cmd1 && cmd2; cleanup",
+        "cmd1 && cmd2 || cleanup",
+        "cmd1 || cmd2 && cleanup",
+        "cmd1 | cmd2 | cleanup"
+      ],
+      "answer": 0,
+      "explanation": "`&&` đảm bảo `cmd2` chỉ chạy khi `cmd1` thành công; `;` luôn chạy `cleanup` bất kể kết quả trước đó. Phương án A sẽ chạy `cleanup` chỉ khi `cmd1 && cmd2` thất bại — sai yêu cầu."
+    },
+    {
+      "id": 22,
+      "level": "advanced",
+      "question": "Khi viết Bash function cần **đảm bảo dừng ngay khi gặp lỗi và dọn dẹp tài nguyên**, công cụ nào phù hợp nhất?",
+      "options": [
+        "Chỉ dùng `exit 1` ở cuối hàm",
+        "Dùng `set -e` kết hợp `trap` cho tín hiệu/EXIT",
+        "Dùng `&` để chạy nền",
+        "Bọc toàn bộ trong `((...))`"
+      ],
+      "answer": 1,
+      "explanation": "`set -e` khiến script thoát khi gặp exit code khác 0; `trap` bắt tín hiệu (EXIT, ERR, INT...) để dọn dẹp tài nguyên. Đây là pattern xử lý lỗi chuẩn cho Bash."
+    },
+    {
+      "id": 23,
+      "level": "advanced",
+      "question": "Một admin cần kiểm tra trạng thái 100 Windows server và xử lý kết quả theo kiểu cấu trúc (filter, sort, export Excel). Lựa chọn tối ưu là?",
+      "options": [
+        "SSH + Bash + parse text bằng awk",
+        "Python + Paramiko text-based",
+        "PowerShell Remoting với Invoke-Command, pipeline đối tượng",
+        "Truy cập từng máy qua RDP thủ công"
+      ],
+      "answer": 2,
+      "explanation": "PowerShell Remoting dùng WS-Management one-to-many, song song hóa, và pipeline đối tượng giữ nguyên kiểu dữ liệu — lý tưởng cho lọc/sắp xếp/xuất Excel. SSH+Bash phải parse text dễ vỡ; Paramiko text-based cũng vậy."
+    },
+    {
+      "id": 24,
+      "level": "advanced",
+      "question": "Đâu là lý do **chiến lược** nhất để chọn Python thay vì Bash hoặc PowerShell khi tự động hóa hạ tầng mạng nhiều hãng (Cisco, Juniper, Arista)?",
+      "options": [
+        "Python chạy nhanh hơn Bash trên Linux",
+        "Python là ngôn ngữ duy nhất gọi được REST API",
+        "Python hỗ trợ pipeline đối tượng .NET",
+        "Có thư viện đa vendor như NAPALM/Netmiko cung cấp API thống nhất, đa nền tảng"
+      ],
+      "answer": 3,
+      "explanation": "Lợi thế cốt lõi của Python trong môi trường đa vendor là hệ thư viện như NAPALM (API thống nhất) và Netmiko (SSH đa vendor), cộng với khả năng đa nền tảng. Pipeline .NET là đặc điểm của PowerShell, không phải Python."
+    },
+    {
+      "id": 25,
+      "level": "advanced",
+      "question": "Khi thiết kế PowerShell script automation chạy đi chạy lại nhiều lần (ví dụ tạo OU/user trong AD), nguyên tắc nào quan trọng nhất để tránh tác dụng phụ?",
+      "options": [
+        "Idempotency — script chạy lại nhiều lần vẫn cho cùng trạng thái",
+        "Modularity — chia hàm nhỏ",
+        "Dùng execution policy Bypass",
+        "Luôn chạy với quyền SYSTEM"
+      ],
+      "answer": 0,
+      "explanation": "Idempotency đảm bảo script có thể chạy lại an toàn — nếu OU/user đã tồn tại thì không tạo trùng, không gây lỗi. Modularity giúp tái sử dụng nhưng không giải quyết tác dụng phụ; bypass execution policy và quyền SYSTEM là rủi ro bảo mật."
+    }
+  ]
+}

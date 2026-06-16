@@ -1,0 +1,360 @@
+{
+  "title": "Chương 5: Đồ án — Tự động hóa CIS Kubernetes Benchmark",
+  "theory": [
+    {
+      "heading": "1. CIS và CIS Kubernetes Benchmark là gì",
+      "content": "**CIS (Center for Internet Security)** là một tổ chức phi lợi nhuận chuyên xây dựng các best practice về an toàn thông tin, nổi bật với hai bộ sản phẩm: **CIS Controls** (danh sách kiểm soát bảo mật ưu tiên) và **CIS Benchmarks** (cấu hình hardening cho từng nền tảng cụ thể: Linux, Windows, AWS, Kubernetes, Docker, ...).\n\n**CIS Kubernetes Benchmark** là tài liệu mô tả từng tiêu chí (criterion) cấu hình an toàn cho cụm Kubernetes. Mỗi tiêu chí có ID dạng `1.2.1`, mô tả Audit (cách kiểm tra) và Remediation (cách khắc phục). Đây được xem là **\"chuẩn vàng\" (gold standard)** vì:\n- Được xây dựng và đồng thuận bởi cộng đồng chuyên gia bảo mật toàn cầu.\n- Cập nhật định kỳ theo phiên bản Kubernetes (đồ án dùng **v1.12.0**).\n- Là cơ sở để các tổ chức tuân thủ tiêu chuẩn quốc tế (PCI DSS, HIPAA, ISO 27001, ...).\n\n**Đồ án**: tự động hóa giám sát tuân thủ CIS Kubernetes Benchmark và tự phục hồi cấu hình (self-healing) cho cụm K8s self-managed trên 3 VM VMware (1 master + 2 worker)."
+    },
+    {
+      "heading": "2. Năm thành phần Kubernetes được kiểm tra",
+      "content": "CIS Kubernetes Benchmark tập trung vào 5 thành phần lõi của Control Plane và Worker Node:\n\n| Thành phần | Vai trò | CIS Section |\n|---|---|---|\n| **kube-apiserver** | Cổng giao tiếp trung tâm; mọi REST request (kubectl, controller, kubelet) đều đi qua đây | 1.2.x |\n| **kube-controller-manager** | Chạy các control loop để duy trì trạng thái mong muốn của cluster (ReplicaSet, Node, Endpoint, ...) | 1.3.x |\n| **kube-scheduler** | Quyết định Pod nào chạy trên Node nào dựa trên tài nguyên và constraint | 1.4.x |\n| **etcd** | Kho key-value phân tán, dùng thuật toán **Raft consensus**; lưu toàn bộ state và config của cluster. **Mất etcd = mất cluster** | 2.x |\n| **kubelet** | Agent chạy trên mỗi Node, quản lý vòng đời Pod/container, báo cáo health về API Server | 4.x |\n\n4 thành phần đầu chạy dưới dạng **Static Pod** trên master; **kubelet** chạy như systemd service trên mọi node."
+    },
+    {
+      "heading": "3. Phân loại Automated vs Manual",
+      "content": "CIS phân mỗi tiêu chí (criterion) theo **Assessment Status**:\n\n**Automated** — trạng thái tuân thủ có thể xác định **định lượng, khách quan** bằng kịch bản, không cần phán đoán của con người.\n- Ví dụ: file `/etc/kubernetes/manifests/kube-apiserver.yaml` permission = `600`; flag `--anonymous-auth=false`; flag `--profiling=false`.\n- → Đây là **trọng tâm tự động hóa và self-healing** của đồ án.\n\n**Manual** — yêu cầu phân tích, thẩm định, hoặc quyết định của admin theo **ngữ cảnh và policy** của tổ chức.\n- Ví dụ: Section 5.x — RBAC roles có hợp lý không, Network Policies có phủ đủ namespace không, có dùng namespace mặc định không.\n- → Kịch bản chỉ **thu thập thông tin và liệt kê**, không tự sửa.\n\nĐồ án tập trung remediate các tiêu chí Automated; với Manual chỉ sinh báo cáo để admin review."
+    },
+    {
+      "heading": "4. Ba luồng kiểm tra chính",
+      "content": "Tùy thành phần và loại cấu hình, đồ án thiết kế **3 luồng (flow)** kiểm tra khác nhau:\n\n**a. CLI Command Flow** — cho `kube-apiserver`, `kube-controller-manager`, `kube-scheduler`.\n- Đọc flag của tiến trình đang chạy: `ps -ef | grep kube-apiserver | grep -oP '\\-\\-anonymous-auth=\\K\\S+'`.\n- Khắc phục: chỉnh sửa **Static Pod Manifest** (`/etc/kubernetes/manifests/*.yaml`). Kubelet **tự phát hiện và reload** Pod, không cần restart thủ công.\n\n**b. File Config Flow** — riêng cho **Kubelet**.\n- Đọc cấu hình từ `/var/lib/kubelet/config.yaml` (kubelet config file).\n- Khắc phục: sửa file YAML này — **kubelet KHÔNG tự reload** → BẮT BUỘC chạy `sudo systemctl restart kubelet`.\n\n**c. File Permission Flow** — Section 1.1.x.\n- Kiểm tra quyền và owner của file bằng: `stat -c \"%a %U:%G\" /etc/kubernetes/manifests/...`.\n- Mong đợi: `600` hoặc `700`, owner `root:root` hoặc `etcd:etcd`.\n- Khắc phục: `chmod 600`, `chown root:root` — có hiệu lực **ngay lập tức**, không cần restart."
+    },
+    {
+      "heading": "5. Configuration Drift và Self-healing",
+      "content": "**Configuration Drift** (sai lệch cấu hình) là hiện tượng cấu hình thực tế của hệ thống dần lệch khỏi trạng thái chuẩn (desired state) theo thời gian. Nguyên nhân:\n- Admin sửa thủ công để debug và quên rollback.\n- Patch tự động hoặc upgrade làm thay đổi default.\n- Quy trình thủ công không nhất quán giữa các node.\n\n**Self-healing** là khả năng hệ thống **tự phát hiện sai lệch và tự khôi phục** về trạng thái chuẩn mà không cần can thiệp của con người. Quy trình self-healing trong đồ án:\n1. **Audit Playbook** chạy định kỳ (cron / Ansible Tower) → SSH vào từng node, kiểm tra theo CIS ID → sinh báo cáo PASS/FAIL.\n2. Với mỗi tiêu chí Automated FAIL, **Remediate Playbook** áp dụng fix (chmod/chown, sửa manifest, sửa kubelet config + restart).\n3. Lưu **audit log** để truy vết và compliance.\n\n**Idempotency** là tính chất quan trọng: chạy script remediation nhiều lần phải cho cùng kết quả, không gây tác dụng phụ. Ansible mặc định idempotent — đây là lý do nhóm chọn Ansible thay vì shell script thuần."
+    },
+    {
+      "heading": "6. Các khái niệm Kubernetes / security cốt lõi",
+      "content": "Một số khái niệm cần nắm để hiểu các tiêu chí CIS:\n\n- **Static Pod**: Pod do kubelet quản lý **trực tiếp** qua manifest YAML trong `/etc/kubernetes/manifests/`, KHÔNG qua API Server. Khi file YAML thay đổi, kubelet tự reload Pod tương ứng. Control Plane (apiserver, controller-manager, scheduler, etcd) chạy ở dạng này.\n- **etcd**: kho key-value phân tán dùng **Raft consensus**. Lưu mọi state của cluster (Pod, Service, Secret, ConfigMap, ...). Phải bảo vệ bằng TLS hai chiều (`--client-cert-auth=true`, `--peer-client-cert-auth=true`).\n- **RBAC (Role-Based Access Control)**: cơ chế phân quyền chuẩn của Kubernetes gồm 4 đối tượng: `Role` (namespaced), `ClusterRole` (cluster-wide), `RoleBinding`, `ClusterRoleBinding`. Tiêu chí CIS yêu cầu `--authorization-mode` chứa `Node,RBAC` và KHÔNG có `AlwaysAllow`.\n- **Service Account**: identity của Pod (không phải của con người). Mỗi Pod chạy với một Service Account để gọi API Server.\n- **Audit Log**: API Server ghi lại mọi request (ai, lúc nào, làm gì) phục vụ compliance và forensic. Tiêu chí CIS yêu cầu cấu hình `--audit-log-path`, `--audit-log-maxage`, `--audit-log-maxbackup`, `--audit-log-maxsize`.\n- **PKI (Public Key Infrastructure)**: hạ tầng quản lý chứng chỉ TLS — Kubernetes dùng PKI cho giao tiếp giữa các thành phần.\n- **Anonymous auth**: cho phép request không xác thực truy cập API Server. Trên production phải `--anonymous-auth=false`.\n- **Profiling endpoint**: `/debug/pprof` hữu ích để debug performance nhưng làm lộ thông tin nhạy cảm → tắt bằng `--profiling=false` cho production.\n- **`--bind-address=127.0.0.1`**: giới hạn endpoint metrics của controller-manager / scheduler chỉ accessible từ localhost, ngăn rò rỉ metrics ra ngoài.\n- **Admission Controllers**: plugin chạy sau khi xác thực và phân quyền, kiểm soát Pod được tạo (vd `NodeRestriction`, `ImagePolicyWebhook`, `NamespaceLifecycle`)."
+    },
+    {
+      "heading": "7. Câu hỏi tự luận tham khảo",
+      "content": "**Câu 1.** CIS Benchmark là gì? Vì sao CIS Kubernetes Benchmark được xem là \"chuẩn vàng\" cho hardening Kubernetes?\n\n**Trả lời:** CIS Benchmark là bộ tiêu chuẩn cấu hình hardening do Center for Internet Security — một tổ chức phi lợi nhuận — xây dựng cho từng nền tảng cụ thể (Linux, K8s, Docker, ...). Nó được xem là chuẩn vàng vì được cộng đồng chuyên gia bảo mật toàn cầu đồng thuận, cập nhật định kỳ theo từng phiên bản Kubernetes, và là cơ sở để doanh nghiệp tuân thủ các tiêu chuẩn quốc tế như PCI DSS, HIPAA, ISO 27001.\n\n---\n\n**Câu 2.** Cho tiêu chí CIS 1.2.1 *\"Đảm bảo `--anonymous-auth=false` trên kube-apiserver\"*. Trình bày cách kiểm tra và cách tự động khắc phục trong 2-3 câu.\n\n**Trả lời:** Vì kube-apiserver chạy ở dạng Static Pod, ta dùng **CLI Command Flow**: chạy `ps -ef | grep kube-apiserver | grep -oP '\\-\\-anonymous-auth=\\K\\S+'` để đọc giá trị flag hiện tại; nếu khác `false` thì FAIL. Để khắc phục, Ansible playbook chỉnh sửa file `/etc/kubernetes/manifests/kube-apiserver.yaml` thêm/đổi dòng `- --anonymous-auth=false` trong phần `command`; **kubelet sẽ tự động phát hiện thay đổi manifest và reload Pod** mà không cần restart thủ công.\n\n---\n\n**Câu 3.** Configuration Drift là gì? Nêu phương án tự động phát hiện và self-heal cho cụm Kubernetes trong 2-3 câu.\n\n**Trả lời:** Configuration Drift là tình trạng cấu hình thực tế của hệ thống dần lệch khỏi trạng thái chuẩn theo thời gian, do admin sửa tay, patch tự động hoặc thao tác không nhất quán. Phương án tự động: dùng **Ansible playbook audit** chạy theo lịch (cron/Tower) SSH vào từng node để kiểm tra theo từng CIS ID và sinh báo cáo PASS/FAIL; với mỗi tiêu chí Automated FAIL, **playbook remediate** áp dụng fix tương ứng (chmod/chown cho permission, sửa Static Pod manifest cho flag apiserver/controller/scheduler, sửa `/var/lib/kubelet/config.yaml` + `systemctl restart kubelet`). Tính **idempotency** của Ansible đảm bảo chạy nhiều lần vẫn an toàn."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "CIS là viết tắt của tổ chức nào?",
+      "options": [
+        "Center for Internet Security",
+        "Cloud Infrastructure Standards",
+        "Computer Information Systems",
+        "Certified Internet Specialists"
+      ],
+      "answer": 0,
+      "explanation": "CIS = Center for Internet Security, tổ chức phi lợi nhuận xây dựng CIS Controls và CIS Benchmarks."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "CIS Kubernetes Benchmark cung cấp cái gì?",
+      "options": [
+        "Bộ công cụ giám sát Pod",
+        "Bộ tiêu chuẩn cấu hình hardening cho cụm K8s",
+        "Trình giả lập cluster K8s",
+        "Bộ test performance"
+      ],
+      "answer": 1,
+      "explanation": "CIS Benchmark là tài liệu mô tả từng tiêu chí cấu hình bảo mật + cách audit + cách remediate."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Trong CIS Kubernetes Benchmark, một tiêu chí được phân loại là *Automated* khi nào?",
+      "options": [
+        "Khi cần admin thẩm định theo ngữ cảnh",
+        "Khi tự động chạy mỗi giờ",
+        "Khi trạng thái tuân thủ xác định được định lượng/khách quan bằng kịch bản",
+        "Khi do AI quyết định"
+      ],
+      "answer": 2,
+      "explanation": "Automated = đo được khách quan bằng script (vd permission = 600, flag = false), nên có thể tự động remediate."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Tiêu chí *Manual* trong CIS Benchmark khác *Automated* ở chỗ nào?",
+      "options": [
+        "Manual không có trong tài liệu",
+        "Manual chỉ áp dụng cho Windows",
+        "Manual luôn FAIL",
+        "Manual yêu cầu admin phân tích/thẩm định theo ngữ cảnh và policy"
+      ],
+      "answer": 3,
+      "explanation": "Manual cần con người quyết định (vd RBAC role có hợp lý không) — script chỉ thu thập thông tin, không tự sửa."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Thành phần nào của Kubernetes là \"cổng giao tiếp trung tâm\", xử lý mọi REST request?",
+      "options": [
+        "kube-apiserver",
+        "kubelet",
+        "etcd",
+        "kube-scheduler"
+      ],
+      "answer": 0,
+      "explanation": "kube-apiserver là entry point của Control Plane; mọi tương tác (kubectl, controller, kubelet) đều đi qua đây."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Thành phần nào lưu toàn bộ state và config của cụm Kubernetes?",
+      "options": [
+        "kube-controller-manager",
+        "etcd",
+        "kube-scheduler",
+        "kubelet"
+      ],
+      "answer": 1,
+      "explanation": "etcd là kho key-value distributed dùng Raft consensus. Mất etcd = mất cluster."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "kube-scheduler chịu trách nhiệm gì?",
+      "options": [
+        "Chạy container",
+        "Lưu trữ state cluster",
+        "Phân bổ Pod lên Node phù hợp",
+        "Cấp phát IP cho Pod"
+      ],
+      "answer": 2,
+      "explanation": "Scheduler quyết định Pod nào chạy trên Node nào dựa trên tài nguyên và constraint."
+    },
+    {
+      "id": 8,
+      "level": "basic",
+      "question": "kubelet chạy ở đâu trong cụm Kubernetes?",
+      "options": [
+        "Chỉ trên master node",
+        "Trong etcd",
+        "Trên client kubectl",
+        "Trên mỗi worker node (và cả master) làm agent quản lý Pod"
+      ],
+      "answer": 3,
+      "explanation": "kubelet là agent trên MỌI node, quản lý vòng đời Pod/container và báo cáo health về API Server."
+    },
+    {
+      "id": 9,
+      "level": "basic",
+      "question": "Static Pod là gì?",
+      "options": [
+        "Pod do kubelet quản lý trực tiếp qua manifest YAML trong /etc/kubernetes/manifests/",
+        "Pod được tạo qua API Server bằng kubectl",
+        "Pod có IP cố định",
+        "Pod chỉ có 1 container"
+      ],
+      "answer": 0,
+      "explanation": "Static Pod do kubelet đọc trực tiếp từ thư mục manifest, không qua API Server. Kubelet tự reload khi file đổi."
+    },
+    {
+      "id": 10,
+      "level": "basic",
+      "question": "Trong đồ án, các thành phần Control Plane (apiserver, controller-manager, scheduler, etcd) chạy dưới dạng nào?",
+      "options": [
+        "Systemd service",
+        "Static Pod",
+        "Deployment",
+        "DaemonSet"
+      ],
+      "answer": 1,
+      "explanation": "Trên K8s self-managed bằng kubeadm, Control Plane chạy như Static Pod với manifest tại /etc/kubernetes/manifests/."
+    },
+    {
+      "id": 11,
+      "level": "basic",
+      "question": "Configuration Drift là gì?",
+      "options": [
+        "Lỗi mạng giữa các node",
+        "Một loại virus K8s",
+        "Trạng thái cấu hình thực tế dần lệch khỏi chuẩn mong muốn theo thời gian",
+        "Pod bị evict khỏi node"
+      ],
+      "answer": 2,
+      "explanation": "Drift xảy ra khi admin sửa tay, patch tự động, hoặc thao tác không nhất quán giữa các node."
+    },
+    {
+      "id": 12,
+      "level": "basic",
+      "question": "Self-healing trong context CIS automation nghĩa là gì?",
+      "options": [
+        "Pod tự restart khi crash",
+        "Cluster tự backup etcd",
+        "Node tự cài lại OS",
+        "Hệ thống tự phát hiện sai lệch cấu hình và tự khôi phục về trạng thái chuẩn không cần can thiệp người"
+      ],
+      "answer": 3,
+      "explanation": "Self-healing trong project = tự audit + tự remediate về desired state theo CIS Benchmark."
+    },
+    {
+      "id": 13,
+      "level": "basic",
+      "question": "Tính chất *Idempotency* của Ansible playbook nghĩa là gì?",
+      "options": [
+        "Chạy nhiều lần cho cùng kết quả, không gây tác dụng phụ",
+        "Chỉ chạy được một lần duy nhất",
+        "Chạy nhanh hơn shell script",
+        "Tự động rollback khi fail"
+      ],
+      "answer": 0,
+      "explanation": "Idempotent: chạy lại không thay đổi gì nếu hệ thống đã ở trạng thái mong muốn — quan trọng cho remediation."
+    },
+    {
+      "id": 14,
+      "level": "basic",
+      "question": "RBAC trong Kubernetes là gì?",
+      "options": [
+        "Random Backup And Cache",
+        "Role-Based Access Control — cơ chế phân quyền dựa trên Role/ClusterRole/RoleBinding",
+        "Resource-Based Allocation Controller",
+        "Replica-Based Auto Cluster"
+      ],
+      "answer": 1,
+      "explanation": "RBAC = Role-Based Access Control. CIS yêu cầu --authorization-mode chứa Node,RBAC và không có AlwaysAllow."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Service Account trong Kubernetes là gì?",
+      "options": [
+        "Account của developer",
+        "Tài khoản root của node",
+        "Identity của Pod để gọi API Server",
+        "Tài khoản cloud provider"
+      ],
+      "answer": 2,
+      "explanation": "ServiceAccount là identity cho Pod (khác user account của con người)."
+    },
+    {
+      "id": 16,
+      "level": "intermediate",
+      "question": "Audit log của kube-apiserver dùng để làm gì?",
+      "options": [
+        "Đo performance của Pod",
+        "Backup etcd",
+        "Lưu image container",
+        "Ghi lại mọi request đến API Server phục vụ compliance/forensic"
+      ],
+      "answer": 3,
+      "explanation": "Audit log ghi ai-làm-gì-khi-nào trên API Server. CIS yêu cầu config --audit-log-path/maxage/maxbackup/maxsize."
+    },
+    {
+      "id": 17,
+      "level": "intermediate",
+      "question": "Vì sao CIS yêu cầu `--anonymous-auth=false` trên kube-apiserver?",
+      "options": [
+        "Ngăn request không xác thực truy cập API Server (production hardening)",
+        "Tăng tốc API",
+        "Bắt buộc cho Helm",
+        "Giảm dung lượng log"
+      ],
+      "answer": 0,
+      "explanation": "Anonymous auth cho phép request không có credential — nguy hiểm trên production, phải tắt."
+    },
+    {
+      "id": 18,
+      "level": "intermediate",
+      "question": "Vì sao CIS yêu cầu `--profiling=false` trên các thành phần Control Plane?",
+      "options": [
+        "Profiling tốn quá nhiều CPU",
+        "Profiling endpoint /debug/pprof làm lộ thông tin nhạy cảm",
+        "Profiling không hỗ trợ Linux",
+        "Profiling làm crash cluster"
+      ],
+      "answer": 1,
+      "explanation": "/debug/pprof hữu ích debug nhưng leak thông tin → tắt cho production."
+    },
+    {
+      "id": 19,
+      "level": "intermediate",
+      "question": "Để kiểm tra flag `--anonymous-auth` của kube-apiserver đang chạy, dùng luồng nào?",
+      "options": [
+        "File Permission Flow",
+        "File Config Flow (đọc YAML)",
+        "CLI Command Flow (ps -ef | grep ...)",
+        "Network scan"
+      ],
+      "answer": 2,
+      "explanation": "kube-apiserver/controller/scheduler dùng CLI Command Flow: parse flag từ output ps -ef."
+    },
+    {
+      "id": 20,
+      "level": "intermediate",
+      "question": "Để khắc phục một flag sai trên kube-apiserver, ta sửa file nào?",
+      "options": [
+        "/var/lib/kubelet/config.yaml",
+        "/etc/systemd/system/kube-apiserver.service",
+        "/etc/kubernetes/admin.conf",
+        "/etc/kubernetes/manifests/kube-apiserver.yaml"
+      ],
+      "answer": 3,
+      "explanation": "kube-apiserver chạy như Static Pod → sửa manifest YAML; kubelet tự reload."
+    },
+    {
+      "id": 21,
+      "level": "intermediate",
+      "question": "Sau khi sửa Static Pod manifest /etc/kubernetes/manifests/kube-apiserver.yaml, ta cần làm gì?",
+      "options": [
+        "Không cần làm gì — kubelet tự phát hiện thay đổi và reload Pod",
+        "Chạy systemctl restart kube-apiserver",
+        "Reboot toàn bộ node",
+        "Xóa và tạo lại etcd"
+      ],
+      "answer": 0,
+      "explanation": "Đặc tính của Static Pod: kubelet watch thư mục manifest và tự reload khi file đổi."
+    },
+    {
+      "id": 22,
+      "level": "intermediate",
+      "question": "Cấu hình của kubelet (kubelet config) được lưu ở file nào?",
+      "options": [
+        "/etc/kubernetes/manifests/kubelet.yaml",
+        "/var/lib/kubelet/config.yaml",
+        "/etc/kubelet.conf",
+        "/etc/kubernetes/kubelet.json"
+      ],
+      "answer": 1,
+      "explanation": "Kubelet đọc config từ /var/lib/kubelet/config.yaml — đây là File Config Flow."
+    },
+    {
+      "id": 23,
+      "level": "advanced",
+      "question": "Sau khi sửa /var/lib/kubelet/config.yaml, ta phải làm gì để cấu hình có hiệu lực?",
+      "options": [
+        "Không cần gì, tự reload",
+        "kubectl apply -f config.yaml",
+        "sudo systemctl restart kubelet",
+        "Reboot node"
+      ],
+      "answer": 2,
+      "explanation": "Kubelet KHÔNG tự reload khi sửa config file → bắt buộc systemctl restart kubelet."
+    },
+    {
+      "id": 24,
+      "level": "advanced",
+      "question": "Section 1.1.x của CIS Benchmark kiểm tra gì? Khắc phục bằng lệnh nào?",
+      "options": [
+        "Flag API Server; sửa manifest",
+        "RBAC role; kubectl apply",
+        "Network policy; sửa CNI",
+        "Permission/owner của file (vd manifest, etcd data, PKI); khắc phục bằng chmod, chown — có hiệu lực ngay"
+      ],
+      "answer": 3,
+      "explanation": "Section 1.1.x là File Permission Flow: stat -c kiểm tra → chmod/chown để fix, không cần restart."
+    },
+    {
+      "id": 25,
+      "level": "advanced",
+      "question": "Cho tiêu chí: *\"File `/etc/kubernetes/manifests/kube-apiserver.yaml` phải có permission 600 và owner root:root\"*. Đâu là chuỗi lệnh remediation đúng?",
+      "options": [
+        "chmod 600 /etc/kubernetes/manifests/kube-apiserver.yaml && chown root:root /etc/kubernetes/manifests/kube-apiserver.yaml",
+        "kubectl edit pod kube-apiserver -n kube-system",
+        "systemctl restart kube-apiserver",
+        "ansible-playbook -i hosts site.yml --check"
+      ],
+      "answer": 0,
+      "explanation": "File Permission Flow: chmod để chỉnh quyền 600 và chown để đặt owner root:root — có hiệu lực ngay, không cần restart."
+    }
+  ]
+}

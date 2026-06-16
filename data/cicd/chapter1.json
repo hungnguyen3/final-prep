@@ -1,39 +1,437 @@
 {
-  "title": "Chương 1: Giới thiệu CI/CD",
+  "title": "Chương 1: Hạ tầng IT (Infrastructure)",
   "theory": [
     {
-      "heading": "CI là gì?",
-      "content": "Continuous Integration (CI) là thực hành tích hợp code thường xuyên vào một nhánh chung, kèm theo chạy automated tests để phát hiện lỗi sớm."
+      "heading": "Xu hướng hạ tầng — CLI không còn là chuẩn mực",
+      "content": "**CLI (Command-Line Interface)** là giao diện văn bản để tương tác với phần mềm/dịch vụ/OS qua terminal. CLI dùng để: thực thi lệnh, truy cập tài nguyên hệ thống, automate workflow, custom behavior.\n\n**Vì sao CLI không còn là chuẩn mực cho automation:**\n- **Cấu hình ngày càng phức tạp** — nhiều thiết bị (physical, VM, container, VNF) cùng phải đổi\n- **Tần suất thay đổi tăng nhanh** → con người không kịp\n- **CLI không chuẩn hóa** — syntax/semantic khác nhau giữa vendor và OS\n- **Dependency issues**, error reporting hạn chế, không tạo structured output\n\n**Kết luận:** CLI for automation is *neither reliable nor cost-effective* → cần ngôn ngữ kịch bản + công cụ tự động hóa."
     },
     {
-      "heading": "CD là gì?",
-      "content": "Continuous Delivery/Deployment (CD) là tự động hóa quá trình đưa phần mềm đã được test lên môi trường staging hoặc production."
+      "heading": "Operation: Reduced Deployment Time & DevOps",
+      "content": "**Reduced Deployment Time:**\n- Triển khai service mới → tăng doanh thu; time-to-market là yếu tố then chốt\n- 'Smoke test' image/service/PoP trên virtual device TRƯỚC khi deploy thật\n- Trong cloud, service mới được kỳ vọng up & running trong vài giây\n\n**DevOps Time:**\n- **Python** = ngôn ngữ hiện đại, thư viện phong phú, có nhiều SDK → công cụ tiện lợi cho parsing, management, configuration\n- **DevOps = Development + Operations** → hợp nhất software development với software operations (kèm Quality Assurance ở giao điểm 3 nhóm)"
+    },
+    {
+      "heading": "Strategy & Software-Defined Everything",
+      "content": "**Hardware Commoditization & Disaggregation:**\n- Phần mềm tách rời (disaggregate) khỏi phần cứng\n- Vendor cung cấp HW + SW của riêng họ — tối ưu, ổn định, đáng tin cậy nhưng khó validate/manage khi mỗi loại thiết bị có OS, feature set, CLI, license khác nhau\n- Khả năng order hoặc develop networking software\n\n**SDN (Software-Defined Networking):**\n- Tách **control plane** khỏi **data plane** (focus on **OpenFlow**)\n- Cho phép operator truy cập mạng programmatically\n- Centralized control & management qua software\n- Cho phép automated management & orchestration\n\n**NFV (Network Function Virtualization):**\n- Network elements là **virtualized instances** thay vì physical appliance\n- Giảm complexity và time-to-market cho service mới\n- Provisioning, changing, scaling on-demand trong vài phút/giây\n- 'Configure' network appliance như virtualized function (software programmable)"
+    },
+    {
+      "heading": "Traditional Network Management — 3 giao thức & giới hạn",
+      "content": "Ba giao thức quản trị mạng hiện hành:\n- **CLI** — đã phân tích ở trên (không nhất quán, khó automate)\n- **SNMP** — read/write OID qua MIB, polling, trap\n- **Syslog** — log message từ device về collector\n\n**Giới hạn chung:** thiết kế cho con người ở quy mô nhỏ, không phù hợp với quy mô và tốc độ thay đổi của hạ tầng hiện đại → cần API hiện đại (NETCONF/RESTCONF, gNMI, REST API) và Infrastructure as Code."
+    },
+    {
+      "heading": "Components — Physical vs Logical",
+      "content": "Hạ tầng IT có thể được mô tả theo 2 cách:\n- **Physical infrastructure**: dây và thiết bị vật lý\n- **Logical infrastructure**: software-based partitions, segmentation, virtualization, connection — overlay trên physical\n\n**Hardware is inflexible** → đó là lý do logical/virtualized layer ngày càng quan trọng."
+    },
+    {
+      "heading": "Computing Environment — Workloads",
+      "content": "Workload đặc trưng bởi 'lượng' và 'loại' áp lực mà ứng dụng đặt lên tài nguyên hệ thống. Phân loại:\n\n- **CPU-bound** (cần processor mạnh): Batch processing, gaming server, HPC, machine learning, scientific modeling\n- **Memory-bound** (cần nhiều RAM): Caching, data analytics, database\n- **Storage-bound** (cần low-latency I/O ngẫu nhiên): Data warehouse, data lake, distributed filesystem, Hadoop, log/data processing"
+    },
+    {
+      "heading": "Computing Environment — On-Prem vs Cloud",
+      "content": "**On-Prem:**\n- Tự duy trì data center và phần cứng\n- HW chuyên biệt cho ứng dụng → match expenditure & utility tốt nhất\n- Tăng complexity quản trị\n\n**Cloud Computing:**\n- Truy cập tài nguyên IT qua Internet theo mô hình **pay-as-you-go**\n- Sử dụng compute/storage/database từ cloud provider\n- **Compute options**: Serverless (unikernels, functions, app services), Containers (process cô lập với portable runtime), Virtual Machines (nhiều OS instance trên 1 server vật lý)\n\n**Phân loại cloud (FaaS/PaaS/IaaS):**\n- **FaaS** (Functions as a Service): Unikernels, Functions\n- **PaaS** (Platform as a Service): App services, Container services, Kubernetes services\n- **IaaS** (Infrastructure as a Service): VMs (đôi khi cả Kubernetes services)"
+    },
+    {
+      "heading": "Storage & Networks",
+      "content": "**Storage** ảnh hưởng đến durability, portability, flexibility, consistency.\n\n- **Critical characteristics:** capacity, IOPS, I/O size/block size, throughput, latency\n- **Storage categories:** Block / File / Object / Database storage\n- HDD vs SSD có performance, reliability, cost khác nhau\n\n**Networks — Key characteristics:** Speed/Bandwidth, Latency/Jitter, Availability\n\n- **Physical topology:** Bus / Ring / Star / Mesh / Tree / Spine-leaf\n- **Layer 2 connectivity:** Bridge / Ethernet switching / Link Aggregation / Bonding\n- **Network segmentation & virtualization:** VLAN / VXLAN / NFV / SDN / VPN\n\n**Managing a network:** Firewall (filter ingress/egress), Gateway router, Load balancer, IDPS, VPN connection."
+    },
+    {
+      "heading": "Infrastructure Administration — Tổng quan & nhiệm vụ",
+      "content": "**Type of Deployment:** Physical server / Virtualization / Containerization / Serverless\n\n**Location of Deployment:** On-Prem-Private Cloud / Public Cloud / Hybrid Cloud\n\n**Components:** Compute / Network / Storage\n\n**OS:** Microsoft Windows / Unix-Linux / Network device OS\n\n**Administration Tasks (5 nhóm):**\n1. **Server & Infrastructure Management** — provision, configure, maintain, patch, monitor, lifecycle, document, manage application services\n2. **Network & Security Operations** — cấu hình router/switch/firewall/VPN, security policy, access control, threat monitoring, vulnerability assessment\n3. **Storage & Backup** — quản lý storage, capacity planning, backup/DR, test data restoration\n4. **User & Access** — user account, permission, Authentication, Authorization\n5. **Monitoring & Maintenance** — track performance/availability, plan & execute upgrade"
+    },
+    {
+      "heading": "Câu hỏi tự luận tham khảo",
+      "content": "**Câu 1.** *Một công ty cần triển khai 200 server cho hệ thống e-commerce, ưu tiên tự động hóa và time-to-market. Vì sao 'CLI for automation' không phù hợp ở quy mô này?*\n\n**Trả lời:** CLI không nhất quán giữa vendor/OS, không xuất structured output và error reporting yếu. Ở quy mô 200 server, tần suất thay đổi vượt quá khả năng con người và mỗi lần đổi cấu hình liên quan đến nhiều device (VM, container, NFV) — nên cần kịch bản (Bash/Python/PowerShell) hoặc công cụ (Ansible/Terraform) thay thế.\n\n---\n\n**Câu 2.** *Phân loại workload sau cho ứng dụng analytics realtime: dashboard query nhiều, dataset 500GB nằm trên SSD, cần latency thấp. Đây là CPU-bound, memory-bound hay storage-bound? Giải pháp hạ tầng?*\n\n**Trả lời:** Memory-bound — đặc thù caching/analytics database cần đủ RAM để giữ working set, tránh chạm SSD. Giải pháp: chọn instance type tối ưu RAM (ví dụ AWS r-series), kèm SSD NVMe cho cold data; trên cloud thì Containers hoặc VMs (IaaS/PaaS) cho phép scale RAM theo nhu cầu.\n\n---\n\n**Câu 3.** *SDN tách control plane khỏi data plane. Lợi ích cụ thể nào giúp ích cho automation và self-healing?*\n\n**Trả lời:** Control plane tập trung cho phép operator điều khiển toàn mạng programmatically qua API duy nhất (vd OpenFlow), thay vì SSH vào từng switch. Khi phát hiện lỗi/drift, controller có thể tự động re-program flow trên data plane — đây là nền tảng cho orchestration và self-healing không cần can thiệp thủ công."
     }
   ],
   "questions": [
     {
       "id": 1,
       "level": "basic",
-      "question": "CI viết tắt của?",
-      "options": ["Continuous Integration", "Continuous Improvement", "Code Integration", "Container Infrastructure"],
+      "question": "CLI là viết tắt của?",
+      "options": [
+        "Command-Line Interface",
+        "Common Language Interface",
+        "Centralized Logical Infrastructure",
+        "Cloud-Linked Interface"
+      ],
       "answer": 0,
-      "explanation": "CI = Continuous Integration — tích hợp code liên tục vào nhánh chung."
+      "explanation": "CLI = Command-Line Interface — giao diện văn bản tương tác với phần mềm, dịch vụ, OS qua terminal/console."
     },
     {
       "id": 2,
       "level": "basic",
-      "question": "Lợi ích chính của CI là?",
-      "options": ["Phát hiện lỗi sớm nhờ tích hợp thường xuyên", "Loại bỏ hoàn toàn lỗi phần mềm", "Không cần viết test", "Tăng tốc độ gõ code"],
-      "answer": 0,
-      "explanation": "CI giúp phát hiện lỗi tích hợp sớm vì code được merge và test thường xuyên."
+      "question": "Theo slide, lý do nào KHÔNG phải khiến CLI không phù hợp cho automation?",
+      "options": [
+        "Cấu hình ngày càng phức tạp, liên quan nhiều loại thiết bị",
+        "CLI luôn yêu cầu license trả phí cho mỗi thiết bị",
+        "Syntax không nhất quán giữa các vendor và OS",
+        "Error reporting hạn chế, không tạo structured output"
+      ],
+      "answer": 1,
+      "explanation": "License không phải vấn đề kỹ thuật chính. Slide nêu: complexity, frequency of change, không chuẩn hóa, dependency issues, limited error reporting, no structured output."
     },
     {
       "id": 3,
-      "level": "intermediate",
-      "question": "Sự khác biệt giữa Continuous Delivery và Continuous Deployment là?",
-      "options": ["Delivery cần approval thủ công trước khi lên production, Deployment tự động hoàn toàn", "Delivery nhanh hơn Deployment", "Deployment chỉ dùng cho staging", "Không có sự khác biệt"],
+      "level": "basic",
+      "question": "DevOps trong slide được định nghĩa là?",
+      "options": [
+        "Device + OS — quản lý thiết bị và hệ điều hành",
+        "Developer + OpenStack — kết hợp lập trình viên và cloud",
+        "Development + Operations — hợp nhất phát triển và vận hành",
+        "Deployment + Optimization — triển khai và tối ưu hóa"
+      ],
+      "answer": 2,
+      "explanation": "DevOps = Development + Operations, mục tiêu unify software development với software operations. Slide còn vẽ Venn diagram với QA ở giao điểm."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "SDN có đặc điểm cốt lõi nào sau đây?",
+      "options": [
+        "Chỉ chạy được trên thiết bị Cisco proprietary",
+        "Gộp control plane và data plane lên cùng phần cứng",
+        "Yêu cầu mọi switch đều phải có CPU mạnh",
+        "Tách control plane khỏi data plane, focus on OpenFlow"
+      ],
+      "answer": 3,
+      "explanation": "SDN = Software-Defined Networking. Đặc điểm: separate control plane from data plane, focus on OpenFlow, programmatic access, centralized control, automated orchestration."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "NFV là viết tắt của?",
+      "options": [
+        "Network Function Virtualization",
+        "Native Firewall Vendor",
+        "Network Failover Virtualization",
+        "Network Forwarding Vector"
+      ],
       "answer": 0,
-      "explanation": "Continuous Delivery: pipeline tự động đến staging, cần bước approve thủ công trước production. Continuous Deployment: tự động deploy lên production không cần can thiệp."
+      "explanation": "NFV = Network Function Virtualization — network element là virtualized instance thay vì physical appliance, provisioning trong phút/giây."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Theo slide 'Traditional Network Management Limitations', giao thức nào KHÔNG được liệt kê?",
+      "options": [
+        "CLI",
+        "NETCONF",
+        "Syslog",
+        "SNMP"
+      ],
+      "answer": 1,
+      "explanation": "Slide liệt kê CLI, SNMP, Syslog là 3 giao thức quản trị truyền thống. NETCONF là chuẩn hiện đại, được dùng để khắc phục giới hạn của 3 giao thức trên."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "Phân biệt Physical vs Logical infrastructure ĐÚNG nhất là?",
+      "options": [
+        "Physical = software, Logical = phần cứng",
+        "Hai khái niệm giống nhau, chỉ khác tên",
+        "Physical = dây và thiết bị vật lý, Logical = phần mềm partition/virtualization overlay",
+        "Logical chỉ áp dụng cho cloud, Physical chỉ áp dụng on-prem"
+      ],
+      "answer": 2,
+      "explanation": "Physical = wire + device vật lý. Logical = software-based partition/segmentation/virtualization/connection — overlay trên physical. Slide kết luận: hardware is inflexible → cần logical layer."
+    },
+    {
+      "id": 8,
+      "level": "basic",
+      "question": "Workload phân loại 3 kiểu nào theo slide?",
+      "options": [
+        "Frontend, Backend, Middleware",
+        "Web, Database, Cache",
+        "Realtime, Batch, Stream",
+        "CPU-bound, Memory-bound, Storage-bound"
+      ],
+      "answer": 3,
+      "explanation": "3 loại: CPU-bound (HPC/ML/gaming), Memory-bound (caching/analytics/DB), Storage-bound (data lake/warehouse, distributed FS, log processing)."
+    },
+    {
+      "id": 9,
+      "level": "basic",
+      "question": "Cloud computing được định nghĩa là?",
+      "options": [
+        "Truy cập tài nguyên IT qua Internet theo mô hình pay-as-you-go",
+        "Mạng nội bộ tự xây dựng và bảo trì trong data center riêng",
+        "Một loại virtualization chỉ chạy trên Linux",
+        "Chỉ là tên gọi khác của data center thuê ngoài"
+      ],
+      "answer": 0,
+      "explanation": "Cloud computing involves accessing IT resources over the Internet on a pay-as-you-go model — sử dụng compute/storage/database từ cloud provider."
+    },
+    {
+      "id": 10,
+      "level": "basic",
+      "question": "Compute option nào KHÔNG được liệt kê trong slide cloud?",
+      "options": [
+        "Serverless (unikernels, functions, app services)",
+        "Mainframe (máy chủ trung tâm cỡ lớn)",
+        "Virtual Machines (nhiều OS trên 1 server vật lý)",
+        "Containers (isolated process với portable runtime)"
+      ],
+      "answer": 1,
+      "explanation": "3 compute options trong slide: Serverless, Containers, VMs. Mainframe không phải mô hình điển hình của cloud computing hiện đại."
+    },
+    {
+      "id": 11,
+      "level": "basic",
+      "question": "FaaS, PaaS, IaaS lần lượt tương ứng tài nguyên nào?",
+      "options": [
+        "Storage, Compute, Network",
+        "VMs, Containers, Functions",
+        "Functions, Container/Kubernetes services, VMs",
+        "Public, Private, Hybrid"
+      ],
+      "answer": 2,
+      "explanation": "Slide phân loại: FaaS = Functions/Unikernels (serverless); PaaS = App services + Container services + Kubernetes services; IaaS = VMs (và đôi khi Kubernetes)."
+    },
+    {
+      "id": 12,
+      "level": "basic",
+      "question": "Critical characteristics của storage gồm những gì?",
+      "options": [
+        "RAM, CPU cores, GPU",
+        "Color, weight, dimension, MAC address",
+        "Bandwidth, jitter, packet loss",
+        "Capacity, IOPS, I/O size/block size, throughput, latency"
+      ],
+      "answer": 3,
+      "explanation": "Slide liệt kê: capacity, IOPS, I/O size/block size, throughput, latency. Bandwidth/jitter là của network."
+    },
+    {
+      "id": 13,
+      "level": "basic",
+      "question": "Storage categories trong slide gồm 4 loại nào?",
+      "options": [
+        "Block, File, Object, Database",
+        "HDD, SSD, NVMe, Tape",
+        "Local, Remote, Cloud, Hybrid",
+        "Read, Write, Append, Delete"
+      ],
+      "answer": 0,
+      "explanation": "4 categories: Block / File / Object / Database storage. HDD/SSD là device type, không phải category."
+    },
+    {
+      "id": 14,
+      "level": "basic",
+      "question": "Physical topology nào KHÔNG được liệt kê?",
+      "options": [
+        "Bus, Ring, Star",
+        "Hypercube, Toroid",
+        "Mesh, Tree, Spine-leaf",
+        "Tất cả đều có trong slide"
+      ],
+      "answer": 1,
+      "explanation": "Slide liệt kê: Bus, Ring, Star, Mesh, Tree, Spine-leaf. Hypercube và Toroid là topology của HPC, không có trong slide."
+    },
+    {
+      "id": 15,
+      "level": "basic",
+      "question": "Network segmentation và virtualization gồm công nghệ nào?",
+      "options": [
+        "TCP, UDP, ICMP, ARP",
+        "HTTP, HTTPS, FTP, SMTP",
+        "VLAN, VXLAN, NFV, SDN, VPN",
+        "WPA, WEP, WPA2, WPA3"
+      ],
+      "answer": 2,
+      "explanation": "Slide liệt kê: VLAN/VXLAN cho segmentation; NFV/SDN/VPN cho virtualization."
+    },
+    {
+      "id": 16,
+      "level": "basic",
+      "question": "Type of Deployment bao gồm 4 kiểu nào?",
+      "options": [
+        "Manual, Semi-auto, Auto, AI-driven",
+        "Local, Remote, Hybrid, Edge",
+        "Bare-metal, BareOS, NoOS, Hypervisor",
+        "Physical server, Virtualization, Containerization, Serverless"
+      ],
+      "answer": 3,
+      "explanation": "4 type: Physical server / Virtualization / Containerization / Serverless. Còn Location of Deployment mới là On-Prem/Public/Hybrid Cloud."
+    },
+    {
+      "id": 17,
+      "level": "intermediate",
+      "question": "Time-to-market là yếu tố then chốt trong xu hướng infrastructure vì?",
+      "options": [
+        "Triển khai service mới nhanh hơn → tăng doanh thu, dẫn đầu thị trường",
+        "Vì cloud provider tính phí theo thời gian deploy",
+        "Vì luật pháp yêu cầu deploy trong 24h",
+        "Vì SDN bắt buộc deploy phải dưới 60 giây"
+      ],
+      "answer": 0,
+      "explanation": "Slide ghi: 'Deploying new services → growing the revenue. Time to market is key.' Trong cloud, service được kỳ vọng up & running trong vài giây."
+    },
+    {
+      "id": 18,
+      "level": "intermediate",
+      "question": "Vì sao 'smoke test' trên virtual device được khuyến nghị TRƯỚC deploy thật?",
+      "options": [
+        "Vì virtual device chạy nhanh hơn physical 100 lần",
+        "Để chạy thử nhanh, phát hiện lỗi cấu hình trước khi tác động hệ thống thật",
+        "Vì luật yêu cầu mọi thay đổi phải qua simulation",
+        "Vì virtual device không tốn tài nguyên gì cả"
+      ],
+      "answer": 1,
+      "explanation": "'Smoke test' images, services, PoPs trên virtual device cho phép validate trước, tránh sự cố production. Đây là good practice trong CI/CD và DevOps."
+    },
+    {
+      "id": 19,
+      "level": "intermediate",
+      "question": "Hardware Commoditization & Disaggregation chỉ ra thách thức nào?",
+      "options": [
+        "Vendor không còn bán phần cứng nữa",
+        "Phần cứng quá rẻ nên ai cũng mua được",
+        "Khó validate/manage khi mỗi loại device có OS, CLI, license riêng",
+        "Software bị khóa với một vendor duy nhất"
+      ],
+      "answer": 2,
+      "explanation": "Slide nêu: 'challenge in validating, managing, maintaining features/services when different device types have different operating systems, feature sets, CLIs, management, and licenses.'"
+    },
+    {
+      "id": 20,
+      "level": "intermediate",
+      "question": "Lợi ích chính của NFV (Network Function Virtualization) là gì?",
+      "options": [
+        "Yêu cầu nhiều phần cứng vật lý hơn để chịu tải",
+        "Loại bỏ hoàn toàn nhu cầu kết nối mạng",
+        "Bắt buộc dùng OS Cisco proprietary",
+        "Provision/scale on-demand trong phút/giây, giảm time-to-market"
+      ],
+      "answer": 3,
+      "explanation": "NFV: virtualized instance thay vì physical appliance → giảm complexity và time-to-market, provisioning/changing/scaling dynamically on demand."
+    },
+    {
+      "id": 21,
+      "level": "intermediate",
+      "question": "Workload nào dưới đây KHẢ DĨ NHẤT là CPU-bound?",
+      "options": [
+        "Huấn luyện mô hình machine learning",
+        "Hadoop MapReduce phân tích log",
+        "Web cache Redis lưu session người dùng",
+        "Kho data warehouse với truy vấn ad-hoc"
+      ],
+      "answer": 0,
+      "explanation": "ML training (cùng HPC, gaming server, batch processing, scientific modeling) là CPU-bound điển hình. Redis = memory-bound. Hadoop/data warehouse = storage-bound."
+    },
+    {
+      "id": 22,
+      "level": "intermediate",
+      "question": "Khi nào nên CHỌN On-Prem thay vì Cloud?",
+      "options": [
+        "Cần scale rất nhanh, không xác định trước được tải",
+        "Cần phần cứng chuyên biệt, đã có data center, ràng buộc compliance",
+        "Khi muốn pay-as-you-go để tiết kiệm tối đa chi phí",
+        "Khi đội ngũ chưa có kinh nghiệm vận hành"
+      ],
+      "answer": 1,
+      "explanation": "On-Prem phù hợp khi cần HW chuyên biệt khớp ứng dụng, đã có data center, hoặc compliance bắt buộc dữ liệu giữ nội bộ. Đổi lại: complexity quản trị tăng. Cloud thắng ở scale và pay-as-you-go."
+    },
+    {
+      "id": 23,
+      "level": "intermediate",
+      "question": "Ứng dụng e-commerce 200 server, peak traffic mỗi tối, sustainable. Compute option phù hợp NHẤT?",
+      "options": [
+        "Physical server bare-metal với cấu hình cố định",
+        "1 mainframe duy nhất xử lý mọi traffic",
+        "Containers với orchestrator để autoscale theo tải",
+        "Serverless functions cho mọi loại request"
+      ],
+      "answer": 2,
+      "explanation": "Container + orchestrator (Kubernetes) cho phép autoscale theo peak, packing efficient (sustainability/energy). Bare-metal không co giãn; mainframe lỗi thời cho web; serverless chỉ phù hợp event-driven, không phải mọi request."
+    },
+    {
+      "id": 24,
+      "level": "intermediate",
+      "question": "Layer 2 connectivity trong slide gồm công nghệ nào?",
+      "options": [
+        "Firewall, Load balancer, IDPS",
+        "TCP, UDP, IP, ARP",
+        "VLAN, VXLAN, VPN, NAT",
+        "Bridge, Ethernet switching, Link Aggregation, Bonding"
+      ],
+      "answer": 3,
+      "explanation": "L2 connectivity: Bridge / Ethernet switching / Link Aggregation / Bonding. VLAN/VXLAN thuộc segmentation; firewall/LB là network management."
+    },
+    {
+      "id": 25,
+      "level": "intermediate",
+      "question": "Trong 5 nhóm Administration Tasks, 'Apply patches, updates, monitor performance' thuộc nhóm nào?",
+      "options": [
+        "Server & Infrastructure Management",
+        "Network & Security Operations",
+        "Storage & Backup Management",
+        "User & Access Management"
+      ],
+      "answer": 0,
+      "explanation": "Nhóm 1 — Server & Infrastructure Management gồm: provision/configure/maintain, apply patches/updates, monitor performance, manage server lifecycle, manage application services."
+    },
+    {
+      "id": 26,
+      "level": "intermediate",
+      "question": "Authentication và Authorization khác nhau ở điểm cốt lõi nào?",
+      "options": [
+        "Authentication = quyền; Authorization = danh tính",
+        "Authentication = bạn là ai; Authorization = bạn được làm gì",
+        "Hai khái niệm hoàn toàn giống nhau",
+        "Authentication chỉ dùng password, Authorization chỉ dùng token"
+      ],
+      "answer": 1,
+      "explanation": "Authentication xác minh DANH TÍNH (you are who you claim). Authorization xác định QUYỀN (what you're allowed to do). Cùng nằm trong nhóm User & Access Management cùng với administering accounts/permissions."
+    },
+    {
+      "id": 27,
+      "level": "advanced",
+      "question": "Một mạng có 1000 device từ 5 vendor khác nhau cần thay đổi cấu hình hằng tuần. Phương án PHÙ HỢP NHẤT?",
+      "options": [
+        "Thuê thêm 10 admin SSH vào CLI từng thiết bị",
+        "Yêu cầu mọi vendor đổi sang một CLI chung",
+        "Dùng SDN/NFV + automation tools (Ansible, REST API) để programmatic control",
+        "Disable mọi thay đổi để giữ ổn định"
+      ],
+      "answer": 2,
+      "explanation": "Slide chỉ rõ: ở quy mô này CLI là 'neither reliable nor cost-effective'. Giải pháp: SDN cho centralized programmatic control + automation (Ansible/Python/REST API). Thuê thêm admin không scale; ép vendor đổi CLI bất khả thi."
+    },
+    {
+      "id": 28,
+      "level": "advanced",
+      "question": "Hybrid Cloud kết hợp On-Prem + Public Cloud. Lý do CHÍNH ĐÁNG để dùng?",
+      "options": [
+        "Bắt buộc theo chuẩn ISO trong mọi ngành nghề",
+        "Public cloud rẻ hơn on-prem trong mọi trường hợp nên giữ cả hai",
+        "On-prem mạnh hơn public cloud nên luôn ưu tiên on-prem",
+        "Dữ liệu nhạy cảm giữ on-prem; workload co giãn đẩy lên public cloud"
+      ],
+      "answer": 3,
+      "explanation": "Hybrid balance giữa data sovereignty/compliance (on-prem) và elasticity/scale (public cloud). Workload steady-state on-prem; burst/bất định lên cloud → tối ưu chi phí và tuân thủ."
+    },
+    {
+      "id": 29,
+      "level": "advanced",
+      "question": "Một dashboard analytics realtime đọc 500GB dữ liệu, query nhanh, latency thấp. Workload và storage gợi ý?",
+      "options": [
+        "Memory-bound, ưu tiên RAM lớn + SSD/NVMe cho cold tier",
+        "CPU-bound, dùng HDD lớn rẻ",
+        "Storage-bound, lưu trên tape backup",
+        "Network-bound, mua thêm bandwidth"
+      ],
+      "answer": 0,
+      "explanation": "Analytics realtime với latency thấp = memory-bound (working set giữ trong RAM/cache). Storage tier: SSD/NVMe cho hot data, HDD/object storage cho cold. Slide phân loại memory-bound: caching, analytics, database."
+    },
+    {
+      "id": 30,
+      "level": "advanced",
+      "question": "Vì sao SDN cho phép 'automated management and orchestration techniques' tốt hơn mạng truyền thống?",
+      "options": [
+        "Vì SDN dùng phần cứng nhanh hơn 100 lần",
+        "Vì control plane tập trung + API → operator program mạng từ một điểm",
+        "Vì mạng truyền thống không hỗ trợ TCP/IP",
+        "Vì SDN bắt buộc mọi switch dùng OpenFlow phiên bản mới nhất"
+      ],
+      "answer": 1,
+      "explanation": "SDN: control plane tách khỏi data plane, tập trung và expose qua API → operator có thể program toàn mạng từ 1 controller, dễ orchestrate, dễ tự động hóa. Mạng truyền thống mỗi device tự quản → khó coordinate."
     }
   ]
 }

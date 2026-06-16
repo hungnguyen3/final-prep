@@ -1,0 +1,360 @@
+{
+  "title": "Chương 4: Thu thập thông tin hệ thống (WMI/CIM, lshw)",
+  "theory": [
+    {
+      "heading": "Tổng quan: vì sao cần tự động thu thập thông tin hệ thống",
+      "content": "**Audit phần cứng** là bước nền tảng trong quản trị hạ tầng: biết server có CPU/RAM/Disk/Network/GPU gì để lập kế hoạch nâng cấp, kiểm soát license, phát hiện thay đổi trái phép.\n\n**Vì sao phải tự động hóa:**\n- Quy mô lớn (hàng chục đến hàng nghìn server) → không thể login từng máy gõ tay\n- Cần **structured output** (CSV/JSON) để nạp vào CMDB, BI tool, dashboard\n- Tần suất audit định kỳ (hằng tuần/tháng) → script chạy lặp lại được\n- Hai họ OS phổ biến: **Windows** (PowerShell + WMI/CIM) và **Linux** (lshw, lscpu, dmidecode, lsblk)\n\n**5 thành phần phần cứng cốt lõi cần thu thập:** CPU, RAM, Storage/Disk, Network Interface, Display/GPU."
+    },
+    {
+      "heading": "Windows: WMI/CIM và Get-CimInstance",
+      "content": "**WMI (Windows Management Instrumentation)** là framework của Microsoft cho phép truy cập thông tin quản trị (hardware, OS, process, service...) trên máy Windows. WMI là **implementation Windows** của chuẩn **CIM (Common Information Model)** do **DMTF** định nghĩa — một chuẩn quản trị thiết bị/hệ thống đa nền tảng.\n\n**Hai cmdlet PowerShell để truy vấn:**\n- `Get-WmiObject` — cmdlet **cũ**, dùng giao thức DCOM, đã deprecated\n- `Get-CimInstance` — cmdlet **mới** (PowerShell 3.0+), hỗ trợ cả DCOM và **WSMan** (HTTP-based), khuyến nghị dùng\n\n**Cú pháp cơ bản:**\n```\nGet-CimInstance -ClassName Win32_Processor\n```\n\nKết quả là object có nhiều property; dùng `Select-Object` chọn cột, `Where-Object` filter, hoặc tham số `-Filter` (lọc ngay phía WMI, hiệu quả hơn).\n\n**Export ra CSV:**\n```\nGet-CimInstance Win32_Processor | Select-Object Name,NumberOfCores | Export-Csv -Path 'cpu.csv' -NoTypeInformation -Encoding UTF8\n```\n- `-NoTypeInformation` — bỏ dòng `#TYPE` rác đầu file\n- `-Encoding UTF8` — tránh lỗi font tiếng Việt"
+    },
+    {
+      "heading": "Các Win32 class chính (Processor, PhysicalMemory, NetworkAdapter, VideoController, DiskDrive)",
+      "content": "Mỗi loại phần cứng có một **Win32_* class** tương ứng:\n\n- **`Win32_Processor`** — CPU. Property: `Manufacturer`, `Name`, `NumberOfCores`, `MaxClockSpeed`, `Status`\n- **`Win32_PhysicalMemory`** — từng thanh RAM vật lý. Property: `Manufacturer`, `PartNumber`, `Capacity` (bytes), `Speed` (MHz)\n- **`Win32_DiskDrive`** — ổ cứng/SSD vật lý. Property: `Model`, `Size`, `MediaType`, `InterfaceType`\n- **`Win32_NetworkAdapter`** — card mạng. Property: `Name`, `Manufacturer`, `MACAddress`, `Speed`, `NetEnabled`. Lọc card vật lý: `-Filter \"PhysicalAdapter=True\"`\n- **`Win32_VideoController`** — GPU/màn hình. Property: `Name`, `AdapterRAM`, `DriverVersion`, `VideoProcessor`\n\n**Lưu ý:** không nhầm `Win32_NetworkAdapter` với `Win32_DiskDrive` (lỗi thường gặp khi copy script). Class `Win32_LogicalDisk` (khác `Win32_DiskDrive`) liệt kê **partition/drive letter** chứ không phải đĩa vật lý."
+    },
+    {
+      "heading": "Linux: lshw, lscpu, dmidecode, lsblk",
+      "content": "Linux không có một framework quản trị thống nhất như WMI; thay vào đó là **nhiều công cụ chuyên biệt**, đa số cần `sudo` vì truy cập kernel/firmware.\n\n- **`lshw`** (List Hardware) — công cụ tổng quát, output **phân cấp** (system → bus → device). Dùng `-class` để giới hạn:\n  - `sudo lshw -class processor` (CPU)\n  - `sudo lshw -class memory` (RAM/cache/firmware)\n  - `sudo lshw -class disk` (đĩa)\n  - `sudo lshw -class network` (NIC)\n  - `sudo lshw -class display` (GPU)\n\n- **`lscpu`** — chuyên CPU, đọc từ pseudo-filesystem **`/proc/cpuinfo`**. Output dạng `key: value` dễ parse: Vendor ID, Model name, CPU(s), CPU MHz, L1d/L1i/L2/L3 cache.\n\n- **`dmidecode`** — đọc bảng **DMI/SMBIOS** do BIOS/UEFI cung cấp, chứa metadata phần cứng (slot RAM, serial, manufacturer). Ví dụ: `sudo dmidecode -t memory` cho RAM, `-t processor`, `-t bios`.\n\n- **`lsblk`** — liệt kê **block devices** (đĩa + partition). Tham số:\n  - `-d` — chỉ hiển thị disk (bỏ partition)\n  - `-e 7` — exclude device type 7 (loop devices)\n  - `-o NAME,VENDOR,MODEL,SIZE,STATE` — chọn cột output\n\n**Khi nào dùng cái nào?** `lshw` cho cái nhìn tổng quát; `lscpu` cho CPU chi tiết; `dmidecode` cho thông tin từ BIOS (slot RAM, serial); `lsblk` cho cấu trúc block storage."
+    },
+    {
+      "heading": "Xử lý dữ liệu: pipe, grep/awk/sed, redirect, CSV export",
+      "content": "Output thô từ `lshw`/`dmidecode` rất dài → cần lọc và format trước khi lưu.\n\n**Pipe (`|`)** — chuyển stdout của lệnh trước làm stdin lệnh sau:\n```\nsudo dmidecode -t memory | grep -E 'Size|Type|Speed|Manufacturer|Part Number'\n```\n\n**`grep`** — lọc dòng khớp pattern; `-E` cho regex mở rộng; `-i` ignore case.\n\n**`awk`** — xử lý theo cột/dòng. Ví dụ:\n```\nawk -F: '/Manufacturer|Part Number/ {print $1 \",\" $2}'\n```\n`-F:` đặt dấu phân tách trường là `:`; `$1,$2` in cột 1 và 2.\n\n**`sed`** — substitution/edit text. Ví dụ `sed 's/  *//g'` xóa nhiều khoảng trắng liên tiếp.\n\n**Redirect:**\n- `>` — ghi stdout vào file, **đè** nội dung cũ\n- `>>` — **append** vào cuối file\n- `2>` — chuyển stderr; `2>&1` — gộp stderr vào stdout\n\n**CSV (Comma-Separated Values)** — định dạng text mỗi dòng là một record, các cột phân cách bằng dấu phẩy. Là chuẩn de-facto để import vào Excel, BI tool, database. Pipeline điển hình: `lệnh | grep | awk -F: '{print $1\",\"$2}' > out.csv`."
+    },
+    {
+      "heading": "Best practice script: try/catch, idempotency, output directory",
+      "content": "**`Hardware_Audit.ps1`** là ví dụ tổng hợp tất cả bước trên thành một script PowerShell.\n\n**Các thực hành tốt:**\n\n- **Biến cấu hình ở đầu file** — `$Timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'`, `$OutDir = \"$env:USERPROFILE\\Desktop\\HW_Audit_$Timestamp\"` → mỗi lần chạy tạo thư mục unique, không ghi đè kết quả cũ.\n\n- **Tạo thư mục output:** `New-Item -ItemType Directory -Path $OutDir | Out-Null`. Pipe `Out-Null` để **ẩn thông báo** mặc định khi tạo.\n\n- **try/catch** — cơ chế xử lý exception: nếu một class WMI lỗi (vd thiếu driver), script không crash mà in cảnh báo màu đỏ rồi tiếp tục thu thập class khác:\n```\ntry { Get-CimInstance Win32_VideoController ... }\ncatch { Write-Host \"Lỗi: $_\" -ForegroundColor Red }\n```\n\n- **Idempotency** — chạy script nhiều lần phải cho kết quả nhất quán, không tạo trạng thái lệch (vd không append nhầm vào file cũ). Dùng timestamp directory hoặc `>` (overwrite) thay vì `>>` cho output cuối.\n\n- **Quyền chạy** — một số class WMI (BIOS, Security) yêu cầu **Administrator**; trên Linux `lshw`/`dmidecode` cần `sudo`. Script nên kiểm tra quyền ngay đầu file và báo lỗi rõ ràng nếu thiếu."
+    },
+    {
+      "heading": "Câu hỏi tự luận tham khảo",
+      "content": "**Câu 1.** *WMI/CIM là gì và vì sao PowerShell dùng nó để thu thập thông tin phần cứng Windows?*\n\n**Trả lời:** **CIM** là chuẩn quản trị thiết bị/hệ thống do DMTF định nghĩa, **WMI** là implementation của Microsoft cho chuẩn này trên Windows — expose hardware, OS, process... qua các class `Win32_*`. PowerShell dùng `Get-CimInstance` để truy vấn các class này vì kết quả trả về là **structured object** (dễ chọn cột, filter, export CSV) thay vì text thô như parsing CLI, phù hợp cho automation ở quy mô lớn.\n\n---\n\n**Câu 2.** *Trên Linux, so sánh `lshw`, `lscpu`, `dmidecode`. Khi nào dùng công cụ nào?*\n\n**Trả lời:** `lshw` là công cụ tổng quát hiển thị toàn bộ phần cứng phân cấp theo class (processor/memory/disk/network/display) — dùng khi cần overview. `lscpu` chuyên về CPU, đọc từ `/proc/cpuinfo`, output `key: value` rõ ràng — dùng khi chỉ cần thông tin processor. `dmidecode` đọc bảng **DMI/SMBIOS** từ BIOS/UEFI, cung cấp metadata mức firmware (slot RAM, serial, manufacturer) mà các tool khác không có — dùng khi cần thông tin chi tiết về RAM module hoặc audit phần cứng cấp BIOS.\n\n---\n\n**Câu 3.** *Một admin cần audit phần cứng cho 100 server (50 Windows + 50 Linux) định kỳ hằng tuần. Phác thảo giải pháp tự động trong 2-3 câu.*\n\n**Trả lời:** Viết hai script: PowerShell (`Hardware_Audit.ps1` dùng `Get-CimInstance` cho 5 class `Win32_*`) cho Windows, Bash (gọi `lshw`/`lscpu`/`dmidecode`/`lsblk` rồi pipe `awk`/`grep`) cho Linux; cả hai cùng export CSV ra thư mục có timestamp. Dùng cron/Task Scheduler chạy hằng tuần và đẩy CSV về trung tâm (file share, S3, hoặc CMDB), kèm `try/catch` và idempotency để không hỏng dữ liệu khi script chạy lại."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "WMI là viết tắt của?",
+      "options": [
+        "Windows Management Instrumentation",
+        "Windows Management Interface",
+        "Windows Module Integration",
+        "Windows Monitoring Index"
+      ],
+      "answer": 0,
+      "explanation": "WMI = Windows Management Instrumentation, framework Microsoft để truy cập thông tin quản trị."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "CIM trong WMI/CIM là viết tắt của?",
+      "options": [
+        "Computer Information Module",
+        "Common Information Model",
+        "Centralized Inventory Manager",
+        "Configuration Item Map"
+      ],
+      "answer": 1,
+      "explanation": "CIM = Common Information Model — chuẩn quản trị do DMTF định nghĩa; WMI là implementation Windows của chuẩn này."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Cmdlet nào KHUYẾN NGHỊ dùng trong PowerShell hiện đại để truy vấn WMI/CIM?",
+      "options": [
+        "Get-WmiObject",
+        "Get-Hardware",
+        "Get-CimInstance",
+        "Query-WMI"
+      ],
+      "answer": 2,
+      "explanation": "Get-WmiObject là cmdlet cũ đã deprecated; Get-CimInstance (PowerShell 3.0+) hỗ trợ cả DCOM và WSMan, là cmdlet khuyến nghị."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Class Win32 nào dùng để lấy thông tin CPU?",
+      "options": [
+        "Win32_CPU",
+        "Win32_Compute",
+        "Win32_ProcessorInfo",
+        "Win32_Processor"
+      ],
+      "answer": 3,
+      "explanation": "Win32_Processor là class chuẩn cho CPU, có property NumberOfCores, MaxClockSpeed, Manufacturer..."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Class Win32 nào dùng để lấy thông tin RAM vật lý?",
+      "options": [
+        "Win32_PhysicalMemory",
+        "Win32_RAM",
+        "Win32_Memory",
+        "Win32_MemoryModule"
+      ],
+      "answer": 0,
+      "explanation": "Win32_PhysicalMemory liệt kê từng thanh RAM với Capacity, Speed, Manufacturer, PartNumber."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Class Win32 nào KHÔNG đúng để lấy ổ cứng vật lý? (Đây là lỗi nhóm đã mắc)",
+      "options": [
+        "Win32_DiskDrive",
+        "Cả B và C",
+        "Win32_PhysicalMemory",
+        "Win32_NetworkAdapter"
+      ],
+      "answer": 1,
+      "explanation": "Đúng phải là Win32_DiskDrive. Win32_NetworkAdapter là card mạng, Win32_PhysicalMemory là RAM — cả hai đều sai cho ổ cứng."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "Class Win32_VideoController cho thông tin về?",
+      "options": [
+        "Card mạng",
+        "RAM",
+        "GPU/Display adapter",
+        "Webcam"
+      ],
+      "answer": 2,
+      "explanation": "Win32_VideoController = GPU/Display, property: Name, AdapterRAM, DriverVersion, VideoProcessor."
+    },
+    {
+      "id": 8,
+      "level": "basic",
+      "question": "lshw là viết tắt của?",
+      "options": [
+        "List Software",
+        "Local Shell",
+        "Linux Show",
+        "List Hardware"
+      ],
+      "answer": 3,
+      "explanation": "lshw = List Hardware, công cụ tổng quát hiển thị phần cứng phân cấp trên Linux."
+    },
+    {
+      "id": 9,
+      "level": "basic",
+      "question": "Lệnh nào hiển thị thông tin chi tiết về CPU trên Linux, đọc từ /proc/cpuinfo?",
+      "options": [
+        "lscpu",
+        "lshw",
+        "dmidecode",
+        "lsblk"
+      ],
+      "answer": 0,
+      "explanation": "lscpu chuyên CPU, đọc từ pseudo-filesystem /proc/cpuinfo, output key:value rõ ràng."
+    },
+    {
+      "id": 10,
+      "level": "basic",
+      "question": "dmidecode đọc thông tin từ đâu?",
+      "options": [
+        "/proc/cpuinfo",
+        "Bảng DMI/SMBIOS từ BIOS/UEFI",
+        "/sys/class/net",
+        "Registry Windows"
+      ],
+      "answer": 1,
+      "explanation": "dmidecode đọc bảng DMI (Desktop Management Interface) / SMBIOS do BIOS/UEFI cung cấp, chứa metadata phần cứng cấp firmware."
+    },
+    {
+      "id": 11,
+      "level": "basic",
+      "question": "Lệnh nào liệt kê block devices (disk + partition) trên Linux?",
+      "options": [
+        "lsdev",
+        "lspart",
+        "lsblk",
+        "lshw -class storage"
+      ],
+      "answer": 2,
+      "explanation": "lsblk = list block devices, hiển thị disk và partition theo cấu trúc cây."
+    },
+    {
+      "id": 12,
+      "level": "basic",
+      "question": "CSV là viết tắt của?",
+      "options": [
+        "Computer System Values",
+        "Configuration Schema Version",
+        "Centralized Storage Vault",
+        "Comma-Separated Values"
+      ],
+      "answer": 3,
+      "explanation": "CSV = Comma-Separated Values, mỗi dòng là một record, các cột phân cách bởi dấu phẩy."
+    },
+    {
+      "id": 13,
+      "level": "intermediate",
+      "question": "Tham số `-NoTypeInformation` trong `Export-Csv` có tác dụng gì?",
+      "options": [
+        "Bỏ dòng `#TYPE` rác ở đầu file CSV",
+        "Bỏ thông tin metadata trong file",
+        "Mã hóa file CSV",
+        "Không kiểm tra kiểu dữ liệu khi export"
+      ],
+      "answer": 0,
+      "explanation": "Mặc định Export-Csv chèn dòng #TYPE ở đầu file (không hữu ích cho Excel/parser); -NoTypeInformation loại bỏ dòng này."
+    },
+    {
+      "id": 14,
+      "level": "intermediate",
+      "question": "Để filter card mạng VẬT LÝ ngay từ phía WMI (không qua Where-Object), dùng?",
+      "options": [
+        "Get-CimInstance Win32_NetworkAdapter | grep Physical",
+        "Get-CimInstance Win32_NetworkAdapter -Filter \"PhysicalAdapter=True\"",
+        "Get-CimInstance Win32_NetworkAdapter -Physical",
+        "Get-CimInstance Win32_NIC"
+      ],
+      "answer": 1,
+      "explanation": "Tham số -Filter lọc ngay tại WMI provider, hiệu quả hơn pipe qua Where-Object vì giảm dữ liệu chuyển qua pipeline."
+    },
+    {
+      "id": 15,
+      "level": "intermediate",
+      "question": "Lệnh `lshw -class memory` cho thông tin gì?",
+      "options": [
+        "Chỉ RAM",
+        "Ổ cứng",
+        "RAM, cache CPU, firmware (BIOS)",
+        "Swap space"
+      ],
+      "answer": 2,
+      "explanation": "lshw -class memory bao gồm cả firmware (BIOS), cache (L1/L2/L3) và RAM — tất cả thuộc nhánh memory."
+    },
+    {
+      "id": 16,
+      "level": "intermediate",
+      "question": "Trong `lsblk -d -e 7 -o NAME,SIZE`, tham số `-e 7` nghĩa là?",
+      "options": [
+        "Hiển thị 7 dòng đầu",
+        "Display partition lên đến level 7",
+        "Encrypt level 7",
+        "Exclude device type 7 (loop devices)"
+      ],
+      "answer": 3,
+      "explanation": "-e <type> exclude major device type cụ thể; type 7 là loop devices (vd /dev/loop0), thường không cần khi audit phần cứng."
+    },
+    {
+      "id": 17,
+      "level": "intermediate",
+      "question": "Trong shell, toán tử `>` và `>>` khác nhau thế nào?",
+      "options": [
+        "`>` ghi đè, `>>` append vào cuối file",
+        "Giống nhau",
+        "`>` append, `>>` ghi đè",
+        "`>` cho stdout, `>>` cho stderr"
+      ],
+      "answer": 0,
+      "explanation": "`>` overwrite (đè nội dung cũ); `>>` append (ghi nối tiếp). Stderr riêng dùng 2> hoặc 2>>."
+    },
+    {
+      "id": 18,
+      "level": "intermediate",
+      "question": "Trong `awk -F: '{print $1\",\"$2}'`, `-F:` có ý nghĩa gì?",
+      "options": [
+        "Đọc file F",
+        "Đặt dấu phân tách trường (field separator) là `:`",
+        "Format output dạng `:`",
+        "Filter dòng có ký tự `:`"
+      ],
+      "answer": 1,
+      "explanation": "-F<char> đặt field separator. Mặc định awk dùng khoảng trắng; đổi thành `:` phù hợp khi parse output dạng `key: value`."
+    },
+    {
+      "id": 19,
+      "level": "intermediate",
+      "question": "Trong PowerShell, `New-Item ... | Out-Null` được dùng vì sao?",
+      "options": [
+        "Tạo file rỗng",
+        "Chạy lệnh trong background",
+        "Ẩn thông báo (output) mà New-Item in mặc định",
+        "Xóa file vừa tạo"
+      ],
+      "answer": 2,
+      "explanation": "Mặc định New-Item in thông tin về item mới; pipe Out-Null nuốt output này để script gọn gàng."
+    },
+    {
+      "id": 20,
+      "level": "intermediate",
+      "question": "try/catch trong script PowerShell có tác dụng gì?",
+      "options": [
+        "Tăng tốc thực thi",
+        "Mã hóa output",
+        "Tự động retry vô hạn",
+        "Bắt lỗi an toàn — code lỗi nhảy xuống catch thay vì crash"
+      ],
+      "answer": 3,
+      "explanation": "try/catch cho phép script tiếp tục chạy khi một class WMI lỗi (vd thiếu driver) — block catch xử lý ngoại lệ thay vì để script crash."
+    },
+    {
+      "id": 21,
+      "level": "intermediate",
+      "question": "Vì sao nhiều lệnh Linux thu thập phần cứng (lshw, dmidecode) cần `sudo`?",
+      "options": [
+        "Vì truy cập kernel/firmware/DMI cần quyền root",
+        "Để tránh virus",
+        "Vì ghi vào /etc",
+        "Vì là lệnh không an toàn"
+      ],
+      "answer": 0,
+      "explanation": "Đọc bảng DMI/SMBIOS hay quét toàn bộ bus phần cứng yêu cầu privileged access — user thường không có quyền nên cần sudo."
+    },
+    {
+      "id": 22,
+      "level": "intermediate",
+      "question": "Idempotency trong context script audit nghĩa là?",
+      "options": [
+        "Script chỉ chạy được một lần",
+        "Chạy nhiều lần cho kết quả nhất quán, không gây lỗi/lệch trạng thái",
+        "Script tự xóa sau khi chạy",
+        "Script chạy đồng thời nhiều phiên"
+      ],
+      "answer": 1,
+      "explanation": "Idempotent = chạy 1 lần hay N lần đều cho cùng kết quả. Quan trọng cho automation định kỳ — vd dùng timestamp directory hoặc `>` overwrite thay vì `>>` append."
+    },
+    {
+      "id": 23,
+      "level": "advanced",
+      "question": "Tình huống: bạn cần audit slot RAM (manufacturer, part number, vị trí slot vật lý) trên Linux. Công cụ phù hợp NHẤT?",
+      "options": [
+        "lscpu",
+        "lsblk",
+        "dmidecode -t memory",
+        "free -h"
+      ],
+      "answer": 2,
+      "explanation": "Chỉ dmidecode (đọc DMI/SMBIOS từ BIOS) cung cấp metadata mức firmware như part number, manufacturer của từng slot RAM. lshw có một phần nhưng dmidecode chi tiết hơn."
+    },
+    {
+      "id": 24,
+      "level": "advanced",
+      "question": "So sánh Get-WmiObject và Get-CimInstance, ý nào ĐÚNG?",
+      "options": [
+        "Get-WmiObject hỗ trợ WSMan, Get-CimInstance không",
+        "Get-WmiObject nhanh hơn vì không qua mạng",
+        "Hai cmdlet giống hệt nhau, chỉ tên khác",
+        "Get-CimInstance là cmdlet mới (PS 3.0+), hỗ trợ cả DCOM và WSMan; Get-WmiObject cũ và đã deprecated"
+      ],
+      "answer": 3,
+      "explanation": "Get-CimInstance ra đời từ PS 3.0, hỗ trợ WSMan (HTTP-based, firewall-friendly) và DCOM. Get-WmiObject chỉ DCOM, đã deprecated từ PS 6+."
+    },
+    {
+      "id": 25,
+      "level": "advanced",
+      "question": "Một admin cần audit 100 server (50 Win + 50 Linux) hằng tuần. Cách tiếp cận TỐT NHẤT?",
+      "options": [
+        "Viết script PowerShell (Get-CimInstance + Export-Csv) cho Win và script Bash (lshw/dmidecode + awk) cho Linux, chạy qua Task Scheduler/cron, đẩy CSV về trung tâm",
+        "Login từng máy gõ tay rồi copy kết quả",
+        "Cài 1 phần mềm thương mại duy nhất giá rẻ",
+        "Chỉ audit một server đại diện"
+      ],
+      "answer": 0,
+      "explanation": "Quy mô 100 server cần automation: script chuyên biệt cho mỗi OS, lập lịch định kỳ (cron/Task Scheduler), output structured (CSV) đẩy về CMDB/file share. Đây là pattern chuẩn cho hardware audit ở scale."
+    }
+  ]
+}

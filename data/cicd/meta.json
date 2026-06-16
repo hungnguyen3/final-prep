@@ -1,8 +1,12 @@
 {
   "id": "cicd",
-  "title": "CI/CD",
-  "description": "Continuous Integration / Continuous Deployment",
+  "title": "NT542 — Lập trình kịch bản tự động hóa",
+  "description": "Scripting for Administration, Automation, and Security · Hạ tầng IT, Bash/PowerShell/Python, Ansible/Terraform, đồ án CIS Kubernetes",
   "chapters": [
-    { "id": 1, "title": "Giới thiệu CI/CD" }
+    { "id": 1, "title": "Hạ tầng IT (Infrastructure)" },
+    { "id": 2, "title": "Ngôn ngữ kịch bản: Bash, PowerShell, Python" },
+    { "id": 3, "title": "Công cụ tự động hóa: Ansible & Terraform" },
+    { "id": 4, "title": "Thu thập thông tin hệ thống (WMI/CIM, lshw)" },
+    { "id": 5, "title": "Đồ án: Tự động hóa CIS Kubernetes Benchmark" }
   ]
 }

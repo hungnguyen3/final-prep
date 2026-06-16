@@ -1,0 +1,364 @@
+{
+  "title": "Chương 3: Công cụ tự động hóa: Ansible & Terraform",
+  "theory": [
+    {
+      "heading": "Các trục so sánh công cụ tự động hóa",
+      "content": "Module 4 đặt các công cụ automation lên 9 trục so sánh:\n\n- **Configuration management vs Infrastructure provisioning** — quản lý cấu hình thiết bị/hệ thống đã có vs cấp phát hạ tầng mới\n- **Agent-based vs Agentless** — cần agent cài trên target hay không\n- **Centralized vs Decentralized** — điều khiển tập trung hay phân tán\n- **Custom protocol vs Standards-based protocol** — giao thức riêng vs chuẩn mở\n- **Declarative vs Imperative** — mô tả 'trạng thái mong muốn' vs liệt kê 'các bước thực hiện'\n- **Extensibility** — khả năng mở rộng (module, plugin)\n- **Push vs Pull vs Event-driven** — cơ chế phân phối cấu hình\n- **Mutable vs Immutable** — sửa tại chỗ vs thay mới hoàn toàn\n- **State management** — có lưu state file hay không\n\n**Định vị nhanh:** Ansible thiên về configuration management, agentless, push, mutable, declarative-imperative lai. Terraform thiên về infrastructure provisioning, declarative, có state file, immutable mindset."
+    },
+    {
+      "heading": "Ansible — Tổng quan & cách hoạt động",
+      "content": "**Ansible** là dự án mã nguồn mở do Red Hat bảo trợ. Từ phiên bản 2.9 tách thành 2 gói: **`ansible-core`** (Ansible Core) và **`ansible`** (Ansible community).\n\n**Cách Ansible hoạt động:**\n- **Automating Linux servers** — chạy ở mô hình *distributed*: control host kết nối qua **SSH** đến từng server, copy mã Python (định nghĩa task) sang và thực thi tại server đó.\n- **Automating network devices** — chạy ở mô hình *local/centralized*: mã Python chạy NGAY TRÊN control host và automate nhiều thiết bị song song. Các Linux-based NOS hỗ trợ Python execution engine ngày càng phổ biến.\n\nAnsible **agentless** — không cần cài agent trên target, chỉ cần SSH (server) hoặc API/CLI (network device)."
+    },
+    {
+      "heading": "Inventory file — định nghĩa thiết bị cần automate",
+      "content": "Inventory là 1 trong 2 file bắt buộc khởi đầu (cùng với playbook). Cú pháp **INI-like** hoặc **YAML**.\n\n**Khái niệm cốt lõi:**\n- **Inventory group** — gom các thiết bị có chung đặc tính (loại, OS, vị trí). Cho phép **nested group** (group lồng group).\n- **Variables**:\n  - **Group variables** — gán ở mức group, áp dụng cho mọi member\n  - **Host variables** — đặt cùng dòng device theo dạng `variable=value`\n- **Variable priority (từ cao đến thấp):** host variable → group variable → nested group variable.\n- **`all` group** — group ngầm định luôn tồn tại, chứa mọi host trong inventory.\n\nKhi số biến lớn, nên tách sang file biến chuyên dụng (xem block kế tiếp) thay vì nhồi hết vào inventory."
+    },
+    {
+      "heading": "Playbook & Variables files",
+      "content": "**Playbook** — file YAML chứa hướng dẫn automation, định nghĩa danh sách các **play**. Mỗi play gồm:\n1. **`name`** — mô tả (tùy chọn nhưng nên có)\n2. **`hosts`** — thiết bị nào được automate\n3. **`gather_facts`** — thu thập thông tin (OS type/version, vendor, IP…)\n4. **`connection`** — kiểu kết nối (vd `ansible.netcommon.network_cli` cho thiết bị mạng)\n5. **`tasks`** — danh sách task chạy tuần tự\n\n**Variables files** (khuyên dùng khi có nhiều biến):\n- Định dạng YAML\n- **Group-based** — lưu trong thư mục **`group_vars/`**, mỗi group một file YAML; nested group hiện diện trong cây cha-con\n- **Host-based** — lưu trong **`host_vars/`**, file (hoặc thư mục) đặt theo tên device"
+    },
+    {
+      "heading": "Network modules, execution flags & compliance check",
+      "content": "**Common core network modules** (đặt tên theo `xos_*` với `xos` là OS, vd `ios_command`, `eos_config`, `nxos_facts`):\n- **`command`** (`xos_command`) — gửi lệnh exec-level đến thiết bị\n- **`config`** (`xos_config`) — gửi lệnh cấu hình\n- **`facts`** (`xos_facts`) — thu thập thông tin (OS version, hostname, hardware platform, serial number, neighbors)\n\n**Playbook execution flags:**\n- **Check mode (`--check`)** — chạy DRY RUN, không tác động thật\n- **Verbosity (`-v`)** — xem JSON dữ liệu trả về từ mỗi module\n- **Limit (`--limit`)** — giới hạn chạy trên 1 device, 1 group hay nhiều\n\n**Compliance check** — xác minh thứ gì đó đã enable/disable hoặc đã configure/chưa configure. 2 module hay dùng:\n- **`set_fact`** — tạo biến ad-hoc từ tập dữ liệu phức tạp\n- **`assert`** — kiểm tra điều kiện True/False (test/assert)\n\nVí dụ slide: play `hosts: all` với `gather_facts: yes`, dùng `ansible_facts['distribution']` để tạo file khác nhau cho CentOS/Ubuntu/Debian; play *configure ios interface* với 3 task: thu thập running-config → enable interface → verify operational status (waitfor + retries)."
+    },
+    {
+      "heading": "Terraform — IaC, HCL & các khái niệm cú pháp",
+      "content": "**Terraform** do **HashiCorp** tạo năm 2014. Mục tiêu: quản lý mọi hạ tầng động có API (cloud hoặc on-premises).\n\n**Bối cảnh hạ tầng IT hiện đại:**\n- Tài nguyên *dynamic* — spin-up theo nhu cầu, tiêu thụ as-a-service\n- Cloud managed services deploy được qua REST API trong vài phút/giây\n- **Infrastructure as Code (IaC)** — mô tả 'hạ tầng nên trông thế nào' bằng code; tooling thông dịch và gọi API tương ứng\n- **Hạn chế của IaC native theo cloud provider:** vendor-specific (AWS CloudFormation chỉ AWS, ARM chỉ Azure). Terraform **multi-cloud abstraction** — viết một lần, dùng nhiều provider.\n\n**Ngôn ngữ cấu hình của Terraform — HCL (HashiCorp Configuration Language):**\n- HCL là một **DSL** (Domain-Specific Language)\n- 2 cấu trúc cú pháp cơ bản:\n  - **Argument** — gán giá trị cho một tên: `cidr_block = \"192.0.2.0/24\"`\n  - **Block** — container chứa nội dung khác:\n    ```hcl\n    resource \"aws_vpc\" \"my_vpc\" {\n      cidr_block = \"192.0.2.0/24\"\n    }\n    ```\n- **Identifiers** — argument name, block type name, block name — có thể tái sử dụng ở nhiều nơi"
+    },
+    {
+      "heading": "Terraform workflow 5 bước: Write → Init → Plan → Apply → Destroy",
+      "content": "Workflow chuẩn của Terraform có 5 stage:\n\n1. **Write** — viết cấu hình `.tf` mô tả desired state và thông tin để khởi tạo Terraform\n2. **Init** (`terraform init`) — khởi tạo working directory, tải plug-in (provider), module, backend\n3. **Plan** (`terraform plan`) — sinh execution plan ở chế độ **DRY RUN**, mô tả mọi thay đổi sẽ được áp dụng (create/update/destroy)\n4. **Apply** (`terraform apply`) — thực thi và áp dụng desired state lên hạ tầng thật\n5. **Destroy** (`terraform destroy`) — deprovision (gỡ bỏ) hạ tầng đang được Terraform quản lý\n\n**Lưu ý:** chỉ duy nhất bước **Plan** chạy dry-run; **Apply** mới gọi API thật. Cặp Plan/Apply là điểm khác biệt cốt lõi giúp review trước khi thay đổi production."
+    },
+    {
+      "heading": "Câu hỏi tự luận tham khảo",
+      "content": "**Câu 1.** *TechStart có 20 web Ubuntu (Nginx + Node.js), 5 DB PostgreSQL, 10 Cisco switch trên 3 môi trường Dev/Staging/Prod. Hãy đề xuất cách tổ chức inventory và playbook ĐẦU TIÊN cần viết, kèm lý do.*\n\n**Trả lời:** Inventory tổ chức theo nested group: top-level theo môi trường (`dev`, `staging`, `prod`), bên trong chia theo vai trò (`webservers`, `dbservers`, `switches`); biến chung đẩy vào `group_vars/` (vd `group_vars/webservers.yml` cho Nginx version), biến đặc thù vào `host_vars/`. Playbook đầu tiên nên là **bootstrap/baseline** (cài SSH key, user admin, package cơ bản, NTP, hardening) — vì mọi playbook sau đều giả định baseline đã đồng nhất, và đây cũng là phép thử rẻ nhất chứng minh kết nối/quyền/inventory đã đúng trước khi tự động hóa các thay đổi rủi ro hơn.\n\n---\n\n**Câu 2.** *So sánh Ansible (configuration management) và Terraform (infrastructure provisioning) — khi nào dùng cái nào? Có thể dùng kết hợp không?*\n\n**Trả lời:** Terraform chuyên *provision* (tạo VPC, EC2, RDS từ con số 0), declarative thuần, có **state file**, multi-cloud qua provider. Ansible chuyên *configure* (cài package, sửa file, deploy app) trên hạ tầng đã tồn tại, agentless qua SSH, kết hợp được declarative và imperative. Thực tế thường **dùng kết hợp**: Terraform tạo hạ tầng → output IP/hostname → Ansible đọc inventory động và cấu hình ứng dụng bên trong.\n\n---\n\n**Câu 3.** *Cho yêu cầu deploy 1 VPC + 2 EC2 + 1 RDS trên AWS qua Terraform. Trình bày 5 bước workflow và chỉ rõ bước nào chạy dry-run, bước nào gọi API thật.*\n\n**Trả lời:** (1) **Write** — viết `main.tf` với các block `resource \"aws_vpc\"`, `aws_instance` (×2), `aws_db_instance`. (2) **Init** — `terraform init` tải provider AWS và backend. (3) **Plan** — `terraform plan` chạy **dry-run**, in ra danh sách 4 resource sẽ được tạo, không gọi API thật. (4) **Apply** — `terraform apply` gọi API AWS thật để tạo hạ tầng và cập nhật state file. (5) **Destroy** — `terraform destroy` khi cần dọn môi trường. Chỉ Plan là dry-run; Apply và Destroy đều thay đổi hạ tầng thật."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "level": "basic",
+      "question": "Ansible là dự án mã nguồn mở được bảo trợ bởi tổ chức nào?",
+      "options": [
+        "Red Hat",
+        "HashiCorp",
+        "Cisco",
+        "Microsoft"
+      ],
+      "answer": 0,
+      "explanation": "Slide ghi rõ Ansible là 'open-source community project sponsored by Red Hat'. HashiCorp là công ty đứng sau Terraform."
+    },
+    {
+      "id": 2,
+      "level": "basic",
+      "question": "Từ phiên bản 2.9, Ansible được tách thành 2 gói nào?",
+      "options": [
+        "ansible-server và ansible-client",
+        "ansible-core và ansible (community)",
+        "ansible-free và ansible-enterprise",
+        "ansible-push và ansible-pull"
+      ],
+      "answer": 1,
+      "explanation": "Từ v2.9: Ansible Core (`ansible-core`) chứa engine + module cốt lõi; gói `ansible` (community) chứa thêm collection mở rộng."
+    },
+    {
+      "id": 3,
+      "level": "basic",
+      "question": "Khi automate Linux servers, Ansible kết nối tới target qua giao thức nào?",
+      "options": [
+        "SNMP",
+        "NETCONF",
+        "SSH",
+        "Telnet"
+      ],
+      "answer": 2,
+      "explanation": "Distributed mode: control host kết nối SSH tới từng server, copy mã Python qua và thực thi tại đó."
+    },
+    {
+      "id": 4,
+      "level": "basic",
+      "question": "Hai file BẮT BUỘC để bắt đầu automate với Ansible là?",
+      "options": [
+        "Group_vars và host_vars",
+        "Inventory file và Dockerfile",
+        "Playbook và Terraform state",
+        "Inventory file và Playbook"
+      ],
+      "answer": 3,
+      "explanation": "Slide nêu 2 file bắt buộc: inventory (định nghĩa thiết bị) và playbook (định nghĩa task)."
+    },
+    {
+      "id": 5,
+      "level": "basic",
+      "question": "Inventory file của Ansible hỗ trợ cú pháp nào?",
+      "options": [
+        "INI-like hoặc YAML",
+        "Chỉ JSON",
+        "Chỉ XML",
+        "Chỉ HCL"
+      ],
+      "answer": 0,
+      "explanation": "Inventory dùng INI-like (đơn giản, có section [group]) hoặc YAML (cho cấu trúc phức tạp)."
+    },
+    {
+      "id": 6,
+      "level": "basic",
+      "question": "Trong Ansible, group ngầm định LUÔN tồn tại tên là gì?",
+      "options": [
+        "default",
+        "all",
+        "root",
+        "main"
+      ],
+      "answer": 1,
+      "explanation": "`all` là implicit group, chứa toàn bộ host trong inventory."
+    },
+    {
+      "id": 7,
+      "level": "basic",
+      "question": "Trong playbook YAML, trường `hosts` chỉ định?",
+      "options": [
+        "Hệ điều hành cần cài",
+        "Tên file output",
+        "Thiết bị/group nào sẽ được automate",
+        "Phiên bản Ansible cần dùng"
+      ],
+      "answer": 2,
+      "explanation": "Mỗi play có name, hosts, gather_facts, connection, tasks. `hosts` xác định target."
+    },
+    {
+      "id": 8,
+      "level": "basic",
+      "question": "Module Ansible nào dùng để gửi LỆNH CẤU HÌNH (configuration command) tới network device?",
+      "options": [
+        "xos_command",
+        "xos_setup",
+        "xos_facts",
+        "xos_config"
+      ],
+      "answer": 3,
+      "explanation": "`config` (đặt tên `xos_config`, vd `ios_config`) gửi lệnh cấu hình. `command` gửi exec-level command. `facts` thu thập thông tin."
+    },
+    {
+      "id": 9,
+      "level": "basic",
+      "question": "Cờ nào để chạy playbook ở chế độ DRY RUN, không tác động thật?",
+      "options": [
+        "--check",
+        "--dry",
+        "--limit",
+        "-v"
+      ],
+      "answer": 0,
+      "explanation": "Check mode (`--check`) cho phép chạy playbook ở chế độ dry-run. `-v` là verbosity. `--limit` giới hạn target."
+    },
+    {
+      "id": 10,
+      "level": "basic",
+      "question": "Terraform được tạo bởi công ty nào và vào năm nào?",
+      "options": [
+        "Red Hat, 2009",
+        "HashiCorp, 2014",
+        "Amazon, 2018",
+        "Google, 2012"
+      ],
+      "answer": 1,
+      "explanation": "Slide ghi: 'Created by HashiCorp in 2014. The goal is to manage any dynamic infrastructure that has an API.'"
+    },
+    {
+      "id": 11,
+      "level": "basic",
+      "question": "Terraform sử dụng ngôn ngữ cấu hình nào?",
+      "options": [
+        "YAML",
+        "JSON Schema",
+        "HCL (HashiCorp Configuration Language)",
+        "Python"
+      ],
+      "answer": 2,
+      "explanation": "Terraform dùng HCL — một DSL của HashiCorp. (Có thể dùng JSON tương đương nhưng HCL là chuẩn.)"
+    },
+    {
+      "id": 12,
+      "level": "basic",
+      "question": "Hai cấu trúc cú pháp CƠ BẢN của HCL là?",
+      "options": [
+        "Resource và State",
+        "Function và Class",
+        "Module và Package",
+        "Argument và Block"
+      ],
+      "answer": 3,
+      "explanation": "HCL có 2 cấu trúc cơ bản: **Argument** (gán giá trị cho name) và **Block** (container chứa nội dung khác)."
+    },
+    {
+      "id": 13,
+      "level": "basic",
+      "question": "Workflow 5 bước của Terraform theo đúng thứ tự là?",
+      "options": [
+        "Write → Init → Plan → Apply → Destroy",
+        "Init → Write → Apply → Plan → Destroy",
+        "Plan → Write → Init → Apply → Destroy",
+        "Write → Plan → Init → Destroy → Apply"
+      ],
+      "answer": 0,
+      "explanation": "Slide quy định thứ tự: Write (định nghĩa) → Init (khởi tạo, tải provider) → Plan (dry-run) → Apply (áp dụng) → Destroy (gỡ)."
+    },
+    {
+      "id": 14,
+      "level": "basic",
+      "question": "Bước nào trong workflow Terraform là DRY RUN?",
+      "options": [
+        "Write",
+        "Plan",
+        "Init",
+        "Apply"
+      ],
+      "answer": 1,
+      "explanation": "Plan tạo execution plan ở 'dry-run mode, describing all changes that will be applied'. Apply mới gọi API thật."
+    },
+    {
+      "id": 15,
+      "level": "basic",
+      "question": "IaC là viết tắt của?",
+      "options": [
+        "Infrastructure as Cloud",
+        "Internal API for Cloud",
+        "Infrastructure as Code",
+        "Inventory and Configuration"
+      ],
+      "answer": 2,
+      "explanation": "IaC = Infrastructure as Code: định nghĩa hạ tầng bằng code, tooling thông dịch và gọi API tương ứng."
+    },
+    {
+      "id": 16,
+      "level": "intermediate",
+      "question": "Khi automate NETWORK DEVICE, Ansible chạy mã Python ở đâu?",
+      "options": [
+        "Trên từng switch/router (push agent xuống)",
+        "Trong container Docker tạm thời trên target",
+        "Trên cloud Red Hat",
+        "Trên control host (chạy local, automate nhiều device song song)"
+      ],
+      "answer": 3,
+      "explanation": "Slide phân biệt: Linux server thì copy code xuống target qua SSH; nhưng network device thì code chạy LOCAL trên control host và automate nhiều device song song."
+    },
+    {
+      "id": 17,
+      "level": "intermediate",
+      "question": "Thứ tự ưu tiên (priority) của variable trong Ansible — từ CAO đến THẤP — là?",
+      "options": [
+        "Host > Group > Nested group",
+        "Group > Host > Nested group",
+        "Nested group > Group > Host",
+        "Tất cả ngang hàng, ai define sau thắng"
+      ],
+      "answer": 0,
+      "explanation": "Slide ghi: 'Variable priority: host variable → group variable → nested group variable.' Host variable cụ thể hơn nên thắng."
+    },
+    {
+      "id": 18,
+      "level": "intermediate",
+      "question": "Khi có rất nhiều biến, slide khuyên lưu ở đâu thay vì nhồi vào inventory?",
+      "options": [
+        "File `.env` ở thư mục gốc",
+        "Thư mục `group_vars/` và `host_vars/` (file YAML)",
+        "Database PostgreSQL ngoài",
+        "Inline ngay trong từng task"
+      ],
+      "answer": 1,
+      "explanation": "Variables files YAML lưu trong `group_vars/` (theo group) hoặc `host_vars/` (theo host) — sạch hơn và dễ quản lý hơn nhồi vào inventory."
+    },
+    {
+      "id": 19,
+      "level": "intermediate",
+      "question": "Để thực hiện COMPLIANCE CHECK (verify một thứ đã được enable hay chưa), 2 module Ansible nào phù hợp nhất?",
+      "options": [
+        "copy và template",
+        "command và config",
+        "set_fact và assert",
+        "shell và raw"
+      ],
+      "answer": 2,
+      "explanation": "Slide chuyên đề compliance: `set_fact` tạo ad-hoc variable từ data phức tạp, `assert` test điều kiện True/False."
+    },
+    {
+      "id": 20,
+      "level": "intermediate",
+      "question": "Trong play sau, `gather_facts: yes` có vai trò gì?",
+      "options": [
+        "Cài đặt Ansible lên target",
+        "Tự động commit cấu hình lên git",
+        "Bắt buộc dry-run mọi task",
+        "Thu thập thông tin (OS, version, vendor, IP…) trước khi chạy task"
+      ],
+      "answer": 3,
+      "explanation": "`gather_facts` thu thập facts (OS type/version, vendor, IP…). Nhờ đó task có thể conditional, vd `when: ansible_facts['distribution'] == 'CentOS'`."
+    },
+    {
+      "id": 21,
+      "level": "intermediate",
+      "question": "Tại sao Terraform được mô tả là 'multi-cloud abstraction', còn AWS CloudFormation và Azure ARM thì KHÔNG?",
+      "options": [
+        "Vì CloudFormation và ARM là vendor-specific (AWS chỉ AWS, ARM chỉ Azure)",
+        "Vì CloudFormation/ARM chỉ chạy trên Linux",
+        "Vì Terraform free còn 2 cái kia trả phí",
+        "Vì Terraform chạy trên blockchain"
+      ],
+      "answer": 0,
+      "explanation": "Slide nêu hạn chế: 'AWS CloudFormation only AWS, ARM only Azure'. Terraform có nhiều provider khác nhau → multi-cloud."
+    },
+    {
+      "id": 22,
+      "level": "intermediate",
+      "question": "Cho đoạn HCL `resource \"aws_vpc\" \"my_vpc\" { cidr_block = \"192.0.2.0/24\" }`. Thành phần `cidr_block = \"192.0.2.0/24\"` là gì?",
+      "options": [
+        "Một block lồng nhau",
+        "Một argument (gán value cho name)",
+        "Một identifier riêng biệt",
+        "Một module reference"
+      ],
+      "answer": 1,
+      "explanation": "Argument có dạng `name = value` — gán giá trị cho một tên. Toàn bộ `resource \"aws_vpc\" \"my_vpc\" { ... }` là một block."
+    },
+    {
+      "id": 23,
+      "level": "intermediate",
+      "question": "Đặt cạnh nhau, đâu là KHÁC BIỆT chính giữa Ansible và Terraform?",
+      "options": [
+        "Ansible chỉ chạy trên Windows, Terraform chỉ chạy trên Linux",
+        "Cả hai đều cấp phát hạ tầng và đều có state file",
+        "Ansible thiên về configuration management; Terraform thiên về infrastructure provisioning",
+        "Terraform agent-based, Ansible agent-based"
+      ],
+      "answer": 2,
+      "explanation": "Theo các trục so sánh trong Module 4: Ansible mạnh ở configuration management (cấu hình hạ tầng đã có); Terraform mạnh ở provisioning (cấp phát mới qua API)."
+    },
+    {
+      "id": 24,
+      "level": "advanced",
+      "question": "Một team cần (a) tạo VPC + EC2 + RDS trên AWS, sau đó (b) cài và cấu hình Nginx + app Node.js trên các EC2 đó. Cách phối hợp công cụ HỢP LÝ nhất là?",
+      "options": [
+        "Dùng Terraform cho cả (a) và (b) vì HCL mạnh hơn YAML",
+        "Dùng Ansible cho cả (a) và (b) vì agentless tiện hơn",
+        "Viết shell script gọi AWS CLI thuần cho cả hai",
+        "Terraform cho (a) — provision hạ tầng; Ansible cho (b) — configure ứng dụng (lấy IP từ output Terraform làm inventory)"
+      ],
+      "answer": 3,
+      "explanation": "Đây là pattern chuẩn: Terraform xuất sắc ở provisioning + state, Ansible xuất sắc ở configuration. Output Terraform (IP/DNS) feed vào dynamic inventory của Ansible."
+    },
+    {
+      "id": 25,
+      "level": "advanced",
+      "question": "Trên TechStart (20 web Ubuntu, 5 DB Postgres, 10 Cisco switch, 3 môi trường Dev/Staging/Prod), thứ tự ưu tiên áp dụng biến `ntp_server` được khai báo ở 3 nơi: (a) `host_vars/web01.yml`, (b) `group_vars/webservers.yml`, (c) `group_vars/prod.yml` (prod là parent group lồng webservers). Khi chạy trên `web01` thuộc prod, giá trị nào THẮNG?",
+      "options": [
+        "(a) host_vars/web01.yml",
+        "(b) webservers (group trực tiếp)",
+        "(c) prod (parent group)",
+        "Cả ba bị merge ngẫu nhiên, không xác định"
+      ],
+      "answer": 0,
+      "explanation": "Theo priority host > group > nested group, host variable `web01.yml` cụ thể nhất nên thắng. Đây là điểm bẫy hay gặp khi tổ chức inventory phân tầng."
+    }
+  ]
+}
